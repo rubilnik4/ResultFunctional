@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
-using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
-using ResultResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
 {

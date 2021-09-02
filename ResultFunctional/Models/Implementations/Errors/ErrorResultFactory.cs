@@ -7,7 +7,6 @@ using ResultFunctional.Models.Implementations.Errors.CommonErrors;
 using ResultFunctional.Models.Implementations.Errors.ConversionErrors;
 using ResultFunctional.Models.Implementations.Errors.DatabaseErrors;
 using ResultFunctional.Models.Implementations.Errors.RestErrors;
-using ResultFunctional.Models.Interfaces.Errors;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 
 namespace ResultFunctional.Models.Implementations.Errors

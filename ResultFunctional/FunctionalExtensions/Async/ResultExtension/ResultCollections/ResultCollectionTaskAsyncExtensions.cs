@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Interfaces.Results;
-using ResultResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
 {

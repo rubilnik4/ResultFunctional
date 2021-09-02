@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using Xunit;

@@ -1,5 +1,4 @@
 ﻿using System;
-using ResultFunctional.Models.Interfaces.Errors;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 
 namespace ResultFunctional.Models.Implementations.Errors.Base

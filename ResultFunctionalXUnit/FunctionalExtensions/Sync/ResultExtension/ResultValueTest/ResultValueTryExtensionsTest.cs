@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
-using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
 using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues.ResultValueTryExtensions;
 using static ResultFunctionalXUnit.Data.ErrorData;

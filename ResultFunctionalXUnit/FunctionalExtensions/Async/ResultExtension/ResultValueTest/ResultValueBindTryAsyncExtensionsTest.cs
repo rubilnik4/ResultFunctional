@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.ResultFactory;

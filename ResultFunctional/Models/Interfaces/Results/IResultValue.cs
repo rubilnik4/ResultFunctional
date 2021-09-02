@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ResultFunctional.Models.Interfaces.Errors.Base;
-using ResultResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Interfaces.Results
 {

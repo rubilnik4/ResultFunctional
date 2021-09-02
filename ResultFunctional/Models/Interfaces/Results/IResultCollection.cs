@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using ResultFunctional.Models.Interfaces.Errors.Base;
-using ResultFunctional.Models.Interfaces.Results;
 
-namespace ResultResultFunctional.Models.Interfaces.Results
+namespace ResultFunctional.Models.Interfaces.Results
 {
     /// <summary>
     /// Базовый вариант ответа с коллекцией

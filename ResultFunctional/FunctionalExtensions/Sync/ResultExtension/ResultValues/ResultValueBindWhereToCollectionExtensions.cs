@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using ResultFunctional.Models.Interfaces.Results;
-using ResultResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
 {

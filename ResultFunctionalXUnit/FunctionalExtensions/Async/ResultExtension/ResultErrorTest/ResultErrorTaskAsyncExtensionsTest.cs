@@ -5,7 +5,6 @@ using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors;
 using ResultFunctional.Models.Implementations.ResultFactory;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Results;
-using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 

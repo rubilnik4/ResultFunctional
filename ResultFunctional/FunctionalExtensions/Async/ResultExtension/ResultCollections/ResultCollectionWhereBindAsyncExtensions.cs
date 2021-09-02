@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
-using ResultFunctional.Models.Interfaces.Errors;
 using ResultFunctional.Models.Interfaces.Errors.Base;
-using ResultResultFunctional.Models.Interfaces.Results;
+using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
 {

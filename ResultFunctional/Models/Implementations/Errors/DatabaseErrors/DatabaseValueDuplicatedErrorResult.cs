@@ -1,6 +1,5 @@
 ﻿using System;
 using ResultFunctional.Models.Enums;
-using ResultFunctional.Models.Interfaces.Errors;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Errors.DatabaseErrors;
 
