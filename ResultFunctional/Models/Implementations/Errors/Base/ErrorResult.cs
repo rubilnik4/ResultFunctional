@@ -2,10 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
-using ResultResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Implementations.Errors.Base
 {

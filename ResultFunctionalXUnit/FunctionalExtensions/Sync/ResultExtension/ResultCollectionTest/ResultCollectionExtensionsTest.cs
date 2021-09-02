@@ -3,7 +3,6 @@ using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
-using static ResultFunctionalXUnit.Data.Collections;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.ResultCollectionTest
 {

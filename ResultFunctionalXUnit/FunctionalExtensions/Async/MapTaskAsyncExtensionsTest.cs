@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async;
-using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async

@@ -8,7 +8,6 @@ using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollectio
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
-using ResultResultFunctional.Models.Interfaces.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;

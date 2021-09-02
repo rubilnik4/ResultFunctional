@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ResultFunctional.Models.Interfaces.Results;
-using ResultResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Interfaces.Errors.Base
 {

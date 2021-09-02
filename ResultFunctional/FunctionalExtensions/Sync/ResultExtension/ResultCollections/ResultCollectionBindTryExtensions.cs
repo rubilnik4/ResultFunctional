@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors;
 using ResultFunctional.Models.Interfaces.Errors.Base;
-using ResultResultFunctional.Models.Interfaces.Results;
-using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections.ResultCollectionTryExtensions;
+using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
 {

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
-using ResultFunctional.Models.Interfaces.Errors;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
-using ResultResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
 {

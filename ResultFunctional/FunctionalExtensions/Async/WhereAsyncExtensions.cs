@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Sync;
 
 namespace ResultFunctional.FunctionalExtensions.Async
 {

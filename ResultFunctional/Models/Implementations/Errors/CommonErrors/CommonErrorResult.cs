@@ -1,7 +1,6 @@
 ﻿using System;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Errors.Base;
-using ResultFunctional.Models.Interfaces.Errors;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 
 namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
