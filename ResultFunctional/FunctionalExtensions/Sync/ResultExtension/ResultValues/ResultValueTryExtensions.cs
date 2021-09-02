@@ -35,6 +35,25 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         }
 
         /// <summary>
+        /// Обработать функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// </summary>
+        public static IResultValue<TValue> ResultValueTry<TValue>(Func<TValue> func, Func<Exception, IErrorResult> exceptionFunc)
+        {
+            TValue funcResult;
+
+            try
+            {
+                funcResult = func.Invoke();
+            }
+            catch (Exception ex)
+            {
+                return new ResultValue<TValue>(exceptionFunc(ex));
+            }
+
+            return new ResultValue<TValue>(funcResult);
+        }
+
+        /// <summary>
         /// Результирующий ответ со значением с обработкой функции при положительном условии
         /// </summary>
         public static IResultValue<TValueOut> ResultValueTryOk<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
