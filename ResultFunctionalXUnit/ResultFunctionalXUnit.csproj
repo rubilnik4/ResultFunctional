@@ -14,6 +14,8 @@
     <Product>Unit tests for Functional Library</Product>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
+	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ResultFunctional\ResultFunctional.csproj" />
+	<None Include="..\LICENSE.md" Pack="true" PackagePath="LICENSE.md"/>
   </ItemGroup>
 
   <ItemGroup>
