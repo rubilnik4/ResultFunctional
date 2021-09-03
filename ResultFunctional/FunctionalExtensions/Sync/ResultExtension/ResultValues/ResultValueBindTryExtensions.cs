@@ -13,28 +13,23 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <summary>
         /// Обработать функцию, вернуть результирующий ответ со связыванием со значением или ошибку исключения
         /// </summary>
-        public static IResultValue<TValue> ResultValueBindTry<TValue>(Func<IResultValue<TValue>> func, IErrorResult error)
+        public static IResultValue<TValue> ResultValueBindTry<TValue>(Func<IResultValue<TValue>> func,
+                                                                      Func<Exception, IErrorResult> exceptionFunc)
         {
-            IResultValue<TValue> funcResult;
-
             try
             {
-                funcResult = func.Invoke();
+                return func.Invoke();
             }
             catch (Exception ex)
             {
-                return new ResultValue<TValue>(error.AppendException(ex));
+                return new ResultValue<TValue>(exceptionFunc(ex));
             }
-
-            return funcResult;
         }
 
         /// <summary>
-        /// Связать результирующий ответ со значением со связыванием с обработкой функции при положительном условии
+        /// Обработать функцию, вернуть результирующий ответ со связыванием со значением или ошибку исключения
         /// </summary>
-        public static IResultValue<TValueOut> ResultValueBindTryOk<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
-                                                                                    Func<TValueIn, IResultValue<TValueOut>> func,
-                                                                                    IErrorResult error) =>
-            @this.ResultValueBindOk(value => ResultValueBindTry(() => func.Invoke(value), error));
+        public static IResultValue<TValue> ResultValueBindTry<TValue>(Func<IResultValue<TValue>> func, IErrorResult error) => 
+            ResultValueBindTry(func, error.AppendException);
     }
 }

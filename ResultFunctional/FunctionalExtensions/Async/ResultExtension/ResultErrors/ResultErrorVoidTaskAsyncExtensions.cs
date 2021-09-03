@@ -31,9 +31,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
         /// <summary>
         /// Выполнить действие, вернуть результирующий ответ
         /// </summary>      
-        public static async Task<IResultError> ResultErrorVoidOkBadTaskAsync(this Task<IResultError> @this,
-                                                                         Action actionOk,
-                                                                         Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
+        public static async Task<IResultError> ResultErrorVoidOkBadTaskAsync(this Task<IResultError> @this, Action actionOk,
+                                                                             Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
             await @this.
             VoidWhereTaskAsync(awaitedThis => awaitedThis.OkStatus,
                 actionOk: _ => actionOk.Invoke(),

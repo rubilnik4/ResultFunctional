@@ -13,47 +13,22 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <summary>
         /// Обработать функцию, вернуть результирующий ответ со значением или ошибку исключения
         /// </summary>
-        public static IResultValue<TValue> ResultValueTry<TValue>(Func<TValue> func, IErrorResult error)
-        {
-            TValue funcResult;
-
-            try
-            {
-                funcResult = func.Invoke();
-            }
-            catch (Exception ex)
-            {
-                return new ResultValue<TValue>(error.AppendException(ex));
-            }
-
-            return new ResultValue<TValue>(funcResult);
-        }
-
-        /// <summary>
-        /// Обработать функцию, вернуть результирующий ответ со значением или ошибку исключения
-        /// </summary>
         public static IResultValue<TValue> ResultValueTry<TValue>(Func<TValue> func, Func<Exception, IErrorResult> exceptionFunc)
         {
-            TValue funcResult;
-
             try
             {
-                funcResult = func.Invoke();
+                return new ResultValue<TValue>(func.Invoke());
             }
             catch (Exception ex)
             {
                 return new ResultValue<TValue>(exceptionFunc(ex));
             }
-
-            return new ResultValue<TValue>(funcResult);
         }
 
         /// <summary>
-        /// Результирующий ответ со значением с обработкой функции при положительном условии
+        /// Обработать функцию, вернуть результирующий ответ со значением или ошибку исключения
         /// </summary>
-        public static IResultValue<TValueOut> ResultValueTryOk<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
-                                                                                    Func<TValueIn, TValueOut> func, 
-                                                                                    IErrorResult error) =>
-            @this.ResultValueBindOk(value => ResultValueTry(() => func.Invoke(value), error));
+        public static IResultValue<TValue> ResultValueTry<TValue>(Func<TValue> func, IErrorResult error) =>
+            ResultValueTry(func, error.AppendException);
     }
 }

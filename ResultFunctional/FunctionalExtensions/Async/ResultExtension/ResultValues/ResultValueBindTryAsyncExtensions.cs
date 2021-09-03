@@ -15,29 +15,23 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// Обработать асинхронную функцию, вернуть результирующий ответ со связыванием со значением или ошибку исключения
         /// </summary>
         public static async Task<IResultValue<TValue>> ResultValueBindTryAsync<TValue>(Func<Task<IResultValue<TValue>>> func,
-                                                                                       IErrorResult error)
+                                                                                       Func<Exception, IErrorResult> exceptionFunc)
         {
-            IResultValue<TValue> funcResult;
-       
             try
             {
-                funcResult = await func.Invoke();
+                return await func.Invoke();
             }
             catch (Exception ex)
             {
-                return new ResultValue<TValue>(error.AppendException(ex));
+                return new ResultValue<TValue>(exceptionFunc(ex));
             }
-
-            return funcResult;
         }
 
         /// <summary>
-        /// Результирующий ответ cj связыванием со значением с обработкой функции при положительном условии для задачи-объекта
+        /// Обработать асинхронную функцию, вернуть результирующий ответ со связыванием со значением или ошибку исключения
         /// </summary>
-        public static async Task<IResultValue<TValueOut>> ResultValueBindTryOkAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
-                                                                                                         Func<TValueIn, Task<IResultValue<TValueOut>>> func,
-                                                                                                         IErrorResult error) =>
-            await @this.
-            ResultValueBindOkAsync(value => ResultValueBindTryAsync(() => func.Invoke(value), error));
+        public static async Task<IResultValue<TValue>> ResultValueBindTryAsync<TValue>(Func<Task<IResultValue<TValue>>> func,
+                                                                                       IErrorResult error) =>
+             await ResultValueBindTryAsync(func, error.AppendException);
     }
 }
