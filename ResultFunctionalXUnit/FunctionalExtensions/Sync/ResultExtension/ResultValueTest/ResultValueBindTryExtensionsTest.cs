@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
@@ -38,67 +39,27 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         }
 
         /// <summary>
-        /// Положительный результирующий ответ и отсутствие исключения
+        /// Обработать функцию, вернуть результирующий ответ со значением
         /// </summary>
         [Fact]
-        public void ResultValueBindTryOk_OkResult_OkTry()
+        public void ResultValueBindTryFunc_Ok()
         {
-            const int initialNumber = 2;
-            var numberResult = new ResultValue<int>(initialNumber);
+            var resultValue = ResultValueBindTry(() => new ResultValue<int>(Division(1)), Exceptions.ExceptionFunc());
 
-            var numberAfterTry = numberResult.ResultValueBindTryOk(number => new ResultValue<int>(Division(number)),
-                                                                   Exceptions.ExceptionError());
-
-            Assert.True(numberAfterTry.OkStatus);
-            Assert.Equal(Division(initialNumber), numberAfterTry.Value);
+            Assert.True(resultValue.OkStatus);
+            Assert.Equal(Division(1), resultValue.Value);
         }
 
         /// <summary>
-        /// Результирующий ответ с ошибкой и отсутствие исключения
+        /// Обработать функцию, вернуть результирующий ответ с ошибкой
         /// </summary>
         [Fact]
-        public void ResultValueBindTryOk_ErrorResult_OkTry()
+        public void ResultValueBindTryFunc_Exception()
         {
-            var initialError = CreateErrorTest();
-            var numberResult = new ResultValue<int>(initialError);
-
-            var numberAfterTry = numberResult.ResultValueBindTryOk(number => new ResultValue<int>(Division(number)),
-                                                                   Exceptions.ExceptionError());
-
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
-        }
-
-        /// <summary>
-        /// Положительный результирующий ответ и исключение
-        /// </summary>
-        [Fact]
-        public void ResultValueBindTryOk_OkResult_ExceptionTry()
-        {
-            const int initialNumber = 0;
-            var numberResult = new ResultValue<int>(initialNumber);
-
-            var resultValue = numberResult.ResultValueBindTryOk(number => new ResultValue<int>(Division(number)),
-                                                                   Exceptions.ExceptionError());
+            var resultValue = ResultValueBindTry(() => new ResultValue<int>(Division(0)), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.HasErrors);
             Assert.NotNull(resultValue.Errors.First().Exception);
-        }
-
-        /// <summary>
-        /// Результирующий ответ с ошибкой и исключение
-        /// </summary>
-        [Fact]
-        public void ResultValueBindTryOk_ErrorResult_ExceptionTry()
-        {
-            var initialError = CreateErrorTest();
-            var numberResult = new ResultValue<int>(initialError);
-
-            var numberAfterTry = numberResult.ResultValueBindTryOk(number => new ResultValue<int>(Division(number)), 
-                                                                   Exceptions.ExceptionError());
-
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
         }
     }
 }

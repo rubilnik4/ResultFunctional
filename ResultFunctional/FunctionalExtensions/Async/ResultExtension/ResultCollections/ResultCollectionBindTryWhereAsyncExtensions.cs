@@ -17,7 +17,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <summary>
         /// Результирующий ответ со связыванием со значением с обработкой функции при положительном условии для задачи-объекта
         /// </summary>
-        public static async Task<IResultCollection<TValueOut>> ResultValueBindTryOkAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
+        public static async Task<IResultCollection<TValueOut>> ResultCollectionBindTryOkAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                        Func<IEnumerable<TValueIn>, Task<IResultCollection<TValueOut>>> func,
                                                                                                        Func<Exception, IErrorResult> exceptionFunc) =>
             await @this.
@@ -26,7 +26,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <summary>
         /// Результирующий ответ со связыванием со значением с обработкой функции при положительном условии для задачи-объекта
         /// </summary>
-        public static async Task<IResultCollection<TValueOut>> ResultValueBindTryOkAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
+        public static async Task<IResultCollection<TValueOut>> ResultCollectionBindTryOkAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                        Func<IEnumerable<TValueIn>, Task<IResultCollection<TValueOut>>> func,
                                                                                                        IErrorResult error) =>
             await @this.

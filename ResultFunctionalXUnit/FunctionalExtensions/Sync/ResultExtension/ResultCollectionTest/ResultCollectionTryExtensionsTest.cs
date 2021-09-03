@@ -1,10 +1,9 @@
 ﻿using System.Linq;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections.ResultCollectionTryExtensions;
-using static ResultFunctionalXUnit.Data.Collections;
-using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.ResultCollectionTest
@@ -43,63 +42,31 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         }
 
         /// <summary>
-        /// Результирующий ответ с коллекцией без ошибки и отсутствие исключения
+        /// Обработать функцию, вернуть результирующий ответ с коллекцией
         /// </summary>
         [Fact]
-        public void ResultCollectionTryOk_Ok_OkTry()
+        public void ResultCollectionTryFunc_Ok()
         {
-            var initialNumbers = GetRangeNumber();
-            var numbersResult = new ResultCollection<int>(initialNumbers);
+            int initialValue = Numbers.Number;
 
-            var numberAfterTry = numbersResult.ResultCollectionTryOk(DivisionByCollection, CreateErrorTest());
+            var resultCollection = ResultCollectionTry(() => DivisionCollection(initialValue), Exceptions.ExceptionFunc());
 
-            Assert.True(numberAfterTry.OkStatus);
-            Assert.True(DivisionByCollection(initialNumbers).SequenceEqual(numberAfterTry.Value));
+            Assert.True(resultCollection.OkStatus);
+            Assert.True(DivisionCollection(initialValue).SequenceEqual(resultCollection.Value));
         }
 
         /// <summary>
-        /// Результирующий ответ с коллекцией с ошибкой и отсутствие исключения
+        /// Обработать функцию, вернуть результирующий ответ с коллекцией
         /// </summary>
         [Fact]
-        public void ResultCollectionTryOk_ErrorResult_OkTry()
+        public void ResultCollectionTryFunc_Exception()
         {
-            var initialError = CreateErrorTest();
-            var numbersResult = new ResultCollection<int>(initialError);
+            const int initialValue = 0;
 
-            var numberAfterTry = numbersResult.ResultCollectionTryOk(DivisionByCollection, CreateErrorTest());
-
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
-        }
-
-        /// <summary>
-        /// Положительный результирующий ответ с коллекцией и исключение
-        /// </summary>
-        [Fact]
-        public void ResultCollectionTryOk_OkResult_ExceptionTry()
-        {
-            var initialNumbers = GetRangeNumberWithZero();
-            var numberResult = new ResultCollection<int>(initialNumbers);
-
-            var resultCollection = numberResult.ResultCollectionTryOk(DivisionCollectionByZero, Exceptions.ExceptionError());
+            var resultCollection = ResultCollectionTry(() => DivisionCollection(initialValue), Exceptions.ExceptionFunc());
 
             Assert.True(resultCollection.HasErrors);
             Assert.NotNull(resultCollection.Errors.First().Exception);
-        }
-
-        /// <summary>
-        /// Результирующий ответ с коллекцией с ошибкой и исключение
-        /// </summary>
-        [Fact]
-        public void ResultCollectionTryOk_ErrorResult_ExceptionTry()
-        {
-            var initialError = CreateErrorTest();
-            var numberResult = new ResultCollection<int>(initialError);
-
-            var numberAfterTry = numberResult.ResultCollectionTryOk(DivisionCollectionByZero, Exceptions.ExceptionError());
-
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
         }
     }
 }
