@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 
 namespace ResultFunctional.Models.Interfaces.Results
@@ -25,6 +26,20 @@ namespace ResultFunctional.Models.Interfaces.Results
         bool HasErrors { get; }
 
         /// <summary>
+        /// Присутствует(является) ли тип ошибки
+        /// </summary>
+        public bool HasError<TError>()
+            where TError : IErrorResult =>
+            Errors.Any(error => error.GetType() == typeof(TError));
+
+        /// <summary>
+        /// Присутствует(включен) ли тип ошибки
+        /// </summary>
+        public bool FromError<TError>()
+            where TError : IErrorResult =>
+            Errors.Any(error => error is TError);
+
+        /// <summary>
         /// Получить типы ошибок
         /// </summary>
         IReadOnlyCollection<Type> GetErrorTypes();
@@ -32,26 +47,26 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// <summary>
         /// Присутствует ли тип ошибки
         /// </summary>
-        bool HasErrorType<TError>()
-            where TError : struct;
+        bool HasErrorType<TErrorType>()
+            where TErrorType : struct;
 
         /// <summary>
         /// Получить ошибку
         /// </summary>      
-        IErrorBaseResult<TError>? GetError<TError>()
-            where TError : struct;
+        IErrorBaseResult<TErrorType>? GetErrorType<TErrorType>()
+            where TErrorType : struct;
 
         /// <summary>
         /// Получить ошибку
         /// </summary>      
-        IReadOnlyCollection<IErrorBaseResult<TError>> GetErrors<TError>()
-            where TError : struct;
+        IReadOnlyCollection<IErrorBaseResult<TErrorType>> GetErrorTypes<TErrorType>()
+            where TErrorType : struct;
 
         /// <summary>
         /// Добавить ошибку
         /// </summary>      
-        IResultError AppendError<TError>(IErrorResult error)
-            where TError : struct;
+        IResultError AppendError<TErrorType>(IErrorResult error)
+            where TErrorType : struct;
 
         /// <summary>
         /// Добавить ошибки

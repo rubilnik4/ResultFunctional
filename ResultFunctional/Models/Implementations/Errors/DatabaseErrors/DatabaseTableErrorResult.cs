@@ -9,7 +9,7 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
     /// <summary>
     /// Ошибка таблицы базы данных
     /// </summary>
-    public class DatabaseTableErrorResult : ErrorBaseResult<DatabaseErrorType>, IDatabaseTableErrorResult
+    public class DatabaseTableErrorResult : DatabaseErrorResult, IDatabaseTableErrorResult
     {
         public DatabaseTableErrorResult(string tableName, string description)
           : this(DatabaseErrorType.TableAccess, tableName, description)
