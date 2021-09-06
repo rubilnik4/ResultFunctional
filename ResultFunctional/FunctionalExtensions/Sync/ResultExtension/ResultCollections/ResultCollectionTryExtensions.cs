@@ -14,28 +14,23 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <summary>
         /// Обработать функцию, вернуть результирующий ответ с коллекцией или ошибку исключения
         /// </summary>
-        public static IResultCollection<TValue> ResultCollectionTry<TValue>(Func<IEnumerable<TValue>> func, IErrorResult error)
+        public static IResultCollection<TValue> ResultCollectionTry<TValue>(Func<IEnumerable<TValue>> func,
+                                                                            Func<Exception, IErrorResult> exceptionFunc)
         {
-            IEnumerable<TValue> funcCollectionResult;
-
             try
             {
-                funcCollectionResult = func.Invoke();
+                return new ResultCollection<TValue>(func.Invoke());
             }
             catch (Exception ex)
             {
-                return new ResultCollection<TValue>(error.AppendException(ex));
+                return new ResultCollection<TValue>(exceptionFunc(ex));
             }
-
-            return new ResultCollection<TValue>(funcCollectionResult);
         }
 
         /// <summary>
-        /// Связать результирующий ответ с коллекцией с обработкой функции при положительном условии
+        /// Обработать функцию, вернуть результирующий ответ с коллекцией или ошибку исключения
         /// </summary>
-        public static IResultCollection<TValueOut> ResultCollectionTryOk<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
-                                                                                                  Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
-                                                                                                  IErrorResult error) =>
-            @this.ResultCollectionBindOk(value => ResultCollectionTry(() => func.Invoke(value), error));
+        public static IResultCollection<TValue> ResultCollectionTry<TValue>(Func<IEnumerable<TValue>> func, IErrorResult error) =>
+            ResultCollectionTry(func, error.AppendException);
     }
 }

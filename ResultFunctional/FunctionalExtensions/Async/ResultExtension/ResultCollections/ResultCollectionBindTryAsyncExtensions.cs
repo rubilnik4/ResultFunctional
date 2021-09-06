@@ -1,36 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
-namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
+namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
 {
     /// <summary>
     /// Методы расширения для результирующего ответа со значением и обработкой исключений асинхронно
     /// </summary>
-    public static class ResultValueTryAsyncExtensions
+    public static class ResultCollectionBindTryAsyncExtensions
     {
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
         /// </summary>
-        public static async Task<IResultValue<TValue>> ResultValueTryAsync<TValue>(Func<Task<TValue>> func,
-                                                                                   Func<Exception, IErrorResult> exceptionFunc)
+        public static async Task<IResultCollection<TValue>> ResultCollectionBindTryAsync<TValue>(Func<Task<IResultCollection<TValue>>> func,
+                                                                                             Func<Exception, IErrorResult> exceptionFunc)
         {
             try
             {
-                return new ResultValue<TValue>(await func.Invoke());
+                return await func.Invoke();
             }
             catch (Exception ex)
             {
-                return new ResultValue<TValue>(exceptionFunc(ex));
+                return new ResultCollection<TValue>(exceptionFunc(ex));
             }
         }
 
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
         /// </summary>
-        public static async Task<IResultValue<TValue>> ResultValueTryAsync<TValue>(Func<Task<TValue>> func, IErrorResult error) =>
-            await ResultValueTryAsync(func, error.AppendException);
+        public static async Task<IResultCollection<TValue>> ResultCollectionBindTryAsync<TValue>(Func<Task<IResultCollection<TValue>>> func,
+                                                                                             IErrorResult error) =>
+            await ResultCollectionBindTryAsync(func, error.AppendException);
     }
 }

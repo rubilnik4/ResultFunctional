@@ -14,28 +14,23 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <summary>
         /// Обработать функцию, вернуть результирующий ответ со связыванием со значением или ошибку исключения
         /// </summary>
-        public static IResultCollection<TValue> ResultCollectionBindTry<TValue>(Func<IResultCollection<TValue>> func, IErrorResult error)
+        public static IResultCollection<TValue> ResultCollectionBindTry<TValue>(Func<IResultCollection<TValue>> func,
+                                                                                Func<Exception, IErrorResult> exceptionFunc)
         {
-            IResultCollection<TValue> funcResult;
-
             try
             {
-                funcResult = func.Invoke();
+                return func.Invoke();
             }
             catch (Exception ex)
             {
-                return new ResultCollection<TValue>(error.AppendException(ex));
+                return new ResultCollection<TValue>(exceptionFunc(ex));
             }
-
-            return funcResult;
         }
 
         /// <summary>
-        /// Связать результирующий ответ со значением со связыванием с обработкой функции при положительном условии
+        /// Обработать функцию, вернуть результирующий ответ с коллекцией или ошибку исключения
         /// </summary>
-        public static IResultCollection<TValueOut> ResultCollectionBindTryOk<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
-                                                                                                  Func<IReadOnlyCollection<TValueIn>, IResultCollection<TValueOut>> func,
-                                                                                                  IErrorResult error) =>
-            @this.ResultCollectionBindOk(value => ResultCollectionBindTry(() => func.Invoke(value), error));
+        public static IResultCollection<TValue> ResultCollectionBindTry<TValue>(Func<IResultCollection<TValue>> func, IErrorResult error) =>
+            ResultCollectionBindTry(func, error.AppendException);
     }
 }

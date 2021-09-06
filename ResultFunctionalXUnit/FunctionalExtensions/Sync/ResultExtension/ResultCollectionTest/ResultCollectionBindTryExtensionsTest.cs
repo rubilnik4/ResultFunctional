@@ -44,64 +44,31 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         }
 
         /// <summary>
-        /// Положительный результирующий ответ и отсутствие исключения
+        /// Обработать функцию, вернуть результирующий ответ со значением
         /// </summary>
         [Fact]
-        public void ResultCollectionBindTryOk_OkResult_OkTry()
+        public void ResultCollectionBindTryFunc_Ok()
         {
-            var initialNumbers = GetRangeNumber();
-            var numbersResult = new ResultCollection<int>(initialNumbers);
+            int initialValue = Numbers.Number;
+            var resultCollection = ResultCollectionBindTry(() => new ResultCollection<int>(DivisionCollection(initialValue)),
+                                                           Exceptions.ExceptionFunc());
 
-            var numberAfterTry = numbersResult.ResultCollectionBindTryOk(numbers => new ResultCollection<int>(DivisionByCollection(numbers)), CreateErrorTest());
-
-            Assert.True(numberAfterTry.OkStatus);
-            Assert.True(DivisionByCollection(initialNumbers).SequenceEqual(numberAfterTry.Value));
+            Assert.True(resultCollection.OkStatus);
+            Assert.True(DivisionCollection(initialValue).SequenceEqual(resultCollection.Value));
         }
 
         /// <summary>
-        /// Результирующий ответ с ошибкой и отсутствие исключения
+        /// Обработать функцию, вернуть результирующий ответ с ошибкой
         /// </summary>
         [Fact]
-        public void ResultCollectionBindTryOk_ErrorResult_OkTry()
+        public void ResultCollectionBindTryFunc_Exception()
         {
-            var initialError = CreateErrorTest();
-            var numbersResult = new ResultCollection<int>(initialError);
-
-            var numberAfterTry = numbersResult.ResultCollectionBindTryOk(numbers => new ResultCollection<int>(DivisionByCollection(numbers)), CreateErrorTest());
-
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
-        }
-
-        /// <summary>
-        /// Положительный результирующий ответ и исключение
-        /// </summary>
-        [Fact]
-        public void ResultCollectionBindTryOk_OkResult_ExceptionTry()
-        {
-            var initialNumbers = GetRangeNumberWithZero();
-            var numberResult = new ResultCollection<int>(initialNumbers);
-
-            var resultValue = numberResult.ResultCollectionBindTryOk(
-                numbers => new ResultCollection<int>(DivisionByCollection(numbers)), Exceptions.ExceptionError());
+            const int initialValue = 0;
+            var resultValue = ResultCollectionBindTry(
+                () => new ResultCollection<int>(DivisionCollection(initialValue)), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.HasErrors);
             Assert.NotNull(resultValue.Errors.First().Exception);
-        }
-
-        /// <summary>
-        /// Результирующий ответ с ошибкой и исключение
-        /// </summary>
-        [Fact]
-        public void ResultCollectionBindTryOk_ErrorResult_ExceptionTry()
-        {
-            var initialError = CreateErrorTest();
-            var numberResult = new ResultCollection<int>(initialError);
-
-            var numberAfterTry = numberResult.ResultCollectionBindTryOk(numbers => new ResultCollection<int>(DivisionByCollection(numbers)), Exceptions.ExceptionError());
-
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
         }
     }
 }

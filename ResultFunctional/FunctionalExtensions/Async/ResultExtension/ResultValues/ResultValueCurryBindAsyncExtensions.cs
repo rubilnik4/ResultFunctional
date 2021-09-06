@@ -5,7 +5,7 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Асинхронного преобразование внутреннего типа результирующего ответа со значением для функций высшего порядка для задачи-обхекта
+    /// Асинхронного преобразование внутреннего типа результирующего ответа со значением для функций высшего порядка для задачи-объекта
     /// </summary>
     public static class ResultValueCurryBindAsyncExtensions
     {
