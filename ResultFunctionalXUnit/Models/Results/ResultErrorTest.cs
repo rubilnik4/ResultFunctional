@@ -1,5 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ResultFunctional.Models.Enums;
+using ResultFunctional.Models.Implementations.Errors;
+using ResultFunctional.Models.Implementations.Errors.DatabaseErrors;
 using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.Models.Interfaces.Errors.Base;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -66,6 +71,94 @@ namespace ResultFunctionalXUnit.Models.Results
             Assert.True(resultErrorConcat.HasErrors);
             Assert.Equal(2, resultErrorConcat.Errors.Count);
             Assert.True(errorToConcat.Equals(resultErrorConcat.Errors.Last()));
+        }
+
+        /// <summary>
+        /// Наличие специфической ошибки
+        /// </summary>
+        [Fact]
+        public void HasError()
+        {
+            var databaseTableError = ErrorResultFactory.DatabaseTableError("TestTable", "error");
+            var result = databaseTableError.ToResult();
+
+            Assert.False(result.HasError<DatabaseErrorResult>());
+            Assert.True(result.HasError<DatabaseTableErrorResult>());
+        }
+
+        /// <summary>
+        /// Наличие специфической ошибки
+        /// </summary>
+        [Fact]
+        public void IncludeError()
+        {
+            var databaseTableError = ErrorResultFactory.DatabaseTableError("TestTable", "error");
+            var result = databaseTableError.ToResult();
+
+            Assert.True(result.FromError<DatabaseErrorResult>());
+            Assert.True(result.FromError<DatabaseTableErrorResult>());
+        }
+
+        /// <summary>
+        /// Получить тиы ошибок
+        /// </summary>
+        [Fact]
+        public void GetErrorTypes()
+        {
+            var valueNotFoundError = ErrorResultFactory.ValueNotFoundError("value", GetType());
+            var databaseTableError = ErrorResultFactory.DatabaseTableError("TestTable", "error");
+            var errors = new List<IErrorResult> { valueNotFoundError, databaseTableError };
+            var result = new ResultError(errors);
+
+            var errorTypes = result.GetErrorTypes();
+
+            Assert.True(errorTypes.SequenceEqual(errors.Select(error => error.GetType())));
+        }
+
+        /// <summary>
+        /// Наличие типа ошибки
+        /// </summary>
+        [Fact]
+        public void HasErrorType()
+        {
+            var valueNotFoundError = ErrorResultFactory.ValueNotFoundError("value", GetType());
+            var databaseTableError = ErrorResultFactory.DatabaseTableError("TestTable", "error");
+            var errors = new List<IErrorResult> { valueNotFoundError, databaseTableError };
+            var result = new ResultError(errors);
+
+            Assert.True(result.HasErrorType<DatabaseErrorType>());
+        }
+
+        /// <summary>
+        /// Получить тип ошибки
+        /// </summary>
+        [Fact]
+        public void GetErrorType()
+        {
+            var valueNotFoundError = ErrorResultFactory.ValueNotFoundError("value", GetType());
+            var databaseTableError = ErrorResultFactory.DatabaseTableError("TestTable", "error");
+            var errors = new List<IErrorResult> { valueNotFoundError, databaseTableError };
+            var result = new ResultError(errors);
+
+            var errorType = result.GetErrorType<DatabaseErrorType>();
+            Assert.NotNull(errorType);
+            Assert.Equal(DatabaseErrorType.TableAccess, errorType?.ErrorType);
+        }
+
+        /// <summary>
+        /// Получить типы ошибок
+        /// </summary>
+        [Fact]
+        public void GetErrorTypesT()
+        {
+            var valueNotFoundError = ErrorResultFactory.ValueNotFoundError("value", GetType());
+            var databaseTableError = ErrorResultFactory.DatabaseTableError("TestTable", "error");
+            var errors = new List<IErrorResult> { valueNotFoundError, databaseTableError };
+            var result = new ResultError(errors);
+
+            var errorTypes = result.GetErrorTypes<DatabaseErrorType>();
+            Assert.Equal(1, errorTypes.Count);
+            Assert.Equal(DatabaseErrorType.TableAccess, errorTypes.First().ErrorType);
         }
     }
 }

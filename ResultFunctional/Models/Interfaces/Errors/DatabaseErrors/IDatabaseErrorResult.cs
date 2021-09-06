@@ -4,8 +4,8 @@ using ResultFunctional.Models.Interfaces.Errors.Base;
 namespace ResultFunctional.Models.Interfaces.Errors.DatabaseErrors
 {
     /// <summary>
-    /// Ошибка таблицы базы данных
+    /// Ошибка базы данных
     /// </summary>
-    public interface IDatabaseTableErrorResult : IDatabaseErrorResult
+    public interface IDatabaseErrorResult : IErrorBaseResult<DatabaseErrorType>
     { }
 }

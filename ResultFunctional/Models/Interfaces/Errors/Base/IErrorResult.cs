@@ -27,8 +27,8 @@ namespace ResultFunctional.Models.Interfaces.Errors.Base
         /// <summary>
         /// Наличие типа ошибки
         /// </summary>
-        bool HasErrorType<TError>()
-            where TError : struct;
+        bool HasErrorType<TErrorType>()
+            where TErrorType : struct;
 
         /// <summary>
         /// Добавить или заменить исключение

@@ -42,6 +42,20 @@ namespace ResultFunctional.Models.Implementations.Results
             Errors.Any();
 
         /// <summary>
+        /// Присутствует(является) ли тип ошибки
+        /// </summary>
+        public bool HasError<TError>()
+            where TError : IErrorResult =>
+            Errors.Any(error => error.GetType() == typeof(TError));
+
+        /// <summary>
+        /// Присутствует(включен) ли тип ошибки
+        /// </summary>
+        public bool FromError<TError>()
+            where TError : IErrorResult =>
+            Errors.Any(error => error is TError);
+
+        /// <summary>
         /// Получить типы ошибок
         /// </summary>
         public IReadOnlyCollection<Type> GetErrorTypes() =>
@@ -52,26 +66,26 @@ namespace ResultFunctional.Models.Implementations.Results
         /// <summary>
         /// Присутствует ли тип ошибки
         /// </summary>
-        public bool HasErrorType<TError>()
-            where TError : struct =>
-            Errors.Any(error => error.HasErrorType<TError>());
+        public bool HasErrorType<TErrorType>()
+            where TErrorType : struct =>
+            Errors.Any(error => error.HasErrorType<TErrorType>());
 
         /// <summary>
         /// Получить ошибку
         /// </summary>      
-        public IErrorBaseResult<TError>? GetError<TError>()
-            where TError : struct =>
+        public IErrorBaseResult<TErrorType>? GetErrorType<TErrorType>()
+            where TErrorType : struct =>
             Errors.
-            OfType<IErrorBaseResult<TError>>().
+            OfType<IErrorBaseResult<TErrorType>>().
             FirstOrDefault();
 
         /// <summary>
         /// Получить ошибку
         /// </summary>      
-        public IReadOnlyCollection<IErrorBaseResult<TError>> GetErrors<TError>()
-            where TError : struct =>
+        public IReadOnlyCollection<IErrorBaseResult<TErrorType>> GetErrorTypes<TErrorType>()
+            where TErrorType : struct =>
             Errors.
-            OfType<IErrorBaseResult<TError>>().
+            OfType<IErrorBaseResult<TErrorType>>().
             ToList();
 
         /// <summary>
