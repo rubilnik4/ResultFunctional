@@ -91,8 +91,7 @@ namespace ResultFunctional.Models.Implementations.Results
         /// <summary>
         /// Добавить ошибку
         /// </summary>      
-        public IResultError AppendError<TError>(IErrorResult error)
-            where TError : struct =>
+        public IResultError AppendError(IErrorResult error) =>
             new ResultError(Errors.Append(error));
 
         /// <summary>

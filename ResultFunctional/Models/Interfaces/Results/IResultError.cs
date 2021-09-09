@@ -65,8 +65,7 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// <summary>
         /// Добавить ошибку
         /// </summary>      
-        IResultError AppendError<TErrorType>(IErrorResult error)
-            where TErrorType : struct;
+        IResultError AppendError(IErrorResult error);
 
         /// <summary>
         /// Добавить ошибки
