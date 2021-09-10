@@ -65,12 +65,17 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// <summary>
         /// Добавить ошибку
         /// </summary>      
-        IResultError AppendError<TErrorType>(IErrorResult error)
-            where TErrorType : struct;
+        IResultError AppendError(IErrorResult error);
 
         /// <summary>
         /// Добавить ошибки
         /// </summary>      
         IResultError ConcatErrors(IEnumerable<IErrorResult> errors);
+
+        /// <summary>
+        /// Преобразовать в ошибку с типом
+        /// </summary>
+        IResultErrorType<TError> ToResultErrorType<TError>()
+            where TError : IErrorResult;
     }
 }

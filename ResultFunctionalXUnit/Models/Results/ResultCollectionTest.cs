@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ResultFunctional.Models.Implementations.Errors;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
+using ResultFunctional.Models.Interfaces.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
@@ -55,6 +59,23 @@ namespace ResultFunctionalXUnit.Models.Results
         }
 
         /// <summary>
+        /// Добавление ошибки
+        /// </summary>
+        [Fact]
+        public void AppendError()
+        {
+            var resultCollectionInitial = new ResultCollection<int>(GetRangeNumber());
+            var errorToConcat = CreateErrorTest();
+
+            var resultCollectionConcat = resultCollectionInitial.AppendError(errorToConcat);
+
+            Assert.True(resultCollectionConcat.HasErrors);
+            Assert.Single(resultCollectionConcat.Errors);
+            Assert.True(errorToConcat.Equals(resultCollectionConcat.Errors.Last()));
+            Assert.Equal(0, resultCollectionConcat.Value.Count);
+        }
+
+        /// <summary>
         /// Добавление ошибки и получение нового объекта с одной ошибкой
         /// </summary>
         [Fact]
@@ -68,6 +89,7 @@ namespace ResultFunctionalXUnit.Models.Results
             Assert.True(resultCollectionConcat.HasErrors);
             Assert.Single(resultCollectionConcat.Errors);
             Assert.True(errorToConcat.Equals(resultCollectionConcat.Errors.Last()));
+            Assert.Equal(0, resultCollectionConcat.Value.Count);
         }
 
         /// <summary>
@@ -86,6 +108,7 @@ namespace ResultFunctionalXUnit.Models.Results
             Assert.Equal(2, resultCollectionConcat.Errors.Count);
             Assert.True(initialError.Equals(resultCollectionConcat.Errors.First()));
             Assert.True(errorToConcat.Equals(resultCollectionConcat.Errors.Last()));
+            Assert.Equal(0, resultCollectionConcat.Value.Count);
         }
 
         /// <summary>
@@ -102,6 +125,38 @@ namespace ResultFunctionalXUnit.Models.Results
 
             Assert.True(resultValueConcat.OkStatus);
             Assert.True(collection.SequenceEqual(resultValueConcat.Value));
+        }
+
+        /// <summary>
+        /// Инициализация из базового класса
+        /// </summary>
+        [Fact]
+        public void InitializeBaseResult_NoError()
+        {
+            var collection = GetRangeNumber();
+            var resultError = new ResultCollection<int>(collection);
+            var resultErrorType = resultError.ToResultCollectionType<IValueNotFoundErrorResult>();
+
+            Assert.True(resultErrorType.OkStatus);
+            Assert.IsAssignableFrom<IResultCollectionType<int, IValueNotFoundErrorResult>>(resultErrorType);
+        }
+
+        /// <summary>
+        /// Инициализация из базового класса
+        /// </summary>
+        [Fact]
+        public void InitializeBaseResult()
+        {
+            var valueError = ErrorResultFactory.ValueNotFoundError("test", GetType());
+            var databaseError = ErrorResultFactory.DatabaseTableError("Table", "TableError");
+            var errors = new List<IErrorResult> { valueError, databaseError };
+            var resultError = new ResultCollection<int>(errors);
+            var resultErrorType = resultError.ToResultCollectionType<IValueNotFoundErrorResult>();
+
+            Assert.True(resultErrorType.HasErrors);
+            Assert.Equal(2, resultErrorType.Errors.Count);
+            Assert.Single(resultErrorType.ErrorsByType);
+            Assert.IsAssignableFrom<IValueNotFoundErrorResult>(resultErrorType.Errors.First());
         }
     }
 }

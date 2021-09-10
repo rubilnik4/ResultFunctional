@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ResultFunctional.Models.Implementations.Errors;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
+using ResultFunctional.Models.Interfaces.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -53,12 +57,31 @@ namespace ResultFunctionalXUnit.Models.Results
         }
 
         /// <summary>
+        /// Добавление ошибки
+        /// </summary>
+        [Fact]
+        public void AppendError()
+        {
+            const string value = "OK";
+            var resultValueInitial = new ResultValue<string>(value);
+            var errorToConcat = CreateErrorTest();
+
+            var resultValueConcat = resultValueInitial.AppendError(errorToConcat);
+
+            Assert.True(resultValueConcat.HasErrors);
+            Assert.Single(resultValueConcat.Errors);
+            Assert.True(errorToConcat.Equals(resultValueConcat.Errors.Last()));
+            Assert.Null(resultValueConcat.Value);
+        }
+
+        /// <summary>
         /// Добавление ошибки и получение нового объекта с одной ошибкой
         /// </summary>
         [Fact]
         public void ConcatErrors_TotalOne()
         {
-            var resultValueInitial = new ResultValue<string>("OK");
+            const string value = "OK";
+            var resultValueInitial = new ResultValue<string>(value);
             var errorToConcat = CreateErrorTest();
 
             var resultValueConcat = resultValueInitial.ConcatErrors(errorToConcat);
@@ -66,6 +89,7 @@ namespace ResultFunctionalXUnit.Models.Results
             Assert.True(resultValueConcat.HasErrors);
             Assert.Single(resultValueConcat.Errors);
             Assert.True(errorToConcat.Equals(resultValueConcat.Errors.Last()));
+            Assert.Null(resultValueConcat.Value);
         }
 
         /// <summary>
@@ -83,7 +107,7 @@ namespace ResultFunctionalXUnit.Models.Results
             Assert.True(resultValueConcat.HasErrors);
             Assert.Equal(2, resultValueConcat.Errors.Count);
             Assert.True(initialError.Equals(resultValueConcat.Errors.First()));
-            Assert.True(errorToConcat.Equals(resultValueConcat.Errors.Last()));
+            Assert.Null(resultValueConcat.Value);
         }
 
         /// <summary>
@@ -92,14 +116,46 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void ConcatErrors_OkStatus_EmptyList()
         {
-            string valueInitial = "OK";
-            var resultValueInitial = new ResultValue<string>(valueInitial);
+            const string value = "OK";
+            var resultValueInitial = new ResultValue<string>(value);
             var errorsToConcat = Enumerable.Empty<IErrorResult>();
 
             var resultValueConcat = resultValueInitial.ConcatErrors(errorsToConcat);
 
             Assert.True(resultValueConcat.OkStatus);
-            Assert.Equal(valueInitial, resultValueConcat.Value);
+            Assert.Equal(value, resultValueConcat.Value);
+        }
+
+        /// <summary>
+        /// Инициализация из базового класса
+        /// </summary>
+        [Fact]
+        public void InitializeBaseResult_NoError()
+        {
+            const string value = "test";
+            var resultError = new ResultValue<string>(value);
+            var resultErrorType = resultError.ToResultValueType<IValueNotFoundErrorResult>();
+
+            Assert.True(resultErrorType.OkStatus);
+            Assert.IsAssignableFrom<IResultValueType<string, IValueNotFoundErrorResult>>(resultErrorType);
+        }
+
+        /// <summary>
+        /// Инициализация из базового класса
+        /// </summary>
+        [Fact]
+        public void InitializeBaseResult()
+        {
+            var valueError = ErrorResultFactory.ValueNotFoundError("test", GetType());
+            var databaseError = ErrorResultFactory.DatabaseTableError("Table", "TableError");
+            var errors = new List<IErrorResult> { valueError, databaseError };
+            var resultError = new ResultValue<string>(errors);
+            var resultErrorType = resultError.ToResultValueType<IValueNotFoundErrorResult>();
+
+            Assert.True(resultErrorType.HasErrors);
+            Assert.Equal(2, resultErrorType.Errors.Count);
+            Assert.Single(resultErrorType.ErrorsByType);
+            Assert.IsAssignableFrom<IValueNotFoundErrorResult>(resultErrorType.Errors.First());
         }
     }
 }
