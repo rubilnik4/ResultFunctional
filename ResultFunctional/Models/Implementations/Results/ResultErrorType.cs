@@ -8,7 +8,7 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Results
 {
     /// <summary>
-    /// Базовый вариант ответа
+    /// Базовый вариант ответа с типом ошибки
     /// </summary>
     public class ResultErrorType<TError> : ResultError, IResultErrorType<TError>
         where TError : IErrorResult
@@ -22,31 +22,30 @@ namespace ResultFunctional.Models.Implementations.Results
         { }
 
         public ResultErrorType(IEnumerable<TError> errors)
-            : base((IEnumerable<IErrorResult>)errors)
+            : this((IEnumerable<IErrorResult>)errors)
+        { }
+
+        public ResultErrorType(IEnumerable<IErrorResult> errors)
+           : base(errors)
         { }
 
         /// <summary>
         /// Список ошибок
         /// </summary>
         public IReadOnlyCollection<TError> ErrorsByType =>
-            Errors.
-            OfType<TError>().
+            Errors.OfType<TError>().
             ToList();
 
         /// <summary>
         /// Добавить ошибку
         /// </summary>      
         public IResultErrorType<TError> AppendError(TError error) =>
-            ErrorsByType.
-            Append(error).
-            Map(errors => new ResultErrorType<TError>(errors));
+            ((IResultErrorType<TError>)this).AppendError(error);
 
         /// <summary>
         /// Добавить ошибку
         /// </summary>      
         public IResultErrorType<TError> ConcatErrors(IEnumerable<TError> errors) =>
-            ErrorsByType.
-            Union(errors).
-            Map(errorByTypes => new ResultErrorType<TError>(errorByTypes));
+            ((IResultErrorType<TError>)this).ConcatErrors(errors);
     }
 }

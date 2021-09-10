@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
@@ -30,12 +31,30 @@ namespace ResultFunctional.Models.Implementations.Results
         /// <summary>
         /// Добавить ошибку
         /// </summary>      
+        public new IResultCollection<TValue> AppendError(IErrorResult error) =>
+            base.AppendError(error).
+            ToResultCollection(Value);
+
+        /// <summary>
+        /// Добавить ошибку
+        /// </summary>      
         public new IResultCollection<TValue> ConcatErrors(IEnumerable<IErrorResult> errors) =>
-            base.ConcatErrors(errors).ToResultCollection();
+            base.ConcatErrors(errors).
+            ToResultCollection(Value);
 
         /// <summary>
         /// Преобразовать в результирующий ответ со значением
         /// </summary>
-        public IResultValue<IReadOnlyCollection<TValue>> ToResultValue => this;
+        public IResultValue<IReadOnlyCollection<TValue>> ToResultValue() => 
+            this;
+
+        /// <summary>
+        /// Преобразовать в ответ с коллекцией и ошибкой с типом
+        /// </summary>
+        public IResultCollectionType<TValue, TError> ToResultCollectionType<TError>()
+            where TError : IErrorResult =>
+            OkStatus
+                ? new ResultCollectionType<TValue, TError>(Value)
+                : new ResultCollectionType<TValue, TError>(Errors);
     }
 }

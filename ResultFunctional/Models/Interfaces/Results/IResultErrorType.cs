@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ResultFunctional.FunctionalExtensions.Sync;
+using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 
 namespace ResultFunctional.Models.Interfaces.Results
@@ -19,11 +21,15 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// <summary>
         /// Добавить ошибку
         /// </summary>      
-        IResultErrorType<TError> AppendError(TError error);
+        IResultErrorType<TError> AppendError(TError error) =>
+            Errors.Append(error).
+            Map(errors => new ResultErrorType<TError>(errors));
 
         /// <summary>
         /// Добавить ошибки
         /// </summary>      
-        IResultErrorType<TError> ConcatErrors(IEnumerable<TError> errors);
+        IResultErrorType<TError> ConcatErrors(IEnumerable<TError> errors) =>
+            Errors.Concat((IEnumerable<IErrorResult>)errors).
+            Map(errorsConcat => new ResultErrorType<TError>(errorsConcat));
     }
 }

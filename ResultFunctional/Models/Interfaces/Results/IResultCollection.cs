@@ -11,11 +11,22 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// <summary>
         /// Добавить ошибку
         /// </summary>      
+        new IResultCollection<TValue> AppendError(IErrorResult error);
+
+        /// <summary>
+        /// Добавить ошибку
+        /// </summary>      
         new IResultCollection<TValue> ConcatErrors(IEnumerable<IErrorResult> errors);
 
         /// <summary>
         /// Преобразовать в результирующий ответ со значением
         /// </summary>
-        IResultValue<IReadOnlyCollection<TValue>> ToResultValue() => this;
+        IResultValue<IReadOnlyCollection<TValue>> ToResultValue();
+
+        /// <summary>
+        /// Преобразовать в ответ с коллекцией и ошибкой с типом
+        /// </summary>
+        IResultCollectionType<TValue, TError> ToResultCollectionType<TError>()
+            where TError : IErrorResult;
     }
 }

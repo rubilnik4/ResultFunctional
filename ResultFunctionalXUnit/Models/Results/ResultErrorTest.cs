@@ -5,6 +5,8 @@ using ResultFunctional.Models.Implementations.Errors;
 using ResultFunctional.Models.Implementations.Errors.DatabaseErrors;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
+using ResultFunctional.Models.Interfaces.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -45,6 +47,22 @@ namespace ResultFunctionalXUnit.Models.Results
         /// Добавление ошибки и получение нового объекта с одной ошибкой
         /// </summary>
         [Fact]
+        public void AppendError()
+        {
+            var resultErrorInitial = new ResultError();
+            var errorToConcat = CreateErrorTest();
+
+            var resultErrorConcat = resultErrorInitial.AppendError(errorToConcat);
+
+            Assert.True(resultErrorConcat.HasErrors);
+            Assert.Equal(1, resultErrorConcat.Errors.Count);
+            Assert.True(errorToConcat.Equals(resultErrorConcat.Errors.Last()));
+        }
+
+        /// <summary>
+        /// Добавление ошибки и получение нового объекта с одной ошибкой
+        /// </summary>
+        [Fact]
         public void ConcatErrors_TotalOne()
         {
             var resultErrorInitial = new ResultError();
@@ -63,8 +81,8 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void ConcatErrors_TotalTwo()
         {
-            var resultErrorInitial = new ResultError(CreateErrorTest());
             var errorToConcat = CreateErrorTest();
+            var resultErrorInitial = new ResultError(errorToConcat);
 
             var resultErrorConcat = resultErrorInitial.ConcatErrors(errorToConcat);
 
@@ -159,6 +177,37 @@ namespace ResultFunctionalXUnit.Models.Results
             var errorTypes = result.GetErrorTypes<DatabaseErrorType>();
             Assert.Equal(1, errorTypes.Count);
             Assert.Equal(DatabaseErrorType.TableAccess, errorTypes.First().ErrorType);
+        }
+
+        /// <summary>
+        /// Инициализация из базового класса
+        /// </summary>
+        [Fact]
+        public void InitializeBaseResult_NoError()
+        {
+            var resultError = new ResultError();
+            var resultErrorType = resultError.ToResultErrorType<IValueNotFoundErrorResult>();
+
+            Assert.True(resultErrorType.OkStatus);
+            Assert.IsAssignableFrom<IResultErrorType<IValueNotFoundErrorResult>>(resultErrorType);
+        }
+
+        /// <summary>
+        /// Инициализация из базового класса
+        /// </summary>
+        [Fact]
+        public void InitializeBaseResult()
+        {
+            var valueError = ErrorResultFactory.ValueNotFoundError("test", GetType());
+            var databaseError = ErrorResultFactory.DatabaseTableError("Table", "TableError");
+            var errors = new List<IErrorResult> { valueError, databaseError };
+            var resultError = new ResultError(errors);
+            var resultErrorType = resultError.ToResultErrorType<IValueNotFoundErrorResult>();
+
+            Assert.True(resultErrorType.HasErrors);
+            Assert.Equal(2, resultErrorType.Errors.Count);
+            Assert.Single(resultErrorType.ErrorsByType);
+            Assert.IsAssignableFrom<IValueNotFoundErrorResult>(resultErrorType.Errors.First());
         }
     }
 }

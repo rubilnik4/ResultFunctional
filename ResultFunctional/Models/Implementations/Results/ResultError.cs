@@ -98,6 +98,13 @@ namespace ResultFunctional.Models.Implementations.Results
         /// Добавить ошибку
         /// </summary>      
         public IResultError ConcatErrors(IEnumerable<IErrorResult> errors) =>
-            new ResultError(Errors.Union(errors));
+            new ResultError(Errors.Concat(errors));
+
+        /// <summary>
+        /// Преобразовать в ошибку с типом
+        /// </summary>
+        public IResultErrorType<TError> ToResultErrorType<TError>()
+            where TError : IErrorResult =>
+            new ResultErrorType<TError>(Errors);
     }
 }

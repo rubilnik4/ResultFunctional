@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors
@@ -32,7 +33,5 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultError
             @this.OkStatus
                 ? new ResultCollection<TValue>(value)
                 : new ResultCollection<TValue>(@this.Errors);
-
-      
     }
 }

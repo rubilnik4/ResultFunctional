@@ -28,7 +28,6 @@ namespace ResultFunctional.Models.Implementations.Results
             : base(errors)
         {
             if (value == null && !Errors.Any()) throw new ArgumentNullException(nameof(errors));
-
             Value = value;
         }
 
@@ -41,8 +40,24 @@ namespace ResultFunctional.Models.Implementations.Results
         /// <summary>
         /// Добавить ошибку
         /// </summary>      
+        public new IResultValue<TValue> AppendError(IErrorResult error) =>
+            base.AppendError(error).
+            ToResultValue(Value);
+
+        /// <summary>
+        /// Добавить ошибку
+        /// </summary>      
         public new IResultValue<TValue> ConcatErrors(IEnumerable<IErrorResult> errors) =>
             base.ConcatErrors(errors).
             ToResultValue(Value);
+
+        /// <summary>
+        /// Преобразовать в результирующую ошибку с типом
+        /// </summary>
+        public IResultValueType<TValue, TError> ToResultValueType<TError>()
+            where TError : IErrorResult =>
+            OkStatus
+                ? new ResultValueType<TValue, TError>(Value)
+                : new ResultValueType<TValue, TError>(Errors);
     }
 }
