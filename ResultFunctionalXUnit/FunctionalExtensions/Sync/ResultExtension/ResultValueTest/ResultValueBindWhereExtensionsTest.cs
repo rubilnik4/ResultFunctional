@@ -6,6 +6,7 @@ using Moq;
 using ResultFunctional.FunctionalExtensions.Sync;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
 using ResultFunctional.Models.Interfaces.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -244,6 +245,38 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var resultAfterWhere = resultValue.ResultValueBindBad(errors => new ResultValue<int>(errors.Count));
 
             Assert.True(resultAfterWhere.OkStatus);
+            Assert.Equal(errorsInitial.Count, resultAfterWhere.Value);
+        }
+
+        /// <summary>
+        /// Выполнение негативного условия результирующего ответа со связыванием в результирующем ответе без ошибки
+        /// </summary>   
+        [Fact]
+        public void ResultValueTypeBindBad_Ok_ReturnInitial()
+        {
+            int initialValue = Numbers.Number;
+            var resultValue = new ResultValue<int>(initialValue);
+
+            var resultAfterWhere = resultValue.ResultValueTypeBindBad(errors => new ResultValueType<int, IValueNotFoundErrorResult>(errors.Count));
+
+            Assert.True(resultAfterWhere.OkStatus);
+            Assert.IsAssignableFrom<IResultValueType<int, IValueNotFoundErrorResult>>(resultAfterWhere);
+            Assert.Equal(resultValue.Value, resultAfterWhere.Value);
+        }
+
+        /// <summary>
+        /// Выполнение негативного условия результирующего ответа со связыванием в результирующем ответе с ошибкой
+        /// </summary>   
+        [Fact]
+        public void ResultValueTypeBindBad_Bad_ReturnNewValue()
+        {
+            var errorsInitial = CreateErrorListTwoTest();
+            var resultValue = new ResultValue<int>(errorsInitial);
+
+            var resultAfterWhere = resultValue.ResultValueTypeBindBad(errors => new ResultValueType<int, IValueNotFoundErrorResult>(errors.Count));
+
+            Assert.True(resultAfterWhere.OkStatus);
+            Assert.IsAssignableFrom<IResultValueType<int, IValueNotFoundErrorResult>>(resultAfterWhere);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.Value);
         }
 

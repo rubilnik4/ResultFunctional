@@ -30,7 +30,31 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <summary>
         /// Обработать функцию, вернуть результирующий ответ с коллекцией или ошибку исключения
         /// </summary>
+        public static IResultCollectionType<TValue, TError> ResultCollectionTypeTry<TValue, TError>(Func<IEnumerable<TValue>> func,
+                                                                            Func<Exception, TError> exceptionFunc)
+            where TError : IErrorResult
+        {
+            try
+            {
+                return new ResultCollectionType<TValue, TError>(func.Invoke());
+            }
+            catch (Exception ex)
+            {
+                return new ResultCollectionType<TValue, TError>(exceptionFunc(ex));
+            }
+        }
+
+        /// <summary>
+        /// Обработать функцию, вернуть результирующий ответ с коллекцией или ошибку исключения
+        /// </summary>
         public static IResultCollection<TValue> ResultCollectionTry<TValue>(Func<IEnumerable<TValue>> func, IErrorResult error) =>
             ResultCollectionTry(func, error.AppendException);
+
+        /// <summary>
+        /// Обработать функцию, вернуть результирующий ответ с коллекцией или ошибку исключения
+        /// </summary>
+        public static IResultCollectionType<TValue, TError> ResultCollectionTypeTry<TValue, TError>(Func<IEnumerable<TValue>> func, TError error)
+            where TError : IErrorBaseExtendResult<TError> =>
+            ResultCollectionTypeTry(func, error.AppendException);
     }
 }

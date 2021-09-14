@@ -1,15 +1,19 @@
 ﻿using System;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Errors.Base;
+using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
 using ResultFunctional.Models.Interfaces.Errors.conversionErrors;
+using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
 {
     /// <summary>
     /// Ошибка десериализации
     /// </summary>
-    public class DeserializeErrorResult<TValue> : ErrorBaseResult<ConversionErrorType>, IDeserializeErrorResult
+    public class DeserializeErrorResult<TValue> : ErrorBaseResult<ConversionErrorType, IDeserializeErrorResult>, 
+                                                  IDeserializeErrorResult
        where TValue : notnull
     {
         public DeserializeErrorResult(ConversionErrorType conversionErrorType, string value, string description)

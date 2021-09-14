@@ -1,12 +1,15 @@
 ﻿using System;
+using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
+using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Implementations.Errors.Base
 {
     /// <summary>
-    /// Ошибка результирующего ответа
+    /// Ошибка результирующего ответа с типизированной ошибкой
     /// </summary>
-    public class ErrorTypeResult<TError> : ErrorBaseResult<TError>
+    public class ErrorTypeResult<TError> : ErrorBaseResult<TError, ErrorTypeResult<TError>>
         where TError : struct
     {
         public ErrorTypeResult(TError errorType, string description)
@@ -20,7 +23,7 @@ namespace ResultFunctional.Models.Implementations.Errors.Base
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override ErrorTypeResult<TError> InitializeType(string description, Exception? exception) =>
             new ErrorTypeResult<TError>(ErrorType, description, exception);
     }
 }

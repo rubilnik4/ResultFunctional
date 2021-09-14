@@ -49,6 +49,16 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             MapBindAsync(awaitedThis => awaitedThis.ResultValueBindOkAsync(okFunc));
 
         /// <summary>
+        /// Выполнение асинхронного положительного условия результирующего ответа или возвращение предыдущей ошибки в результирующем ответе для задачи-объекта
+        /// </summary>   
+        public static async Task<IResultValueType<TValueOut, TError>> ResultValueTypeBindOkBindAsync<TValueIn, TValueOut, TResultIn, TError>(this Task<TResultIn> @this,
+                                                                                                          Func<TValueIn, Task<IResultValueType<TValueOut, TError>>> okFunc)
+            where TResultIn: IResultValue<TValueIn>
+            where TError: IErrorResult =>
+            await @this.
+            MapBindAsync(awaitedThis => awaitedThis.ResultValueBindOkAsync(okFunc));
+
+        /// <summary>
         /// Выполнение асинхронного негативного условия результирующего ответа или возвращение положительного в результирующем ответе для задачи-объекта
         /// </summary>   
         public static async Task<IResultValue<TValue>> ResultValueBindBadBindAsync<TValue>(this Task<IResultValue<TValue>> @this,

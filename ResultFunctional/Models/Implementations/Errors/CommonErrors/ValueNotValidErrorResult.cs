@@ -1,15 +1,18 @@
 ﻿using System;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Errors.Base;
+using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
+using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
 {
     /// <summary>
     /// Ошибка неверного значения
     /// </summary>
-    public class ValueNotValidErrorResult<TValue, TType> : ErrorBaseResult<CommonErrorType>, IValueNotValidErrorResult
+    public class ValueNotValidErrorResult<TValue, TType> : ErrorBaseResult<CommonErrorType, IValueNotValidErrorResult>,
+                                                           IValueNotValidErrorResult
         where TValue : notnull
         where TType : Type
     {

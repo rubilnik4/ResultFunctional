@@ -8,7 +8,7 @@ namespace ResultFunctional.Models.Implementations.Errors.AuthorizeErrors
     /// <summary>
     /// Ошибка при авторизации
     /// </summary>
-    public class AuthorizeErrorResult : ErrorBaseResult<AuthorizeErrorType>
+    public class AuthorizeErrorResult : ErrorBaseResult<AuthorizeErrorType, AuthorizeErrorResult>
     {
         public AuthorizeErrorResult(AuthorizeErrorType authorizeErrorType, string description)
             : this(authorizeErrorType, description, null)

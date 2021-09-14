@@ -68,6 +68,16 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
                 : badFunc.Invoke(@this.Errors);
 
         /// <summary>
+        /// Выполнение негативного условия результирующего ответа или возвращение положительного в результирующем ответе
+        /// </summary>   
+        public static IResultValueType<TValue, TError> ResultValueTypeBindBad<TValue, TError>(this IResultValue<TValue> @this,
+                                                                                              Func<IReadOnlyCollection<IErrorResult>, IResultValueType<TValue, TError>> badFunc)
+            where TError : IErrorResult =>
+            @this.OkStatus
+                ? @this.ToResultValueType<TError>()
+                : badFunc.Invoke(@this.Errors);
+
+        /// <summary>
         /// Добавить ошибки результирующего ответа или вернуть результат с ошибками для ответа со значением
         /// </summary>
         public static IResultValue<TValue> ResultValueBindErrorsOk<TValue>(this IResultValue<TValue> @this,

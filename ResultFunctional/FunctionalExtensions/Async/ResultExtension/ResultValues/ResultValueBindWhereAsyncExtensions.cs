@@ -59,6 +59,16 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
                 : new ResultValue<TValueOut>(@this.Errors);
 
         /// <summary>
+        /// Выполнение положительного условия результирующего асинхронного ответа со связыванием или возвращение предыдущей ошибки в результирующем ответе
+        /// </summary>   
+        public static async Task<IResultValueType<TValueOut, TError>> ResultValueTypeBindOkAsync<TValueIn, TValueOut, TError>(this IResultValue<TValueIn> @this,
+                                                                                                      Func<TValueIn, Task<IResultValueType<TValueOut, TError>>> okFunc)
+            where TError : IErrorResult =>
+            @this.OkStatus
+                ? await okFunc.Invoke(@this.Value)
+                : new ResultValueType<TValueOut, TError>(@this.Errors);
+
+        /// <summary>
         /// Выполнение негативного условия результирующего асинхронного ответа или возвращение положительного в результирующем ответе
         /// </summary>   
         public static async Task<IResultValue<TValue>> ResultValueBindBadAsync<TValue>(this IResultValue<TValue> @this,

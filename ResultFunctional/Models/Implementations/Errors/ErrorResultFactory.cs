@@ -26,7 +26,7 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// </summary>
         public static IErrorResult ErrorType<TError>(TError error, string description)
             where TError : struct =>
-            new ErrorTypeResult<TError>(error, description);
+            new ErrorBaseTypeResult<TError>(error, description);
 
         /// <summary>
         /// Создать ошибку общего типа
@@ -47,16 +47,10 @@ namespace ResultFunctional.Models.Implementations.Errors
             new DatabaseConnectionErrorResult(parameter, description);
 
         /// <summary>
-        /// Создать ошибку базы данных
-        /// </summary>
-        public static DatabaseErrorResult DatabaseError(DatabaseErrorType databaseErrorType, string description) =>
-            new DatabaseErrorResult(databaseErrorType, description);
-
-        /// <summary>
         /// Создать ошибку таблицы базы данных
         /// </summary>
-        public static DatabaseTableErrorResult DatabaseTableError(string tableName, string description) =>
-            new DatabaseTableErrorResult(tableName, description);
+        public static DatabaseAccessErrorResult DatabaseAccessError(string tableName, string description) =>
+            new DatabaseAccessErrorResult(tableName, description);
 
         /// <summary>
         /// Создать ошибку отсутствующего значения в базе данных
@@ -112,8 +106,8 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// <summary>
         /// Создать ошибку REST сервера
         /// </summary>
-        public static RestErrorResult RestError(RestErrorType restErrorType, string host, string description) =>
-            new RestErrorResult(restErrorType, host, description);
+        public static RestHostErrorResult RestError(RestErrorType restErrorType, string host, string description) =>
+            new RestHostErrorResult(restErrorType, host, description);
 
         /// <summary>
         /// Создать ошибку REST сервера с сообщением

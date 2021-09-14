@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
+using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
@@ -53,9 +54,19 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// Выполнение негативного условия результирующего ответа или возвращение положительного в результирующем ответе для задачи-объекта
         /// </summary>   
         public static async Task<IResultValue<TValue>> ResultValueBindBadTaskAsync<TValue>(this Task<IResultValue<TValue>> @this,
-                                                                                       Func<IReadOnlyCollection<IErrorResult>, IResultValue<TValue>> badFunc) =>
+                                                                                           Func<IReadOnlyCollection<IErrorResult>, IResultValue<TValue>> badFunc) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueBindBad(badFunc));
+
+        /// <summary>
+        /// Выполнение негативного условия результирующего ответа или возвращение положительного в результирующем ответе для задачи-объекта
+        /// </summary>   
+        public static async Task<IResultValueType<TValue, TError>> ResultValueTypeBindBadTaskAsync<TValue, TError, TResultIn>(this Task<TResultIn> @this,
+                                                                                                                              Func<IReadOnlyCollection<IErrorResult>, IResultValueType<TValue, TError>> badFunc)
+            where TError : IErrorResult
+            where TResultIn : IResultValue<TValue> =>
+            await @this.
+            MapTaskAsync(awaitedThis => awaitedThis.ResultValueTypeBindBad(badFunc));
 
         /// <summary>
         /// Добавить ошибки результирующего ответа или вернуть результат с ошибками для ответа со значением для задачи-объекта

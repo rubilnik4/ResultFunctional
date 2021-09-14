@@ -6,6 +6,6 @@ namespace ResultFunctional.Models.Interfaces.Errors.conversionErrors
     /// <summary>
     /// Ошибка десериализации
     /// </summary>
-    public interface IDeserializeErrorResult : IErrorBaseResult<ConversionErrorType>
+    public interface IDeserializeErrorResult : IErrorBaseResult<ConversionErrorType, IDeserializeErrorResult>
     { }
 }

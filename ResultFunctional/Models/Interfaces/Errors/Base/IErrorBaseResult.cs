@@ -5,7 +5,8 @@ namespace ResultFunctional.Models.Interfaces.Errors.Base
     /// <summary>
     /// Ошибка результирующего ответа
     /// </summary>
-    public interface IErrorBaseResult<out TError> : IErrorResult, IFormattable
+    public interface IErrorBaseResult<out TError, out TErrorResult> : IErrorBaseExtendResult<TErrorResult>, IFormattable
+        where TErrorResult : IErrorResult
         where TError : struct
     {
         /// <summary>

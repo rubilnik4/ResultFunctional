@@ -1,14 +1,17 @@
 ﻿using System;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Errors.Base;
+using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Interfaces.Errors.ConversionErrors;
+using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
 {
     /// <summary>
     /// Ошибка подключения к базе данных
     /// </summary>
-    public class DatabaseConnectionErrorResult : ErrorBaseResult<DatabaseErrorType>
+    public class DatabaseConnectionErrorResult : ErrorBaseResult<DatabaseErrorType, DatabaseConnectionErrorResult>
     {
         public DatabaseConnectionErrorResult(string parameter, string description)
           : this(parameter, description, null)

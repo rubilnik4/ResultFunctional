@@ -9,7 +9,7 @@ namespace ResultFunctional.Models.Implementations.Errors.RestErrors
     /// <summary>
     /// Ошибка сервера с сообщением
     /// </summary>
-    public class RestMessageErrorResult : ErrorBaseResult<RestErrorType>
+    public class RestMessageErrorResult : RestErrorResult<RestMessageErrorResult>
     {
         public RestMessageErrorResult(RestErrorType restErrorType, HttpResponseMessage httpResponseMessage, string description)
             : this(restErrorType, httpResponseMessage, description, null)
@@ -29,7 +29,7 @@ namespace ResultFunctional.Models.Implementations.Errors.RestErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override RestMessageErrorResult InitializeType(string description, Exception? exception) =>
             new RestMessageErrorResult(ErrorType, HttpResponseMessage, description, exception);
     }
 }

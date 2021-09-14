@@ -28,7 +28,31 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <summary>
         /// Обработать функцию, вернуть результирующий ответ со значением или ошибку исключения
         /// </summary>
+        public static IResultValueType<TValue, TError> ResultValueTypeTry<TValue, TError>(Func<TValue> func,
+                                                                                          Func<Exception, TError> exceptionFunc)
+             where TError : IErrorResult
+        {
+            try
+            {
+                return new ResultValueType<TValue, TError>(func.Invoke());
+            }
+            catch (Exception ex)
+            {
+                return new ResultValueType<TValue, TError>(exceptionFunc(ex));
+            }
+        }
+
+        /// <summary>
+        /// Обработать функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// </summary>
         public static IResultValue<TValue> ResultValueTry<TValue>(Func<TValue> func, IErrorResult error) =>
             ResultValueTry(func, error.AppendException);
+
+        /// <summary>
+        /// Обработать функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// </summary>
+        public static IResultValueType<TValue, TError> ResultValueTypeTry<TValue, TError>(Func<TValue> func, TError error)
+            where TError : IErrorBaseExtendResult<TError> =>
+            ResultValueTypeTry(func, error.AppendException);
     }
 }

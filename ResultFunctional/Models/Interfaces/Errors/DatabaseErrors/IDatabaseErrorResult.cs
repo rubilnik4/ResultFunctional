@@ -6,6 +6,6 @@ namespace ResultFunctional.Models.Interfaces.Errors.DatabaseErrors
     /// <summary>
     /// Ошибка базы данных
     /// </summary>
-    public interface IDatabaseErrorResult : IErrorBaseResult<DatabaseErrorType>
+    public interface IDatabaseErrorResult : IErrorBaseResult<DatabaseErrorType, IDatabaseErrorResult>
     { }
 }
