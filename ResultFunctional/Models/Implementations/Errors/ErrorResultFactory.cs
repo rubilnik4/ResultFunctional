@@ -41,6 +41,12 @@ namespace ResultFunctional.Models.Implementations.Errors
             new AuthorizeErrorResult(authorizeErrorType, description);
 
         /// <summary>
+        /// Создать ошибку сохранения базы данных
+        /// </summary>
+        public static DatabaseSaveErrorResult DatabaseSaveError(string description) =>
+            new DatabaseSaveErrorResult(description);
+
+        /// <summary>
         /// Создать ошибку подключения к базе данных
         /// </summary>
         public static DatabaseConnectionErrorResult DatabaseConnectionError(string parameter, string description) =>
