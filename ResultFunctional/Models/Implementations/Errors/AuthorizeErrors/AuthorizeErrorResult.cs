@@ -21,7 +21,7 @@ namespace ResultFunctional.Models.Implementations.Errors.AuthorizeErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override AuthorizeErrorResult InitializeType(string description, Exception? exception) =>
             new AuthorizeErrorResult(ErrorType, description, exception);
     }
 }

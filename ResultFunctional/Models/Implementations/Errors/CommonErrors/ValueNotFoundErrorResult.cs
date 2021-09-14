@@ -11,7 +11,7 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
     /// <summary>
     /// Ошибка отсутствующего значения
     /// </summary>
-    public class ValueNotFoundErrorResult<TValue, TType> : ErrorBaseResult<CommonErrorType, IValueNotFoundErrorResult>,
+    public class ValueNotFoundErrorResult<TValue, TType> : ErrorBaseResult<CommonErrorType, IValueNotFoundErrorResult>, 
                                                            IValueNotFoundErrorResult
         where TValue : notnull
         where TType : Type
@@ -39,8 +39,7 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override IValueNotFoundErrorResult InitializeType(string description, Exception? exception) =>
             new ValueNotFoundErrorResult<TValue, TType>(description, exception);
-
     }
 }

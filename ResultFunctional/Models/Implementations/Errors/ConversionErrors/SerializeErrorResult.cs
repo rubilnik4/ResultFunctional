@@ -33,7 +33,7 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override ISerializeErrorResult InitializeType(string description, Exception? exception) =>
             new SerializeErrorResult<TValue>(ErrorType, Value, description, exception);
     }
 }

@@ -27,7 +27,7 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override IDatabaseAccessErrorResult InitializeType(string description, Exception? exception) =>
             new DatabaseAccessErrorResult(DatabaseErrorType.TableAccess, TableName, description, exception);
     }
 }

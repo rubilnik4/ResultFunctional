@@ -31,7 +31,7 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override DatabaseConnectionErrorResult InitializeType(string description, Exception? exception) =>
             new DatabaseConnectionErrorResult(Parameter, description, exception);
     }
 }

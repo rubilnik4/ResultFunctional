@@ -22,7 +22,7 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override DatabaseSaveErrorResult InitializeType(string description, Exception? exception) =>
             new DatabaseSaveErrorResult(description, exception);
     }
 }

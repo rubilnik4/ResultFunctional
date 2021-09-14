@@ -249,38 +249,6 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         }
 
         /// <summary>
-        /// Выполнение негативного условия результирующего ответа со связыванием в результирующем ответе без ошибки
-        /// </summary>   
-        [Fact]
-        public void ResultValueTypeBindBad_Ok_ReturnInitial()
-        {
-            int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
-
-            var resultAfterWhere = resultValue.ResultValueTypeBindBad(errors => new ResultValueType<int, IValueNotFoundErrorResult>(errors.Count));
-
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.IsAssignableFrom<IResultValueType<int, IValueNotFoundErrorResult>>(resultAfterWhere);
-            Assert.Equal(resultValue.Value, resultAfterWhere.Value);
-        }
-
-        /// <summary>
-        /// Выполнение негативного условия результирующего ответа со связыванием в результирующем ответе с ошибкой
-        /// </summary>   
-        [Fact]
-        public void ResultValueTypeBindBad_Bad_ReturnNewValue()
-        {
-            var errorsInitial = CreateErrorListTwoTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
-
-            var resultAfterWhere = resultValue.ResultValueTypeBindBad(errors => new ResultValueType<int, IValueNotFoundErrorResult>(errors.Count));
-
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.IsAssignableFrom<IResultValueType<int, IValueNotFoundErrorResult>>(resultAfterWhere);
-            Assert.Equal(errorsInitial.Count, resultAfterWhere.Value);
-        }
-
-        /// <summary>
         /// Добавить ошибки результирующего ответа со значением. Без ошибок
         /// </summary>
         [Fact]

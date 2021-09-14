@@ -14,12 +14,12 @@ namespace ResultFunctionalXUnit.Data
         /// Вернуть ошибку на основании исключения
         /// </summary>
         public static IErrorResult ExceptionError() =>
-            new ErrorBaseTypeResult<CommonErrorType>(CommonErrorType.Unknown, "Деление на ноль", new DivideByZeroException());
+            new ErrorTypeResult<CommonErrorType>(CommonErrorType.Unknown, "Деление на ноль", new DivideByZeroException());
 
         /// <summary>
         /// Вернуть ошибку на основании исключения
         /// </summary>
         public static Func<Exception, IErrorResult> ExceptionFunc() =>
-            _ => new ErrorBaseTypeResult<CommonErrorType>(CommonErrorType.Unknown, "Деление на ноль", new DivideByZeroException());
+            _ => new ErrorTypeResult<CommonErrorType>(CommonErrorType.Unknown, "Деление на ноль", new DivideByZeroException());
     }
 }

@@ -253,40 +253,6 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         }
 
         /// <summary>
-        /// Выполнение негативного условия результирующего ответа со связыванием в результирующем ответе без ошибки для задачи-объекта
-        /// </summary>   
-        [Fact]
-        public async Task ResultValueTypeBindBadTaskAsync_Ok_ReturnInitial()
-        {
-            int initialValue = Numbers.Number;
-            var resultValue = ResultValueFactory.CreateTaskResultValue(initialValue);
-
-            var resultAfterWhere = await resultValue.ResultValueTypeBindBadTaskAsync(errors => 
-                new ResultValueType<int, IValueNotFoundErrorResult>(errors.Count));
-
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.IsAssignableFrom<IResultValueType<int, IValueNotFoundErrorResult>>(resultAfterWhere);
-            Assert.Equal(initialValue, resultAfterWhere.Value);
-        }
-
-        /// <summary>
-        /// Выполнение негативного условия результирующего ответа со связыванием в результирующем ответе с ошибкой для задачи-объекта
-        /// </summary>   
-        [Fact]
-        public async Task ResultValueTypeBindBadTaskAsync_Bad_ReturnNewValue()
-        {
-            var errorsInitial = CreateErrorListTwoTest();
-            var resultValue = ResultValueFactory.CreateTaskResultValueError<int>(errorsInitial);
-
-            var resultAfterWhere = await resultValue.ResultValueTypeBindBadTaskAsync(errors => 
-                new ResultValueType<int, IValueNotFoundErrorResult>(errors.Count));
-
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.IsAssignableFrom<IResultValueType<int, IValueNotFoundErrorResult>>(resultAfterWhere);
-            Assert.Equal(errorsInitial.Count, resultAfterWhere.Value);
-        }
-
-        /// <summary>
         /// Добавить ошибки результирующего ответа со значением для задачи-объекта. Без ошибок
         /// </summary>
         [Fact]

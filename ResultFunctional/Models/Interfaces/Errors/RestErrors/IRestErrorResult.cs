@@ -7,6 +7,6 @@ namespace ResultFunctional.Models.Interfaces.Errors.RestErrors
     /// <summary>
     /// Ошибка сервера
     /// </summary>
-    public interface IRestErrorResult: IErrorBaseResult<RestErrorType, IRestErrorResult>
+    public interface IRestErrorResult: IErrorBaseResult<RestErrorType>
     { }
 }

@@ -40,7 +40,7 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override IValueNotValidErrorResult InitializeType(string description, Exception? exception) =>
             new ValueNotValidErrorResult<TValue, TType>(Value, description, exception);
     }
 }

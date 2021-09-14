@@ -30,32 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
         /// </summary>
-        public static async Task<IResultValueType<TValue, TError>> ResultValueTypeTryAsync<TValue, TError>(Func<Task<TValue>> func,
-                                                                                   Func<Exception, TError> exceptionFunc)
-             where TError : IErrorResult
-        {
-            try
-            {
-                return new ResultValueType<TValue, TError>(await func.Invoke());
-            }
-            catch (Exception ex)
-            {
-                return new ResultValueType<TValue, TError>(exceptionFunc(ex));
-            }
-        }
-
-        /// <summary>
-        /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
-        /// </summary>
         public static async Task<IResultValue<TValue>> ResultValueTryAsync<TValue>(Func<Task<TValue>> func, IErrorResult error) =>
             await ResultValueTryAsync(func, error.AppendException);
-
-        /// <summary>
-        /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
-        /// </summary>
-        public static async Task<IResultValueType<TValue, TError>> ResultValueTypeTryAsync<TValue, TError>(Func<Task<TValue>> func,
-                                                                                                           TError error)
-            where TError : IErrorBaseExtendResult<TError> =>
-            await ResultValueTypeTryAsync(func, error.AppendException);
     }
 }

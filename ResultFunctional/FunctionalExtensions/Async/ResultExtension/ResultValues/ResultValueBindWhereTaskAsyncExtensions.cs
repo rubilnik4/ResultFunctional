@@ -59,16 +59,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueBindBad(badFunc));
 
         /// <summary>
-        /// Выполнение негативного условия результирующего ответа или возвращение положительного в результирующем ответе для задачи-объекта
-        /// </summary>   
-        public static async Task<IResultValueType<TValue, TError>> ResultValueTypeBindBadTaskAsync<TValue, TError, TResultIn>(this Task<TResultIn> @this,
-                                                                                                                              Func<IReadOnlyCollection<IErrorResult>, IResultValueType<TValue, TError>> badFunc)
-            where TError : IErrorResult
-            where TResultIn : IResultValue<TValue> =>
-            await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.ResultValueTypeBindBad(badFunc));
-
-        /// <summary>
         /// Добавить ошибки результирующего ответа или вернуть результат с ошибками для ответа со значением для задачи-объекта
         /// </summary>
         public static async Task<IResultValue<TValue>> ResultValueBindErrorsOkTaskAsync<TValue>(this Task<IResultValue<TValue>> @this,

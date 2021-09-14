@@ -40,7 +40,7 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override IDeserializeErrorResult InitializeType(string description, Exception? exception) =>
             new DeserializeErrorResult<TValue>(ErrorType, Value, description, exception);
     }
 }

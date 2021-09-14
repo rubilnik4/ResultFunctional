@@ -23,7 +23,7 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override IDatabaseValueNotFoundErrorResult InitializeType(string description, Exception? exception) =>
             new DatabaseValueNotFoundErrorResult<TValue>(Value, TableName, description, exception);
     }
 }

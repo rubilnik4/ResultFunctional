@@ -9,7 +9,7 @@ namespace ResultFunctional.Models.Implementations.Errors.Base
     /// <summary>
     /// Ошибка результирующего ответа
     /// </summary>
-    public abstract class ErrorBaseResult<TError, TErrorResult> : ErrorResult, IErrorBaseResult<TError, TErrorResult>
+    public abstract class ErrorBaseResult<TError, TErrorResult> : ErrorResult, IErrorBaseResult<TError>
         where TErrorResult : IErrorResult
         where TError : struct
     {

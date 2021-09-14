@@ -29,8 +29,8 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = ErrorResultFactory.ErrorType(CommonErrorType.Unknown, "Ошибка");
 
-            Assert.IsType<ErrorBaseTypeResult<CommonErrorType>>(errorResult);
-            Assert.IsType<ErrorBaseTypeResult<CommonErrorType>>(errorResult.AppendException(new Exception()));
+            Assert.IsType<ErrorTypeResult<CommonErrorType>>(errorResult);
+            Assert.IsType<ErrorTypeResult<CommonErrorType>>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>

@@ -26,7 +26,7 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// </summary>
         public static IErrorResult ErrorType<TError>(TError error, string description)
             where TError : struct =>
-            new ErrorBaseTypeResult<TError>(error, description);
+            new ErrorTypeResult<TError>(error, description);
 
         /// <summary>
         /// Создать ошибку общего типа

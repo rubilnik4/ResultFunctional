@@ -113,8 +113,8 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var error = CreateErrorTest();
 
-            Assert.IsType<ErrorBaseTypeResult<TestErrorType>>(error);
-            Assert.Equal(((ErrorBaseTypeResult<TestErrorType>)error).ErrorType.ToString(), error.ToString());
+            Assert.IsType<ErrorTypeResult<TestErrorType>>(error);
+            Assert.Equal(((ErrorTypeResult<TestErrorType>)error).ErrorType.ToString(), error.ToString());
         }
 
         /// <summary>
