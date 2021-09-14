@@ -20,13 +20,6 @@ namespace ResultFunctional.Models.Implementations.ResultFactory
             Task.FromResult((IResultValue<TValue>)new ResultValue<TValue>(value));
 
         /// <summary>
-        /// Создать асинхронный результирующий ответ со значением
-        /// </summary>
-        public static Task<IResultValueType<TValue, IValueNotFoundErrorResult>> CreateTaskResultValueType<TValue>(TValue value)
-            where TValue : notnull =>
-            Task.FromResult((IResultValueType<TValue, IValueNotFoundErrorResult>)new ResultValueType<TValue, IValueNotFoundErrorResult>(value));
-
-        /// <summary>
         /// Создать асинхронный результирующий ответ со значением и ошибкой
         /// </summary>
         public static Task<IResultValue<TValue>> CreateTaskResultValueError<TValue>(IErrorResult error)

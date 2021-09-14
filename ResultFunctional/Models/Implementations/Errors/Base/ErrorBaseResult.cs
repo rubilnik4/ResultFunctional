@@ -58,18 +58,6 @@ namespace ResultFunctional.Models.Implementations.Errors.Base
         public new TErrorResult AppendException(Exception exception) =>
             InitializeType(Description, exception);
 
-        /// <summary>
-        /// Преобразовать в ответ с вложенным типом и типом ошибки
-        /// </summary>      
-        public IResultValueType<TValueResult, TErrorResult> ToResultValueType<TValueResult>() =>
-            new ResultValueType<TValueResult, TErrorResult>(this);
-
-        /// <summary>
-        /// Преобразовать в ответ с вложенной коллекцией и типом ошибки
-        /// </summary>      
-        public IResultCollectionType<TValueResult, TErrorResult> ToResultCollectionType<TValueResult>() =>
-            new ResultCollectionType<TValueResult, TErrorResult>(this);
-
         #region IFormattable Support
         public override string ToString() =>
             ToString(String.Empty, CultureInfo.CurrentCulture);

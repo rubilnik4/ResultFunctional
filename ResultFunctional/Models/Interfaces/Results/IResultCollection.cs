@@ -22,11 +22,5 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// Преобразовать в результирующий ответ со значением
         /// </summary>
         IResultValue<IReadOnlyCollection<TValue>> ToResultValue();
-
-        /// <summary>
-        /// Преобразовать в ответ с коллекцией и ошибкой с типом
-        /// </summary>
-        IResultCollectionType<TValue, TError> ToResultCollectionType<TError>()
-            where TError : IErrorResult;
     }
 }

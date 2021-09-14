@@ -24,11 +24,5 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// Добавить ошибку
         /// </summary>      
         new IResultValue<TValue> ConcatErrors(IEnumerable<IErrorResult> errors);
-
-        /// <summary>
-        /// Преобразовать в результирующую ошибку с типом
-        /// </summary>
-        IResultValueType<TValue, TError> ToResultValueType<TError>()
-            where TError : IErrorResult;
     }
 }

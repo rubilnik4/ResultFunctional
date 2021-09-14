@@ -99,12 +99,5 @@ namespace ResultFunctional.Models.Implementations.Results
         /// </summary>      
         public IResultError ConcatErrors(IEnumerable<IErrorResult> errors) =>
             new ResultError(Errors.Concat(errors));
-
-        /// <summary>
-        /// Преобразовать в ошибку с типом
-        /// </summary>
-        public IResultErrorType<TError> ToResultErrorType<TError>()
-            where TError : IErrorResult =>
-            new ResultErrorType<TError>(Errors);
     }
 }

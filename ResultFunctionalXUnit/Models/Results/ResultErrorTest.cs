@@ -179,36 +179,5 @@ namespace ResultFunctionalXUnit.Models.Results
             Assert.Equal(1, errorTypes.Count);
             Assert.Equal(DatabaseErrorType.TableAccess, errorTypes.First().ErrorType);
         }
-
-        /// <summary>
-        /// Инициализация из базового класса
-        /// </summary>
-        [Fact]
-        public void InitializeBaseResult_NoError()
-        {
-            var resultError = new ResultError();
-            var resultErrorType = resultError.ToResultErrorType<IValueNotFoundErrorResult>();
-
-            Assert.True(resultErrorType.OkStatus);
-            Assert.IsAssignableFrom<IResultErrorType<IValueNotFoundErrorResult>>(resultErrorType);
-        }
-
-        /// <summary>
-        /// Инициализация из базового класса
-        /// </summary>
-        [Fact]
-        public void InitializeBaseResult()
-        {
-            var valueError = ErrorResultFactory.ValueNotFoundError("test", GetType());
-            var databaseError = ErrorResultFactory.DatabaseAccessError("Table", "TableError");
-            var errors = new List<IErrorResult> { valueError, databaseError };
-            var resultError = new ResultError(errors);
-            var resultErrorType = resultError.ToResultErrorType<IValueNotFoundErrorResult>();
-
-            Assert.True(resultErrorType.HasErrors);
-            Assert.Equal(2, resultErrorType.Errors.Count);
-            Assert.Single(resultErrorType.ErrorsByType);
-            Assert.IsAssignableFrom<IValueNotFoundErrorResult>(resultErrorType.Errors.First());
-        }
     }
 }
