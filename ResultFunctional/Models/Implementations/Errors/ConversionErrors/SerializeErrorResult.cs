@@ -1,15 +1,18 @@
 ﻿using System;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Errors.Base;
+using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Interfaces.Errors.conversionErrors;
 using ResultFunctional.Models.Interfaces.Errors.ConversionErrors;
+using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
 {
     /// <summary>
     /// Ошибка сериализации
     /// </summary>
-    public class SerializeErrorResult<TValue> : ErrorBaseResult<ConversionErrorType>, ISerializeErrorResult
+    public class SerializeErrorResult<TValue> : ErrorBaseResult<ConversionErrorType, ISerializeErrorResult>, ISerializeErrorResult
        where TValue : notnull
     {
         public SerializeErrorResult(ConversionErrorType conversionErrorType, TValue value, string description)
@@ -30,7 +33,7 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override ISerializeErrorResult InitializeType(string description, Exception? exception) =>
             new SerializeErrorResult<TValue>(ErrorType, Value, description, exception);
     }
 }

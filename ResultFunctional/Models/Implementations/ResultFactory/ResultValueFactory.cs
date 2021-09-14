@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Implementations.ResultFactory
@@ -17,6 +18,13 @@ namespace ResultFunctional.Models.Implementations.ResultFactory
         public static Task<IResultValue<TValue>> CreateTaskResultValue<TValue>(TValue value)
             where TValue : notnull =>
             Task.FromResult((IResultValue<TValue>)new ResultValue<TValue>(value));
+
+        /// <summary>
+        /// Создать асинхронный результирующий ответ со значением
+        /// </summary>
+        public static Task<IResultValueType<TValue, IValueNotFoundErrorResult>> CreateTaskResultValueType<TValue>(TValue value)
+            where TValue : notnull =>
+            Task.FromResult((IResultValueType<TValue, IValueNotFoundErrorResult>)new ResultValueType<TValue, IValueNotFoundErrorResult>(value));
 
         /// <summary>
         /// Создать асинхронный результирующий ответ со значением и ошибкой

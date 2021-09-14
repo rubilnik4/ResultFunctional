@@ -148,7 +148,7 @@ namespace ResultFunctionalXUnit.Models.Results
         public void InitializeBaseResult()
         {
             var valueError = ErrorResultFactory.ValueNotFoundError("test", GetType());
-            var databaseError = ErrorResultFactory.DatabaseTableError("Table", "TableError");
+            var databaseError = ErrorResultFactory.DatabaseAccessError("Table", "TableError");
             var errors = new List<IErrorResult> { valueError, databaseError };
             var resultError = new ResultCollection<int>(errors);
             var resultErrorType = resultError.ToResultCollectionType<IValueNotFoundErrorResult>();

@@ -1,27 +1,32 @@
 ﻿using System;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Errors.Base;
+using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Interfaces.Errors.DatabaseErrors;
+using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
 {
     /// <summary>
     /// Ошибка базы данных
     /// </summary>
-    public class DatabaseErrorResult : ErrorBaseResult<DatabaseErrorType>
+    public abstract class DatabaseErrorResult<TErrorResult> : ErrorBaseResult<DatabaseErrorType, TErrorResult>
+          where TErrorResult : IDatabaseErrorResult
     {
-        public DatabaseErrorResult(DatabaseErrorType databaseErrorType, string description)
-            : this(databaseErrorType, description, null)
+        protected DatabaseErrorResult(DatabaseErrorType databaseErrorType, string tableName, string description)
+            : this(databaseErrorType, tableName, description, null)
         { }
 
-        public DatabaseErrorResult(DatabaseErrorType databaseErrorType, string description, Exception? exception)
+        protected DatabaseErrorResult(DatabaseErrorType databaseErrorType, string tableName, string description, Exception? exception)
             : base(databaseErrorType, description, exception)
-        { }
+        {
+            TableName = tableName;
+        }
 
         /// <summary>
-        /// Инициализация ошибки
+        /// Имя таблицы
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
-            new DatabaseErrorResult(ErrorType, description, exception);
+        public string TableName { get; }
     }
 }

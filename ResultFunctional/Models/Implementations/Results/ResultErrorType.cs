@@ -40,12 +40,14 @@ namespace ResultFunctional.Models.Implementations.Results
         /// Добавить ошибку
         /// </summary>      
         public IResultErrorType<TError> AppendError(TError error) =>
-            ((IResultErrorType<TError>)this).AppendError(error);
+            Errors.Append(error).
+            Map(errors => new ResultErrorType<TError>(errors));
 
         /// <summary>
         /// Добавить ошибку
         /// </summary>      
         public IResultErrorType<TError> ConcatErrors(IEnumerable<TError> errors) =>
-            ((IResultErrorType<TError>)this).ConcatErrors(errors);
+            Errors.Concat((IEnumerable<IErrorResult>)errors).
+            Map(errorsConcat => new ResultErrorType<TError>(errorsConcat));
     }
 }

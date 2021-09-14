@@ -85,24 +85,12 @@ namespace ResultFunctionalXUnit.Models.Errors
         /// Ошибка базы данных
         /// </summary>
         [Fact]
-        public void DatabaseError()
+        public void DatabaseAccessError()
         {
-            var errorResult = ErrorResultFactory.DatabaseError(DatabaseErrorType.Connection, "Ошибка");
+            var errorResult = ErrorResultFactory.DatabaseAccessError("Table", "Ошибка");
 
-            Assert.IsType<DatabaseErrorResult>(errorResult);
-            Assert.IsType<DatabaseErrorResult>(errorResult.AppendException(new Exception()));
-        }
-
-        /// <summary>
-        /// Ошибка базы данных
-        /// </summary>
-        [Fact]
-        public void DatabaseTableError()
-        {
-            var errorResult = ErrorResultFactory.DatabaseTableError("Table", "Ошибка");
-
-            Assert.IsType<DatabaseTableErrorResult>(errorResult);
-            Assert.IsType<DatabaseTableErrorResult>(errorResult.AppendException(new Exception()));
+            Assert.IsType<DatabaseAccessErrorResult>(errorResult);
+            Assert.IsType<DatabaseAccessErrorResult>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>
@@ -161,8 +149,20 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = ErrorResultFactory.RestError(RestErrorType.BadRequest, "host", "Ошибка");
 
-            Assert.IsType<RestErrorResult>(errorResult);
-            Assert.IsType<RestErrorResult>(errorResult.AppendException(new Exception()));
+            Assert.IsType<RestHostErrorResult>(errorResult);
+            Assert.IsType<RestHostErrorResult>(errorResult.AppendException(new Exception()));
+        }
+
+        /// <summary>
+        /// Ошибка времени ожидания rest сервиса
+        /// </summary>
+        [Fact]
+        public void RestTimeoutError()
+        {
+            var errorResult = ErrorResultFactory.RestError("host", TimeSpan.FromSeconds(5), "Ошибка");
+
+            Assert.IsType<RestTimeoutErrorResult>(errorResult);
+            Assert.IsType<RestTimeoutErrorResult>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>
