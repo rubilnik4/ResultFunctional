@@ -106,13 +106,13 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// <summary>
         /// Создать ошибку REST сервера
         /// </summary>
-        public static RestHostErrorResult RestError(RestErrorType restErrorType, string host, string description) =>
+        public static RestHostErrorResult RestHostError(RestErrorType restErrorType, string host, string description) =>
             new RestHostErrorResult(restErrorType, host, description);
 
         /// <summary>
         /// Создать ошибку времени ожидания REST сервера
         /// </summary>
-        public static RestTimeoutErrorResult RestError(string host, TimeSpan timeout, string description) =>
+        public static RestTimeoutErrorResult RestTimeoutError(string host, TimeSpan timeout, string description) =>
             new RestTimeoutErrorResult(host, timeout, description);
 
         /// <summary>

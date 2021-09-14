@@ -147,7 +147,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void RestHostError()
         {
-            var errorResult = ErrorResultFactory.RestError(RestErrorType.BadRequest, "host", "Ошибка");
+            var errorResult = ErrorResultFactory.RestHostError(RestErrorType.BadRequest, "host", "Ошибка");
 
             Assert.IsType<RestHostErrorResult>(errorResult);
             Assert.IsType<RestHostErrorResult>(errorResult.AppendException(new Exception()));
@@ -159,7 +159,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void RestTimeoutError()
         {
-            var errorResult = ErrorResultFactory.RestError("host", TimeSpan.FromSeconds(5), "Ошибка");
+            var errorResult = ErrorResultFactory.RestTimeoutError("host", TimeSpan.FromSeconds(5), "Ошибка");
 
             Assert.IsType<RestTimeoutErrorResult>(errorResult);
             Assert.IsType<RestTimeoutErrorResult>(errorResult.AppendException(new Exception()));
