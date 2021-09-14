@@ -154,6 +154,18 @@ namespace ResultFunctionalXUnit.Models.Errors
         }
 
         /// <summary>
+        /// Ошибка времени ожидания rest сервиса
+        /// </summary>
+        [Fact]
+        public void RestTimeoutError()
+        {
+            var errorResult = ErrorResultFactory.RestError("host", TimeSpan.FromSeconds(5), "Ошибка");
+
+            Assert.IsType<RestTimeoutErrorResult>(errorResult);
+            Assert.IsType<RestTimeoutErrorResult>(errorResult.AppendException(new Exception()));
+        }
+
+        /// <summary>
         /// Ошибка rest сервиса
         /// </summary>
         [Fact]
