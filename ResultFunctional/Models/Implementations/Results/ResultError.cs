@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ResultFunctional.Models.Enums;
+using ResultFunctional.Models.Implementations.Errors.Base;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
@@ -44,16 +46,16 @@ namespace ResultFunctional.Models.Implementations.Results
         /// <summary>
         /// Присутствует(является) ли тип ошибки
         /// </summary>
-        public bool HasError<TError>()
+        public bool IsError<TError>()
             where TError : IErrorResult =>
-            Errors.Any(error => error.GetType() == typeof(TError));
+            Errors.Any(error => error.IsErrorResult<TError>());
 
         /// <summary>
         /// Присутствует(включен) ли тип ошибки
         /// </summary>
-        public bool FromError<TError>()
+        public bool HasError<TError>()
             where TError : IErrorResult =>
-            Errors.Any(error => error is TError);
+            Errors.Any(error => error.HasErrorResult<TError>());
 
         /// <summary>
         /// Получить типы ошибок
@@ -68,7 +70,7 @@ namespace ResultFunctional.Models.Implementations.Results
         /// </summary>
         public bool HasErrorType<TErrorType>()
             where TErrorType : struct =>
-            Errors.Any(error => error.HasErrorType<TErrorType>());
+            Errors.Any(error => error is IErrorBaseResult<TErrorType>);
 
         /// <summary>
         /// Получить ошибку

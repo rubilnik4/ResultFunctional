@@ -101,7 +101,7 @@ namespace ResultFunctionalXUnit.Models.Results
             var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
             var result = databaseTableError.ToResult();
 
-            Assert.False(result.HasError<IDatabaseAccessErrorResult>());
+            Assert.True(result.HasError<IDatabaseAccessErrorResult>());
             Assert.True(result.HasError<DatabaseAccessErrorResult>());
         }
 
@@ -109,13 +109,13 @@ namespace ResultFunctionalXUnit.Models.Results
         /// Наличие специфической ошибки
         /// </summary>
         [Fact]
-        public void IncludeError()
+        public void IsError()
         {
             var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
             var result = databaseTableError.ToResult();
 
-            Assert.True(result.FromError<IDatabaseAccessErrorResult>());
-            Assert.True(result.FromError<DatabaseAccessErrorResult>());
+            Assert.False(result.IsError<IDatabaseAccessErrorResult>());
+            Assert.True(result.IsError<DatabaseAccessErrorResult>());
         }
 
         /// <summary>

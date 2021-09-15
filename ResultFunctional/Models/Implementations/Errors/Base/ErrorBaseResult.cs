@@ -37,7 +37,7 @@ namespace ResultFunctional.Models.Implementations.Errors.Base
         /// <summary>
         /// Наличие типа ошибки
         /// </summary>
-        public override bool HasErrorType<TErrorType>()
+        public bool HasErrorType<TErrorType>()
             where TErrorType : struct =>
             typeof(TError) == typeof(TErrorType);
 

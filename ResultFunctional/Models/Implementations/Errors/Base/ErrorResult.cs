@@ -38,15 +38,23 @@ namespace ResultFunctional.Models.Implementations.Errors.Base
         public Exception? Exception { get; }
 
         /// <summary>
-        /// Наличие типа ошибки
-        /// </summary>
-        public abstract bool HasErrorType<TError>()
-            where TError : struct;
-
-        /// <summary>
         /// Инициализация ошибки
         /// </summary>
         protected abstract IErrorResult Initialize(string description, Exception? exception);
+
+        /// <summary>
+        /// Является ли типом ошибки
+        /// </summary>
+        public bool IsErrorResult<TErrorType>()
+            where TErrorType : IErrorResult =>
+            GetType() == typeof(TErrorType);
+
+        /// <summary>
+        /// Наличие типа ошибки
+        /// </summary>
+        public bool HasErrorResult<TErrorType>()
+            where TErrorType : IErrorResult =>
+            this is TErrorType;
 
         /// <summary>
         /// Добавить или заменить исключение

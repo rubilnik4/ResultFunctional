@@ -12,5 +12,11 @@ namespace ResultFunctional.Models.Interfaces.Errors.Base
         /// Тип ошибки при конвертации файлов
         /// </summary>
         TError ErrorType { get; }
+
+        /// <summary>
+        /// Наличие типа ошибки
+        /// </summary>
+        bool HasErrorType<TErrorType>()
+            where TErrorType : struct;
     }
 }

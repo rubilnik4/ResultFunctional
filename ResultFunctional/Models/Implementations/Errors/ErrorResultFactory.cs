@@ -24,6 +24,12 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// <summary>
         /// Создать ошибку с типом данных
         /// </summary>
+        public static SimpleErrorResult SimpleErrorType(string description) =>
+            new SimpleErrorResult(description);
+
+        /// <summary>
+        /// Создать ошибку с типом данных
+        /// </summary>
         public static IErrorResult ErrorType<TError>(TError error, string description)
             where TError : struct =>
             new ErrorTypeResult<TError>(error, description);

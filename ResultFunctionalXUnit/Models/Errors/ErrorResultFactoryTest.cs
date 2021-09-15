@@ -22,6 +22,18 @@ namespace ResultFunctionalXUnit.Models.Errors
     public class ErrorResultFactoryTest
     {
         /// <summary>
+        /// Простая ошибка
+        /// </summary>
+        [Fact]
+        public void SimpleError()
+        {
+            var errorResult = ErrorResultFactory.SimpleErrorType("Ошибка");
+
+            Assert.IsType<SimpleErrorResult>(errorResult);
+            Assert.IsType<SimpleErrorResult>(errorResult.AppendException(new Exception()));
+        }
+
+        /// <summary>
         /// Ошибка с неопределенным типом
         /// </summary>
         [Fact]
