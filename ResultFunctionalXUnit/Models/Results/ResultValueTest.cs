@@ -125,37 +125,5 @@ namespace ResultFunctionalXUnit.Models.Results
             Assert.True(resultValueConcat.OkStatus);
             Assert.Equal(value, resultValueConcat.Value);
         }
-
-        /// <summary>
-        /// Инициализация из базового класса
-        /// </summary>
-        [Fact]
-        public void InitializeBaseResult_NoError()
-        {
-            const string value = "test";
-            var resultError = new ResultValue<string>(value);
-            var resultErrorType = resultError.ToResultValueType<IValueNotFoundErrorResult>();
-
-            Assert.True(resultErrorType.OkStatus);
-            Assert.IsAssignableFrom<IResultValueType<string, IValueNotFoundErrorResult>>(resultErrorType);
-        }
-
-        /// <summary>
-        /// Инициализация из базового класса
-        /// </summary>
-        [Fact]
-        public void InitializeBaseResult()
-        {
-            var valueError = ErrorResultFactory.ValueNotFoundError("test", GetType());
-            var databaseError = ErrorResultFactory.DatabaseTableError("Table", "TableError");
-            var errors = new List<IErrorResult> { valueError, databaseError };
-            var resultError = new ResultValue<string>(errors);
-            var resultErrorType = resultError.ToResultValueType<IValueNotFoundErrorResult>();
-
-            Assert.True(resultErrorType.HasErrors);
-            Assert.Equal(2, resultErrorType.Errors.Count);
-            Assert.Single(resultErrorType.ErrorsByType);
-            Assert.IsAssignableFrom<IValueNotFoundErrorResult>(resultErrorType.Errors.First());
-        }
     }
 }

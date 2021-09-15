@@ -25,10 +25,16 @@ namespace ResultFunctional.Models.Interfaces.Errors.Base
         Exception? Exception { get; }
 
         /// <summary>
+        /// Является ли типом ошибки
+        /// </summary>
+        public bool IsErrorResult<TErrorType>()
+            where TErrorType : IErrorResult;
+
+        /// <summary>
         /// Наличие типа ошибки
         /// </summary>
-        bool HasErrorType<TErrorType>()
-            where TErrorType : struct;
+        public bool HasErrorResult<TErrorType>()
+            where TErrorType : IErrorResult;
 
         /// <summary>
         /// Добавить или заменить исключение

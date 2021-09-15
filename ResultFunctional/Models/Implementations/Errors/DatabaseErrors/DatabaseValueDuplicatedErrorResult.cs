@@ -8,7 +8,8 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
     /// <summary>
     /// Ошибка дублирующего поля в базе данных
     /// </summary>
-    public class DatabaseValueDuplicatedErrorResult<TValue> : DatabaseValueErrorResult<TValue>, IDatabaseValueDuplicatedErrorResult
+    public class DatabaseValueDuplicatedErrorResult<TValue> : DatabaseValueErrorResult<TValue, IDatabaseValueDuplicatedErrorResult>, 
+                                                              IDatabaseValueDuplicatedErrorResult
         where TValue : notnull
     {
         public DatabaseValueDuplicatedErrorResult(TValue value, string tableName, string description)
@@ -22,7 +23,7 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override IDatabaseValueDuplicatedErrorResult InitializeType(string description, Exception? exception) =>
             new DatabaseValueDuplicatedErrorResult<TValue>(Value, TableName, description, exception);
     }
 }

@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Globalization;
+using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Implementations.Errors.Base
 {
     /// <summary>
     /// Ошибка результирующего ответа
     /// </summary>
-    public abstract class ErrorBaseResult<TError> : ErrorResult, IErrorBaseResult<TError>
+    public abstract class ErrorBaseResult<TError, TErrorResult> : ErrorResult, IErrorBaseResult<TError>
+        where TErrorResult : IErrorResult
         where TError : struct
     {
         protected ErrorBaseResult(TError errorType, string description)
-            : this(errorType, description, null) 
+            : this(errorType, description, null)
         { }
 
         protected ErrorBaseResult(TError errorType, string description, Exception? exception)
@@ -34,9 +37,26 @@ namespace ResultFunctional.Models.Implementations.Errors.Base
         /// <summary>
         /// Наличие типа ошибки
         /// </summary>
-        public override bool HasErrorType<TErrorType>()
+        public bool HasErrorType<TErrorType>()
             where TErrorType : struct =>
             typeof(TError) == typeof(TErrorType);
+
+        /// <summary>
+        /// Инициализация ошибки
+        /// </summary>
+        protected override IErrorResult Initialize(string description, Exception? exception) =>
+            InitializeType(description, exception);
+
+        /// <summary>
+        /// Инициализация ошибки
+        /// </summary>
+        protected abstract TErrorResult InitializeType(string description, Exception? exception);
+
+        /// <summary>
+        /// Добавить или заменить исключение
+        /// </summary>
+        public new TErrorResult AppendException(Exception exception) =>
+            InitializeType(Description, exception);
 
         #region IFormattable Support
         public override string ToString() =>

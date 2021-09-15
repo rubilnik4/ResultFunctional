@@ -3,6 +3,6 @@
     /// <summary>
     /// Ошибка отсутствующего поля в базе данных
     /// </summary>
-    public interface IDatabaseValueNotValidErrorResult: IDatabaseTableErrorResult
+    public interface IDatabaseValueNotValidErrorResult: IDatabaseValueErrorResult
     { }
 }

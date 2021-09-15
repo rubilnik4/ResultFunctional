@@ -2,6 +2,8 @@
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Errors;
 using ResultFunctional.Models.Implementations.Errors.Base;
+using ResultFunctional.Models.Implementations.Errors.DatabaseErrors;
+using ResultFunctional.Models.Interfaces.Errors.DatabaseErrors;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -129,6 +131,30 @@ namespace ResultFunctionalXUnit.Models.Errors
             var errorWithException = error.AppendException(exception);
 
             Assert.True(exception.Equals(errorWithException.Exception));
+        }
+
+        /// <summary>
+        /// Наличие специфической ошибки
+        /// </summary>
+        [Fact]
+        public void HasError()
+        {
+            var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
+
+            Assert.True(databaseTableError.HasErrorResult<IDatabaseAccessErrorResult>());
+            Assert.True(databaseTableError.HasErrorResult<DatabaseAccessErrorResult>());
+        }
+
+        /// <summary>
+        /// Наличие специфической ошибки
+        /// </summary>
+        [Fact]
+        public void IsError()
+        {
+            var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
+
+            Assert.False(databaseTableError.IsErrorResult<IDatabaseAccessErrorResult>());
+            Assert.True(databaseTableError.IsErrorResult<DatabaseAccessErrorResult>());
         }
     }
 }

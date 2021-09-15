@@ -24,6 +24,12 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// <summary>
         /// Создать ошибку с типом данных
         /// </summary>
+        public static SimpleErrorResult SimpleErrorType(string description) =>
+            new SimpleErrorResult(description);
+
+        /// <summary>
+        /// Создать ошибку с типом данных
+        /// </summary>
         public static IErrorResult ErrorType<TError>(TError error, string description)
             where TError : struct =>
             new ErrorTypeResult<TError>(error, description);
@@ -41,22 +47,22 @@ namespace ResultFunctional.Models.Implementations.Errors
             new AuthorizeErrorResult(authorizeErrorType, description);
 
         /// <summary>
+        /// Создать ошибку сохранения базы данных
+        /// </summary>
+        public static DatabaseSaveErrorResult DatabaseSaveError(string description) =>
+            new DatabaseSaveErrorResult(description);
+
+        /// <summary>
         /// Создать ошибку подключения к базе данных
         /// </summary>
         public static DatabaseConnectionErrorResult DatabaseConnectionError(string parameter, string description) =>
             new DatabaseConnectionErrorResult(parameter, description);
 
         /// <summary>
-        /// Создать ошибку базы данных
-        /// </summary>
-        public static DatabaseErrorResult DatabaseError(DatabaseErrorType databaseErrorType, string description) =>
-            new DatabaseErrorResult(databaseErrorType, description);
-
-        /// <summary>
         /// Создать ошибку таблицы базы данных
         /// </summary>
-        public static DatabaseTableErrorResult DatabaseTableError(string tableName, string description) =>
-            new DatabaseTableErrorResult(tableName, description);
+        public static DatabaseAccessErrorResult DatabaseAccessError(string tableName, string description) =>
+            new DatabaseAccessErrorResult(tableName, description);
 
         /// <summary>
         /// Создать ошибку отсутствующего значения в базе данных
@@ -112,8 +118,14 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// <summary>
         /// Создать ошибку REST сервера
         /// </summary>
-        public static RestErrorResult RestError(RestErrorType restErrorType, string host, string description) =>
-            new RestErrorResult(restErrorType, host, description);
+        public static RestHostErrorResult RestHostError(RestErrorType restErrorType, string host, string description) =>
+            new RestHostErrorResult(restErrorType, host, description);
+
+        /// <summary>
+        /// Создать ошибку времени ожидания REST сервера
+        /// </summary>
+        public static RestTimeoutErrorResult RestTimeoutError(string host, TimeSpan timeout, string description) =>
+            new RestTimeoutErrorResult(host, timeout, description);
 
         /// <summary>
         /// Создать ошибку REST сервера с сообщением

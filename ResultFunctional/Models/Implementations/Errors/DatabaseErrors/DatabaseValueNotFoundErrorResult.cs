@@ -8,7 +8,8 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
     /// <summary>
     /// Ошибка отсутствующего поля в базе данных
     /// </summary>
-    public class DatabaseValueNotFoundErrorResult<TValue> : DatabaseValueErrorResult<TValue>, IDatabaseValueNotFoundErrorResult
+    public class DatabaseValueNotFoundErrorResult<TValue> : DatabaseValueErrorResult<TValue, IDatabaseValueNotFoundErrorResult>, 
+                                                            IDatabaseValueNotFoundErrorResult
         where TValue : notnull
     {
         public DatabaseValueNotFoundErrorResult(TValue value, string tableName, string description)
@@ -22,7 +23,7 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IErrorResult Initialize(string description, Exception? exception) =>
+        protected override IDatabaseValueNotFoundErrorResult InitializeType(string description, Exception? exception) =>
             new DatabaseValueNotFoundErrorResult<TValue>(Value, TableName, description, exception);
     }
 }

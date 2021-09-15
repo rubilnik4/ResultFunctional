@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Implementations.ResultFactory

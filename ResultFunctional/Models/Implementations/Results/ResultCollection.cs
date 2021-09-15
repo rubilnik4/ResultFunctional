@@ -47,14 +47,5 @@ namespace ResultFunctional.Models.Implementations.Results
         /// </summary>
         public IResultValue<IReadOnlyCollection<TValue>> ToResultValue() => 
             this;
-
-        /// <summary>
-        /// Преобразовать в ответ с коллекцией и ошибкой с типом
-        /// </summary>
-        public IResultCollectionType<TValue, TError> ToResultCollectionType<TError>()
-            where TError : IErrorResult =>
-            OkStatus
-                ? new ResultCollectionType<TValue, TError>(Value)
-                : new ResultCollectionType<TValue, TError>(Errors);
     }
 }

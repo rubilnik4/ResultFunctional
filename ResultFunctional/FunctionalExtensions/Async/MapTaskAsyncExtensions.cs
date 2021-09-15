@@ -18,6 +18,13 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <summary>
         /// Преобразование типа-задачи с помощью функции
         /// </summary>       
+        public static async ValueTask<TResult> MapValueTaskAsync<TSource, TResult>(this ValueTask<TSource> @this,
+                                                                                   Func<TSource, TResult> func) =>
+            func(await @this);
+
+        /// <summary>
+        /// Преобразование типа-задачи с помощью функции
+        /// </summary>       
         public static async Task<TValue> MapValueToTask<TValue>(this ValueTask<TValue> @this) =>
             await @this;
     }
