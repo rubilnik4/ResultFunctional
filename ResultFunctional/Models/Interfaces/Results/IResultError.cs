@@ -47,6 +47,12 @@ namespace ResultFunctional.Models.Interfaces.Results
             where TErrorType : struct;
 
         /// <summary>
+        /// Присутствует ли тип ошибки
+        /// </summary>
+        bool HasErrorType<TErrorType>(TErrorType errorType)
+            where TErrorType : struct;
+
+        /// <summary>
         /// Получить ошибку
         /// </summary>      
         IErrorBaseResult<TErrorType>? GetErrorType<TErrorType>()
