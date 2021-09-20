@@ -7,6 +7,7 @@
     {
         Username,
         Password,
+        PasswordConfirm,
         Email,
         Phone,
         Token
