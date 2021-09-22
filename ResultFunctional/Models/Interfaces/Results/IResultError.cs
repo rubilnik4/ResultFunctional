@@ -73,5 +73,10 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// Добавить ошибки
         /// </summary>      
         IResultError ConcatErrors(IEnumerable<IErrorResult> errors);
+
+        /// <summary>
+        /// Добавить ошибки из результирующего ответа
+        /// </summary>      
+        IResultError ConcatResult(IResultError result);
     }
 }

@@ -109,5 +109,11 @@ namespace ResultFunctional.Models.Implementations.Results
         /// </summary>      
         public IResultError ConcatErrors(IEnumerable<IErrorResult> errors) =>
             new ResultError(Errors.Concat(errors));
+
+        /// <summary>
+        /// Добавить ошибки из результирующего ответа
+        /// </summary>      
+        public IResultError ConcatResult(IResultError result) =>
+            new ResultError(Errors.Concat(result.Errors));
     }
 }
