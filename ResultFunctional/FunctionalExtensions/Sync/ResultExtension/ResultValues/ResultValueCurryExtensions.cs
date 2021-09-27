@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// Преобразование результирующего ответа с функцией высшего порядка для двух аргументов
         /// </summary>
         public static IResultValue<Func<TIn2, TOut>> ResultValueCurryOk<TIn1, TIn2, TOut>(this IResultValue<Func<TIn1, TIn2, TOut>> @this,
-                                                                                         IResultValue<TIn1> arg1) =>
+                                                                                          IResultValue<TIn1> arg1) =>
             @this.OkStatus && arg1.OkStatus
                 ? new ResultValue<Func<TIn2, TOut>>(@this.Value.Curry(arg1.Value))
                 : new ResultValue<Func<TIn2, TOut>>(@this.Errors.Concat(arg1.Errors));
