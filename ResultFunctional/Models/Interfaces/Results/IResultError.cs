@@ -47,6 +47,12 @@ namespace ResultFunctional.Models.Interfaces.Results
             where TErrorType : struct;
 
         /// <summary>
+        /// Присутствует ли тип ошибки
+        /// </summary>
+        bool HasErrorType<TErrorType>(TErrorType errorType)
+            where TErrorType : struct;
+
+        /// <summary>
         /// Получить ошибку
         /// </summary>      
         IErrorBaseResult<TErrorType>? GetErrorType<TErrorType>()
@@ -67,5 +73,10 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// Добавить ошибки
         /// </summary>      
         IResultError ConcatErrors(IEnumerable<IErrorResult> errors);
+
+        /// <summary>
+        /// Добавить ошибки из результирующего ответа
+        /// </summary>      
+        IResultError ConcatResult(IResultError result);
     }
 }

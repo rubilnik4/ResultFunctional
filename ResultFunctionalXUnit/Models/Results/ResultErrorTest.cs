@@ -149,6 +149,21 @@ namespace ResultFunctionalXUnit.Models.Results
         }
 
         /// <summary>
+        /// Наличие типа ошибки
+        /// </summary>
+        [Fact]
+        public void HasErrorTypeByType()
+        {
+            var valueNotFoundError = ErrorResultFactory.ValueNotFoundError("value", GetType());
+            var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
+            var errors = new List<IErrorResult> { valueNotFoundError, databaseTableError };
+            var result = new ResultError(errors);
+
+            Assert.True(result.HasErrorType(CommonErrorType.ValueNotFound));
+            Assert.False(result.HasErrorType(CommonErrorType.ValueNotValid));
+        }
+
+        /// <summary>
         /// Получить тип ошибки
         /// </summary>
         [Fact]

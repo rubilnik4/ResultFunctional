@@ -73,6 +73,14 @@ namespace ResultFunctional.Models.Implementations.Results
             Errors.Any(error => error is IErrorBaseResult<TErrorType>);
 
         /// <summary>
+        /// Присутствует ли тип ошибки
+        /// </summary>
+        public bool HasErrorType<TErrorType>(TErrorType errorType)
+            where TErrorType : struct =>
+            Errors.OfType<IErrorBaseResult<TErrorType>>().
+                   Any(error => error.ErrorType.Equals(errorType));
+
+        /// <summary>
         /// Получить ошибку
         /// </summary>      
         public IErrorBaseResult<TErrorType>? GetErrorType<TErrorType>()
@@ -101,5 +109,11 @@ namespace ResultFunctional.Models.Implementations.Results
         /// </summary>      
         public IResultError ConcatErrors(IEnumerable<IErrorResult> errors) =>
             new ResultError(Errors.Concat(errors));
+
+        /// <summary>
+        /// Добавить ошибки из результирующего ответа
+        /// </summary>      
+        public IResultError ConcatResult(IResultError result) =>
+            new ResultError(Errors.Concat(result.Errors));
     }
 }
