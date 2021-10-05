@@ -24,5 +24,10 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// Добавить ошибку
         /// </summary>      
         new IResultValue<TValue> ConcatErrors(IEnumerable<IErrorResult> errors);
+
+        /// <summary>
+        /// Добавить ошибки из результирующего ответа
+        /// </summary>      
+        new IResultValue<TValue> ConcatResult(IResultError result);
     }
 }

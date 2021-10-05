@@ -43,6 +43,12 @@ namespace ResultFunctional.Models.Implementations.Results
             ToResultCollection(Value);
 
         /// <summary>
+        /// Добавить ошибки из результирующего ответа
+        /// </summary>      
+        public new IResultCollection<TValue> ConcatResult(IResultError result) =>
+            ConcatErrors(result.Errors);
+
+        /// <summary>
         /// Преобразовать в результирующий ответ со значением
         /// </summary>
         public IResultValue<IReadOnlyCollection<TValue>> ToResultValue() => 

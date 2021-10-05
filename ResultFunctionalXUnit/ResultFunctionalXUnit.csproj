@@ -34,4 +34,8 @@
     <Folder Include="Extensions\TaskExtensions\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ResultFunctional\ResultFunctional.csproj" />
+  </ItemGroup>
+
 </Project>
