@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
+using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors
@@ -30,6 +31,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
         /// </summary>  
         public static async Task<IResultError> ToResultErrorsTaskAsync(this IEnumerable<Task<IResultError>> @this) =>
             await Task.WhenAll(@this).
+            MapTaskAsync(result => result.ToResultError());
+
+        /// <summary>
+        /// Преобразовать в результирующий ответ
+        /// </summary>  
+        public static async Task<IResultError> ToResultErrorsTaskAsync(this Task<IEnumerable<IErrorResult>> @this) =>
+            await @this.
             MapTaskAsync(result => result.ToResultError());
     }
 }

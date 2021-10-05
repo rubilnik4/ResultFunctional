@@ -15,6 +15,27 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <summary>
         /// Преобразовать в результирующий ответ со значением в коллекцию задачи-объекта
         /// </summary>      
+        public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IEnumerable<IResultValue<TValue>>> @this) =>
+            await @this.
+            MapTaskAsync(awaitedThis => awaitedThis.ToResultCollection());
+
+        /// <summary>
+        /// Преобразовать в результирующий ответ со значением в коллекцию задачи-объекта
+        /// </summary>      
+        public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IList<IResultValue<TValue>>> @this) =>
+            await @this.
+            MapTaskAsync(awaitedThis => awaitedThis.ToResultCollection());
+
+        /// <summary>
+        /// Преобразовать в результирующий ответ со значением в коллекцию задачи-объекта
+        /// </summary>      
+        public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IReadOnlyCollection<IResultValue<TValue>>> @this) =>
+            await @this.
+            MapTaskAsync(awaitedThis => awaitedThis.ToResultCollection());
+
+        /// <summary>
+        /// Преобразовать в результирующий ответ со значением в коллекцию задачи-объекта
+        /// </summary>      
         public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IResultValue<IEnumerable<TValue>>> @this) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ToResultCollection());
