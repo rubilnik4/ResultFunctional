@@ -16,12 +16,12 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
                                                   IDeserializeErrorResult
        where TValue : notnull
     {
-        public DeserializeErrorResult(ConversionErrorType conversionErrorType, string value, string description)
-            : this(conversionErrorType, value, description, null)
+        public DeserializeErrorResult(string value, string description)
+            : this(value, description, null)
         { }
 
-        protected DeserializeErrorResult(ConversionErrorType conversionErrorType, string value, string description, Exception? exception)
-            : base(conversionErrorType, description, exception)
+        protected DeserializeErrorResult(string value, string description, Exception? exception)
+            : base(ConversionErrorType.JsonConversion, description, exception)
         {
             Value = value;
         }
@@ -41,6 +41,6 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
         /// Инициализация ошибки
         /// </summary>
         protected override IDeserializeErrorResult InitializeType(string description, Exception? exception) =>
-            new DeserializeErrorResult<TValue>(ErrorType, Value, description, exception);
+            new DeserializeErrorResult<TValue>(Value, description, exception);
     }
 }
