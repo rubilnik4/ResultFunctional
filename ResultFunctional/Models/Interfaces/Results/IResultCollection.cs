@@ -19,6 +19,11 @@ namespace ResultFunctional.Models.Interfaces.Results
         new IResultCollection<TValue> ConcatErrors(IEnumerable<IErrorResult> errors);
 
         /// <summary>
+        /// Добавить ошибки из результирующего ответа
+        /// </summary>      
+        new IResultCollection<TValue> ConcatResult(IResultError result);
+
+        /// <summary>
         /// Преобразовать в результирующий ответ со значением
         /// </summary>
         IResultValue<IReadOnlyCollection<TValue>> ToResultValue();

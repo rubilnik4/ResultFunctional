@@ -2,6 +2,7 @@
 using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
 using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
@@ -28,6 +29,23 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var result = results.ToResultError();
 
             Assert.True(result.Errors.SequenceEqual(results.SelectMany(resultError => resultError.Errors)));
+        }
+
+        /// <summary>
+        /// Преобразовать в результирующий ответ
+        /// </summary>
+        [Fact]
+        public void ToResultErrorByError_Ok()
+        {
+            var results = new List<IErrorResult>
+            {
+                 ErrorData.CreateErrorTest(),
+                ErrorData.CreateErrorTest()
+            };
+
+            var result = results.ToResultError();
+
+            Assert.True(result.Errors.SequenceEqual(results));
         }
     }
 }

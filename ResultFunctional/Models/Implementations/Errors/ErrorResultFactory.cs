@@ -88,16 +88,22 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// <summary>
         /// Создать ошибку сериализации
         /// </summary>
-        public static ISerializeErrorResult SerializeError<TValue>(ConversionErrorType conversionErrorType, TValue value, string description)
+        public static ISerializeErrorResult SerializeError<TValue>(TValue value, string description)
             where TValue : notnull =>
-            new SerializeErrorResult<TValue>(conversionErrorType, value, description);
+            new SerializeErrorResult<TValue>(value, description);
 
         /// <summary>
-        /// Создать ошибку сериализации
+        /// Создать ошибку десериализации
         /// </summary>
-        public static IDeserializeErrorResult DeserializeError<TValue>(ConversionErrorType conversionErrorType, string value, string description)
+        public static IDeserializeErrorResult DeserializeError<TValue>(string value, string description)
             where TValue : notnull =>
-            new DeserializeErrorResult<TValue>(conversionErrorType, value, description);
+            new DeserializeErrorResult<TValue>(value, description);
+
+        /// <summary>
+        /// Создать ошибку json схемы
+        /// </summary>
+        public static JsonSchemeErrorResult JsonSchemeError(string jsonScheme, string description)=>
+            new JsonSchemeErrorResult(jsonScheme, description);
 
         /// <summary>
         /// Создать ошибку отсутствующего значения

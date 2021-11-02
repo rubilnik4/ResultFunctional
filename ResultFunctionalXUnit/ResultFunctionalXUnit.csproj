@@ -31,11 +31,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ResultFunctional\ResultFunctional.csproj" />
+    <Folder Include="Extensions\TaskExtensions\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\TaskExtensions\" />
+    <ProjectReference Include="..\ResultFunctional\ResultFunctional.csproj" />
   </ItemGroup>
 
 </Project>

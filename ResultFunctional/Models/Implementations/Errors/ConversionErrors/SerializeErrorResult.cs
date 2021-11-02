@@ -15,12 +15,12 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
     public class SerializeErrorResult<TValue> : ErrorBaseResult<ConversionErrorType, ISerializeErrorResult>, ISerializeErrorResult
        where TValue : notnull
     {
-        public SerializeErrorResult(ConversionErrorType conversionErrorType, TValue value, string description)
-          : this(conversionErrorType, value, description, null)
+        public SerializeErrorResult(TValue value, string description)
+          : this(value, description, null)
         { }
 
-        protected SerializeErrorResult(ConversionErrorType conversionErrorType, TValue value, string description, Exception? exception)
-            : base(conversionErrorType, description, exception)
+        protected SerializeErrorResult(TValue value, string description, Exception? exception)
+            : base(ConversionErrorType.JsonConversion, description, exception)
         {
             Value = value;
         }
@@ -34,6 +34,6 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
         /// Инициализация ошибки
         /// </summary>
         protected override ISerializeErrorResult InitializeType(string description, Exception? exception) =>
-            new SerializeErrorResult<TValue>(ErrorType, Value, description, exception);
+            new SerializeErrorResult<TValue>(Value, description, exception);
     }
 }

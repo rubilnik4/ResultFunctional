@@ -30,10 +30,17 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
                     : new ResultCollection<TValue>(collection.SelectMany(result => result.Errors)));
 
         /// <summary>
-        /// Преобразовать значение в результирующий ответ с проверкой на нуль
+        /// Преобразовать значение в результирующий ответ
         /// </summary>
         public static IResultValue<TValue> ToResultValue<TValue>(this TValue @this)
             where TValue : class =>
+            new ResultValue<TValue>(@this);
+
+        /// <summary>
+        /// Преобразовать значение в результирующий ответ
+        /// </summary>
+        public static IResultValue<TValue> ToResultValueStruct<TValue>(this TValue @this)
+            where TValue : struct =>
             new ResultValue<TValue>(@this);
 
         /// <summary>

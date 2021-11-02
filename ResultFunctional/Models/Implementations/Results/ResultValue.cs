@@ -50,5 +50,11 @@ namespace ResultFunctional.Models.Implementations.Results
         public new IResultValue<TValue> ConcatErrors(IEnumerable<IErrorResult> errors) =>
             base.ConcatErrors(errors).
             ToResultValue(Value);
+
+        /// <summary>
+        /// Добавить ошибки из результирующего ответа
+        /// </summary>      
+        public new IResultValue<TValue> ConcatResult(IResultError result) =>
+            ConcatErrors(result.Errors);
     }
 }

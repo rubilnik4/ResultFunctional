@@ -6,6 +6,7 @@ using ResultFunctional.Models.Implementations.Errors;
 using ResultFunctional.Models.Implementations.Errors.AuthorizeErrors;
 using ResultFunctional.Models.Implementations.Errors.Base;
 using ResultFunctional.Models.Implementations.Errors.CommonErrors;
+using ResultFunctional.Models.Implementations.Errors.ConversionErrors;
 using ResultFunctional.Models.Implementations.Errors.DatabaseErrors;
 using ResultFunctional.Models.Implementations.Errors.RestErrors;
 using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
@@ -195,7 +196,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void SerializeError()
         {
-            var errorResult = ErrorResultFactory.SerializeError(ConversionErrorType.JsonConversion, String.Empty, "Ошибка");
+            var errorResult = ErrorResultFactory.SerializeError(String.Empty, "Ошибка");
 
             Assert.IsAssignableFrom<ISerializeErrorResult>(errorResult);
             Assert.IsAssignableFrom<ISerializeErrorResult>(errorResult.AppendException(new Exception()));
@@ -207,10 +208,22 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void DeserializeError()
         {
-            var errorResult = ErrorResultFactory.DeserializeError<string>(ConversionErrorType.JsonConversion, String.Empty, "Ошибка");
+            var errorResult = ErrorResultFactory.DeserializeError<string>(String.Empty, "Ошибка");
 
             Assert.IsAssignableFrom<IDeserializeErrorResult>(errorResult);
             Assert.IsAssignableFrom<IDeserializeErrorResult>(errorResult.AppendException(new Exception()));
+        }
+
+        /// <summary>
+        /// Ошибка схемы
+        /// </summary>
+        [Fact]
+        public void JsonSchemeError()
+        {
+            var errorResult = ErrorResultFactory.JsonSchemeError("scheme", "Ошибка");
+
+            Assert.IsAssignableFrom<JsonSchemeErrorResult>(errorResult);
+            Assert.IsAssignableFrom<JsonSchemeErrorResult>(errorResult.AppendException(new Exception()));
         }
     }
 }
