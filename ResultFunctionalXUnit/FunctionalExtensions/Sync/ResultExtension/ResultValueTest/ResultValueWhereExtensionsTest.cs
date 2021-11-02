@@ -82,6 +82,76 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             Assert.Single(resultAfterWhere.Errors);
         }
 
+
+        /// <summary>
+        /// Выполнение условия в положительном результирующем ответе со связыванием
+        /// </summary>
+        [Fact]
+        public void ResultValueWhere_Ok_ReturnNewValue()
+        {
+            int initialValue = Numbers.Number;
+            var resultValue = new ResultValue<int>(initialValue);
+
+            var resultAfterWhere = resultValue.ResultValueWhere(_ => true,
+                okFunc: number => number.ToString(),
+                badFunc: _ => CreateErrorListTwoTest().Count.ToString());
+
+            Assert.True(resultAfterWhere.OkStatus);
+            Assert.Equal(initialValue.ToString(), resultAfterWhere.Value);
+        }
+
+        /// <summary>
+        /// Выполнение условия в отрицательном результирующем ответе без ошибки со связыванием
+        /// </summary>
+        [Fact]
+        public void ResultValueWhere_Ok_ReturnNewError()
+        {
+            int initialValue = Numbers.Number;
+            var resultValue = new ResultValue<int>(initialValue);
+
+            var valueBad = CreateErrorListTwoTest().Count.ToString();
+            var resultAfterWhere = resultValue.ResultValueWhere(_ => false,
+                okFunc: number => number.ToString(),
+                badFunc: _ => valueBad);
+
+            Assert.True(resultAfterWhere.OkStatus);
+            Assert.Equal(valueBad, resultAfterWhere.Value);
+        }
+
+        /// <summary>
+        /// Возвращение предыдущей ошибки в положительном результирующем ответе с ошибкой со связыванием
+        /// </summary>
+        [Fact]
+        public void ResultValueWhere_Bad_ReturnNewValue()
+        {
+            var errorInitial = CreateErrorTest();
+            var resultValue = new ResultValue<int>(errorInitial);
+
+            var resultAfterWhere = resultValue.ResultValueWhere(_ => true,
+                okFunc: number => number.ToString(),
+                badFunc: _ => CreateErrorListTwoTest().Count.ToString());
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Single(resultAfterWhere.Errors);
+        }
+
+        /// <summary>
+        /// Возвращение предыдущей ошибки в отрицательном результирующем ответе с ошибкой со связыванием
+        /// </summary>
+        [Fact]
+        public void ResultValueWhere_Bad_ReturnNewError()
+        {
+            var errorsInitial = CreateErrorTest();
+            var resultValue = new ResultValue<int>(errorsInitial);
+
+            var resultAfterWhere = resultValue.ResultValueWhere(_ => false,
+                okFunc: number => number.ToString(),
+                badFunc: _ => CreateErrorListTwoTest().Count.ToString());
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Single(resultAfterWhere.Errors);
+        }
+
         /// <summary>
         /// Выполнение положительного условия в результирующем ответе без ошибки
         /// </summary>      
