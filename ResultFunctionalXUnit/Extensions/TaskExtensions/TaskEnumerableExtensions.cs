@@ -6,7 +6,7 @@ namespace ResultFunctionalXUnit.Extensions.TaskExtensions
     /// <summary>
     /// Методы расширения для задач
     /// </summary>
-    public static class TaskExtensions
+    public static class TaskEnumerableExtensions
     {
         /// <summary>
         /// Преобразовать множество в задачу

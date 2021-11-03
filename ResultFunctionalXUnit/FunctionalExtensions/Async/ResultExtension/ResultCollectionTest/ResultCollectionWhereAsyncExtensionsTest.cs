@@ -7,7 +7,7 @@ using ResultFunctional.Models.Implementations.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
-using static ResultFunctionalXUnit.Extensions.TaskExtensions.TaskExtensions;
+using static ResultFunctionalXUnit.Extensions.TaskExtensions.TaskEnumerableExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultCollectionTest
 {
