@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, TValueOut> okFunc,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, IEnumerable<IErrorResult>> badFunc) =>
-            await @this.ToResultValue().
+            await @this.ToResultValueTaskAsync().
             ResultValueContinueTaskAsync(predicate, okFunc, badFunc);
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         public static async Task<IResultValue<TValueOut>> ResultCollectionOkBadToValueTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                          Func<IReadOnlyCollection<TValueIn>, TValueOut> okFunc,
                                                                                                          Func<IReadOnlyCollection<IErrorResult>, TValueOut> badFunc) =>
-            await @this.ToResultValue().
+            await @this.ToResultValueTaskAsync().
             ResultValueOkBadTaskAsync(okFunc, badFunc);
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// </summary>   
         public static async Task<IResultValue<TValueOut>> ResultCollectionOkToValueTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                                   Func<IReadOnlyCollection<TValueIn>, TValueOut> okFunc) =>
-            await @this.ToResultValue().
+            await @this.ToResultValueTaskAsync().
             ResultValueOkTaskAsync(okFunc);
     }
 }

@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var numbers = Collections.GetRangeNumber();
             var resultCollectionTask = ResultCollectionFactory.CreateTaskResultCollection(numbers);
 
-            var resultValue = await resultCollectionTask.ToResultValue();
+            var resultValue = await resultCollectionTask.ToResultValueTaskAsync();
             
             Assert.IsAssignableFrom<IResultValue<IReadOnlyCollection<int>>>(resultValue);
         }
