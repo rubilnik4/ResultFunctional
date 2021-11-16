@@ -13,34 +13,10 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
     public static class ResultValueExtensions
     {
         /// <summary>
-        /// Преобразовать в результирующий ответ со значением в коллекцию
-        /// </summary>      
-        public static IResultCollection<TValue> ToResultCollection<TValue>(this IResultValue<IEnumerable<TValue>> @this) =>
-            @this.OkStatus
-                ? new ResultCollection<TValue>(@this.Value)
-                : new ResultCollection<TValue>(@this.Errors);
-
-        /// <summary>
-        /// Преобразовать в результирующий ответ со значением в коллекцию
-        /// </summary>      
-        public static IResultCollection<TValue> ToResultCollection<TValue>(this IEnumerable<IResultValue<TValue>> @this) =>
-            @this.ToList().
-            Map(collection => collection.All(result => result.OkStatus)
-                    ? new ResultCollection<TValue>(collection.Select(result => result.Value))
-                    : new ResultCollection<TValue>(collection.SelectMany(result => result.Errors)));
-
-        /// <summary>
         /// Преобразовать значение в результирующий ответ
         /// </summary>
         public static IResultValue<TValue> ToResultValue<TValue>(this TValue @this)
-            where TValue : class =>
-            new ResultValue<TValue>(@this);
-
-        /// <summary>
-        /// Преобразовать значение в результирующий ответ
-        /// </summary>
-        public static IResultValue<TValue> ToResultValueStruct<TValue>(this TValue @this)
-            where TValue : struct =>
+            where TValue : notnull =>
             new ResultValue<TValue>(@this);
 
         /// <summary>
