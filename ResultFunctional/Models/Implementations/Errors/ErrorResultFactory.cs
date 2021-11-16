@@ -124,10 +124,10 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// <summary>
         /// Создать ошибку дублирующего значения
         /// </summary>
-        public static IValueDuplicatedErrorResult ValueDuplicatedError<TValue, TType>(TValue value, TType parentType, string description)
+        public static IValueDuplicateErrorResult ValueDuplicateError<TValue, TType>(TValue value, TType parentType, string description)
             where TValue : notnull
             where TType : Type =>
-            new ValueDuplicatedErrorResult<TValue, TType>(value, nameof(TValue));
+            new ValueDuplicateErrorResult<TValue, TType>(value, nameof(TValue));
 
         /// <summary>
         /// Создать ошибку REST сервера

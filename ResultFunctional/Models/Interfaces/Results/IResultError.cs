@@ -28,12 +28,12 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// <summary>
         /// Присутствует(является) ли тип ошибки
         /// </summary>
-        public bool IsError<TError>() where TError : IErrorResult;
+        bool IsError<TError>() where TError : IErrorResult;
 
         /// <summary>
         /// Присутствует(включен) ли тип ошибки
         /// </summary>
-        public bool HasError<TError>() where TError : IErrorResult;
+        bool HasError<TError>() where TError : IErrorResult;
 
         /// <summary>
         /// Получить типы ошибок

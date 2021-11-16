@@ -11,16 +11,16 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
     /// <summary>
     /// Ошибка дублирующего значения
     /// </summary>
-    public class ValueDuplicatedErrorResult<TValue, TType> : ErrorBaseResult<CommonErrorType, IValueDuplicatedErrorResult>,
-                                                           IValueDuplicatedErrorResult
+    public class ValueDuplicateErrorResult<TValue, TType> : ErrorBaseResult<CommonErrorType, IValueDuplicateErrorResult>,
+                                                           IValueDuplicateErrorResult
         where TValue : notnull
         where TType : Type
     {
-        public ValueDuplicatedErrorResult(TValue value, string description)
+        public ValueDuplicateErrorResult(TValue value, string description)
            : this(value, description, null)
         { }
 
-        protected ValueDuplicatedErrorResult(TValue value, string description, Exception? exception)
+        protected ValueDuplicateErrorResult(TValue value, string description, Exception? exception)
             : base(CommonErrorType.ValueDuplicated, description, exception)
         {
             Value = value;
@@ -40,7 +40,7 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
-        protected override IValueDuplicatedErrorResult InitializeType(string description, Exception? exception) =>
-            new ValueDuplicatedErrorResult<TValue, TType>(Value, description, exception);
+        protected override IValueDuplicateErrorResult InitializeType(string description, Exception? exception) =>
+            new ValueDuplicateErrorResult<TValue, TType>(Value, description, exception);
     }
 }

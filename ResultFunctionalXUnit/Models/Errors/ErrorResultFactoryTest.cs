@@ -88,10 +88,10 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void ValueDuplicatedError()
         {
-            var errorResult = ErrorResultFactory.ValueDuplicatedError(String.Empty, typeof(string), "Ошибка");
+            var errorResult = ErrorResultFactory.ValueDuplicateError(String.Empty, typeof(string), "Ошибка");
 
-            Assert.IsAssignableFrom<IValueDuplicatedErrorResult>(errorResult);
-            Assert.IsAssignableFrom<IValueDuplicatedErrorResult>(errorResult.AppendException(new Exception()));
+            Assert.IsAssignableFrom<IValueDuplicateErrorResult>(errorResult);
+            Assert.IsAssignableFrom<IValueDuplicateErrorResult>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>

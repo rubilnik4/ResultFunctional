@@ -8,6 +8,6 @@
         /// <summary>
         /// Значение в строковом виде
         /// </summary>
-        public string ValueToString { get; }
+        string ValueToString { get; }
     }
 }

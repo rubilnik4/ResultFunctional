@@ -6,6 +6,6 @@ namespace ResultFunctional.Models.Interfaces.Errors.CommonErrors
     /// <summary>
     /// Ошибка дублирующего значения
     /// </summary>
-    public interface IValueDuplicatedErrorResult : IErrorBaseResult<CommonErrorType>
+    public interface IValueDuplicateErrorResult : IErrorBaseResult<CommonErrorType>
     { }
 }
