@@ -27,13 +27,13 @@ namespace ResultFunctional.Models.Interfaces.Errors.Base
         /// <summary>
         /// Является ли типом ошибки
         /// </summary>
-        public bool IsErrorResult<TErrorType>()
+        bool IsErrorResult<TErrorType>()
             where TErrorType : IErrorResult;
 
         /// <summary>
         /// Наличие типа ошибки
         /// </summary>
-        public bool HasErrorResult<TErrorType>()
+        bool HasErrorResult<TErrorType>()
             where TErrorType : IErrorResult;
 
         /// <summary>

@@ -83,6 +83,18 @@ namespace ResultFunctionalXUnit.Models.Errors
         }
 
         /// <summary>
+        /// Ошибка дублирующего значения
+        /// </summary>
+        [Fact]
+        public void ValueDuplicatedError()
+        {
+            var errorResult = ErrorResultFactory.ValueDuplicateError(String.Empty, typeof(string), "Ошибка");
+
+            Assert.IsAssignableFrom<IValueDuplicateErrorResult>(errorResult);
+            Assert.IsAssignableFrom<IValueDuplicateErrorResult>(errorResult.AppendException(new Exception()));
+        }
+
+        /// <summary>
         /// Ошибка авторизации
         /// </summary>
         [Fact]

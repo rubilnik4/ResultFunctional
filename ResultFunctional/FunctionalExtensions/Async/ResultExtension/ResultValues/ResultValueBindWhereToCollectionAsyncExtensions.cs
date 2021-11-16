@@ -18,7 +18,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
                                                                                              Func<TValueIn, Task<IResultCollection<TValueOut>>> okFunc) =>
             await @this.
             ResultValueBindOkAsync(valueIn => okFunc(valueIn).
-                                              MapAsync(resultCollection => resultCollection.ToResultValue())).
+                                              MapAsync(resultCollection => resultCollection.ToResultValueTaskAsync())).
             ToResultCollectionTaskAsync();
     }
 }

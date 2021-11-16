@@ -12,7 +12,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
        /// <summary>
        /// Преобразовать в ответ со значением-коллекцией
        /// </summary>
-        public static async Task<IResultValue<IReadOnlyCollection<TValue>>> ToResultValue<TValue>(this Task<IResultCollection<TValue>> @this) =>
+        public static async Task<IResultValue<IReadOnlyCollection<TValue>>> ToResultValueTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this) =>
             await @this.MapTaskAsync(awaitedThis => awaitedThis.ToResultValue());
 
         /// <summary>

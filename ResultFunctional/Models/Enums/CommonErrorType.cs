@@ -7,6 +7,7 @@
     {
         ValueNotValid,
         ValueNotFound,
+        ValueDuplicated,
         Unknown,
     }
 }

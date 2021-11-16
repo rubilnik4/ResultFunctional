@@ -122,6 +122,14 @@ namespace ResultFunctional.Models.Implementations.Errors
             new ValueNotValidErrorResult<TValue, TType>(value, nameof(TValue));
 
         /// <summary>
+        /// Создать ошибку дублирующего значения
+        /// </summary>
+        public static IValueDuplicateErrorResult ValueDuplicateError<TValue, TType>(TValue value, TType parentType, string description)
+            where TValue : notnull
+            where TType : Type =>
+            new ValueDuplicateErrorResult<TValue, TType>(value, nameof(TValue));
+
+        /// <summary>
         /// Создать ошибку REST сервера
         /// </summary>
         public static RestHostErrorResult RestHostError(RestErrorType restErrorType, string host, string description) =>
