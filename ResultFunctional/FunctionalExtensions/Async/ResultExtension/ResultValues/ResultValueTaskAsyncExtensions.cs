@@ -93,5 +93,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             where TValue : struct =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ToResultValueNullCheck(errorNull));
+
+        /// <summary>
+        /// Преобразовать в результирующий ответ коллекции
+        /// </summary>  
+        public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this IEnumerable<Task<IResultValue<TValue>>> @this)
+            where TValue : notnull =>
+            await Task.WhenAll(@this).
+            MapTaskAsync(result => result.ToResultCollection());
     }
 }
