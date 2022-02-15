@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
@@ -20,6 +21,16 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
                                                                                                             Func<TValueIn, Task<IEnumerable<IErrorResult>>> badFunc) =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueContinueAsync(predicate, okFunc, badFunc));
+
+        /// <summary>
+        /// Выполнение условия в положительном или негативном варианте в результирующем ответе задачи-объекта
+        /// </summary>      
+        public static async Task<IResultValue<TValueOut>> ResultValueWhereBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
+                                                                                                         Func<TValueIn, bool> predicate,
+                                                                                                         Func<TValueIn, Task<TValueOut>> okFunc,
+                                                                                                         Func<TValueIn, Task<TValueOut>> badFunc) =>
+            await @this.
+            MapBindAsync(awaitedThis => awaitedThis.ResultValueWhereAsync(predicate, okFunc, badFunc));
 
         /// <summary>
         /// Выполнение положительного или негативного условия в асинхронном результирующем ответе задачи-объекта

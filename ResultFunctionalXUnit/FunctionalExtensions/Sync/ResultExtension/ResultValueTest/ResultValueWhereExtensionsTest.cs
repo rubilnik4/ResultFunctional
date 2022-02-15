@@ -82,7 +82,6 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             Assert.Single(resultAfterWhere.Errors);
         }
 
-
         /// <summary>
         /// Выполнение условия в положительном результирующем ответе со связыванием
         /// </summary>

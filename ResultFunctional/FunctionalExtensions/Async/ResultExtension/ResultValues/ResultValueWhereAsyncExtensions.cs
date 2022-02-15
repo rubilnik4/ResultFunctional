@@ -26,6 +26,19 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
              : new ResultValue<TValueOut>(@this.Errors);
 
         /// <summary>
+        /// Выполнение асинхронного условия в положительном или негативном варианте в результирующем ответе задачи-объекта
+        /// </summary>      
+        public static async Task<IResultValue<TValueOut>> ResultValueWhereAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
+                                                                                                     Func<TValueIn, bool> predicate,
+                                                                                                     Func<TValueIn, Task<TValueOut>> okFunc,
+                                                                                                     Func<TValueIn, Task<TValueOut>> badFunc) =>
+         @this.OkStatus
+             ? predicate(@this.Value)
+                 ? new ResultValue<TValueOut>(await okFunc.Invoke(@this.Value))
+                 : new ResultValue<TValueOut>(await badFunc.Invoke(@this.Value))
+             : new ResultValue<TValueOut>(@this.Errors);
+
+        /// <summary>
         /// Выполнение асинхронного положительного или негативного условия в результирующем ответе
         /// </summary>      
         public static async Task<IResultValue<TValueOut>> ResultValueOkBadAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
