@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 

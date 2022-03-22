@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.Models.Interfaces.Results;
+using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -50,7 +53,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ToResultCollection_Enumerable_OkStatus()
         {
             var collection = Enumerable.Range(0, 3).ToList().AsReadOnly();
-            var resultValues = collection.Select(value => new ResultValue<int>(value));
+            var resultValues = collection.Select(value => value.ToResultValue());
 
             var resultCollection = resultValues.ToResultCollection();
 
@@ -66,7 +69,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             var error = CreateErrorTest();
             var collection = Enumerable.Range(0, 3).ToList().AsReadOnly();
-            var resultValues = collection.Select(value => new ResultValue<int>(value)).
+            var resultValues = collection.Select(value => value.ToResultValue()).
                                           Append(new ResultValue<int>(error));
 
             var resultCollection = resultValues.ToResultCollection();

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
@@ -92,5 +93,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             where TValue : struct =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ToResultValueNullCheck(errorNull));
+
+        /// <summary>
+        /// Преобразовать в результирующий ответ коллекции
+        /// </summary>  
+        public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this IEnumerable<Task<IResultValue<TValue>>> @this)
+            where TValue : notnull =>
+            await Task.WhenAll(@this).
+            MapTaskAsync(result => result.ToResultCollection());
     }
 }
