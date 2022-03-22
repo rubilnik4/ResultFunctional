@@ -46,5 +46,18 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
             Map(collection => collection.All(result => result.OkStatus)
                     ? new ResultCollection<TValue>(collection.Select(result => result.Value))
                     : new ResultCollection<TValue>(collection.SelectMany(result => result.Errors)));
+
+        /// <summary>
+        /// Преобразовать в результирующий ответ со значением в коллекцию и ошибками
+        /// </summary>      
+        public static IResultCollection<TValue> ConcatResultCollection<TValue>(this IEnumerable<IResultCollection<TValue>> @this) =>
+            ConcatResultCollection(@this.ToList());
+
+        /// <summary>
+        /// Преобразовать в результирующий ответ со значением в коллекцию и ошибками
+        /// </summary>      
+        public static IResultCollection<TValue> ConcatResultCollection<TValue>(this IReadOnlyCollection<IResultCollection<TValue>> @this) =>
+            new ResultCollection<TValue>(@this.SelectMany(result => result.Value)).
+            ConcatErrors(@this.SelectMany(result => result.Errors));
     }
 }
