@@ -13,7 +13,9 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
     /// Ошибка сериализации
     /// </summary>
     public class SerializeErrorResult<TValue> : ErrorBaseResult<ConversionErrorType, ISerializeErrorResult>, ISerializeErrorResult
-       where TValue : notnull
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+        where TValue : notnull
+#endif
     {
         public SerializeErrorResult(TValue value, string description)
           : this(value, description, null)

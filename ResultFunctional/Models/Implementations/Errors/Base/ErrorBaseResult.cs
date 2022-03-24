@@ -27,7 +27,7 @@ namespace ResultFunctional.Models.Implementations.Errors.Base
         /// Идентификатор ошибки
         /// </summary>
         public override string Id =>
-            ErrorType.ToString();
+            ErrorType.ToString() ?? String.Empty;
 
         /// <summary>
         /// Тип ошибки при конвертации файлов
@@ -63,7 +63,7 @@ namespace ResultFunctional.Models.Implementations.Errors.Base
             ToString(String.Empty, CultureInfo.CurrentCulture);
 
         public string ToString(string? format, IFormatProvider? formatProvider) =>
-            ErrorType.ToString();
+            ErrorType.ToString() ?? String.Empty;
         #endregion
     }
 }

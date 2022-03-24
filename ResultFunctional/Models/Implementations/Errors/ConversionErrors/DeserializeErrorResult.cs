@@ -14,7 +14,9 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
     /// </summary>
     public class DeserializeErrorResult<TValue> : ErrorBaseResult<ConversionErrorType, IDeserializeErrorResult>, 
                                                   IDeserializeErrorResult
-       where TValue : notnull
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+        where TValue : notnull
+#endif
     {
         public DeserializeErrorResult(string value, string description)
             : this(value, description, null)

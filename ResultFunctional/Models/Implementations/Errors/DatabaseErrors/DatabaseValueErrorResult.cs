@@ -8,7 +8,9 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
     /// Ошибка поля в базе данных
     /// </summary>
     public abstract class DatabaseValueErrorResult<TValue, TErrorResult> : DatabaseErrorResult<TErrorResult>, IDatabaseValueErrorResult
-        where TValue : notnull
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+            where TValue : notnull
+#endif
         where TErrorResult : IDatabaseErrorResult
     {
         protected DatabaseValueErrorResult(DatabaseErrorType databaseErrorType, TValue value, string tableName, string description)
@@ -30,6 +32,6 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
         /// Значение в строковом виде
         /// </summary>
         public string ValueToString =>
-            Value.ToString();
+            Value?.ToString() ?? String.Empty;
     }
 }

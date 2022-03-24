@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Http;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Errors.Base;
 using ResultFunctional.Models.Interfaces.Errors.Base;
@@ -11,25 +10,25 @@ namespace ResultFunctional.Models.Implementations.Errors.RestErrors
     /// </summary>
     public class RestMessageErrorResult : RestErrorResult<RestMessageErrorResult>
     {
-        public RestMessageErrorResult(RestErrorType restErrorType, HttpResponseMessage httpResponseMessage, string description)
-            : this(restErrorType, httpResponseMessage, description, null)
+        public RestMessageErrorResult(RestErrorType restErrorType, string reasonPhrase, string description)
+            : this(restErrorType, reasonPhrase, description, null)
         { }
 
-        protected RestMessageErrorResult(RestErrorType restErrorType, HttpResponseMessage httpResponseMessage, string description, Exception? exception)
+        protected RestMessageErrorResult(RestErrorType restErrorType, string reasonPhrase, string description, Exception? exception)
             : base(restErrorType, description, exception)
         {
-            HttpResponseMessage = httpResponseMessage;
+            ReasonPhrase = reasonPhrase;
         }
 
         /// <summary>
         /// Адрес сервера
         /// </summary>
-        public HttpResponseMessage HttpResponseMessage { get; }
+        public string ReasonPhrase { get; }
 
         /// <summary>
         /// Инициализация ошибки
         /// </summary>
         protected override RestMessageErrorResult InitializeType(string description, Exception? exception) =>
-            new RestMessageErrorResult(ErrorType, HttpResponseMessage, description, exception);
+            new RestMessageErrorResult(ErrorType, ReasonPhrase, description, exception);
     }
 }

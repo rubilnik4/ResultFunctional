@@ -15,6 +15,7 @@ namespace ResultFunctional.FunctionalExtensions.Async
                                                                          Func<TSource, TResult> func) =>
             func(await @this);
 
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
         /// <summary>
         /// Преобразование типа-задачи с помощью функции
         /// </summary>       
@@ -27,5 +28,6 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// </summary>       
         public static async Task<TValue> MapValueToTask<TValue>(this ValueTask<TValue> @this) =>
             await @this;
+#endif
     }
 }

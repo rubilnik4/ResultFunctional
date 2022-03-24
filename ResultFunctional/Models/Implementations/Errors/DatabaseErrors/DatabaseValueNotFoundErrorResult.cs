@@ -10,7 +10,9 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
     /// </summary>
     public class DatabaseValueNotFoundErrorResult<TValue> : DatabaseValueErrorResult<TValue, IDatabaseValueNotFoundErrorResult>, 
                                                             IDatabaseValueNotFoundErrorResult
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
         where TValue : notnull
+#endif
     {
         public DatabaseValueNotFoundErrorResult(TValue value, string tableName, string description)
             : this(value, tableName, description, null)

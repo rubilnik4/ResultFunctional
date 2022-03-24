@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Http;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Errors.AuthorizeErrors;
 using ResultFunctional.Models.Implementations.Errors.Base;
@@ -68,35 +67,50 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// Создать ошибку отсутствующего значения в базе данных
         /// </summary>
         public static IDatabaseValueNotFoundErrorResult DatabaseValueNotFoundError<TValue>(TValue value, string tableName, string description)
-            where TValue : notnull =>
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+            where TValue : notnull
+#endif
+            =>
             new DatabaseValueNotFoundErrorResult<TValue>(value, tableName, description);
 
         /// <summary>
         /// Создать ошибку некорректного значения в базе данных
         /// </summary>
         public static IDatabaseValueNotValidErrorResult DatabaseValueNotValidError<TValue>(TValue value, string tableName, string description)
-            where TValue : notnull =>
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+            where TValue : notnull
+#endif
+            =>
             new DatabaseValueNotValidErrorResult<TValue>(value, tableName, description);
 
         /// <summary>
         /// Создать ошибку дублирующего значения в базе данных
         /// </summary>
         public static IDatabaseValueDuplicatedErrorResult DatabaseValueDuplicateError<TValue>(TValue value, string tableName, string description)
-            where TValue : notnull =>
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+            where TValue : notnull
+#endif
+            =>
             new DatabaseValueDuplicatedErrorResult<TValue>(value, tableName, description);
 
         /// <summary>
         /// Создать ошибку сериализации
         /// </summary>
         public static ISerializeErrorResult SerializeError<TValue>(TValue value, string description)
-            where TValue : notnull =>
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+            where TValue : notnull
+#endif
+            =>
             new SerializeErrorResult<TValue>(value, description);
 
         /// <summary>
         /// Создать ошибку десериализации
         /// </summary>
         public static IDeserializeErrorResult DeserializeError<TValue>(string value, string description)
-            where TValue : notnull =>
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+            where TValue : notnull
+#endif
+            =>
             new DeserializeErrorResult<TValue>(value, description);
 
         /// <summary>
@@ -117,7 +131,9 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// Создать ошибку неверного значения
         /// </summary>
         public static IValueNotValidErrorResult ValueNotValidError<TValue, TType>(TValue value, TType parentType, string description)
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
             where TValue : notnull
+#endif
             where TType : Type =>
             new ValueNotValidErrorResult<TValue, TType>(value, nameof(TValue));
 
@@ -125,7 +141,9 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// Создать ошибку дублирующего значения
         /// </summary>
         public static IValueDuplicateErrorResult ValueDuplicateError<TValue, TType>(TValue value, TType parentType, string description)
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
             where TValue : notnull
+#endif
             where TType : Type =>
             new ValueDuplicateErrorResult<TValue, TType>(value, nameof(TValue));
 
@@ -144,8 +162,7 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// <summary>
         /// Создать ошибку REST сервера с сообщением
         /// </summary>
-        public static RestMessageErrorResult RestError(RestErrorType restErrorType, HttpResponseMessage httpResponseMessage,
-                                                       string description) =>
-            new RestMessageErrorResult(restErrorType, httpResponseMessage, description);
+        public static RestMessageErrorResult RestError(RestErrorType restErrorType, string reasonPhrase, string description) =>
+            new RestMessageErrorResult(restErrorType, reasonPhrase, description);
     }
 }

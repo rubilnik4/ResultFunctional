@@ -102,7 +102,7 @@ namespace ResultFunctional.Models.Implementations.Results
         /// Добавить ошибку
         /// </summary>      
         public IResultError AppendError(IErrorResult error) =>
-            new ResultError(Errors.Append(error));
+            new ResultError(Errors.Concat(error));
 
         /// <summary>
         /// Добавить ошибку

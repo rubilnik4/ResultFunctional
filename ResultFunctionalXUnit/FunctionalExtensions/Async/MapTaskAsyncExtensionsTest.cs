@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             Assert.Equal(numberInitial.ToString(), stringFromNumber);
         }
-
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
         /// <summary>
         /// Проверка преобразования типов-задачи 
         /// </summary>
@@ -36,5 +36,6 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             Assert.Equal(numberInitial, number);
         }
+#endif
     }
 }
