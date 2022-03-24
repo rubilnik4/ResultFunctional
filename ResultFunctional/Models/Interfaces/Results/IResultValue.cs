@@ -12,7 +12,6 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// <summary>
         /// Значение
         /// </summary>
-        [AllowNull]
         TValue Value { get; }
 
         /// <summary>

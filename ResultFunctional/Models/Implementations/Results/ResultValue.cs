@@ -17,14 +17,14 @@ namespace ResultFunctional.Models.Implementations.Results
             : this(error.AsEnumerable()) { }
 
         public ResultValue(IEnumerable<IErrorResult> errors)
-            : this(default, errors)
+            : this(default!, errors)
         { }
 
         public ResultValue(TValue value)
             : this(value, Enumerable.Empty<IErrorResult>())
         { }
 
-        protected ResultValue([AllowNull] TValue value, IEnumerable<IErrorResult> errors)
+        protected ResultValue(TValue value, IEnumerable<IErrorResult> errors)
             : base(errors)
         {
             if (value == null && !Errors.Any()) throw new ArgumentNullException(nameof(errors));
@@ -34,7 +34,6 @@ namespace ResultFunctional.Models.Implementations.Results
         /// <summary>
         /// Значение
         /// </summary>
-        [AllowNull]
         public TValue Value { get; }
 
         /// <summary>

@@ -196,7 +196,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void RestMessageError()
         {
-            var errorResult = ErrorResultFactory.RestError(RestErrorType.BadRequest, new HttpResponseMessage(), "Ошибка");
+            var errorResult = ErrorResultFactory.RestError(RestErrorType.BadRequest, String.Empty, "Ошибка");
 
             Assert.IsType<RestMessageErrorResult>(errorResult);
             Assert.IsType<RestMessageErrorResult>(errorResult.AppendException(new Exception()));

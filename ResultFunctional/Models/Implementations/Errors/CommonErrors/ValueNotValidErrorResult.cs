@@ -13,7 +13,9 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
     /// </summary>
     public class ValueNotValidErrorResult<TValue, TType> : ErrorBaseResult<CommonErrorType, IValueNotValidErrorResult>,
                                                            IValueNotValidErrorResult
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
         where TValue : notnull
+#endif
         where TType : Type
     {
         public ValueNotValidErrorResult(TValue value, string description)

@@ -22,8 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <summary>
         /// Преобразовать значение в результирующий ответ с проверкой на нуль
         /// </summary>
-        public static IResultValue<TValue> ToResultValueNullValueCheck<TValue>([AllowNull] this TValue @this, IErrorResult errorNull)
-            where TValue : notnull =>
+        public static IResultValue<TValue> ToResultValueNullValueCheck<TValue>(this TValue @this, IErrorResult errorNull) =>
             @this != null
                 ? new ResultValue<TValue>(@this)
                 : new ResultValue<TValue>(errorNull);

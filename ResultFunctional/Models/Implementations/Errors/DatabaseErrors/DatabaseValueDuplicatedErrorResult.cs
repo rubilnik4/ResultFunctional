@@ -10,7 +10,9 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
     /// </summary>
     public class DatabaseValueDuplicatedErrorResult<TValue> : DatabaseValueErrorResult<TValue, IDatabaseValueDuplicatedErrorResult>, 
                                                               IDatabaseValueDuplicatedErrorResult
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
         where TValue : notnull
+#endif
     {
         public DatabaseValueDuplicatedErrorResult(TValue value, string tableName, string description)
             : this(value, tableName, description, null)

@@ -24,8 +24,8 @@ namespace ResultFunctional.Models.Implementations.Results
             : this(valueCollection, Enumerable.Empty<IErrorResult>())
         { }
 
-        protected ResultCollection([AllowNull] IEnumerable<TValue> valueCollection, IEnumerable<IErrorResult> errors)
-            : base(valueCollection!.ToList().AsReadOnly(), errors)
+        protected ResultCollection(IEnumerable<TValue> valueCollection, IEnumerable<IErrorResult> errors)
+            : base(valueCollection.ToList().AsReadOnly(), errors)
         { }
 
         /// <summary>
