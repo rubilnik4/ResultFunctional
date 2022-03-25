@@ -3,26 +3,25 @@ name: Build and Run
 on:  
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
+    
 jobs:  
   build:    
     runs-on: [self-hosted, windows]
     
     steps:      
       - uses: actions/checkout@v2
-
+      
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
-
-      - name: Restore Packages
-        run: dotnet restore ResultFunctional.sln
-
+        
       - name: Build Solution
-        run: |
-          dotnet msbuild ResultFunctional.sln /p:platform="Any CPU" /p:configuration="Release"
+        run: 
+          dotnet build ResultFunctional.sln -c Release
 
       - name: Test Solution
         run: |
-          dotnet test ResultFunctional.sln
+          dotnet test ResultFunctional.sln -c Release
+          
+      - name: Publish Nuget
+        run: | 
+          dotnet nuget push ./ResultFunctional/bin/Release/*.nupkg --skip-duplicate --no-symbols true --api-key ${{ secrets.NugetApiKey }} --source https://api.nuget.org/v3/index.json
