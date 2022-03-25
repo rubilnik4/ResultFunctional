@@ -1,0 +1,28 @@
+name: Build and Run
+
+on:  
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:  
+  build:    
+    runs-on: [self-hosted, windows]
+    
+    steps:      
+      - uses: actions/checkout@v2
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Restore Packages
+        run: dotnet restore ResultFunctional.sln
+
+      - name: Build Solution
+        run: |
+          dotnet msbuild ResultFunctional.sln /p:platform="Any CPU" /p:configuration="Release"
+
+      - name: Test Solution
+        run: |
+          dotnet test ResultFunctional.sln
