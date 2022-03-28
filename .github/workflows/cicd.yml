@@ -24,4 +24,4 @@ jobs:
           
       - name: Publish Nuget
         run: | 
-          dotnet nuget push ./ResultFunctional/ResultFunctional/bin/Release/*.nupkg --skip-duplicate --no-symbols true --api-key ${{ secrets.NugetApiKey }} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push .\ResultFunctional\bin\Release\*.nupkg --skip-duplicate --no-symbols true --api-key ${{ secrets.NugetApiKey }} --source https://api.nuget.org/v3/index.json
