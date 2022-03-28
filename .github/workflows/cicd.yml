@@ -21,6 +21,10 @@ jobs:
       - name: Test Solution
         run: |
           dotnet test ResultFunctional.sln -c Release
+
+      - name: Publish Github
+        run: | 
+          dotnet nuget push .\ResultFunctional\bin\Release\*.nupkg --skip-duplicate --no-symbols true --api-key ${{ secrets.GithubApiKey }} --source "github"
           
       - name: Publish Nuget
         run: | 
