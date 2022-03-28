@@ -22,10 +22,11 @@ jobs:
         run: |
           dotnet test ResultFunctional.sln -c Release
 
-      - name: Publish Github
-        run: | 
-          dotnet nuget push .\ResultFunctional\bin\Release\*.nupkg --skip-duplicate --no-symbols true --api-key ${{ secrets.GithubApiKey }} --source "github"
+      - name: NuGet push github
+        run: |
+          dotnet nuget add source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --name github --username ${{ github.repository_owner }} --password ${{ secrets.GithubApiKey }} --store-password-in-clear-text
+          dotnet nuget push .\ResultFunctional\bin\Release\*.nupkg --skip-duplicate --no-symbols true --source github
           
-      - name: Publish Nuget
+      - name: NuGet push nuget.org
         run: | 
-          dotnet nuget push .\ResultFunctional\bin\Release\*.nupkg --skip-duplicate --no-symbols true --api-key ${{ secrets.NugetApiKey }} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push .\ResultFunctional\bin\Release\*.nupkg  --api-key ${{ secrets.NugetApiKey }} --source https://api.nuget.org/v3/index.json
