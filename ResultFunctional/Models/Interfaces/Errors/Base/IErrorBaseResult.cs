@@ -16,7 +16,7 @@ namespace ResultFunctional.Models.Interfaces.Errors.Base
         /// <summary>
         /// Наличие типа ошибки
         /// </summary>
-        bool HasErrorType<TErrorType>()
-            where TErrorType : struct;
+        bool IsErrorType<TErrorTypeCompare>()
+            where TErrorTypeCompare : struct;
     }
 }

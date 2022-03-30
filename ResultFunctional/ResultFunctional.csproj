@@ -9,7 +9,7 @@
     <Description>Functional Library for c# code. Helps to manage with errors and exceptions wrighting your code in functional style.</Description>
     <PackageId>ResultFunctional</PackageId>
     <Copyright>Ivan Rubilnik</Copyright>
-    <Configurations>Debug;Release;Test</Configurations>   
+    <Configurations>Debug;Release</Configurations>   
     <AssemblyVersion>1.0.31.0</AssemblyVersion>
     <FileVersion>1.0.31.0</FileVersion>
     <Version>1.0.31</Version>
@@ -28,19 +28,11 @@
     <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Test|net6.0|AnyCPU'">
-    <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
     <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
-    <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Test|net5.0|AnyCPU'">
     <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
   </PropertyGroup>
 
@@ -52,10 +44,6 @@
     <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Test|netstandard2.0|AnyCPU'">
-    <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
     <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
   </PropertyGroup>
@@ -64,19 +52,11 @@
     <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Test|netstandard2.1|AnyCPU'">
-    <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
     <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
-    <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Test|net461|AnyCPU'">
     <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
   </PropertyGroup>
 </Project>

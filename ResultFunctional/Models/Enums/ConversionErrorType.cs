@@ -1,7 +1,7 @@
 ﻿namespace ResultFunctional.Models.Enums
 {
     /// <summary>
-    /// Типы ошибок преобразования
+    /// Conversion error types
     /// </summary>
     public enum ConversionErrorType
     {

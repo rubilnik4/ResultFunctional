@@ -1,7 +1,7 @@
 ﻿namespace ResultFunctional.Models.Enums
 {
     /// <summary>
-    /// Ошибки rest сервиса
+    /// Rest api error types
     /// </summary>
     public enum RestErrorType
     {

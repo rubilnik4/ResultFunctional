@@ -9,8 +9,10 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
 {
     /// <summary>
-    /// Ошибка неверного значения
+    /// Not valid error subtype
     /// </summary>
+    /// <typeparam name="TValue">Not valid instance</typeparam>
+    /// <typeparam name="TType">Type of not valid instance</typeparam>
     public class ValueNotValidErrorResult<TValue, TType> : ErrorBaseResult<CommonErrorType, IValueNotValidErrorResult>,
                                                            IValueNotValidErrorResult
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
@@ -18,10 +20,21 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
 #endif
         where TType : Type
     {
+        /// <summary>
+        /// Initialize not valid error
+        /// </summary>
+        /// <param name="value">Not valid instance</param>
+        /// <param name="description">Description</param>
         public ValueNotValidErrorResult(TValue value, string description)
            : this(value, description, null)
         { }
 
+        /// <summary>
+        /// Initialize not valid error
+        /// </summary>
+        /// <param name="value">Not valid instance</param>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
         protected ValueNotValidErrorResult(TValue value, string description, Exception? exception)
             : base(CommonErrorType.ValueNotValid, description, exception)
         {
@@ -29,19 +42,22 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
         }
 
         /// <summary>
-        /// Значение
+        /// Not valid value
         /// </summary>
         public TValue Value { get; }
 
         /// <summary>
-        /// Родительский класс
+        /// Type of not valid value
         /// </summary>
-        public Type ParentClass =>
-            typeof(TType);
+        public Type ValueType =>
+             typeof(TValue);
 
         /// <summary>
-        /// Инициализация ошибки
+        /// Initialize not valid error
         /// </summary>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
+        /// <returns>Duplicate error</returns>
         protected override IValueNotValidErrorResult InitializeType(string description, Exception? exception) =>
             new ValueNotValidErrorResult<TValue, TType>(Value, description, exception);
     }
