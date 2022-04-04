@@ -9,14 +9,25 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
 {
     /// <summary>
-    /// Ошибка подключения к базе данных
+    /// Database connection error
     /// </summary>
     public class DatabaseConnectionErrorResult : ErrorBaseResult<DatabaseErrorType, DatabaseConnectionErrorResult>
     {
+        /// <summary>
+        /// Initialize database connection error
+        /// </summary>
+        /// <param name="parameter">Database parameter name</param>
+        /// <param name="description">Description</param>
         public DatabaseConnectionErrorResult(string parameter, string description)
           : this(parameter, description, null)
         { }
 
+        /// <summary>
+        /// Initialize database connection error
+        /// </summary>
+        /// <param name="parameter">Database parameter</param>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
         public DatabaseConnectionErrorResult(string parameter, string description, Exception? exception)
             : base(DatabaseErrorType.Connection, description, exception)
         {
@@ -24,13 +35,16 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
         }
 
         /// <summary>
-        /// Имя параметра
+        /// Database parameter
         /// </summary>
         public string Parameter { get; }
 
         /// <summary>
-        /// Инициализация ошибки
+        /// Initialize database connection error
         /// </summary>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
+        /// <returns>Connection database error</returns>
         protected override DatabaseConnectionErrorResult InitializeType(string description, Exception? exception) =>
             new DatabaseConnectionErrorResult(Parameter, description, exception);
     }
