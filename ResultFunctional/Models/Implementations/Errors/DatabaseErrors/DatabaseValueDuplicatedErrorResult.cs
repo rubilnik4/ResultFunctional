@@ -6,7 +6,7 @@ using ResultFunctional.Models.Interfaces.Errors.DatabaseErrors;
 namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
 {
     /// <summary>
-    /// Database duplicate error
+    /// Database duplicate value error
     /// </summary>
     /// <typeparam name="TValue">Database value</typeparam>
     public class DatabaseValueDuplicatedErrorResult<TValue> : DatabaseValueErrorResult<TValue, IDatabaseValueDuplicatedErrorResult>,
@@ -16,7 +16,7 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
 #endif
     {
         /// <summary>
-        /// Initialize database duplicate error
+        /// Initialize database duplicate value error
         /// </summary>
         /// <param name="value">Duplicated value</param>
         /// <param name="tableName">Database table name</param>
@@ -37,11 +37,11 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
         { }
 
         /// <summary>
-        /// Initialize database duplicate error
+        /// Initialize database duplicate value error
         /// </summary>
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
-        /// <returns>Duplicate database error</returns>
+        /// <returns>Duplicate value database error</returns>
         protected override IDatabaseValueDuplicatedErrorResult InitializeType(string description, Exception? exception) =>
             new DatabaseValueDuplicatedErrorResult<TValue>(Value, TableName, description, exception);
     }

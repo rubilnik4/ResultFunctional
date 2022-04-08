@@ -1,7 +1,7 @@
 ﻿namespace ResultFunctional.Models.Interfaces.Errors.DatabaseErrors
 {
     /// <summary>
-    /// Ошибка отсутствующего поля в базе данных
+    /// Database not found value error
     /// </summary>
     public interface IDatabaseValueNotFoundErrorResult : IDatabaseValueErrorResult
     { }

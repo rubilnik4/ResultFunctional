@@ -9,16 +9,14 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
 {
     /// <summary>
-    /// Not valid error subtype
+    /// Not valid error
     /// </summary>
     /// <typeparam name="TValue">Not valid instance</typeparam>
-    /// <typeparam name="TType">Type of not valid instance</typeparam>
-    public class ValueNotValidErrorResult<TValue, TType> : ErrorBaseResult<CommonErrorType, IValueNotValidErrorResult>,
+    public class ValueNotValidErrorResult<TValue> : ErrorBaseResult<CommonErrorType, IValueNotValidErrorResult>,
                                                            IValueNotValidErrorResult
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
         where TValue : notnull
 #endif
-        where TType : Type
     {
         /// <summary>
         /// Initialize not valid error
@@ -59,6 +57,6 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
         /// <param name="exception">Exception</param>
         /// <returns>Duplicate error</returns>
         protected override IValueNotValidErrorResult InitializeType(string description, Exception? exception) =>
-            new ValueNotValidErrorResult<TValue, TType>(Value, description, exception);
+            new ValueNotValidErrorResult<TValue>(Value, description, exception);
     }
 }

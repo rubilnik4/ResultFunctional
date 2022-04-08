@@ -10,16 +10,14 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
 {
     /// <summary>
-    /// Duplicate error subtype
+    /// Duplicate error
     /// </summary>
     /// <typeparam name="TValue">Duplicate instance</typeparam>
-    /// <typeparam name="TType">Type of duplicate instance</typeparam>
-    public class ValueDuplicateErrorResult<TValue, TType> : ErrorBaseResult<CommonErrorType, IValueDuplicateErrorResult>,
+    public class ValueDuplicateErrorResult<TValue> : ErrorBaseResult<CommonErrorType, IValueDuplicateErrorResult>,
                                                             IValueDuplicateErrorResult
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
         where TValue : notnull
 #endif
-        where TType : Type
     {
         /// <summary>
         /// Initialize duplicate error
@@ -60,6 +58,6 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
         /// <param name="exception">Exception</param>
         /// <returns>Duplicate error</returns>
         protected override IValueDuplicateErrorResult InitializeType(string description, Exception? exception) =>
-            new ValueDuplicateErrorResult<TValue, TType>(Value, description, exception);
+            new ValueDuplicateErrorResult<TValue>(Value, description, exception);
     }
 }

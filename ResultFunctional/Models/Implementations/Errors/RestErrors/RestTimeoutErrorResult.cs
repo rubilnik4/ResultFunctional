@@ -5,14 +5,27 @@ using ResultFunctional.Models.Implementations.Errors.Base;
 namespace ResultFunctional.Models.Implementations.Errors.RestErrors
 {
     /// <summary>
-    /// Ошибка сервера. Истекло время ожидания
+    /// Timeout rest error
     /// </summary>
     public class RestTimeoutErrorResult : RestErrorResult<RestTimeoutErrorResult>
     {
+        /// <summary>
+        /// Initialize timeout rest error
+        /// </summary>
+        /// <param name="host">Host</param>
+        /// <param name="timeout">Timeout</param>
+        /// <param name="description">Description</param>
         public RestTimeoutErrorResult(string host, TimeSpan timeout, string description)
             : this(host, timeout, description, null)
         { }
 
+        /// <summary>
+        /// Initialize timeout rest error
+        /// </summary>
+        /// <param name="host">Host</param>
+        /// <param name="timeout">Timeout</param>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
         protected RestTimeoutErrorResult(string host, TimeSpan timeout, string description, Exception? exception)
             : base(RestErrorType.RequestTimeout, description, exception)
         {
@@ -21,18 +34,20 @@ namespace ResultFunctional.Models.Implementations.Errors.RestErrors
         }
 
         /// <summary>
-        /// Адрес сервера
+        /// Host
         /// </summary>
         public string Host { get; }
 
         /// <summary>
-        /// Время ожидания
+        /// Timeout
         /// </summary>
         public TimeSpan Timeout { get; }
 
         /// <summary>
-        /// Инициализация ошибки
+        /// Initialize timeout rest error
         /// </summary>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
         protected override RestTimeoutErrorResult InitializeType(string description, Exception? exception) =>
             new RestTimeoutErrorResult(Host, Timeout, description, exception);
     }

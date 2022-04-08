@@ -12,7 +12,7 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
     /// <summary>
     /// Deserialize error
     /// </summary>
-    /// <typeparam name="TValue">Deserialize instance</typeparam>
+    /// <typeparam name="TValue">Deserialize type</typeparam>
     public class DeserializeErrorResult<TValue> : ErrorBaseResult<ConversionErrorType, IDeserializeErrorResult>, 
                                                   IDeserializeErrorResult
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER

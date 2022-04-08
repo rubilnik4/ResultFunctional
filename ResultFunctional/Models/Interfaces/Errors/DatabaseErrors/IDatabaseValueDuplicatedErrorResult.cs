@@ -1,7 +1,7 @@
 ﻿namespace ResultFunctional.Models.Interfaces.Errors.DatabaseErrors
 {
     /// <summary>
-    /// Ошибка дублирующего поля в базе данных
+    /// Database duplicate value error
     /// </summary>
     public interface IDatabaseValueDuplicatedErrorResult: IDatabaseValueErrorResult
     { }

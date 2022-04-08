@@ -9,14 +9,12 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
 {
     /// <summary>
-    /// Not found error subtype
+    /// Not found error
     /// </summary>
-    /// <typeparam name="TValue">Not valid instance</typeparam>
-    /// <typeparam name="TType">Type of not valid instance</typeparam>
-    public class ValueNotFoundErrorResult<TValue, TType> : ErrorBaseResult<CommonErrorType, IValueNotFoundErrorResult>, 
+    /// <typeparam name="TValue">Not found instance</typeparam>
+    public class ValueNotFoundErrorResult<TValue> : ErrorBaseResult<CommonErrorType, IValueNotFoundErrorResult>, 
                                                            IValueNotFoundErrorResult
         where TValue : notnull
-        where TType : Type
     {
         /// <summary>
         /// Initialize not found error
@@ -48,6 +46,6 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
         /// <param name="exception">Exception</param>
         /// <returns>Duplicate error</returns>
         protected override IValueNotFoundErrorResult InitializeType(string description, Exception? exception) =>
-            new ValueNotFoundErrorResult<TValue, TType>(description, exception);
+            new ValueNotFoundErrorResult<TValue>(description, exception);
     }
 }

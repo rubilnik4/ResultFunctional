@@ -12,7 +12,7 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
     /// <summary>
     /// Serialize error
     /// </summary>
-    /// <typeparam name="TValue">Serialize instance</typeparam>
+    /// <typeparam name="TValue">Serialize type</typeparam>
     public class SerializeErrorResult<TValue> : ErrorBaseResult<ConversionErrorType, ISerializeErrorResult>, ISerializeErrorResult
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
         where TValue : notnull
@@ -21,7 +21,7 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
         /// <summary>
         /// Initialize serialize error
         /// </summary>
-        /// <param name="value">Deserialize instance</param>
+        /// <param name="value">Serialize instance</param>
         /// <param name="description">Description</param>
         public SerializeErrorResult(TValue value, string description)
           : this(value, description, null)
@@ -30,7 +30,7 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
         /// <summary>
         /// Initialize serialize error
         /// </summary>
-        /// <param name="value">Deserialize instance</param>
+        /// <param name="value">Serialize instance</param>
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
         protected SerializeErrorResult(TValue value, string description, Exception? exception)
