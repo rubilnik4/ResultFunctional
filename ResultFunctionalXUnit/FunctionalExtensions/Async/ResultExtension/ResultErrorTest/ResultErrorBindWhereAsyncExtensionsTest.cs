@@ -23,7 +23,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var addingResult = new ResultError();
 
             var result =await initialResult.ResultErrorBindOkBadAsync(() => ResultErrorFactory.CreateTaskResultError(addingResult),
-                                                            _ => ResultErrorFactory.CreateTaskResultErrorAsync(CreateErrorTest()));
+                                                            _ => ResultErrorFactory.CreateTaskResultError(CreateErrorTest()));
 
             Assert.True(result.OkStatus);
         }

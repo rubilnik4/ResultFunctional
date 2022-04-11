@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Http;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Errors.Base;
 using ResultFunctional.Models.Interfaces.Errors.Base;

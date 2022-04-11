@@ -2,6 +2,7 @@
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Errors;
 using ResultFunctional.Models.Implementations.Errors.Base;
+using ResultFunctional.Models.Implementations.Errors.CommonErrors;
 using ResultFunctional.Models.Implementations.Errors.DatabaseErrors;
 using ResultFunctional.Models.Interfaces.Errors.DatabaseErrors;
 using ResultFunctionalXUnit.Data;
@@ -23,10 +24,11 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
 
-            bool hasType = errorResult.HasErrorType<CommonErrorType>();
+            bool hasType = errorResult.IsErrorType<CommonErrorType>();
 
             Assert.True(hasType);
         }
+
 
         /// <summary>
         /// Наличие типа ошибки
@@ -36,7 +38,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = ErrorResultFactory.DatabaseValueNotValidError("Test", "TestTable", "Неизвестная ошибка");
 
-            bool hasType = errorResult.HasErrorType<DatabaseErrorType>();
+            bool hasType = errorResult.IsErrorType<DatabaseErrorType>();
 
             Assert.True(hasType);
         }
@@ -115,8 +117,8 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var error = CreateErrorTest();
 
-            Assert.IsType<ErrorTypeResult<TestErrorType>>(error);
-            Assert.Equal(((ErrorTypeResult<TestErrorType>)error).ErrorType.ToString(), error.ToString());
+            Assert.IsType<CommonErrorResult>(error);
+            Assert.Equal(((CommonErrorResult)error).ErrorType.ToString(), error.ToString());
         }
 
         /// <summary>

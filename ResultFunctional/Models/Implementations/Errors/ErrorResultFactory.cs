@@ -31,6 +31,17 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// <summary>
         /// Create common error type
         /// </summary>
+        /// <typeparam name="TErrorType">Error type</typeparam>
+        /// <param name="errorType">Error subtype</param>
+        /// <param name="description">Description</param>
+        /// <returns>Common error type</returns>
+        public static ErrorTypeResult<TErrorType> ErrorType<TErrorType>(TErrorType errorType, string description)
+            where TErrorType : struct =>
+            new ErrorTypeResult<TErrorType>(errorType, description);
+
+        /// <summary>
+        /// Create common error type
+        /// </summary>
         /// <param name="commonErrorType">Common error type</param>
         /// <param name="description">Description</param>
         /// <returns>Common error type</returns>

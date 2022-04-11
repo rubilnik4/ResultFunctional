@@ -9,7 +9,7 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Results
 {
     /// <summary>
-    /// Базовый вариант ответа
+    /// Result error without value
     /// </summary>
     public class ResultError : IResultError
     {

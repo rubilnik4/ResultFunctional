@@ -63,7 +63,7 @@ namespace ResultFunctionalXUnit.Models.ResultFactory
         {
             int initialValue = Numbers.Number;
 
-            var resultValue = await ResultValueFactory.CreateTaskResultValueAsync(initialValue);
+            var resultValue = await ResultValueFactory.CreateTaskResultValue(initialValue);
 
             Assert.True(resultValue.OkStatus);
             Assert.Equal(initialValue, resultValue.Value);
@@ -77,7 +77,7 @@ namespace ResultFunctionalXUnit.Models.ResultFactory
         {
             var initialError = CreateErrorTest();
 
-            var resultValue = await ResultValueFactory.CreateTaskResultValueErrorAsync<int>(initialError);
+            var resultValue = await ResultValueFactory.CreateTaskResultValueError<int>(initialError);
 
             Assert.True(resultValue.HasErrors);
             Assert.True(initialError.Equals(resultValue.Errors.First()));
@@ -91,7 +91,7 @@ namespace ResultFunctionalXUnit.Models.ResultFactory
         {
             var initialError = CreateErrorListTwoTest();
 
-            var resultValue = await ResultValueFactory.CreateTaskResultValueErrorAsync<int>(initialError);
+            var resultValue = await ResultValueFactory.CreateTaskResultValueError<int>(initialError);
 
             Assert.True(resultValue.HasErrors);
             Assert.True(initialError.SequenceEqual(resultValue.Errors));

@@ -24,7 +24,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var result = await ResultErrorFactory.CreateTaskResultError(initialResult).
                                ResultErrorBindOkBadBindAsync(() => ResultErrorFactory.CreateTaskResultError(addingResult),
-                                                            _ => ResultErrorFactory.CreateTaskResultErrorAsync(CreateErrorTest()));
+                                                            _ => ResultErrorFactory.CreateTaskResultError(CreateErrorTest()));
 
             Assert.True(result.OkStatus);
         }
