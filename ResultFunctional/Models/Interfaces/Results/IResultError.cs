@@ -6,77 +6,97 @@ using ResultFunctional.Models.Interfaces.Errors.Base;
 namespace ResultFunctional.Models.Interfaces.Results
 {
     /// <summary>
-    /// Базовый вариант ответа
+    /// Result error without value
     /// </summary>
     public interface IResultError
     {
         /// <summary>
-        /// Список ошибок
+        /// Errors
         /// </summary>
         IReadOnlyCollection<IErrorResult> Errors { get; }
 
         /// <summary>
-        /// Отсутствие ошибок
+        /// Has no errors
         /// </summary>
         bool OkStatus { get; }
 
         /// <summary>
-        /// Присутствуют ли ошибки
+        /// Has error
         /// </summary>
         bool HasErrors { get; }
 
         /// <summary>
-        /// Присутствует(является) ли тип ошибки
+        /// Is error result type equal to current type
         /// </summary>
+        /// <typeparam name="TError">Error result type</typeparam>
+        /// <returns><see langword="true"/> if error equal to the current type; otherwise <see langword="false"/></returns>
         bool IsError<TError>() where TError : IErrorResult;
 
         /// <summary>
-        /// Присутствует(включен) ли тип ошибки
+        /// Is error result type equal to current or base type
         /// </summary>
+        /// <typeparam name="TError">Error result type</typeparam>
+        /// <returns><see langword="true"/> if error equal or derived to the current type; otherwise <see langword="false"/></returns>
         bool HasError<TError>() where TError : IErrorResult;
 
         /// <summary>
-        /// Получить типы ошибок
+        /// Get type of errors
         /// </summary>
-        IReadOnlyCollection<Type> GetErrorTypes();
+        /// <returns>Errors types</returns>
+        IReadOnlyCollection<Type> GetErrorByTypes();
 
         /// <summary>
-        /// Присутствует ли тип ошибки
+        /// Is error type equal to current or base error type
         /// </summary>
+        /// <typeparam name="TErrorType">Error type</typeparam>
+        /// <returns><see langword="true"/> if error type equal to the current error type; otherwise <see langword="false"/></returns>
         bool HasErrorType<TErrorType>()
             where TErrorType : struct;
 
         /// <summary>
-        /// Присутствует ли тип ошибки
+        /// Is error type equal to current or base error type
         /// </summary>
+        /// <typeparam name="TErrorType">Error type</typeparam>
+        /// <param name="errorType">Error type</param>
+        /// <returns><see langword="true"/> if error type equal to the current error type; otherwise <see langword="false"/></returns>
         bool HasErrorType<TErrorType>(TErrorType errorType)
             where TErrorType : struct;
 
         /// <summary>
-        /// Получить ошибку
-        /// </summary>      
-        IErrorBaseResult<TErrorType>? GetErrorType<TErrorType>()
+        /// Get error filtered by error type
+        /// </summary>
+        /// <typeparam name="TErrorType">Error type</typeparam>
+        /// <returns>Base error result filtered by error type</returns>
+        IErrorBaseResult<TErrorType>? GetErrorByType<TErrorType>()
             where TErrorType : struct;
 
         /// <summary>
-        /// Получить ошибку
-        /// </summary>      
-        IReadOnlyCollection<IErrorBaseResult<TErrorType>> GetErrorTypes<TErrorType>()
+        /// Get errors filtered by error type
+        /// </summary>
+        /// <typeparam name="TErrorType">Error type</typeparam>
+        /// <returns>Base errors result filtered by error type</returns>   
+        IReadOnlyCollection<IErrorBaseResult<TErrorType>> GetErrorsByTypes<TErrorType>()
             where TErrorType : struct;
 
         /// <summary>
-        /// Добавить ошибку
-        /// </summary>      
+        /// Add error to result
+        /// </summary>
+        /// <param name="error">Error</param>
+        /// <returns>Result with error</returns>      
         IResultError AppendError(IErrorResult error);
 
         /// <summary>
-        /// Добавить ошибки
-        /// </summary>      
+        /// Add errors to result
+        /// </summary>
+        /// <param name="errors">Errors</param>
+        /// <returns>Result with error</returns>   
         IResultError ConcatErrors(IEnumerable<IErrorResult> errors);
 
         /// <summary>
-        /// Добавить ошибки из результирующего ответа
-        /// </summary>      
+        /// Add values and errors to current result
+        /// </summary>
+        /// <param name="result">Result error</param>
+        /// <returns>Result error</returns>
         IResultError ConcatResult(IResultError result);
     }
 }

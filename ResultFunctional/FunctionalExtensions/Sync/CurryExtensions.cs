@@ -17,7 +17,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync
         /// Преобразование функции высшего порядка для двух аргументов
         /// </summary>
         public static Func<TIn2, TOut> Curry<TIn1, TIn2, TOut>(this Func<TIn1, TIn2, TOut> @this, TIn1 arg1) =>
-            (arg2) => @this(arg1, arg2);
+            arg2 => @this(arg1, arg2);
 
         /// <summary>
         /// Преобразование функции высшего порядка для трех аргументов

@@ -3,19 +3,22 @@
 namespace ResultFunctional.Models.Interfaces.Errors.Base
 {
     /// <summary>
-    /// Ошибка результирующего ответа
+    /// Base error with type
     /// </summary>
-    public interface IErrorBaseResult<out TError> : IErrorResult, IFormattable
-        where TError : struct
+    /// <typeparam name="TErrorType">Error type</typeparam>
+    public interface IErrorBaseResult<out TErrorType> : IErrorResult, IFormattable
+        where TErrorType : struct
     {
         /// <summary>
-        /// Тип ошибки при конвертации файлов
+        /// Error type
         /// </summary>
-        TError ErrorType { get; }
+        TErrorType ErrorType { get; }
 
         /// <summary>
-        /// Наличие типа ошибки
+        /// Is error type equal to current error type
         /// </summary>
+        /// <typeparam name="TErrorTypeCompare">Error type</typeparam>
+        /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
         bool IsErrorType<TErrorTypeCompare>()
             where TErrorTypeCompare : struct;
     }

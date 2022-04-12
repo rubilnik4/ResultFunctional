@@ -4,28 +4,36 @@ using ResultFunctional.Models.Interfaces.Errors.Base;
 namespace ResultFunctional.Models.Interfaces.Results
 {
     /// <summary>
-    /// Базовый вариант ответа с коллекцией
+    /// Result with value collection
     /// </summary>
+    /// <typeparam name="TValue">Value parameter</typeparam>
     public interface IResultCollection<out TValue> : IResultValue<IReadOnlyCollection<TValue>>
     {
         /// <summary>
-        /// Добавить ошибку
-        /// </summary>      
+        /// Add error to result
+        /// </summary>
+        /// <param name="error">Error</param>
+        /// <returns>Result collection with error</returns> 
         new IResultCollection<TValue> AppendError(IErrorResult error);
 
         /// <summary>
-        /// Добавить ошибку
-        /// </summary>      
+        /// Add errors to result
+        /// </summary>
+        /// <param name="errors">Errors</param>
+        /// <returns>Result collection with error</returns>       
         new IResultCollection<TValue> ConcatErrors(IEnumerable<IErrorResult> errors);
 
         /// <summary>
-        /// Добавить ошибки из результирующего ответа
-        /// </summary>      
+        /// Add values and errors to current result
+        /// </summary>
+        /// <param name="result">Result error</param>
+        /// <returns>Result collection</returns>
         new IResultCollection<TValue> ConcatResult(IResultError result);
 
         /// <summary>
-        /// Преобразовать в результирующий ответ со значением
+        /// Convert to result value with collection parameter
         /// </summary>
+        /// <returns>Result value with collection parameter</returns>
         IResultValue<IReadOnlyCollection<TValue>> ToResultValue();
     }
 }
