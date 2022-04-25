@@ -8,21 +8,33 @@ using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCo
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со связыванием с коллекцией и обработкой исключений
+    /// Extension methods for result collection monad function with conditions and exception handling
     /// </summary>
     public static class ResultCollectionBindTryWhereExtensions
     {
         /// <summary>
-        /// Связать результирующий ответ со значением со связыванием с обработкой функции при положительном условии
+        /// Execute result collection function in no error case; else catch exception
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="func">Monad result collection function</param>
+        /// <param name="exceptionFunc">Exception function</param>
+        /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValueOut> ResultCollectionBindTryOk<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                   Func<IReadOnlyCollection<TValueIn>, IResultCollection<TValueOut>> func,
                                                                                                   Func<Exception, IErrorResult> exceptionFunc) =>
             @this.ResultCollectionBindOk(value => ResultCollectionBindTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
-        /// Связать результирующий ответ со значением со связыванием с обработкой функции при положительном условии
+        /// Execute result collection function in no error case; else catch exception
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="func">Monad result collection function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValueOut> ResultCollectionBindTryOk<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                   Func<IReadOnlyCollection<TValueIn>, IResultCollection<TValueOut>> func,
                                                                                                   IErrorResult error) =>
