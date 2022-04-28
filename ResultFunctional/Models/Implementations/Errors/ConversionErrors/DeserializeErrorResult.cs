@@ -10,18 +10,30 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
 {
     /// <summary>
-    /// Ошибка десериализации
+    /// Deserialize error
     /// </summary>
+    /// <typeparam name="TValue">Deserialize type</typeparam>
     public class DeserializeErrorResult<TValue> : ErrorBaseResult<ConversionErrorType, IDeserializeErrorResult>, 
                                                   IDeserializeErrorResult
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
         where TValue : notnull
 #endif
     {
+        /// <summary>
+        /// Initialize deserialize error
+        /// </summary>
+        /// <param name="value">Deserialize instance</param>
+        /// <param name="description">Description</param>
         public DeserializeErrorResult(string value, string description)
             : this(value, description, null)
         { }
 
+        /// <summary>
+        /// Initialize deserialize error
+        /// </summary>
+        /// <param name="value">Deserialize instance</param>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
         protected DeserializeErrorResult(string value, string description, Exception? exception)
             : base(ConversionErrorType.JsonConversion, description, exception)
         {
@@ -29,19 +41,22 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
         }
 
         /// <summary>
-        /// Конвертируемый параметр
+        /// Deserialize value
         /// </summary>
         public string Value { get; }
 
         /// <summary>
-        /// Тип конвертации
+        /// Type of not valid value
         /// </summary>
-        public Type DeserializeType => 
-            typeof(TValue);
+        public Type ValueType =>
+             typeof(TValue);
 
         /// <summary>
-        /// Инициализация ошибки
+        /// Initialize deserialize error
         /// </summary>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
+        /// <returns>Deserialize error</returns>
         protected override IDeserializeErrorResult InitializeType(string description, Exception? exception) =>
             new DeserializeErrorResult<TValue>(Value, description, exception);
     }

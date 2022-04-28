@@ -10,17 +10,29 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
 {
     /// <summary>
-    /// Ошибка сериализации
+    /// Serialize error
     /// </summary>
+    /// <typeparam name="TValue">Serialize type</typeparam>
     public class SerializeErrorResult<TValue> : ErrorBaseResult<ConversionErrorType, ISerializeErrorResult>, ISerializeErrorResult
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
         where TValue : notnull
 #endif
     {
+        /// <summary>
+        /// Initialize serialize error
+        /// </summary>
+        /// <param name="value">Serialize instance</param>
+        /// <param name="description">Description</param>
         public SerializeErrorResult(TValue value, string description)
           : this(value, description, null)
         { }
 
+        /// <summary>
+        /// Initialize serialize error
+        /// </summary>
+        /// <param name="value">Serialize instance</param>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
         protected SerializeErrorResult(TValue value, string description, Exception? exception)
             : base(ConversionErrorType.JsonConversion, description, exception)
         {
@@ -28,13 +40,22 @@ namespace ResultFunctional.Models.Implementations.Errors.ConversionErrors
         }
 
         /// <summary>
-        /// Конвертируемый параметр
+        /// Serialize value
         /// </summary>
         public TValue Value { get; }
 
         /// <summary>
-        /// Инициализация ошибки
+        /// Type of not valid value
         /// </summary>
+        public Type ValueType =>
+             typeof(TValue);
+
+        /// <summary>
+        /// Initialize serialize error
+        /// </summary>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
+        /// <returns>Serialize error</returns>
         protected override ISerializeErrorResult InitializeType(string description, Exception? exception) =>
             new SerializeErrorResult<TValue>(Value, description, exception);
     }

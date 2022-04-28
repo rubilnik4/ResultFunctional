@@ -6,7 +6,7 @@ using ResultFunctional.Models.Interfaces.Errors.Base;
 namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
 {
     /// <summary>
-    /// Простая ошибка
+    /// Error without subtype
     /// </summary>
     public class SimpleErrorResult : ErrorResult
     {
@@ -19,14 +19,17 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
         { }
 
         /// <summary>
-        /// Идентификатор ошибки
+        /// ID as type name 
         /// </summary>
         public override string Id =>
             GetType().Name;
 
         /// <summary>
-        /// Инициализация ошибки
+        /// Initialize simple error
         /// </summary>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
+        /// <returns>Simple error</returns>
         protected override IErrorResult Initialize(string description, Exception? exception) =>
             new SimpleErrorResult(description, exception);
     }

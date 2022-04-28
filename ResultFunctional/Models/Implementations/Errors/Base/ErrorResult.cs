@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
@@ -8,14 +9,23 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors.Base
 {
     /// <summary>
-    /// Ошибка результирующего ответа
+    /// Base error
     /// </summary>
     public abstract class ErrorResult : IErrorResult
     {
+        /// <summary>
+        /// Initialize error
+        /// </summary>
+        /// <param name="description">Description</param>
         protected ErrorResult(string description)
             : this(description, null)
         { }
 
+        /// <summary>
+        /// Initialize error
+        /// </summary>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
         protected ErrorResult(string description, Exception? exception)
         {
             Description = description;
@@ -23,60 +33,74 @@ namespace ResultFunctional.Models.Implementations.Errors.Base
         }
 
         /// <summary>
-        /// Идентификатор ошибки
+        /// Error type ID
         /// </summary>
         public abstract string Id { get; }
 
         /// <summary>
-        /// Описание ошибки
+        /// Description
         /// </summary>
         public string Description { get; }
 
         /// <summary>
-        /// Исключение
+        /// Exception
         /// </summary>
         public Exception? Exception { get; }
 
         /// <summary>
-        /// Инициализация ошибки
+        /// Initialize base error
         /// </summary>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
+        /// <returns>Base error initialized by derived</returns>
         protected abstract IErrorResult Initialize(string description, Exception? exception);
 
         /// <summary>
-        /// Является ли типом ошибки
+        /// Is error result type equal to current type
         /// </summary>
-        public bool IsErrorResult<TErrorType>()
-            where TErrorType : IErrorResult =>
-            GetType() == typeof(TErrorType);
+        /// <typeparam name="TErrorResult">Error result type</typeparam>
+        /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
+        public bool IsErrorResult<TErrorResult>()
+            where TErrorResult : IErrorResult =>
+            GetType() == typeof(TErrorResult);
 
         /// <summary>
-        /// Наличие типа ошибки
+        /// Is error result type equal to current or base type
         /// </summary>
-        public bool HasErrorResult<TErrorType>()
-            where TErrorType : IErrorResult =>
-            this is TErrorType;
+        /// <typeparam name="TErrorResult">Error result type</typeparam>
+        /// <returns><see langword="true"/> if error equal to the type or base type; otherwise <see langword="false"/></returns>
+        public bool HasErrorResult<TErrorResult>()
+            where TErrorResult : IErrorResult =>
+            this is TErrorResult;
 
         /// <summary>
-        /// Добавить или заменить исключение
+        /// Create error with exception and base parameters.
         /// </summary>
+        /// <param name="exception">Exception</param>
+        /// <returns>Base error initialized with exception</returns>
         public IErrorResult AppendException(Exception exception) =>
             Initialize(Description, exception);
 
         /// <summary>
-        /// Преобразовать в ответ
-        /// </summary>      
+        /// Converting to result type
+        /// </summary>
+        /// <returns>Result without specific type</returns>
         public IResultError ToResult() =>
             new ResultError(this);
 
         /// <summary>
-        /// Преобразовать в ответ с вложенным типом
-        /// </summary>      
+        /// Converting to result type with value
+        /// </summary>
+        /// <typeparam name="TValue">Specific result type</typeparam>
+        /// <returns>Result with specific type</returns>
         public IResultValue<TValue> ToResultValue<TValue>() =>
             new ResultValue<TValue>(this);
 
         /// <summary>
-        /// Преобразовать в ответ с вложенной коллекцией
-        /// </summary>      
+        /// Converting to result collection type with value
+        /// </summary>
+        /// <typeparam name="TValue">Specific result type</typeparam>
+        /// <returns>Result with specific collection type</returns>
         public IResultCollection<TValue> ToResultCollection<TValue>() =>
             new ResultCollection<TValue>(this);
 

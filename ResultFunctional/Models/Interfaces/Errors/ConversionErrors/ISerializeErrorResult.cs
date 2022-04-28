@@ -4,7 +4,7 @@ using ResultFunctional.Models.Interfaces.Errors.Base;
 namespace ResultFunctional.Models.Interfaces.Errors.ConversionErrors
 {
     /// <summary>
-    /// Ошибка сериализации
+    /// Serialize error
     /// </summary>
     public interface ISerializeErrorResult: IErrorBaseResult<ConversionErrorType>
     { }

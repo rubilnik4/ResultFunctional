@@ -9,37 +9,43 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
 {
     /// <summary>
-    /// Ошибка отсутствующего значения
+    /// Not found error
     /// </summary>
-    public class ValueNotFoundErrorResult<TValue, TType> : ErrorBaseResult<CommonErrorType, IValueNotFoundErrorResult>, 
+    /// <typeparam name="TValue">Not found instance</typeparam>
+    public class ValueNotFoundErrorResult<TValue> : ErrorBaseResult<CommonErrorType, IValueNotFoundErrorResult>, 
                                                            IValueNotFoundErrorResult
         where TValue : notnull
-        where TType : Type
     {
+        /// <summary>
+        /// Initialize not found error
+        /// </summary>
+        /// <param name="description">Description</param>
         public ValueNotFoundErrorResult(string description)
            : this(description, null)
         { }
 
+        /// <summary>
+        /// Initialize not found error
+        /// </summary>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
         protected ValueNotFoundErrorResult(string description, Exception? exception)
             : base(CommonErrorType.ValueNotFound, description, exception)
         { }
 
         /// <summary>
-        /// Параметр
+        /// Type of not found value
         /// </summary>
         public Type ValueType =>
              typeof(TValue);
 
         /// <summary>
-        /// Родительский класс
+        /// Initialize not found error
         /// </summary>
-        public Type ParentClass =>
-            typeof(TType);
-
-        /// <summary>
-        /// Инициализация ошибки
-        /// </summary>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
+        /// <returns>Duplicate error</returns>
         protected override IValueNotFoundErrorResult InitializeType(string description, Exception? exception) =>
-            new ValueNotFoundErrorResult<TValue, TType>(description, exception);
+            new ValueNotFoundErrorResult<TValue>(description, exception);
     }
 }

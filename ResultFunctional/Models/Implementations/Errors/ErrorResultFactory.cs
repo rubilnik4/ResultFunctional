@@ -16,56 +16,81 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors
 {
     /// <summary>
-    /// Фабрика создания типов ошибок
+    /// Error factory
     /// </summary>
     public static class ErrorResultFactory
     {
         /// <summary>
-        /// Создать ошибку с типом данных
+        /// Create simple error
         /// </summary>
+        /// <param name="description">Description</param>
+        /// <returns>Simple error</returns>
         public static SimpleErrorResult SimpleErrorType(string description) =>
             new SimpleErrorResult(description);
 
         /// <summary>
-        /// Создать ошибку с типом данных
+        /// Create common error type
         /// </summary>
-        public static IErrorResult ErrorType<TError>(TError error, string description)
-            where TError : struct =>
-            new ErrorTypeResult<TError>(error, description);
+        /// <typeparam name="TErrorType">Error type</typeparam>
+        /// <param name="errorType">Error subtype</param>
+        /// <param name="description">Description</param>
+        /// <returns>Common error type</returns>
+        public static ErrorTypeResult<TErrorType> ErrorType<TErrorType>(TErrorType errorType, string description)
+            where TErrorType : struct =>
+            new ErrorTypeResult<TErrorType>(errorType, description);
 
         /// <summary>
-        /// Создать ошибку общего типа
+        /// Create common error type
         /// </summary>
+        /// <param name="commonErrorType">Common error type</param>
+        /// <param name="description">Description</param>
+        /// <returns>Common error type</returns>
         public static CommonErrorResult CommonError(CommonErrorType commonErrorType, string description) =>
             new CommonErrorResult(commonErrorType, description);
 
         /// <summary>
-        /// Создать ошибку авторизации
+        /// Create authorize error
         /// </summary>
+        /// <param name="authorizeErrorType">Authorize error type</param>
+        /// <param name="description">Description</param>
+        /// <returns>Authorize error</returns>
         public static AuthorizeErrorResult AuthorizeError(AuthorizeErrorType authorizeErrorType, string description) =>
             new AuthorizeErrorResult(authorizeErrorType, description);
 
         /// <summary>
-        /// Создать ошибку сохранения базы данных
+        /// Create database save transaction error
         /// </summary>
+        /// <param name="description">Description</param>
+        /// <returns>Database save transaction error</returns>
         public static DatabaseSaveErrorResult DatabaseSaveError(string description) =>
             new DatabaseSaveErrorResult(description);
 
         /// <summary>
-        /// Создать ошибку подключения к базе данных
+        /// Create database connection error
         /// </summary>
+        /// <param name="parameter">Database parameter name</param>
+        /// <param name="description">Description</param>
+        /// <returns>Database connection error</returns>
         public static DatabaseConnectionErrorResult DatabaseConnectionError(string parameter, string description) =>
             new DatabaseConnectionErrorResult(parameter, description);
 
         /// <summary>
-        /// Создать ошибку таблицы базы данных
+        /// Create table access database error
         /// </summary>
+        /// <param name="tableName">Database table name</param>
+        /// <param name="description">Description</param>
+        /// <returns>Table access database error</returns>
         public static DatabaseAccessErrorResult DatabaseAccessError(string tableName, string description) =>
             new DatabaseAccessErrorResult(tableName, description);
 
         /// <summary>
-        /// Создать ошибку отсутствующего значения в базе данных
+        /// Create database not found value error
         /// </summary>
+        /// <typeparam name="TValue">Database value</typeparam>
+        /// <param name="value">>Database value</param>
+        /// <param name="tableName">Database table name</param>
+        /// <param name="description">Description</param>
+        /// <returns>Database not found value error</returns>
         public static IDatabaseValueNotFoundErrorResult DatabaseValueNotFoundError<TValue>(TValue value, string tableName, string description)
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
             where TValue : notnull
@@ -74,8 +99,13 @@ namespace ResultFunctional.Models.Implementations.Errors
             new DatabaseValueNotFoundErrorResult<TValue>(value, tableName, description);
 
         /// <summary>
-        /// Создать ошибку некорректного значения в базе данных
+        /// Create database not valid value error
         /// </summary>
+        /// <typeparam name="TValue">Database value</typeparam>
+        /// <param name="value">>Database value</param>
+        /// <param name="tableName">Database table name</param>
+        /// <param name="description">Description</param>
+        /// <returns>Database not valid value error</returns>
         public static IDatabaseValueNotValidErrorResult DatabaseValueNotValidError<TValue>(TValue value, string tableName, string description)
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
             where TValue : notnull
@@ -84,8 +114,13 @@ namespace ResultFunctional.Models.Implementations.Errors
             new DatabaseValueNotValidErrorResult<TValue>(value, tableName, description);
 
         /// <summary>
-        /// Создать ошибку дублирующего значения в базе данных
+        /// Create database duplicate value error
         /// </summary>
+        /// <typeparam name="TValue">Database value</typeparam>
+        /// <param name="value">>Database value</param>
+        /// <param name="tableName">Database table name</param>
+        /// <param name="description">Description</param>
+        /// <returns>Database duplicate value error</returns>
         public static IDatabaseValueDuplicatedErrorResult DatabaseValueDuplicateError<TValue>(TValue value, string tableName, string description)
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
             where TValue : notnull
@@ -94,8 +129,12 @@ namespace ResultFunctional.Models.Implementations.Errors
             new DatabaseValueDuplicatedErrorResult<TValue>(value, tableName, description);
 
         /// <summary>
-        /// Создать ошибку сериализации
+        /// Create serialize error
         /// </summary>
+        /// <typeparam name="TValue">Serialize type</typeparam>
+        /// <param name="value">Serialize instance</param>
+        /// <param name="description">Description</param>
+        /// <returns>Serialize error</returns>
         public static ISerializeErrorResult SerializeError<TValue>(TValue value, string description)
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
             where TValue : notnull
@@ -104,8 +143,12 @@ namespace ResultFunctional.Models.Implementations.Errors
             new SerializeErrorResult<TValue>(value, description);
 
         /// <summary>
-        /// Создать ошибку десериализации
+        /// Create deserialize error
         /// </summary>
+        /// <typeparam name="TValue">Deserialize type</typeparam>
+        /// <param name="value">Deserialize instance</param>
+        /// <param name="description">Description</param>
+        /// <returns>Deserialize error</returns>
         public static IDeserializeErrorResult DeserializeError<TValue>(string value, string description)
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
             where TValue : notnull
@@ -114,54 +157,79 @@ namespace ResultFunctional.Models.Implementations.Errors
             new DeserializeErrorResult<TValue>(value, description);
 
         /// <summary>
-        /// Создать ошибку json схемы
+        /// Create json scheme error
         /// </summary>
-        public static JsonSchemeErrorResult JsonSchemeError(string jsonScheme, string description)=>
+        /// <param name="jsonScheme">Json scheme</param>
+        /// <param name="description">Description</param>
+        /// <returns>Json scheme error</returns>
+        public static JsonSchemeErrorResult JsonSchemeError(string jsonScheme, string description) =>
             new JsonSchemeErrorResult(jsonScheme, description);
 
         /// <summary>
-        /// Создать ошибку отсутствующего значения
+        /// Create not found error
         /// </summary>
-        public static IValueNotFoundErrorResult ValueNotFoundError<TValue, TType>(TValue? value, TType parentType)
-            where TValue : class
-            where TType : Type =>
-            new ValueNotFoundErrorResult<TValue, TType>(nameof(TValue));
+        /// <typeparam name="TValue">Not found instance</typeparam>
+        /// <param name="description">Description</param>
+        /// <returns>Not found error</returns>
+        public static IValueNotFoundErrorResult ValueNotFoundError<TValue>(string description)
+            where TValue : class =>
+            new ValueNotFoundErrorResult<TValue>(description);
 
         /// <summary>
-        /// Создать ошибку неверного значения
+        /// Create not valid error
         /// </summary>
-        public static IValueNotValidErrorResult ValueNotValidError<TValue, TType>(TValue value, TType parentType, string description)
+        /// <typeparam name="TValue">Not valid instance</typeparam>
+        /// <param name="value">>Not valid instance</param>
+        /// <param name="description">Description</param>
+        /// <returns></returns>
+        public static IValueNotValidErrorResult ValueNotValidError<TValue>(TValue value, string description)
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
             where TValue : notnull
 #endif
-            where TType : Type =>
-            new ValueNotValidErrorResult<TValue, TType>(value, nameof(TValue));
+            =>
+            new ValueNotValidErrorResult<TValue>(value, nameof(TValue));
 
         /// <summary>
-        /// Создать ошибку дублирующего значения
+        /// Create duplicate error
         /// </summary>
-        public static IValueDuplicateErrorResult ValueDuplicateError<TValue, TType>(TValue value, TType parentType, string description)
+        /// <typeparam name="TValue">Not valid instance</typeparam>
+        /// <param name="value">>Not valid instance</param>
+        /// <param name="description">Description</param>
+        /// <returns>Duplicate error</returns>
+        public static IValueDuplicateErrorResult ValueDuplicateError<TValue>(TValue value, string description)
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
             where TValue : notnull
 #endif
-            where TType : Type =>
-            new ValueDuplicateErrorResult<TValue, TType>(value, nameof(TValue));
+            =>
+            new ValueDuplicateErrorResult<TValue>(value, nameof(TValue));
 
         /// <summary>
-        /// Создать ошибку REST сервера
+        /// Create host connection error
         /// </summary>
+        /// <param name="restErrorType">Rest error type</param>
+        /// <param name="host">Host</param>
+        /// <param name="description">Description</param>
+        /// <returns>Host connection error</returns>
         public static RestHostErrorResult RestHostError(RestErrorType restErrorType, string host, string description) =>
             new RestHostErrorResult(restErrorType, host, description);
 
         /// <summary>
-        /// Создать ошибку времени ожидания REST сервера
+        /// Create timeout rest error
         /// </summary>
+        /// <param name="host">Host</param>
+        /// <param name="timeout">Timeout</param>
+        /// <param name="description">Description</param>
+        /// <returns>Timeout rest error</returns>
         public static RestTimeoutErrorResult RestTimeoutError(string host, TimeSpan timeout, string description) =>
             new RestTimeoutErrorResult(host, timeout, description);
 
         /// <summary>
-        /// Создать ошибку REST сервера с сообщением
+        /// Create rest error with response message
         /// </summary>
+        /// <param name="restErrorType">Rest error type</param>
+        /// <param name="reasonPhrase">Reason phrase</param>
+        /// <param name="description">Description</param>
+        /// <returns> Rest error with response message</returns>
         public static RestMessageErrorResult RestError(RestErrorType restErrorType, string reasonPhrase, string description) =>
             new RestMessageErrorResult(restErrorType, reasonPhrase, description);
     }

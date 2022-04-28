@@ -5,28 +5,35 @@ using ResultFunctional.Models.Interfaces.Errors.Base;
 namespace ResultFunctional.Models.Interfaces.Results
 {
     /// <summary>
-    /// Базовый вариант ответа со значением
+    /// Result with value
     /// </summary>
+    /// <typeparam name="TValue">Value parameter</typeparam>
     public interface IResultValue<out TValue>: IResultError
     {
         /// <summary>
-        /// Значение
+        /// Value
         /// </summary>
         TValue Value { get; }
 
         /// <summary>
-        /// Добавить ошибку
-        /// </summary>      
+        /// Add error to result
+        /// </summary>
+        /// <param name="error">Error</param>
+        /// <returns>Result value with error</returns>
         new IResultValue<TValue> AppendError(IErrorResult error);
 
         /// <summary>
-        /// Добавить ошибку
-        /// </summary>      
+        /// Add errors to result
+        /// </summary>
+        /// <param name="errors">Errors</param>
+        /// <returns>Result value with error</returns>  
         new IResultValue<TValue> ConcatErrors(IEnumerable<IErrorResult> errors);
 
         /// <summary>
-        /// Добавить ошибки из результирующего ответа
-        /// </summary>      
+        /// Add values and errors to current result
+        /// </summary>
+        /// <param name="result">Result error</param>
+        /// <returns>Result value</returns> 
         new IResultValue<TValue> ConcatResult(IResultError result);
     }
 }

@@ -64,7 +64,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void ValueNotFoundError()
         {
-            var errorResult = ErrorResultFactory.ValueNotFoundError(String.Empty, typeof(string));
+            var errorResult = ErrorResultFactory.ValueNotFoundError<string>(String.Empty);
 
             Assert.IsAssignableFrom<IValueNotFoundErrorResult>(errorResult);
             Assert.IsAssignableFrom<IValueNotFoundErrorResult>(errorResult.AppendException(new Exception()));
@@ -76,7 +76,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void ValueNotValidError()
         {
-            var errorResult = ErrorResultFactory.ValueNotValidError(String.Empty, typeof(string), "Ошибка");
+            var errorResult = ErrorResultFactory.ValueNotValidError(String.Empty, "Ошибка");
 
             Assert.IsAssignableFrom<IValueNotValidErrorResult>(errorResult);
             Assert.IsAssignableFrom<IValueNotValidErrorResult>(errorResult.AppendException(new Exception()));
@@ -88,7 +88,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void ValueDuplicatedError()
         {
-            var errorResult = ErrorResultFactory.ValueDuplicateError(String.Empty, typeof(string), "Ошибка");
+            var errorResult = ErrorResultFactory.ValueDuplicateError(String.Empty, "Ошибка");
 
             Assert.IsAssignableFrom<IValueDuplicateErrorResult>(errorResult);
             Assert.IsAssignableFrom<IValueDuplicateErrorResult>(errorResult.AppendException(new Exception()));

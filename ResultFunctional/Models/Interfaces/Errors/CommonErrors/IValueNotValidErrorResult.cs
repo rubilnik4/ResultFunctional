@@ -4,7 +4,7 @@ using ResultFunctional.Models.Interfaces.Errors.Base;
 namespace ResultFunctional.Models.Interfaces.Errors.CommonErrors
 {
     /// <summary>
-    /// Ошибка неверного значения
+    /// Not valid error
     /// </summary>
     public interface IValueNotValidErrorResult : IErrorBaseResult<CommonErrorType>
     { }

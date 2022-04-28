@@ -5,7 +5,7 @@ using ResultFunctional.Models.Interfaces.Errors.Base;
 namespace ResultFunctional.Models.Interfaces.Errors.RestErrors
 {
     /// <summary>
-    /// Ошибка сервера
+    /// Rest error
     /// </summary>
     public interface IRestErrorResult: IErrorBaseResult<RestErrorType>
     { }

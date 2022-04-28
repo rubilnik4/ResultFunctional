@@ -7,50 +7,39 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.ResultFactory
 {
     /// <summary>
-    /// Фабрика для создания результирующего ответа
+    /// Result error factory
     /// </summary>
     public static class ResultErrorFactory
     {
         /// <summary>
-        /// Создать асинхронный результирующий ответ
+        /// Create result error
         /// </summary>
-        public static Task<IResultError> CreateTaskResultError()=>
+        /// <returns>Result error in task</returns>
+        public static Task<IResultError> CreateTaskResultError() =>
             Task.FromResult((IResultError)new ResultError());
 
         /// <summary>
-        /// Создать асинхронный результирующий ответ с ошибкой
+        /// Create result error by error
         /// </summary>
-        public static Task<IResultError> CreateTaskResultError(IErrorResult errorType)=>
-            Task.FromResult((IResultError)new ResultError(errorType));
+        /// <param name="error">Error</param>
+        /// <returns>Result error in task</returns>
+        public static Task<IResultError> CreateTaskResultError(IErrorResult error) =>
+            Task.FromResult((IResultError)new ResultError(error));
 
         /// <summary>
-        /// Создать асинхронный результирующий ответ с ошибкой
+        /// Create result error by errors
         /// </summary>
-        public static Task<IResultError> CreateTaskResultError(IEnumerable<IErrorResult> errors)=>
+        /// <param name="errors">Errors</param>
+        /// <returns>Result error in task</returns>
+        public static Task<IResultError> CreateTaskResultError(IEnumerable<IErrorResult> errors) =>
             Task.FromResult((IResultError)new ResultError(errors));
 
         /// <summary>
-        /// Создать асинхронный результирующий ответ с ошибкой
+        /// Create result error by result
         /// </summary>
+        /// <param name="error">Result error</param>
+        /// <returns>Result error in task</returns>
         public static Task<IResultError> CreateTaskResultError(IResultError error) =>
             Task.FromResult(error);
-
-        /// <summary>
-        /// Создать асинхронный результирующий ответ
-        /// </summary>
-        public static async Task<IResultError> CreateTaskResultErrorAsync() =>
-            await Task.FromResult((IResultError)new ResultError());
-
-        /// <summary>
-        /// Создать асинхронный результирующий ответ с ошибкой
-        /// </summary>
-        public static async Task<IResultError> CreateTaskResultErrorAsync(IErrorResult errorType)=>
-            await Task.FromResult((IResultError)new ResultError(errorType));
-
-        /// <summary>
-        /// Создать асинхронный результирующий ответ с ошибкой
-        /// </summary>
-        public static async Task<IResultError> CreateTaskResultErrorAsync(IEnumerable<IErrorResult> errors) =>
-            await Task.FromResult((IResultError)new ResultError(errors));
     }
 }

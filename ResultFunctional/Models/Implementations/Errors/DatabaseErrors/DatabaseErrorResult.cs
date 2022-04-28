@@ -9,15 +9,29 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
 {
     /// <summary>
-    /// Ошибка базы данных
+    /// Database error
     /// </summary>
+    /// <typeparam name="TErrorResult">Database error type</typeparam>
     public abstract class DatabaseErrorResult<TErrorResult> : ErrorBaseResult<DatabaseErrorType, TErrorResult>
           where TErrorResult : IDatabaseErrorResult
     {
+        /// <summary>
+        /// Initialize database error
+        /// </summary>
+        /// <param name="databaseErrorType">Database error type</param>
+        /// <param name="tableName">Database table name</param>
+        /// <param name="description">Description</param>
         protected DatabaseErrorResult(DatabaseErrorType databaseErrorType, string tableName, string description)
             : this(databaseErrorType, tableName, description, null)
         { }
 
+        /// <summary>
+        /// Initialize database error
+        /// </summary>
+        /// <param name="databaseErrorType">Database error type</param>
+        /// <param name="tableName">Table name</param>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
         protected DatabaseErrorResult(DatabaseErrorType databaseErrorType, string tableName, string description, Exception? exception)
             : base(databaseErrorType, description, exception)
         {
@@ -25,7 +39,7 @@ namespace ResultFunctional.Models.Implementations.Errors.DatabaseErrors
         }
 
         /// <summary>
-        /// Имя таблицы
+        /// Database table name
         /// </summary>
         public string TableName { get; }
     }

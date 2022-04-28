@@ -1,6 +1,7 @@
 ﻿using System;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Implementations.Errors.Base;
+using ResultFunctional.Models.Implementations.Errors.CommonErrors;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 
 namespace ResultFunctionalXUnit.Data
@@ -14,12 +15,12 @@ namespace ResultFunctionalXUnit.Data
         /// Вернуть ошибку на основании исключения
         /// </summary>
         public static IErrorResult ExceptionError() =>
-            new ErrorTypeResult<CommonErrorType>(CommonErrorType.Unknown, "Деление на ноль", new DivideByZeroException());
+            new CommonErrorResult(CommonErrorType.Unknown, "Деление на ноль", new DivideByZeroException());
 
         /// <summary>
         /// Вернуть ошибку на основании исключения
         /// </summary>
         public static Func<Exception, IErrorResult> ExceptionFunc() =>
-            _ => new ErrorTypeResult<CommonErrorType>(CommonErrorType.Unknown, "Деление на ноль", new DivideByZeroException());
+            _ => new CommonErrorResult(CommonErrorType.Unknown, "Деление на ноль", new DivideByZeroException());
     }
 }

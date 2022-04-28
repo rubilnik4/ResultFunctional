@@ -8,13 +8,20 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
 {
     /// <summary>
-    /// Обработка условий для результирующего связывающего ответа с коллекцией
+    /// Extension methods for result collection monad function with conditions
     /// </summary>
     public static class ResultCollectionBindWhereExtensions
     {
         /// <summary>
-        /// Выполнение условия или возвращение предыдущей ошибки в результирующем ответе с коллекцией
-        /// </summary>      
+        /// Execute monad result collection function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValueOut> ResultCollectionBindContinue<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                  Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                  Func<IReadOnlyCollection<TValueIn>, IResultCollection<TValueOut>> okFunc,
@@ -26,8 +33,15 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
              : new ResultCollection<TValueOut>(@this.Errors);
 
         /// <summary>
-        /// Выполнение положительного или негативного условия в результирующем ответе с коллекцией
-        /// </summary>      
+        /// Execute monad result collection function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValueOut> ResultCollectionBindWhere<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                  Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                  Func<IReadOnlyCollection<TValueIn>, IResultCollection<TValueOut>> okFunc,
@@ -39,8 +53,13 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
              : new ResultCollection<TValueOut>(@this.Errors);
 
         /// <summary>
-        /// Выполнение положительного условия результирующего ответа со связыванием или возвращение предыдущей ошибки в результирующем ответе с коллекцией
-        /// </summary>   
+        /// Execute monad result collection function if incoming result collection has no errors
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="okFunc">Function if incoming result collection has no errors</param>
+        /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValueOut> ResultCollectionBindOk<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                Func<IReadOnlyCollection<TValueIn>, IResultCollection<TValueOut>> okFunc) =>
             @this.OkStatus
@@ -48,8 +67,12 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
                 : new ResultCollection<TValueOut>(@this.Errors);
 
         /// <summary>
-        /// Выполнение негативного условия результирующего ответа или возвращение положительного в результирующем ответе с коллекцией
-        /// </summary>   
+        /// Execute monad result collection function if incoming result collection has errors
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="badFunc">Function if incoming result collection has errors</param>
+        /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValue> ResultCollectionBindBad<TValue>(this IResultCollection<TValue> @this,
                                                                                 Func<IReadOnlyCollection<IErrorResult>, IResultCollection<TValue>> badFunc) =>
             @this.OkStatus
@@ -57,8 +80,12 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
                 : badFunc.Invoke(@this.Errors);
 
         /// <summary>
-        /// Добавить ошибки результирующего ответа или вернуть результат с ошибками для ответа с коллекцией
+        /// Adding errors to result collection if ones has no errors
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="okFunc">Error function if incoming result collection has no errors</param>
+        /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValue> ResultCollectionBindErrorsOk<TValue>(this IResultCollection<TValue> @this,
                                                                                      Func<IReadOnlyCollection<TValue>, IResultError> okFunc) =>
             @this.

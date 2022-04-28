@@ -7,13 +7,17 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со связыванием с коллекцией и обработкой исключений
+    /// Extension methods for result collection monad function with exception handling
     /// </summary>
     public static class ResultCollectionBindTryExtensions
     {
         /// <summary>
-        /// Обработать функцию, вернуть результирующий ответ со связыванием со значением или ошибку исключения
+        /// Execute result collection monad function with exception handling
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="func">Result collection function</param>
+        /// <param name="exceptionFunc">Exception function</param>
+        /// <returns>Result collection</returns>
         public static IResultCollection<TValue> ResultCollectionBindTry<TValue>(Func<IResultCollection<TValue>> func,
                                                                                 Func<Exception, IErrorResult> exceptionFunc)
         {
@@ -28,8 +32,12 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         }
 
         /// <summary>
-        /// Обработать функцию, вернуть результирующий ответ с коллекцией или ошибку исключения
+        /// Execute result collection monad function with exception handling
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="func">Result collection function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Result collection</returns>
         public static IResultCollection<TValue> ResultCollectionBindTry<TValue>(Func<IResultCollection<TValue>> func, IErrorResult error) =>
             ResultCollectionBindTry(func, error.AppendException);
     }

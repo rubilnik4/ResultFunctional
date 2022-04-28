@@ -14,7 +14,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
         /// </summary>
-        public static async Task<IResultError> ResultErrorTryAsync(Func<Task> action, IErrorResult errorType)
+        public static async Task<IResultError> ResultErrorTryAsync(Func<Task> action, Func<Exception, IErrorResult> exceptionFunc)
         {
             try
             {
@@ -22,10 +22,16 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
             }
             catch (Exception ex)
             {
-                return new ResultError(errorType.AppendException(ex));
+                return new ResultError(exceptionFunc(ex));
             }
 
             return new ResultError();
         }
+
+        /// <summary>
+        /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// </summary>
+        public static async Task<IResultError> ResultErrorTryAsync(Func<Task> action, IErrorResult error) =>
+            await ResultErrorTryAsync(action, error.AppendException);
     }
 }

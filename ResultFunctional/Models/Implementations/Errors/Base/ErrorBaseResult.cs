@@ -7,54 +7,77 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors.Base
 {
     /// <summary>
-    /// Ошибка результирующего ответа
+    /// Base error with type
     /// </summary>
-    public abstract class ErrorBaseResult<TError, TErrorResult> : ErrorResult, IErrorBaseResult<TError>
+    /// <typeparam name="TErrorType">Error type</typeparam>
+    /// /// <typeparam name="TErrorResult">Error result type</typeparam>
+    public abstract class ErrorBaseResult<TErrorType, TErrorResult> : ErrorResult, IErrorBaseResult<TErrorType>
+        where TErrorType : struct
         where TErrorResult : IErrorResult
-        where TError : struct
     {
-        protected ErrorBaseResult(TError errorType, string description)
+        /// <summary>
+        /// Initialize error with type
+        /// </summary>
+        /// <param name="errorType">Error type</param>
+        /// <param name="description">Description</param>
+        protected ErrorBaseResult(TErrorType errorType, string description)
             : this(errorType, description, null)
         { }
 
-        protected ErrorBaseResult(TError errorType, string description, Exception? exception)
+        /// <summary>
+        /// Initialize error with type
+        /// </summary>
+        /// <param name="errorType">Error type</param>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
+        protected ErrorBaseResult(TErrorType errorType, string description, Exception? exception)
             : base(description, exception)
         {
             ErrorType = errorType;
         }
 
         /// <summary>
-        /// Идентификатор ошибки
+        /// ID as error type
         /// </summary>
         public override string Id =>
             ErrorType.ToString() ?? String.Empty;
 
         /// <summary>
-        /// Тип ошибки при конвертации файлов
+        /// Error type
         /// </summary>
-        public TError ErrorType { get; }
+        public TErrorType ErrorType { get; }
 
         /// <summary>
-        /// Наличие типа ошибки
+        /// Is error type equal to current error type
         /// </summary>
-        public bool HasErrorType<TErrorType>()
-            where TErrorType : struct =>
-            typeof(TError) == typeof(TErrorType);
+        /// <typeparam name="TErrorTypeCompare">Error type</typeparam>
+        /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
+        public bool IsErrorType<TErrorTypeCompare>()
+            where TErrorTypeCompare : struct =>
+            typeof(TErrorType) == typeof(TErrorTypeCompare);
 
         /// <summary>
-        /// Инициализация ошибки
+        /// Initialize base error
         /// </summary>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
+        /// <returns>Base error initialized by derived</returns>
         protected override IErrorResult Initialize(string description, Exception? exception) =>
             InitializeType(description, exception);
 
         /// <summary>
-        /// Инициализация ошибки
+        /// Initialize derived error
         /// </summary>
+        /// <param name="description">Description</param>
+        /// <param name="exception">Exception</param>
+        /// <returns>Error initialized by derived</returns>
         protected abstract TErrorResult InitializeType(string description, Exception? exception);
 
         /// <summary>
-        /// Добавить или заменить исключение
+        /// Create error with exception and base parameters.
         /// </summary>
+        /// <param name="exception">Exception</param>
+        /// <returns>Derived error initialized with exception</returns>
         public new TErrorResult AppendException(Exception exception) =>
             InitializeType(Description, exception);
 

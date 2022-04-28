@@ -1,7 +1,7 @@
 ﻿namespace ResultFunctional.Models.Enums
 {
     /// <summary>
-    /// Типы ошибок при авторизации
+    /// Authorize error types
     /// </summary>
     public enum AuthorizeErrorType
     {

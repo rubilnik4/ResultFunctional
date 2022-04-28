@@ -8,27 +8,29 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
 {
     /// <summary>
-    /// Error with common error subtype
+    /// Error with error subtype
     /// </summary>
-    public class CommonErrorResult : ErrorBaseResult<CommonErrorType, CommonErrorResult>
+    /// <typeparam name="TErrorType">Error type</typeparam>
+    public class ErrorTypeResult<TErrorType> : ErrorBaseResult<TErrorType, ErrorTypeResult<TErrorType>>
+        where TErrorType : struct
     {
         /// <summary>
         /// Initialize error with common error subtype
         /// </summary>
-        /// <param name="commonErrorType">Common error subtype</param>
+        /// <param name="errorType">Error subtype</param>
         /// <param name="description">Description</param>
-        public CommonErrorResult(CommonErrorType commonErrorType, string description)
-            : this(commonErrorType, description, null)
+        public ErrorTypeResult(TErrorType errorType, string description)
+            : this(errorType, description, null)
         { }
 
         /// <summary>
         /// Initialize error with common error subtype
         /// </summary>
-        /// <param name="commonErrorType">Common error subtype</param>
+        /// <param name="errorType">Error subtype</param>
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
-        public CommonErrorResult(CommonErrorType commonErrorType, string description, Exception? exception)
-            : base(commonErrorType, description, exception)
+        public ErrorTypeResult(TErrorType errorType, string description, Exception? exception)
+            : base(errorType, description, exception)
         { }
 
         /// <summary>
@@ -37,7 +39,7 @@ namespace ResultFunctional.Models.Implementations.Errors.CommonErrors
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
         /// <returns>Common error</returns>
-        protected override CommonErrorResult InitializeType(string description, Exception? exception) =>
-            new CommonErrorResult(ErrorType, description, exception);
+        protected override ErrorTypeResult<TErrorType> InitializeType(string description, Exception? exception) =>
+            new ErrorTypeResult<TErrorType>(ErrorType, description, exception);
     }
 }

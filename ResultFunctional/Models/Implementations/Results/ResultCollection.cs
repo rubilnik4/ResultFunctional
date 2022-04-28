@@ -9,49 +9,74 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.Models.Implementations.Results
 {
     /// <summary>
-    /// Базовый вариант ответа с коллекцией
+    /// Result with value collection
     /// </summary>
+    /// <typeparam name="TValue">Value parameter</typeparam>
     public class ResultCollection<TValue> : ResultValue<IReadOnlyCollection<TValue>>, IResultCollection<TValue>
     {
+        /// <summary>
+        /// Initializing by error
+        /// </summary>
+        /// <param name="error">Error</param>
         public ResultCollection(IErrorResult error)
             : this(error.AsEnumerable()) { }
 
+        /// <summary>
+        /// Initializing by errors
+        /// </summary>
+        /// <param name="errors">Errors</param>
         public ResultCollection(IEnumerable<IErrorResult> errors)
             : this(Enumerable.Empty<TValue>(), errors)
         { }
 
-        public ResultCollection(IEnumerable<TValue> valueCollection)
-            : this(valueCollection, Enumerable.Empty<IErrorResult>())
-        { }
-
-        protected ResultCollection(IEnumerable<TValue> valueCollection, IEnumerable<IErrorResult> errors)
-            : base(valueCollection.ToList().AsReadOnly(), errors)
+        /// <summary>
+        /// Initializing by values
+        /// </summary>
+        /// <param name="values">Value collection</param>
+        public ResultCollection(IEnumerable<TValue> values)
+            : this(values, Enumerable.Empty<IErrorResult>())
         { }
 
         /// <summary>
-        /// Добавить ошибку
-        /// </summary>      
+        /// Initializing by values and errors
+        /// </summary>
+        /// <param name="values">Value collection</param>
+        /// <param name="errors">Errors</param>
+        protected ResultCollection(IEnumerable<TValue> values, IEnumerable<IErrorResult> errors)
+            : base(values.ToList().AsReadOnly(), errors)
+        { }
+
+        /// <summary>
+        /// Add error to result
+        /// </summary>
+        /// <param name="error">Error</param>
+        /// <returns>Result collection with error</returns>
         public new IResultCollection<TValue> AppendError(IErrorResult error) =>
             base.AppendError(error).
             ToResultCollection(Value);
 
         /// <summary>
-        /// Добавить ошибку
-        /// </summary>      
+        /// Add errors to result
+        /// </summary>
+        /// <param name="errors">Errors</param>
+        /// <returns>Result collection with error</returns>  
         public new IResultCollection<TValue> ConcatErrors(IEnumerable<IErrorResult> errors) =>
             base.ConcatErrors(errors).
             ToResultCollection(Value);
 
         /// <summary>
-        /// Добавить ошибки из результирующего ответа
-        /// </summary>      
+        /// Add values and errors to current result
+        /// </summary>
+        /// <param name="result">Result error</param>
+        /// <returns>Result collection</returns>
         public new IResultCollection<TValue> ConcatResult(IResultError result) =>
             ConcatErrors(result.Errors);
 
         /// <summary>
-        /// Преобразовать в результирующий ответ со значением
+        /// Convert to result value with collection parameter
         /// </summary>
-        public IResultValue<IReadOnlyCollection<TValue>> ToResultValue() => 
+        /// <returns>Result value with collection parameter</returns>
+        public IResultValue<IReadOnlyCollection<TValue>> ToResultValue() =>
             this;
     }
 }

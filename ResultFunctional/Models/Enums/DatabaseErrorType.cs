@@ -1,7 +1,7 @@
 ﻿namespace ResultFunctional.Models.Enums
 {
     /// <summary>
-    /// Ошибки базы данных
+    /// Database error types
     /// </summary>
     public enum DatabaseErrorType
     {

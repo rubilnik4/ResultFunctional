@@ -1,7 +1,7 @@
 ﻿namespace ResultFunctional.Models.Enums
 {
     /// <summary>
-    /// Общие типы ошибок
+    /// Common error types
     /// </summary>
     public enum CommonErrorType
     {
