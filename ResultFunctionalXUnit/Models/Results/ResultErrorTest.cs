@@ -129,7 +129,7 @@ namespace ResultFunctionalXUnit.Models.Results
             var errors = new List<IErrorResult> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);
 
-            var errorTypes = result.GetErrorTypes();
+            var errorTypes = result.GetErrorByTypes();
 
             Assert.True(errorTypes.SequenceEqual(errors.Select(error => error.GetType())));
         }
@@ -174,7 +174,7 @@ namespace ResultFunctionalXUnit.Models.Results
             var errors = new List<IErrorResult> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);
 
-            var errorType = result.GetErrorType<DatabaseErrorType>();
+            var errorType = result.GetErrorByType<DatabaseErrorType>();
             Assert.NotNull(errorType);
             Assert.Equal(DatabaseErrorType.TableAccess, errorType?.ErrorType);
         }
@@ -190,7 +190,7 @@ namespace ResultFunctionalXUnit.Models.Results
             var errors = new List<IErrorResult> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);
 
-            var errorTypes = result.GetErrorTypes<DatabaseErrorType>();
+            var errorTypes = result.GetErrorsByTypes<DatabaseErrorType>();
             Assert.Equal(1, errorTypes.Count);
             Assert.Equal(DatabaseErrorType.TableAccess, errorTypes.First().ErrorType);
         }

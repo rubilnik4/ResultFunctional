@@ -11,9 +11,9 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultError
     public static class ResultErrorTryExtensions
     {
         /// <summary>
-        /// Обработать функцию, вернуть результирующий ответ или ошибку исключения
+        /// Обработать функцию, вернуть результирующий ответ со значением или ошибку исключения
         /// </summary>
-        public static IResultError ResultErrorTry(Action action, IErrorResult error)
+        public static IResultError ResultErrorTry(Action action, Func<Exception, IErrorResult> exceptionFunc)
         {
             try
             {
@@ -21,10 +21,16 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultError
             }
             catch (Exception ex)
             {
-                return new ResultError(error.AppendException(ex));
+                return new ResultError(exceptionFunc(ex));
             }
 
             return new ResultError();
         }
+
+        /// <summary>
+        /// Обработать функцию, вернуть результирующий ответ или ошибку исключения
+        /// </summary>
+        public static IResultError ResultErrorTry(Action action, IErrorResult error) =>
+            ResultErrorTry(action, error.AppendException);
     }
 }
