@@ -6,7 +6,7 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
 {
     /// <summary>
-    /// Действие над внутренним типом результирующего ответа с коллекцией
+    /// Result collection action extension methods
     /// </summary>
     public static class ResultCollectionVoidExtensions
     {
@@ -17,7 +17,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
                                                                                Action<IReadOnlyCollection<TValue>> action) =>
             @this.
             VoidOk(_ => @this.OkStatus,
-                action: _ => action.Invoke(@this.Value));
+                   _ => action.Invoke(@this.Value));
 
         /// <summary>
         /// Выполнить действие при отрицательном значении, вернуть результирующий ответ
@@ -26,7 +26,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
                                                                                 Action<IReadOnlyCollection<IErrorResult>> action) =>
             @this.
             VoidOk(_ => @this.HasErrors,
-                action: _ => action.Invoke(@this.Errors));
+                   _ => action.Invoke(@this.Errors));
 
         /// <summary>
         /// Выполнить действие, вернуть результирующий ответ
@@ -36,8 +36,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
                                                                                   Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
             @this.
             VoidWhere(_ => @this.OkStatus,
-                actionOk: _ => actionOk.Invoke(@this.Value),
-                actionBad: _ => actionBad.Invoke(@this.Errors));
+                      _ => actionOk.Invoke(@this.Value),
+                      _ => actionBad.Invoke(@this.Errors));
 
         /// <summary>
         /// Выполнить действие при положительном значении и выполнении условия вернуть результирующий ответ
@@ -47,6 +47,6 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
                                                                                     Action<IReadOnlyCollection<TValue>> action) =>
             @this.
             VoidOk(_ => @this.OkStatus && predicate(@this.Value),
-                action: _ => action.Invoke(@this.Value));
+                   _ => action.Invoke(@this.Value));
     }
 }
