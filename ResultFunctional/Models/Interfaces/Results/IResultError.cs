@@ -16,7 +16,7 @@ namespace ResultFunctional.Models.Interfaces.Results
         IReadOnlyCollection<IErrorResult> Errors { get; }
 
         /// <summary>
-        /// Has no errors
+        /// hasn't errors
         /// </summary>
         bool OkStatus { get; }
 

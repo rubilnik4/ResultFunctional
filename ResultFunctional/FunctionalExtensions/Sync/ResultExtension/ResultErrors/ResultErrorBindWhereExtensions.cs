@@ -6,22 +6,29 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors
 {
     /// <summary>
-    /// Обработка условий для результирующего связывающего ответа
+    /// Result error extension methods for merging errors
     /// </summary>
-    public static class ResultErrorBindWhereAsyncExtensions
+    public static class ResultErrorBindWhereExtensions
     {
         /// <summary>
-        /// Выполнение положительного или негативного условия результирующего ответа со связыванием или возвращение предыдущей ошибки в результирующем ответе
-        /// </summary>   
-        public static IResultError ResultErrorBindOkBad(this IResultError @this, Func<IResultError> okFunc, 
+        /// Merge result error function depending on incoming result error
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="okFunc">Function if result error hasn't errors</param>
+        /// <param name="badFunc">Function if result collection has errors</param>
+        /// <returns>Outgoing result error</returns>
+        public static IResultError ResultErrorBindOkBad(this IResultError @this, Func<IResultError> okFunc,
                                                         Func<IReadOnlyCollection<IErrorResult>, IResultError> badFunc) =>
             @this.OkStatus
                 ? okFunc.Invoke()
                 : badFunc.Invoke(@this.Errors);
 
         /// <summary>
-        /// Выполнение положительного условия результирующего ответа со связыванием или возвращение предыдущей ошибки в результирующем ответе
-        /// </summary>   
+        /// Merge result error function if incoming result collection hasn't errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="okFunc">Function if result error hasn't errors</param>
+        /// <returns>Outgoing result error</returns>
         public static IResultError ResultErrorBindOk(this IResultError @this, Func<IResultError> okFunc) =>
             @this.OkStatus
                 ? okFunc.Invoke()

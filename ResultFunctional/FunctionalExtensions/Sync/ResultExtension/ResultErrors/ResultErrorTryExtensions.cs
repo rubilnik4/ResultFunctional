@@ -6,13 +6,16 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа и обработкой исключений
+    /// Exception handling result error extension methods
     /// </summary>
     public static class ResultErrorTryExtensions
     {
         /// <summary>
-        /// Обработать функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// Execute action and handle exception with result error converting
         /// </summary>
+        /// <param name="action">Action</param>
+        /// <param name="exceptionFunc">Function converting exception to error</param>
+        /// <returns>Result error</returns>
         public static IResultError ResultErrorTry(Action action, Func<Exception, IErrorResult> exceptionFunc)
         {
             try
@@ -28,8 +31,11 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultError
         }
 
         /// <summary>
-        /// Обработать функцию, вернуть результирующий ответ или ошибку исключения
+        /// Execute action and handle exception with result error converting
         /// </summary>
+        /// <param name="action">Action</param>
+        /// <param name="error">Error</param>
+        /// <returns>Result error</returns>
         public static IResultError ResultErrorTry(Action action, IErrorResult error) =>
             ResultErrorTry(action, error.AppendException);
     }
