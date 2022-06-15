@@ -8,13 +8,20 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Обработка условий для результирующего связывающего ответа со значением
+    /// Extension methods for result value monad function with conditions
     /// </summary>
     public static class ResultValueBindWhereExtensions
     {
         /// <summary>
-        /// Выполнение условия или возвращение предыдущей ошибки со связыванием в результирующем ответе
-        /// </summary>      
+        /// Execute monad result value function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ResultValueBindContinue<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                        Func<TValueIn, bool> predicate,
                                                                                        Func<TValueIn, IResultValue<TValueOut>> okFunc,
@@ -26,8 +33,15 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
              : new ResultValue<TValueOut>(@this.Errors);
 
         /// <summary>
-        /// Выполнение условия в положительном или негативном варианте со связыванием в результирующем ответе
-        /// </summary>      
+        /// Execute monad result value function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ResultValueBindWhere<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                        Func<TValueIn, bool> predicate,
                                                                                        Func<TValueIn, IResultValue<TValueOut>> okFunc,
@@ -39,8 +53,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
              : new ResultValue<TValueOut>(@this.Errors);
 
         /// <summary>
-        /// Выполнение условия положительного или негативного условия со связыванием в результирующем ответе
-        /// </summary>      
+        /// Execute monad result value function depending on result value errors
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="okFunc">Function if result value hasn't errors</param>
+        /// <param name="badFunc">Function if result value has errors</param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ResultValueBindOkBad<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                         Func<TValueIn, IResultValue<TValueOut>> okFunc,
                                                                                         Func<IReadOnlyCollection<IErrorResult>, IResultValue<TValueOut>> badFunc) =>
@@ -48,10 +68,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
              ? okFunc.Invoke(@this.Value)
              : badFunc.Invoke(@this.Errors);
 
-
         /// <summary>
-        /// Выполнение положительного условия результирующего ответа со связыванием или возвращение предыдущей ошибки в результирующем ответе
-        /// </summary>   
+        /// Execute monad result value function if incoming result value hasn't errors
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="okFunc">Function if incoming result value hasn't errors</param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ResultValueBindOk<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                      Func<TValueIn, IResultValue<TValueOut>> okFunc) =>
             @this.OkStatus
@@ -59,8 +83,12 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
                 : new ResultValue<TValueOut>(@this.Errors);
 
         /// <summary>
-        /// Выполнение негативного условия результирующего ответа или возвращение положительного в результирующем ответе
-        /// </summary>   
+        /// Execute monad result value function if incoming result value has errors
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="badFunc">Function if incoming result value has errors</param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValue> ResultValueBindBad<TValue>(this IResultValue<TValue> @this,
                                                                       Func<IReadOnlyCollection<IErrorResult>, IResultValue<TValue>> badFunc) =>
             @this.OkStatus
@@ -68,8 +96,12 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
                 : badFunc.Invoke(@this.Errors);
 
         /// <summary>
-        /// Добавить ошибки результирующего ответа или вернуть результат с ошибками для ответа со значением
+        /// Adding errors to result value if ones hasn't errors
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="okFunc">Error function if incoming result value hasn't errors</param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValue> ResultValueBindErrorsOk<TValue>(this IResultValue<TValue> @this,
                                                                            Func<TValue, IResultError> okFunc) =>
             @this.

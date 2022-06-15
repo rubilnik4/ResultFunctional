@@ -52,6 +52,23 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
                  : badFunc.Invoke(@this.Value)
              : new ResultCollection<TValueOut>(@this.Errors);
 
+
+        /// <summary>
+        /// Execute monad result collection function depending on result collection errors
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="okFunc">Function if result collection hasn't errors</param>
+        /// <param name="badFunc">Function if result collection has errors</param>
+        /// <returns>Outgoing result collection</returns>
+        public static IResultCollection<TValueOut> ResultCollectionBindOkBad<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
+                                                                                        Func<IReadOnlyCollection<TValueIn>, IResultCollection<TValueOut>> okFunc,
+                                                                                        Func<IReadOnlyCollection<IErrorResult>, IResultCollection<TValueOut>> badFunc) =>
+         @this.OkStatus
+             ? okFunc.Invoke(@this.Value)
+             : badFunc.Invoke(@this.Errors);
+
         /// <summary>
         /// Execute monad result collection function if incoming result collection hasn't errors
         /// </summary>

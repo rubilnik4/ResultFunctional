@@ -165,8 +165,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             int initialValue = Numbers.Number;
             var resultValue = new ResultValue<int>(initialValue);
 
-            var resultAfterWhere = resultValue.ResultValueBindOkBad(okFunc: number => new ResultValue<string>(number.ToString()),
-                                                                    badFunc: _ => new ResultValue<string>(String.Empty));
+            var resultAfterWhere = resultValue.ResultValueBindOkBad(number => new ResultValue<string>(number.ToString()),
+                                                                    _ => new ResultValue<string>(String.Empty));
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.Equal(initialValue.ToString(), resultAfterWhere.Value);
