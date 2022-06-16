@@ -8,41 +8,56 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со значением
+    /// Result value extension methods
     /// </summary>
     public static class ResultValueExtensions
     {
         /// <summary>
-        /// Преобразовать значение в результирующий ответ
+        /// Converting value to result value
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValue> ToResultValue<TValue>(this TValue @this)
             where TValue : notnull =>
             new ResultValue<TValue>(@this);
 
         /// <summary>
-        /// Преобразовать значение в результирующий ответ с проверкой на нуль
+        /// Converting value to result value with null checking
         /// </summary>
-        public static IResultValue<TValue> ToResultValueNullValueCheck<TValue>(this TValue @this, IErrorResult errorNull) =>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="error">Null error</param>
+        /// <returns>Outgoing result value</returns>
+        public static IResultValue<TValue> ToResultValueNullValueCheck<TValue>(this TValue @this, IErrorResult error) =>
             @this != null
                 ? new ResultValue<TValue>(@this)
-                : new ResultValue<TValue>(errorNull);
+                : new ResultValue<TValue>(error);
 
         /// <summary>
-        /// Преобразовать значение в результирующий ответ с проверкой на нуль
+        /// Converting value to result value with null checking
         /// </summary>
-        public static IResultValue<TValue> ToResultValueNullCheck<TValue>(this TValue? @this, IErrorResult errorNull)
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="error">Null error</param>
+        /// <returns>Outgoing result value</returns>
+        public static IResultValue<TValue> ToResultValueNullCheck<TValue>(this TValue? @this, IErrorResult error)
             where TValue : class =>
             @this != null
                 ? new ResultValue<TValue>(@this)
-                : new ResultValue<TValue>(errorNull);
+                : new ResultValue<TValue>(error);
 
         /// <summary>
-        /// Преобразовать значение в результирующий ответ с проверкой на нуль
+        /// Converting value to result value with null checking
         /// </summary>
-        public static IResultValue<TValue> ToResultValueNullCheck<TValue>(this TValue? @this, IErrorResult errorNull)
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="error">Null error</param>
+        /// <returns>Outgoing result value</returns>
+        public static IResultValue<TValue> ToResultValueNullCheck<TValue>(this TValue? @this, IErrorResult error)
             where TValue : struct =>
             @this != null
                 ? new ResultValue<TValue>((TValue)@this)
-                : new ResultValue<TValue>(errorNull);
+                : new ResultValue<TValue>(error);
     }
 }
