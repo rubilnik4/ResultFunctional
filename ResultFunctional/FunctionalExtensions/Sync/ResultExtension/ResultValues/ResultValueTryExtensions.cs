@@ -6,13 +6,17 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со значением и обработкой исключений
+    /// Exception handling result value extension methods
     /// </summary>
     public static class ResultValueTryExtensions
     {
         /// <summary>
-        /// Обработать функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// Execute function and handle exception with result value converting
         /// </summary>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="func">Value function</param>
+        /// <param name="exceptionFunc">Function converting exception to error</param>
+        /// <returns>Result value</returns>
         public static IResultValue<TValue> ResultValueTry<TValue>(Func<TValue> func, Func<Exception, IErrorResult> exceptionFunc)
         {
             try
@@ -26,8 +30,12 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         }
 
         /// <summary>
-        /// Обработать функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// Execute function and handle exception with result value converting
         /// </summary>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="func">Value function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Result value</returns>
         public static IResultValue<TValue> ResultValueTry<TValue>(Func<TValue> func, IErrorResult error) =>
             ResultValueTry(func, error.AppendException);
     }

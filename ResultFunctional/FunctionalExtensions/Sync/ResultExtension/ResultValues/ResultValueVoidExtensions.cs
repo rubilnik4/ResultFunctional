@@ -6,46 +6,64 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Действие над внутренним типом результирующего ответа со значением
+    /// Result value action extension methods
     /// </summary>
     public static class ResultValueVoidExtensions
     {
         /// <summary>
-        /// Выполнить действие при положительном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute action if result value hasn't errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result value</returns>
         public static IResultValue<TValue> ResultValueVoidOk<TValue>(this IResultValue<TValue> @this, Action<TValue> action) =>
             @this.
             VoidOk(_ => @this.OkStatus,
-                action: _ => action.Invoke(@this.Value));
+                _ => action.Invoke(@this.Value));
 
         /// <summary>
-        /// Выполнить действие при отрицательном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute action if result value has errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result value</returns> 
         public static IResultValue<TValue> ResultValueVoidBad<TValue>(this IResultValue<TValue> @this,
                                                                       Action<IReadOnlyCollection<IErrorResult>> action) =>
             @this.
             VoidOk(_ => @this.HasErrors,
-                action: _ => action.Invoke(@this.Errors));
+                _ => action.Invoke(@this.Errors));
 
         /// <summary>
-        /// Выполнить действие, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute action depending on result value errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="actionOk">Action if result value hasn't errors</param>
+        /// <param name="actionBad">Action if result value has errors</param>
+        /// <returns>Unchanged result value</returns>
         public static IResultValue<TValue> ResultValueVoidOkBad<TValue>(this IResultValue<TValue> @this, 
                                                                         Action<TValue> actionOk,
                                                                         Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
             @this.
             VoidWhere(_ => @this.OkStatus,
-                actionOk:_ => actionOk.Invoke(@this.Value),
-                actionBad: _ => actionBad.Invoke(@this.Errors));
+                _ => actionOk.Invoke(@this.Value),
+                _ => actionBad.Invoke(@this.Errors));
 
         /// <summary>
-        /// Выполнить действие при положительном значении и выполнении условия вернуть результирующий ответ
-        /// </summary>    
+        /// Execute action depending on result value errors and predicate
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="action">Function if predicate <see langword="true"/></param>
+        /// <returns>Unchanged result value</returns>  
         public static IResultValue<TValue> ResultValueVoidOkWhere<TValue>(this IResultValue<TValue> @this,
                                                                      Func<TValue, bool> predicate,
                                                                      Action<TValue> action) =>
             @this.
             VoidOk(_ => @this.OkStatus && predicate(@this.Value),
-                action: _ => action.Invoke(@this.Value));
+                _ => action.Invoke(@this.Value));
     }
 }
