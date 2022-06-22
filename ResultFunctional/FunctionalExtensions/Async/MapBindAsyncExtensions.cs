@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 namespace ResultFunctional.FunctionalExtensions.Async
 {
     /// <summary>
-    /// Async functor task functions
+    /// Functor task async functions
     /// </summary>
     public static class MapBindAsyncExtensions
     {
         /// <summary>
-        /// Converting source type to result type by functor task function async
+        /// Converting source type to result type by functor task async function
         /// </summary>
         /// <typeparam name="TSource">Source type</typeparam>
         /// <typeparam name="TResult">Result type</typeparam>

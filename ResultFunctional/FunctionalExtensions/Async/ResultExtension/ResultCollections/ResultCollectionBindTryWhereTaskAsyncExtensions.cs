@@ -10,13 +10,19 @@ using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCo
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со значением и обработкой исключений асинхронно
+    /// Extension methods for result collection monad task function with conditions and exception handling
     /// </summary>
     public static class ResultCollectionBindTryWhereTaskAsyncExtensions
     {
         /// <summary>
-        /// Результирующий ответ со связыванием со значением с обработкой функции при положительном условии для задачи-объекта
+        /// Execute result collection task function in no error case; else catch exception
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="func">Monad result collection function</param>
+        /// <param name="exceptionFunc">Exception function</param>
+        /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionBindTryOkTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                        Func<IEnumerable<TValueIn>, IResultCollection<TValueOut>> func,
                                                                                                        Func<Exception, IErrorResult> exceptionFunc) =>
@@ -24,8 +30,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
             ResultCollectionBindOkTaskAsync(value => ResultCollectionBindTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
-        /// Результирующий ответ со связыванием со значением с обработкой функции при положительном условии для задачи-объекта
+        /// Execute result collection task function in no error case; else catch exception
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="func">Monad result collection function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionBindTryOkTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                        Func<IEnumerable<TValueIn>, IResultCollection<TValueOut>> func,
                                                                                                        IErrorResult error) =>

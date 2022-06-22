@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValueOut> ResultCollectionBindContinue<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
-                                                                                                 Func<IReadOnlyCollection<TValueIn>, bool> predicate,
+                                                                                                     Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                  Func<IReadOnlyCollection<TValueIn>, IResultCollection<TValueOut>> okFunc,
                                                                                                  Func<IReadOnlyCollection<TValueIn>, IEnumerable<IErrorResult>> badFunc) =>
          @this.OkStatus
@@ -51,7 +51,6 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
                  ? okFunc.Invoke(@this.Value)
                  : badFunc.Invoke(@this.Value)
              : new ResultCollection<TValueOut>(@this.Errors);
-
 
         /// <summary>
         /// Execute monad result collection function depending on result collection errors

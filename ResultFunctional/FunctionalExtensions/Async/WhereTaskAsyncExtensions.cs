@@ -5,13 +5,20 @@ using ResultFunctional.FunctionalExtensions.Sync;
 namespace ResultFunctional.FunctionalExtensions.Async
 {
     /// <summary>
-    /// Методы расширения для проверки условий для задачи-объекта
+    /// Extension methods for task condition functions
     /// </summary>
     public static class WhereTaskAsyncExtensions
     {
         /// <summary>
-        /// Условие продолжающее действие
-        /// </summary>      
+        /// Execute converting task function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TSource">Source type</typeparam>
+        /// <typeparam name="TResult">Result type</typeparam>
+        /// <param name="this">Source</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Converting function result</returns>   
         public static async Task<TResult> WhereContinueTaskAsync<TSource, TResult>(this Task<TSource> @this,
                                                                                    Func<TSource, bool> predicate,
                                                                                    Func<TSource, TResult> okFunc,
@@ -20,8 +27,13 @@ namespace ResultFunctional.FunctionalExtensions.Async
             MapTaskAsync(thisAwaited => thisAwaited.WhereContinue(predicate, okFunc, badFunc));
 
         /// <summary>
-        /// Обработка позитивного условия
-        /// </summary>      
+        /// Execute converting task function if predicate condition <see langword="true"/>
+        /// </summary>
+        /// <typeparam name="TSource">Source type</typeparam>
+        /// <param name="this">Source</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <returns>Converting function result</returns>     
         public static async Task<TSource> WhereOkTaskAsync<TSource>(this Task<TSource> @this,
                                                                   Func<TSource, bool> predicate,
                                                                   Func<TSource, TSource> okFunc) =>
@@ -29,8 +41,13 @@ namespace ResultFunctional.FunctionalExtensions.Async
             MapTaskAsync(thisAwaited => thisAwaited.WhereOk(predicate, okFunc));
 
         /// <summary>
-        /// Обработка негативного условия
-        /// </summary>      
+        /// Execute converting task function if predicate condition <see langword="false"/>
+        /// </summary>
+        /// <typeparam name="TSource">Source type</typeparam>
+        /// <param name="this">Source</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Converting function result</returns> 
         public static async Task<TSource> WhereBadTaskAsync<TSource>(this Task<TSource> @this,
                                                                      Func<TSource, bool> predicate,
                                                                      Func<TSource, TSource> badFunc) =>

@@ -159,6 +159,38 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         }
 
         /// <summary>
+        /// Выполнение положительного условия со связыванием в результирующем ответе без ошибки
+        /// </summary>      
+        [Fact]
+        public async Task ResultCollectionBindOkBadBindAsync_Ok_ReturnNewValue()
+        {
+            var initialCollection = GetRangeNumber();
+            var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
+
+            var resultAfterWhere = await resultCollection.ResultCollectionBindOkBadBindAsync(numbers => ResultCollectionFactory.CreateTaskResultCollection(CollectionToString(numbers)),
+                                                                                   errors => ResultCollectionFactory.CreateTaskResultCollection(GetListByErrorsCountString(errors)));
+
+            Assert.True(resultAfterWhere.OkStatus);
+            Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.Value));
+        }
+
+        /// <summary>
+        /// Выполнение негативного условия со связыванием в результирующем ответе с ошибкой
+        /// </summary>      
+        [Fact]
+        public async Task ResultCollectionBindOkBadBindAsync_Bad_ReturnNewValueByErrors()
+        {
+            var errorsInitial = CreateErrorListTwoTest();
+            var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
+
+            var resultAfterWhere = await resultCollection.ResultCollectionBindOkBadBindAsync(numbers => ResultCollectionFactory.CreateTaskResultCollection(CollectionToString(numbers)),
+                                                                              errors => ResultCollectionFactory.CreateTaskResultCollection(GetListByErrorsCountString(errors)));
+
+            Assert.True(resultAfterWhere.OkStatus);
+            Assert.True(GetListByErrorsCountString(errorsInitial).SequenceEqual(resultAfterWhere.Value));
+        }
+
+        /// <summary>
         /// Выполнение положительного условия асинхронного результирующего ответа с коллекцией со связыванием в результирующем ответе без ошибки для задачи-объекта
         /// </summary>   
         [Fact]

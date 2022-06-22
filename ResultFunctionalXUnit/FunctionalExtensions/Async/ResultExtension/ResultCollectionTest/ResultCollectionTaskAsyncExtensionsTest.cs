@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
@@ -18,20 +19,6 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
     /// </summary>
     public class ResultCollectionTaskAsyncExtensionsTest
     {
-        /// <summary>
-        /// Преобразовать в ответ со значением-коллекцией. Верно
-        /// </summary>
-        [Fact]
-        public async Task ToResultValue_Ok()
-        {
-            var numbers = Collections.GetRangeNumber();
-            var resultCollectionTask = ResultCollectionFactory.CreateTaskResultCollection(numbers);
-
-            var resultValue = await resultCollectionTask.ToResultValueTaskAsync();
-            
-            Assert.IsAssignableFrom<IResultValue<IReadOnlyCollection<int>>>(resultValue);
-        }
-
         /// <summary>
         /// Проверить объект на нул. Ошибка нулевого значения
         /// </summary>
