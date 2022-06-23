@@ -8,13 +8,19 @@ using static ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultC
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со значением и обработкой исключений асинхронно для задачи-объекта
+    /// Async exception handling task result collection with conditions extension methods
     /// </summary>
     public static class ResultCollectionTryWhereBindAsyncExtensions
     {
         /// <summary>
-        /// Результирующий ответ со значением с обработкой функции при положительном условии для задачи-объекта
+        /// Execute async function and handle exception with task result collection concat
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="func">Collection function</param>
+        /// <param name="exceptionFunc">Function converting exception to error</param>
+        /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> func,
                                                                                                      Func<Exception, IErrorResult> exceptionFunc) =>
@@ -22,8 +28,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
             ResultCollectionBindOkBindAsync(value => ResultCollectionTryAsync(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
-        /// Результирующий ответ со значением с обработкой функции при положительном условии для задачи-объекта
+        /// Execute async function and handle exception with task result collection concat
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="func">Collection function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> func,
                                                                                                      IErrorResult error) =>

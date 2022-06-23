@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
-using ResultFunctional.Models.Implementations.ResultFactory;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
@@ -12,7 +11,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
     /// <summary>
     /// Методы расширения для результирующего ответа и обработкой исключений. Тесты
     /// </summary>
-    public class ResultErrorTryExtensionsTest
+    public class ResultErrorTryWhereExtensionsTest
     {
         /// <summary>
         /// Обработать функцию, вернуть результирующий ответ

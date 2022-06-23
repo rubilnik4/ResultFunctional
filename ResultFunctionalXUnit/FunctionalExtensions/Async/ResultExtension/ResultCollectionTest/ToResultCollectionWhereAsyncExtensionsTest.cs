@@ -12,19 +12,18 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
     /// <summary>
     /// Преобразование значений в результирующий ответ коллекции с условием. Тесты
     /// </summary>
-    public class ToResultCollectionWhereAsyncTaskExtensionsTest
+    public class ToResultCollectionWhereAsyncExtensionsTest
     {
         /// <summary>
         /// Преобразовать значения в результирующий ответ с условием. Положительное условие
         /// </summary>
         [Fact]
-        public async Task ToResultCollectionWhereTaskAsync_Ok()
+        public async Task ToResultCollectionWhereAsync_Ok()
         {
             var initialCollection = GetRangeNumber();
-            var taskCollection = Task.FromResult(GetRangeNumber());
 
-            var result = await taskCollection.ToResultCollectionWhereTaskAsync(_ => true,
-                                                                                _ => CreateErrorTest());
+            var result = await initialCollection.ToResultCollectionWhereAsync(_ => true,
+                                                                                _ => CreateErrorTestTask());
 
             Assert.True(result.OkStatus);
             Assert.True(initialCollection.SequenceEqual(result.Value));
@@ -34,14 +33,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Преобразовать значения в результирующий ответ с условием. Негативное условие
         /// </summary>
         [Fact]
-        public async Task ToResultCollectionWhereTaskAsync_BadError()
+        public async Task ToResultCollectionWhereAsync_BadError()
         {
             var initialCollection = GetRangeNumber();
-            var taskCollection = Task.FromResult(initialCollection);
             var errorInitial = CreateErrorTest();
 
-            var result = await taskCollection.ToResultCollectionWhereTaskAsync(_ => false,
-                                                                               _ => errorInitial);
+            var result = await initialCollection.ToResultCollectionWhereAsync(_ => false,
+                                                                               _ => Task.FromResult(errorInitial));
 
             Assert.True(result.HasErrors);
             Assert.True(result.Errors.First().Equals(errorInitial));

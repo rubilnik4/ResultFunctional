@@ -7,13 +7,17 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
 {
     /// <summary>
-    /// Асинхронное действие над внутренним типом результирующего ответа с коллекцией
+    /// Result collection async action extension methods
     /// </summary>
     public static class ResultCollectionVoidAsyncExtensions
     {
         /// <summary>
-        /// Выполнить действие при положительном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute async action if result collection hasn't errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionVoidOkAsync<TValue>(this IResultCollection<TValue> @this,
                                                                                  Func<IReadOnlyCollection<TValue>, Task> action) =>
             await @this.
@@ -21,8 +25,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
                 action: _ => action.Invoke(@this.Value));
 
         /// <summary>
-        /// Выполнить действие при отрицательном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute async action if result collection has errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result collection</returns>  
         public static async Task<IResultCollection<TValue>> ResultCollectionVoidBadAsync<TValue>(this IResultCollection<TValue> @this,
                                                                                   Func<IReadOnlyCollection<IErrorResult>, Task> action) =>
             await @this.
@@ -30,8 +38,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
                 action: _ => action.Invoke(@this.Errors));
 
         /// <summary>
-        /// Выполнить действие при отрицательном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute async action depending on result collection errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="actionOk">Action if result collection hasn't errors</param>
+        /// <param name="actionBad">Action if result collection has errors</param>
+        /// <returns>Unchanged result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionVoidOkBadAsync<TValue>(this IResultCollection<TValue> @this,
                                                                                                    Func<IReadOnlyCollection<TValue>, Task> actionOk,
                                                                                                    Func<IReadOnlyCollection<IErrorResult>, Task> actionBad) =>
@@ -41,8 +54,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
                 actionBad: _ => actionBad.Invoke(@this.Errors));
 
         /// <summary>
-        /// Выполнить действие при положительном значении и выполнении условия вернуть результирующий ответ
-        /// </summary>    
+        /// Execute async action depending on result collection errors and predicate
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="action">Function if predicate <see langword="true"/></param>
+        /// <returns>Unchanged result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionVoidOkWhereAsync<TValue>(this IResultCollection<TValue> @this,
                                                                           Func<IReadOnlyCollection<TValue>, bool> predicate,
                                                                           Func<IReadOnlyCollection<TValue>, Task> action) =>

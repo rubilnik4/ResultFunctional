@@ -14,13 +14,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
     /// <summary>
     /// Методы расширения для результирующего ответа для задачи-объекта. Тесты
     /// </summary>
-    public class ResultErrorTaskAsyncExtensionsTest
+    public class ToResultErrorTaskAsyncExtensionsTest
     {
         /// <summary>
         /// Вернуть результирующий ответ со значением без ошибок
         /// </summary>      
         [Fact]
-        public async Task ToResultBindValue_OkStatus()
+        public async Task ToResultBindValueTaskAsync_OkStatus()
         {
             var resultNoError = ResultErrorFactory.CreateTaskResultError();
             const string value = "OkStatus";
@@ -36,7 +36,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Вернуть результирующий ответ со значением с ошибкой
         /// </summary>      
         [Fact]
-        public async Task ToResultBindValue_HasErrors()
+        public async Task ToResultBindValueTaskAsync_HasErrors()
         {
             var error = ErrorData.CreateErrorTest();
             var resultHasError = ResultErrorFactory.CreateTaskResultError(error);
@@ -54,7 +54,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Вернуть результирующий ответ со значением с ошибкой в результирующем ответе
         /// </summary>      
         [Fact]
-        public async Task ToResultBindValue_HasErrorsBind()
+        public async Task ToResultBindValueTaskAsync_HasErrorsBind()
         {
             var resultNoError = ResultErrorFactory.CreateTaskResultError();
             var error = ErrorData.CreateErrorTest();
@@ -71,7 +71,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Вернуть результирующий ответ со значением с ошибкой
         /// </summary>      
         [Fact]
-        public async Task ToResultValueBind_HasErrorsBindInitial()
+        public async Task ToResultValueBindTaskAsync_HasErrorsBindInitial()
         {
             var error = ErrorData.CreateErrorTest();
             var resultHasError = ResultErrorFactory.CreateTaskResultError(error);
@@ -89,7 +89,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Преобразовать в результирующий ответ
         /// </summary>
         [Fact]
-        public async Task ToResultErrorTaskAsync_Ok()
+        public async Task ToResultErrorTaskAsync_FromResult_Ok()
         {
             var results = new List<IResultError>
             {
@@ -107,7 +107,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Преобразовать в результирующий ответ
         /// </summary>
         [Fact]
-        public async Task ToResultErrorsTaskAsync_Ok()
+        public async Task ToResultErrorTaskAsync_FromErrors_Ok()
         {
             var results = new List<IResultError>
             {
@@ -116,7 +116,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             };
             var taskResults = results.Select(Task.FromResult);
 
-            var result = await taskResults.ToResultErrorsTaskAsync();
+            var result = await taskResults.ToResultErrorTaskAsync();
 
             Assert.True(result.Errors.SequenceEqual(results.SelectMany(resultError => resultError.Errors)));
         }
@@ -134,7 +134,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             };
             var resultsTask = Task.FromResult((IEnumerable<IErrorResult>)results);
 
-            var result = await resultsTask.ToResultErrorsTaskAsync();
+            var result = await resultsTask.ToResultErrorTaskAsync();
 
             Assert.True(result.Errors.SequenceEqual(results));
         }

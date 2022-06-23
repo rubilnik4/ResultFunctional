@@ -1,57 +1,29 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.ResultFactory;
 using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Interfaces.Results;
+using ResultFunctionalXUnit.Data;
 using Xunit;
-using static ResultFunctionalXUnit.Data.ErrorData;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultErrorTest
 {
     /// <summary>
-    /// Асинхронные методы расширения для результирующего ответа. Тесты
+    /// Методы расширения для результирующего ответа для задачи-объекта. Тесты
     /// </summary>
-    public class ResultErrorAsyncExtensionsTest
+    public class ToResultErrorAsyncExtensionsTest
     {
-        /// <summary>
-        /// Вернуть результирующий ответ задачи-объекта со значением без ошибок
-        /// </summary>      
-        [Fact]
-        public async Task ToResultValueTaskAsync_OkStatus()
-        {
-            var resultNoError = ResultErrorFactory.CreateTaskResultError();
-            const string value = "OkStatus";
-
-            var resultValue = await resultNoError.ToResultValueTaskAsync(value);
-
-            Assert.True(resultValue.OkStatus);
-            Assert.Equal(value, resultValue.Value);
-        }
-
-        /// <summary>
-        /// Вернуть результирующий ответ задачи-объекта со значением с ошибкой
-        /// </summary>      
-        [Fact]
-        public async Task ToResultValue_HasErrors()
-        {
-            var error = CreateErrorTest();
-            var resultHasError = ResultErrorFactory.CreateTaskResultError(error);
-            const string value = "BadStatus";
-
-            var resultValue = await resultHasError.ToResultValueTaskAsync(value);
-
-            Assert.True(resultValue.HasErrors);
-            Assert.Single(resultValue.Errors);
-            Assert.True(error.Equals(resultValue.Errors.Last()));
-        }
-
         /// <summary>
         /// Вернуть результирующий ответ со значением без ошибок
         /// </summary>      
         [Fact]
-        public async Task ToResultBindValue_OkStatus()
+        public async Task ToResultBindValueAsync_OkStatus()
         {
-            var resultNoError = new ResultError();
+            var resultNoError = ResultErrorFactory.CreateResultError();
             const string value = "OkStatus";
             var resultValue = ResultValueFactory.CreateTaskResultValue(value);
 
@@ -65,10 +37,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Вернуть результирующий ответ со значением с ошибкой
         /// </summary>      
         [Fact]
-        public async Task ToResultBindValue_HasErrors()
+        public async Task ToResultBindValueAsync_HasErrors()
         {
-            var error = CreateErrorTest();
-            var resultHasError = new ResultError(error);
+            var error = ErrorData.CreateErrorTest();
+            var resultHasError = ResultErrorFactory.CreateResultError(error);
             const string value = "BadStatus";
             var resultValue = ResultValueFactory.CreateTaskResultValue(value);
 
@@ -83,14 +55,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Вернуть результирующий ответ со значением с ошибкой в результирующем ответе
         /// </summary>      
         [Fact]
-        public async Task ToResultBindValue_HasErrorsBind()
+        public async Task ToResultBindValueAsync_HasErrorsBind()
         {
-            var resultNoError = new ResultError();
-            var error = CreateErrorTest();
+            var resultNoError = ResultErrorFactory.CreateResultError();
+            var error = ErrorData.CreateErrorTest();
             var resultValue = ResultValueFactory.CreateTaskResultValueError<string>(error);
 
             var resultValueAfter = await resultNoError.ToResultBindValueAsync(resultValue);
-
             Assert.True(resultValueAfter.HasErrors);
             Assert.Single(resultValueAfter.Errors);
             Assert.True(error.Equals(resultValueAfter.Errors.Last()));
@@ -100,11 +71,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Вернуть результирующий ответ со значением с ошибкой
         /// </summary>      
         [Fact]
-        public async Task ToResultValueBind_HasErrorsBindInitial()
+        public async Task ToResultValueBindAsync_HasErrorsBindInitial()
         {
-            var error = CreateErrorTest();
-            var resultHasError = new ResultError(error);
-            var errors = CreateErrorListTwoTest();
+            var error = ErrorData.CreateErrorTest();
+            var resultHasError = ResultErrorFactory.CreateResultError(error);
+            var errors = ErrorData.CreateErrorListTwoTest();
             var resultValue = ResultValueFactory.CreateTaskResultValueError<string>(errors);
 
             var resultValueAfter = await resultHasError.ToResultBindValueAsync(resultValue);

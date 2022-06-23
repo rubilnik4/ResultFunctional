@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.Results;
 using Xunit;
@@ -39,7 +40,7 @@ public class ToResultCollectionExtensionsTest
         var resultHasError = new ResultError(error);
         var collection = new List<string> { "BadStatus" };
 
-        var resultValue = resultHasError.ToResultValue(collection);
+        var resultValue = resultHasError.ToResultCollection(collection);
 
         Assert.True(resultValue.HasErrors);
         Assert.Single(resultValue.Errors);

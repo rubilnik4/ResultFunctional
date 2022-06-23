@@ -7,30 +7,40 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors
 {
     /// <summary>
-    /// Действие над внутренним типом результирующего ответа задачи-объекта
+    /// Task result error action extension methods
     /// </summary>
     public static class ResultErrorVoidTaskAsyncExtensions
     {
         /// <summary>
-        /// Выполнить действие при положительном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute action if task result hasn't errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result error</returns> 
         public static async Task<IResultError> ResultErrorVoidOkTaskAsync(this Task<IResultError> @this, Action action) =>
             await @this.
             VoidOkTaskAsync(awaitedThis => awaitedThis.OkStatus,
                 action: _ => action.Invoke());
 
         /// <summary>
-        /// Выполнить действие при отрицательном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute action if task result has errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result error</returns>
         public static async Task<IResultError> ResultErrorVoidBadTaskAsync(this Task<IResultError> @this,
-                                                                       Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
+                                                                       Action<IReadOnlyCollection<IErrorResult>> action) =>
             await @this.
             VoidOkTaskAsync(awaitedThis => awaitedThis.HasErrors,
-                action: awaitedThis => actionBad.Invoke(awaitedThis.Errors));
+                action: awaitedThis => action.Invoke(awaitedThis.Errors));
 
         /// <summary>
-        /// Выполнить действие, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute action depending on task result errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="actionOk">Action if result hasn't errors</param>
+        /// <param name="actionBad">Action if result has errors</param>
+        /// <returns>Unchanged result error</returns>   
         public static async Task<IResultError> ResultErrorVoidOkBadTaskAsync(this Task<IResultError> @this, Action actionOk,
                                                                              Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
             await @this.
@@ -39,8 +49,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
                 actionBad: awaitedThis => actionBad.Invoke(awaitedThis.Errors));
 
         /// <summary>
-        /// Выполнить действие при положительном значении и выполнении условия вернуть результирующий ответ
-        /// </summary>    
+        /// Execute action depending on task result errors and predicate
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="action">Function if predicate <see langword="true"/></param>
+        /// <returns>Unchanged result error</returns>  
         public static async Task<IResultError> ResultErrorVoidOkWhereTaskAsync(this Task<IResultError> @this,
                                                                            Func<bool> predicate,
                                                                            Action action) =>

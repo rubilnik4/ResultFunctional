@@ -7,46 +7,60 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors
 {
     /// <summary>
-    /// Асинхронное действие над внутренним типом результирующего ответа
+    /// Result error async action extension methods
     /// </summary>
     public static class ResultErrorVoidAsyncExtensions
     {
         /// <summary>
-        /// Выполнить действие при положительном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute async action if result hasn't errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result error</returns>
         public static async Task<IResultError> ResultErrorVoidOkAsync(this IResultError @this, Func<Task> action) =>
             await @this.
             VoidOkAsync(_ => @this.OkStatus,
-                action: _ => action.Invoke());
+                        _ => action.Invoke());
 
         /// <summary>
-        /// Выполнить действие при отрицательном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute async action if result has errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result error</returns>
         public static async Task<IResultError> ResultErrorVoidBadAsync(this IResultError @this,
-                                                                       Func<IReadOnlyCollection<IErrorResult>, Task> actionBad) =>
+                                                                       Func<IReadOnlyCollection<IErrorResult>, Task> action) =>
             await @this.
             VoidOkAsync(_ => @this.HasErrors,
-                action: _ => actionBad.Invoke(@this.Errors));
+                        _ => action.Invoke(@this.Errors));
 
         /// <summary>
-        /// Выполнить действие, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute async action depending on result errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="actionOk">Action if result hasn't errors</param>
+        /// <param name="actionBad">Action if result has errors</param>
+        /// <returns>Unchanged result error</returns>
         public static async Task<IResultError> ResultErrorVoidOkBadAsync(this IResultError @this,
                                                                          Func<Task> actionOk,
                                                                          Func<IReadOnlyCollection<IErrorResult>, Task> actionBad) =>
             await @this.
             VoidWhereAsync(_ => @this.OkStatus,
-                actionOk: _ => actionOk.Invoke(),
-                actionBad: _ => actionBad.Invoke(@this.Errors));
+                           _ => actionOk.Invoke(),
+                           _ => actionBad.Invoke(@this.Errors));
 
         /// <summary>
-        /// Выполнить действие при положительном значении и выполнении условия вернуть результирующий ответ
-        /// </summary>    
+        /// Execute async action depending on result errors and predicate
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="action">Function if predicate <see langword="true"/></param>
+        /// <returns>Unchanged result error</returns>
         public static async Task<IResultError> ResultErrorVoidOkWhereAsync(this IResultError @this,
                                                                            Func<bool> predicate,
                                                                            Func<Task> action) =>
             await @this.
             VoidOkAsync(_ => @this.OkStatus && predicate(),
-                action: _ => action.Invoke());
+                        _ => action.Invoke());
     }
 }

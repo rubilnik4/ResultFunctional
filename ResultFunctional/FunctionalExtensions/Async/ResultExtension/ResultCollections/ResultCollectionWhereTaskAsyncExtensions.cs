@@ -8,13 +8,20 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
 {
     /// <summary>
-    /// Обработка асинхронных условий для результирующего ответа с коллекцией задачей-объектом
+    /// Extension methods for task result collection functor function with conditions
     /// </summary>
     public static class ResultCollectionWhereTaskAsyncExtensions
     {
         /// <summary>
-        /// Выполнение условия или возвращение предыдущей ошибки в результирующем ответе с коллекцией задачи-объекта
-        /// </summary>      
+        /// Execute task result collection function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result collection</returns>           
         public static async Task<IResultCollection<TValueOut>> ResultCollectionContinueTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> okFunc,
@@ -23,8 +30,15 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionContinue(predicate, okFunc, badFunc));
 
         /// <summary>
-        /// Выполнение условия или возвращение предыдущей ошибки в результирующем ответе с коллекцией задачи-объекта
-        /// </summary>      
+        /// Execute task result collection function base on predicate condition returning collection in any case
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionWhereTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> okFunc,
@@ -33,8 +47,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionWhere(predicate, okFunc, badFunc));
 
         /// <summary>
-        /// Выполнение положительного или негативного условия в результирующем ответе с коллекцией задачи-объекта
-        /// </summary>      
+        /// Execute task result collection function depending on result collection errors
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="okFunc">Function if result collection hasn't errors</param>
+        /// <param name="badFunc">Function if result collection has errors</param>
+        /// <returns>Outgoing result collection</returns>     
         public static async Task<IResultCollection<TValueOut>> ResultCollectionOkBadTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                          Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> okFunc,
                                                                                                          Func<IReadOnlyCollection<IErrorResult>, IEnumerable<TValueOut>> badFunc) =>
@@ -42,16 +62,25 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionOkBad(okFunc, badFunc));
 
         /// <summary>
-        /// Выполнение положительного условия или возвращение предыдущей ошибки в результирующем ответе с коллекцией задачи-объекта
-        /// </summary>   
+        /// Execute task result collection function if incoming result collection hasn't errors
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="okFunc">Function if result collection hasn't errors</param>
+        /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionOkTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                       Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> okFunc) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionOk(okFunc));
 
         /// <summary>
-        /// Выполнение негативного условия или возвращение положительного условия в результирующем ответе с коллекцией задачи-объекта
-        /// </summary>   
+        /// Execute task result collection function if incoming result collection has errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="badFunc">Function if result collection has errors</param>
+        /// <returns>Outgoing result collection</returns>  
         public static async Task<IResultCollection<TValue>> ResultCollectionBadTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this,
                                                                                        Func<IReadOnlyCollection<IErrorResult>, IEnumerable<TValue>> badFunc) =>
             await @this.

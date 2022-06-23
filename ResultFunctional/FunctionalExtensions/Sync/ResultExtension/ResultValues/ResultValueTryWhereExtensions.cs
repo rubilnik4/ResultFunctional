@@ -22,7 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ResultValueTryOk<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                     Func<TValueIn, TValueOut> func,
-                                                                                     Func<Exception, IErrorResult> exceptionFunc) =>
+                                                                                    Func<Exception, IErrorResult> exceptionFunc) =>
             @this.ResultValueBindOk(value => ResultValueTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>

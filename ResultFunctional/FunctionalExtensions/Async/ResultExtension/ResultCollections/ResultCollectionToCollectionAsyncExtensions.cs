@@ -8,13 +8,19 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
 {
     /// <summary>
-    /// Преобразование результирующего ответа в коллекцию асинхронно
+    /// Result collection async reorder extension methods
     /// </summary>
     public static class ResultCollectionToCollectionAsyncExtensions
     {
         /// <summary>
-        /// Выполнение положительного или негативного условия в результирующем ответе и преобразование в значение
+        /// Async converting result collection to ordinal collection
         /// </summary>      
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="okFunc">Function if incoming result collection hasn't errors</param>
+        /// <param name="badFunc">Function if incoming result collection has errors</param>
+        /// <returns>Outgoing collection</returns>
         public static async Task<IReadOnlyCollection<TValueOut>> ResultCollectionToCollectionOkBadAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> okFunc,
                                                                                                                             Func<IReadOnlyCollection<IErrorResult>, Task<IEnumerable<TValueOut>>> badFunc) =>

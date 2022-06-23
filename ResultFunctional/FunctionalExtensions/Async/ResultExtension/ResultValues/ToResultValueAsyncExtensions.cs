@@ -1,14 +1,15 @@
 ﻿using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
+using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Асинхронные методы расширения для результирующего ответа
+    /// Result value async extension methods
     /// </summary>
-    public static class ResultValueAsyncExtensions
+    public static class ToResultValueAsyncExtensions
     {
         /// <summary>
         /// Преобразовать значение в результирующий ответ с проверкой на нуль для задачи-объекта

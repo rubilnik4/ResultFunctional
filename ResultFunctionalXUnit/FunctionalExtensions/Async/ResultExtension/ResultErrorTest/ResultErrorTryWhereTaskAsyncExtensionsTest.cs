@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
 using ResultFunctional.Models.Implementations.ResultFactory;
 using ResultFunctional.Models.Implementations.Results;
@@ -7,23 +9,24 @@ using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
 using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors.ResultErrorTryExtensions;
 
-namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.ResultErrorTest
+namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultErrorTest
 {
     /// <summary>
     /// Методы расширения для результирующего ответа и обработкой исключений. Тесты
     /// </summary>
-    public class ResultErrorTryExtensionsTest
+    public class ResultErrorTryWhereTaskAsyncExtensionsTest
     {
         /// <summary>
         /// Обработать функцию, вернуть результирующий ответ
         /// </summary>
         [Fact]
-        public void ResultErrorTryWhere_Ok()
+        public async Task ResultErrorTryWhereTaskAsync_Ok()
         {
             int initialValue = Numbers.Number;
-            var numberResult = new ResultError();
+            var numberResult = ResultErrorFactory.CreateTaskResultError();
 
-            var resultError = numberResult.ResultErrorTryOk(() => SyncFunctions.Division(initialValue), Exceptions.ExceptionError());
+            var resultError = await numberResult.ResultErrorTryOkTaskAsync(() => SyncFunctions.Division(initialValue), 
+                                                                       Exceptions.ExceptionError());
 
             Assert.True(resultError.OkStatus);
         }
@@ -32,12 +35,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         /// Обработать функцию, вернуть результирующий ответ с ошибкой
         /// </summary>
         [Fact]
-        public void ResultErrorTryWhere_Exception()
+        public async Task ResultErrorTryWhereTaskAsync_Exception()
         {
             const int initialValue = 0;
-            var numberResult = new ResultError();
+            var numberResult = ResultErrorFactory.CreateTaskResultError();
 
-            var resultError = numberResult.ResultErrorTryOk(() => SyncFunctions.Division(initialValue), Exceptions.ExceptionError());
+            var resultError = await numberResult.ResultErrorTryOkTaskAsync(() => SyncFunctions.Division(initialValue),
+                                                                       Exceptions.ExceptionError());
 
             Assert.True(resultError.HasErrors);
             Assert.NotNull(resultError.Errors.First().Exception);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace ResultFunctionalXUnit.Mocks.Implementation
@@ -13,6 +14,12 @@ namespace ResultFunctionalXUnit.Mocks.Implementation
         /// Функция деления на число
         /// </summary>
         public static int Division(int divider) => 10 / divider;
+
+        /// <summary>
+        /// Функция деления на число
+        /// </summary>
+        public static void DivisionAction(int _)
+        { }
 
         /// <summary>
         /// Функция деления на коллекцию чисел

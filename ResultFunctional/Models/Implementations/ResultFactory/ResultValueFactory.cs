@@ -13,7 +13,17 @@ namespace ResultFunctional.Models.Implementations.ResultFactory
     public static class ResultValueFactory
     {
         /// <summary>
-        /// Create result collection by value
+        /// Create result value by value
+        /// </summary>
+        /// <typeparam name="TValue">Value parameter</typeparam>
+        /// <param name="value">Value</param>
+        /// <returns>Result value in task</returns>
+        public static IResultValue<TValue> CreateResultValue<TValue>(TValue value)
+            where TValue : notnull =>
+            new ResultValue<TValue>(value);
+
+        /// <summary>
+        /// Create task result value by value
         /// </summary>
         /// <typeparam name="TValue">Value parameter</typeparam>
         /// <param name="value">Value</param>
@@ -23,7 +33,17 @@ namespace ResultFunctional.Models.Implementations.ResultFactory
             Task.FromResult((IResultValue<TValue>)new ResultValue<TValue>(value));
 
         /// <summary>
-        /// Create result collection by error
+        /// Create result value by error
+        /// </summary>
+        /// <typeparam name="TValue">Value parameter</typeparam>
+        /// <param name="error">Error</param>
+        /// <returns>Result value in task</returns>
+        public static IResultValue<TValue> CreateResultValueError<TValue>(IErrorResult error)
+            where TValue : notnull =>
+            new ResultValue<TValue>(error);
+
+        /// <summary>
+        /// Create task result value by error
         /// </summary>
         /// <typeparam name="TValue">Value parameter</typeparam>
         /// <param name="error">Error</param>
@@ -33,7 +53,17 @@ namespace ResultFunctional.Models.Implementations.ResultFactory
             Task.FromResult((IResultValue<TValue>)new ResultValue<TValue>(error));
 
         /// <summary>
-        /// Create result collection by errors
+        /// Create result value by errors
+        /// </summary>
+        /// <typeparam name="TValue">Value parameter</typeparam>
+        /// <param name="errors">Errors</param>
+        /// <returns>Result value in task</returns>
+        public static IResultValue<TValue> CreateResultValueError<TValue>(IEnumerable<IErrorResult> errors)
+            where TValue : notnull =>
+            new ResultValue<TValue>(errors);
+
+        /// <summary>
+        /// Create task result value by errors
         /// </summary>
         /// <typeparam name="TValue">Value parameter</typeparam>
         /// <param name="errors">Errors</param>
