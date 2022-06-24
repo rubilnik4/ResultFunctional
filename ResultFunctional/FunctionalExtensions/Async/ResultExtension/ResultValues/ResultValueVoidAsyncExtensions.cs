@@ -7,13 +7,17 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Асинхронное действие над внутренним типом результирующего ответа со значением
+    /// Result value async action extension methods
     /// </summary>
     public static class ResultValueVoidAsyncExtensions
     {
         /// <summary>
-        /// Выполнить действие при положительном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute async action if result value hasn't errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result value</returns>
         public static async Task<IResultValue<TValue>> ResultValueVoidOkAsync<TValue>(this IResultValue<TValue> @this,
                                                                                  Func<TValue, Task> action) =>
             await @this.
@@ -21,8 +25,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
                 action: _ => action.Invoke(@this.Value));
 
         /// <summary>
-        /// Выполнить действие при отрицательном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute async action if result value has errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result value</returns> 
         public static async Task<IResultValue<TValue>> ResultValueVoidBadAsync<TValue>(this IResultValue<TValue> @this,
                                                                                        Func<IReadOnlyCollection<IErrorResult>, Task> action) =>
             await @this.
@@ -30,8 +38,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
                 action: _ => action.Invoke(@this.Errors));
 
         /// <summary>
-        /// Выполнить действие, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute async action depending on result value errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="actionOk">Action if result value hasn't errors</param>
+        /// <param name="actionBad">Action if result value has errors</param>
+        /// <returns>Unchanged result value</returns>
         public static async Task<IResultValue<TValue>> ResultValueVoidOkBadAsync<TValue>(this IResultValue<TValue> @this,
                                                                                          Func<TValue, Task> actionOk,
                                                                                          Func<IReadOnlyCollection<IErrorResult>, Task> actionBad) =>
@@ -41,8 +54,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
                 actionBad: _ => actionBad.Invoke(@this.Errors));
 
         /// <summary>
-        /// Выполнить действие при положительном значении и выполнении условия вернуть результирующий ответ
-        /// </summary>    
+        /// Execute async action depending on result value errors and predicate
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="action">Function if predicate <see langword="true"/></param>
+        /// <returns>Unchanged result value</returns>   
         public static async Task<IResultValue<TValue>> ResultValueVoidOkWhereAsync<TValue>(this IResultValue<TValue> @this,
                                                                                            Func<TValue, bool> predicate,
                                                                                            Func<TValue, Task> action) =>

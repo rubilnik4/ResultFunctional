@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.ResultFactory;
 using ResultFunctional.Models.Interfaces.Results;
 using ResultFunctionalXUnit.Data;
@@ -154,5 +155,24 @@ public class ToResultCollectionTaskAsyncExtensionsTest
         var resultValue = await resultCollectionTask.ToResultValueTaskAsync();
 
         Assert.IsAssignableFrom<IResultValue<IReadOnlyCollection<int>>>(resultValue);
+    }
+
+    /// <summary>
+    ///  Преобразовать в результирующий ответ коллекции
+    /// </summary>
+    [Fact]
+    public async Task ToResultCollectionTaskAsync()
+    {
+        var rangeTasks = Enumerable.Range(1, 10).Select(GetTaskNumber);
+        var resultCollection = await rangeTasks.ToResultCollectionTaskAsync();
+
+        Assert.True(resultCollection.OkStatus);
+        Assert.True(resultCollection.Value.SequenceEqual(Enumerable.Range(1, 10)));
+    }
+
+    private static async Task<IResultValue<int>> GetTaskNumber(int number)
+    {
+        await Task.Delay(1);
+        return number.ToResultValue();
     }
 }

@@ -16,17 +16,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
     public static class ToResultErrorTaskAsyncExtensions
     {
         /// <summary>
-        /// Converting task result error to result value
-        /// </summary>
-        /// <typeparam name="TValue">Result type</typeparam>
-        /// <param name="this">Incoming result error</param>
-        /// <param name="value">Value</param>
-        /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValue>> ToResultValueTaskAsync<TValue>(this Task<IResultError> @this, TValue value) =>
-            await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.ToResultValue(value));
-
-        /// <summary>
         /// Merge task result errors collection
         /// </summary>
         /// <param name="this">Result error collection</param>
@@ -72,15 +61,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
                        MapTaskAsync(result => result.ToResultError());
 
         /// <summary>
-        /// Merge task result error with result value
-        /// </summary>
-        /// <typeparam name="TValue">Result type</typeparam>
-        /// <param name="this">Incoming result error</param>
-        /// <param name="resultValue">Result value</param>
-        /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValue>> ToResultBindValueTaskAsync<TValue>(this Task<IResultError> @this,
-                                                                                          IResultValue<TValue> resultValue) =>
+        /// Преобразовать в результирующий ответ
+        /// </summary>      
+        public static async Task<IResultError> ToResultErrorTaskAsync<TValue>(this Task<IResultValue<TValue>> @this) =>
             await @this.
-            MapTaskAsync(result => result.ToResultBindValue(resultValue));
+                MapTaskAsync(awaitedThis => awaitedThis);
     }
 }

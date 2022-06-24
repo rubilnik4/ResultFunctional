@@ -10,7 +10,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
     /// <summary>
     /// Extension methods for task result value functions converting to result collection
     /// </summary>
-    public static class ResultValueWhereToCollectionTaskAsyncExtensions
+    public static class ResultValueWhereToCollectionBindAsyncExtensions
     {
         /// <summary>
         /// Execute result value function converting to task result value base on predicate condition
@@ -22,12 +22,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="okFunc">Function if predicate <see langword="true"/></param>
         /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns> 
-        public static async Task<IResultCollection<TValueOut>> ResultValueContinueToCollectionTaskAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
+        public static async Task<IResultCollection<TValueOut>> ResultValueContinueToCollectionBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                        Func<TValueIn, bool> predicate,
-                                                                                       Func<TValueIn, IEnumerable<TValueOut>> okFunc,
-                                                                                       Func<TValueIn, IEnumerable<IErrorResult>> badFunc) =>
+                                                                                       Func<TValueIn, Task<IEnumerable<TValueOut>>> okFunc,
+                                                                                       Func<TValueIn, Task<IEnumerable<IErrorResult>>> badFunc) =>
             await @this.
-            ResultValueContinueTaskAsync(predicate, okFunc, badFunc).
+            ResultValueContinueBindAsync(predicate, okFunc, badFunc).
             ToResultCollectionTaskAsync();
 
         /// <summary>
@@ -39,11 +39,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="okFunc">Function if predicate <see langword="true"/></param>
         /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>   
-        public static async Task<IResultCollection<TValueOut>> ResultValueOkBadToCollectionTaskAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
-                                                                                    Func<TValueIn, IEnumerable<TValueOut>> okFunc,
-                                                                                    Func<IReadOnlyCollection<IErrorResult>, IEnumerable<TValueOut>> badFunc) =>
+        public static async Task<IResultCollection<TValueOut>> ResultValueOkBadToCollectionBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
+                                                                                    Func<TValueIn, Task<IEnumerable<TValueOut>>> okFunc,
+                                                                                    Func<IReadOnlyCollection<IErrorResult>, Task<IEnumerable<TValueOut>>> badFunc) =>
             await @this.
-            ResultValueOkBadTaskAsync(okFunc, badFunc).
+            ResultValueOkBadBindAsync(okFunc, badFunc).
             ToResultCollectionTaskAsync();
 
         /// <summary>
@@ -54,10 +54,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="this">Incoming result value</param>
         /// <param name="okFunc">Function if result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IResultCollection<TValueOut>> ResultValueOkToCollectionTaskAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
-                                                                                             Func<TValueIn, IEnumerable<TValueOut>> okFunc) =>
+        public static async Task<IResultCollection<TValueOut>> ResultValueOkToCollectionBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
+                                                                                             Func<TValueIn, Task<IEnumerable<TValueOut>>> okFunc) =>
             await @this.
-            ResultValueOkTaskAsync(okFunc).
+            ResultValueOkBindAsync(okFunc).
             ToResultCollectionTaskAsync();
     }
 }

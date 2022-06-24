@@ -1,22 +1,75 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
+using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.ResultFactory;
-using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
-using ResultFunctional.Models.Interfaces.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
+using static ResultFunctionalXUnit.Data.ErrorData;
 
-namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultErrorTest
+namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultValueTest
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа для задачи-объекта. Тесты
+    /// Асинхронные методы расширения для результирующего ответа. Тесты
     /// </summary>
-    public class ToResultErrorAsyncExtensionsTest
+    public class ToResultValueBindAsyncExtensionsTest
     {
+        /// <summary>
+        /// Проверить объект на нул. Без ошибок
+        /// </summary>
+        [Fact]
+        public async Task ToResultValueNullValueCheckAsync_Ok()
+        {
+            var initialString = Task.FromResult("NotNull");
+
+            var resultString = await initialString.ToResultValueNullValueCheckBindAsync(CreateErrorTestTask());
+
+            Assert.True(resultString.OkStatus);
+            Assert.Equal(initialString.Result, resultString.Value);
+        }
+
+        /// <summary>
+        /// Проверить объект на нул. Ошибка нулевого значения
+        /// </summary>
+        [Fact]
+        public async Task ToResultValueNullValueCheckAsync_ErrorNull()
+        {
+            var initialString = Task.FromResult<string?>(null);
+            var initialError = CreateErrorTestTask();
+
+            var resultString = await initialString.ToResultValueNullValueCheckBindAsync(initialError);
+
+            Assert.True(resultString.HasErrors);
+            Assert.True(resultString.Errors.First().Equals(initialError.Result));
+        }
+
+        /// <summary>
+        /// Проверить объект на нул. Без ошибок
+        /// </summary>
+        [Fact]
+        public async Task ToResultValueNullCheckBind_Ok()
+        {
+            var initialString = Task.FromResult("NotNull");
+
+            var result = await initialString!.ToResultValueNullCheckBindAsync(CreateErrorTestTask());
+
+            Assert.True(result.OkStatus);
+            Assert.Equal(initialString.Result, result.Value);
+        }
+
+        /// <summary>
+        /// Проверить объект на нул. Ошибка нулевого значения
+        /// </summary>
+        [Fact]
+        public async Task ToResultValueNullCheckBind_ErrorNull()
+        {
+            var initialString = Task.FromResult<string?>(null);
+            var initialError = CreateErrorTestTask();
+            var result = await initialString.ToResultValueNullCheckBindAsync(initialError);
+
+            Assert.True(result.HasErrors);
+            Assert.True(result.Errors.First().Equals(initialError.Result));
+        }
+
         /// <summary>
         /// Вернуть результирующий ответ со значением без ошибок
         /// </summary>      

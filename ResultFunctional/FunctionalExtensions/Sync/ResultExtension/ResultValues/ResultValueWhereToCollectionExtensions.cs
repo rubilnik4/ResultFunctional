@@ -7,12 +7,12 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Extension methods for result value functions converting to result collection
+    /// Extension methods for result value functions converting to result value
     /// </summary>
     public static class ResultValueWhereToCollectionExtensions
     {
         /// <summary>
-        /// Execute result value function converting to result collection base on predicate condition
+        /// Execute result value function converting to result value base on predicate condition
         /// </summary>
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
@@ -30,7 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
             ToResultCollection();
 
         /// <summary>
-        /// Execute result value function converting to result collection depending on result value errors
+        /// Execute result value function converting to result value depending on result value errors
         /// </summary>
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
@@ -46,7 +46,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
             ToResultCollection();
 
         /// <summary>
-        /// Execute result value function converting to result collection if incoming result value hasn't errors
+        /// Execute result value function converting to result value if incoming result value hasn't errors
         /// </summary>
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>

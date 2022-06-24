@@ -12,19 +12,62 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
     public static class ToResultValueAsyncExtensions
     {
         /// <summary>
-        /// Преобразовать значение в результирующий ответ с проверкой на нуль для задачи-объекта
+        /// Converting value to result value with null checking
         /// </summary>
-        public static async Task<IResultValue<TValue>> ToResultValueNullCheckAsync<TValue>(this TValue? @this,
-                                                                                           Task<IErrorResult> errorNull)
-            where TValue : class =>
-            @this.ToResultValueNullCheck(await errorNull);
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="error">Null error</param>
+        /// <returns>Outgoing result value</returns>
+        public static async Task<IResultValue<TValue>> ToResultValueNullValueCheckAsync<TValue>(this TValue @this,
+                                                                                                Task<IErrorResult> error) =>
+            @this.ToResultValueNullValueCheck(await error);
 
         /// <summary>
-        /// Преобразовать значение в результирующий ответ с проверкой на нуль для задачи-объекта
+        /// Converting value to result value async with null checking
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="error">Null error</param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueNullCheckAsync<TValue>(this TValue? @this,
-                                                                                           Task<IErrorResult> errorNull)
+                                                                                           Task<IErrorResult> error)
+            where TValue : class =>
+            @this.ToResultValueNullCheck(await error);
+
+        /// <summary>
+        /// Converting value to result value async with null checking
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="error">Null error</param>
+        /// <returns>Outgoing result value</returns>
+        public static async Task<IResultValue<TValue>> ToResultValueNullCheckAsync<TValue>(this TValue? @this,
+                                                                                           Task<IErrorResult> error)
             where TValue : struct =>
-            @this.ToResultValueNullCheck(await errorNull);
+            @this.ToResultValueNullCheck(await error);
+
+        /// <summary>
+        /// Async converting result error to result value
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="value">Value</param>
+        /// <returns>Outgoing result value</returns>
+        public static async Task<IResultValue<TValue>> ToResultValueAsync<TValue>(this IResultError @this, Task<TValue> value) =>
+            @this.OkStatus
+                ? new ResultValue<TValue>(await value)
+                : new ResultValue<TValue>(@this.Errors);
+
+        /// <summary>
+        /// Async merge result error with result value
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="resultValue">Result value</param>
+        /// <returns>Outgoing result value</returns>
+        public static async Task<IResultValue<TValue>> ToResultBindValueAsync<TValue>(this IResultError @this, Task<IResultValue<TValue>> resultValue) =>
+            @this.OkStatus
+                ? await resultValue
+                : new ResultValue<TValue>(@this.Errors);
     }
 }

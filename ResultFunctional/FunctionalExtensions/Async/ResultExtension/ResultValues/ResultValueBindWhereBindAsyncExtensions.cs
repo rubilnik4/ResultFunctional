@@ -7,13 +7,20 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Обработка условий для асинхронного результирующего связывающего ответа со значением для задачи-объекта
+    /// Extension methods for task result value async monad function with conditions
     /// </summary>
     public static class ResultValueBindWhereBindAsyncExtensions
     {
         /// <summary>
-        /// Выполнение условия или возвращение предыдущей ошибки в результирующем ответе со значением задачи-объекта
-        /// </summary>      
+        /// Execute task monad result value async function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>       
         public static async Task<IResultValue<TValueOut>> ResultValueBindContinueBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                             Func<TValueIn, bool> predicate,
                                                                                                             Func<TValueIn, Task<IResultValue<TValueOut>>> okFunc,
@@ -22,8 +29,15 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             MapBindAsync(awaitedThis => awaitedThis.ResultValueBindContinueAsync(predicate, okFunc, badFunc));
 
         /// <summary>
-        /// Выполнение условия или возвращение предыдущей ошибки в результирующем ответе со значение задачи-объекта
-        /// </summary>      
+        /// Execute task monad result value async function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>          
         public static async Task<IResultValue<TValueOut>> ResultValueBindWhereBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                              Func<TValueIn, bool> predicate,
                                                                                                              Func<TValueIn, Task<IResultValue<TValueOut>>> okFunc,
@@ -32,8 +46,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             MapBindAsync(awaitedThis => awaitedThis.ResultValueBindWhereAsync(predicate, okFunc, badFunc));
 
         /// <summary>
-        /// Выполнение условия положительного или негативного условия в результирующем ответе со значение задачи-объекта
-        /// </summary>      
+        /// Execute task monad result value async function depending on result value errors
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="okFunc">Function if result value hasn't errors</param>
+        /// <param name="badFunc">Function if result value has errors</param>
+        /// <returns>Outgoing result value</returns>   
         public static async Task<IResultValue<TValueOut>> ResultValueBindOkBadBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                              Func<TValueIn, Task<IResultValue<TValueOut>>> okFunc,
                                                                                                              Func<IReadOnlyCollection<IErrorResult>, Task<IResultValue<TValueOut>>> badFunc) =>
@@ -41,24 +61,37 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             MapBindAsync(awaitedThis => awaitedThis.ResultValueBindOkBadAsync(okFunc, badFunc));
 
         /// <summary>
-        /// Выполнение асинхронного положительного условия результирующего ответа или возвращение предыдущей ошибки в результирующем ответе для задачи-объекта
-        /// </summary>   
+        /// Execute task monad result value async function if incoming result value hasn't errors
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="okFunc">Function if incoming result value hasn't errors</param>
+        /// <returns>Outgoing result value</returns> 
         public static async Task<IResultValue<TValueOut>> ResultValueBindOkBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                           Func<TValueIn, Task<IResultValue<TValueOut>>> okFunc) =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueBindOkAsync(okFunc));
 
         /// <summary>
-        /// Выполнение асинхронного негативного условия результирующего ответа или возвращение положительного в результирующем ответе для задачи-объекта
-        /// </summary>   
+        /// Execute task monad result value async function if incoming result value has errors
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="badFunc">Function if incoming result value has errors</param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ResultValueBindBadBindAsync<TValue>(this Task<IResultValue<TValue>> @this,
                                                                                            Func<IReadOnlyCollection<IErrorResult>, Task<IResultValue<TValue>>> badFunc) =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueBindBadAsync(badFunc));
 
         /// <summary>
-        /// Добавить ошибки асинхронного результирующего ответа или вернуть результат с ошибками для ответа со значением для задачи-объекта
+        /// Adding errors async to task result value if ones hasn't errors
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="okFunc">Error function if incoming result value hasn't errors</param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ResultValueBindErrorsOkBindAsync<TValue>(this Task<IResultValue<TValue>> @this,
                                                                                             Func<TValue, Task<IResultError>> okFunc) =>
             await @this.

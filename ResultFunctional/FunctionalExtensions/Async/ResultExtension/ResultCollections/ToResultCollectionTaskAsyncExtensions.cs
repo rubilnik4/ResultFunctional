@@ -100,4 +100,13 @@ public static class ToResultCollectionTaskAsyncExtensions
     public static async Task<IResultError> ToResultErrorTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this) =>
         await @this.
         MapTaskAsync(awaitedThis => awaitedThis);
+
+
+    /// <summary>
+    /// Преобразовать в результирующий ответ коллекции
+    /// </summary>  
+    public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this IEnumerable<Task<IResultValue<TValue>>> @this)
+        where TValue : notnull =>
+        await Task.WhenAll(@this).
+        MapTaskAsync(result => result.ToResultCollection());
 }
