@@ -5,7 +5,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync
     /// <summary>
     /// Higher order functions
     /// </summary>
-    public static class CurryAsyncExtensions
+    public static class CurryExtensions
     {
         /// <summary>
         /// Get no arguments higher order function
