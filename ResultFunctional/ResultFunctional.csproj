@@ -12,7 +12,7 @@
     <Configurations>Debug;Release</Configurations>   
     <AssemblyVersion>1.0.32.0</AssemblyVersion>
     <FileVersion>1.0.32.0</FileVersion>
-    <Version>1.0.32</Version>
+    <Version>1.1.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<RepositoryUrl>https://github.com/rubilnik4/ResultFunctional</RepositoryUrl>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
