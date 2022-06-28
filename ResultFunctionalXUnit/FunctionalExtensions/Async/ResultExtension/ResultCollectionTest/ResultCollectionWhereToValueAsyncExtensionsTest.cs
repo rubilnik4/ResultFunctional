@@ -22,9 +22,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionContinueToValueAsync_Ok_ReturnNewValue()
         {
             var numberCollection = Collections.GetRangeNumber();
-            var resultCollectionTask = new ResultCollection<int>(numberCollection);
+            var resultCollection = new ResultCollection<int>(numberCollection);
 
-            var resultAfterWhere = await resultCollectionTask.ResultCollectionContinueToValueAsync(_ => true,
+            var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueAsync(_ => true,
                 okFunc: Collections.AggregateToStringAsync,
                 badFunc: _ => CreateErrorListTwoTestTask());
 
@@ -39,10 +39,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionContinueToValueAsync_Ok_ReturnNewError()
         {
             var numberCollection = Collections.GetRangeNumber();
-            var resultCollectionTask = new ResultCollection<int>(numberCollection);
+            var resultCollection = new ResultCollection<int>(numberCollection);
 
             var errorsBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await resultCollectionTask.ResultCollectionContinueToValueAsync(_ => false,
+            var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueAsync(_ => false,
                 okFunc: Collections.AggregateToStringAsync,
                 badFunc: _ => ToTaskEnumerable(errorsBad));
 

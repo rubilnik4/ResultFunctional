@@ -9,13 +9,20 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Обработка условий для результирующего ответа со значением задачей-объектом
+    /// Extension methods for task result value functor function with conditions
     /// </summary>
     public static class ResultValueWhereTaskAsyncExtensions
     {
         /// <summary>
-        /// Выполнение условия или возвращение предыдущей ошибки в результирующем ответе задачи-объекта
-        /// </summary>      
+        /// Execute task result value function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns> 
         public static async Task<IResultValue<TValueOut>> ResultValueContinueTaskAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                             Func<TValueIn, bool> predicate,
                                                                                                             Func<TValueIn, TValueOut> okFunc,
@@ -24,8 +31,15 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueContinue(predicate, okFunc, badFunc));
 
         /// <summary>
-        /// Выполнение условия в положительном или негативном варианте в результирующем ответе задачи-объекта
-        /// </summary>      
+        /// Execute task result value function base on predicate condition returning value in any case
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>   
         public static async Task<IResultValue<TValueOut>> ResultValueWhereTaskAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                          Func<TValueIn, bool> predicate,
                                                                                                          Func<TValueIn, TValueOut> okFunc,
@@ -34,8 +48,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueWhere(predicate, okFunc, badFunc));
 
         /// <summary>
-        /// Выполнение положительного или негативного условия в результирующем ответе задачи-объекта
-        /// </summary>      
+        /// Execute task result value function depending on result value errors
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="okFunc">Function if result value hasn't errors</param>
+        /// <param name="badFunc">Function if result value has errors</param>
+        /// <returns>Outgoing result value</returns> 
         public static async Task<IResultValue<TValueOut>> ResultValueOkBadTaskAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                          Func<TValueIn, TValueOut> okFunc,
                                                                                                          Func<IReadOnlyCollection<IErrorResult>, TValueOut> badFunc) =>
@@ -43,16 +63,25 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueOkBad(okFunc, badFunc));
 
         /// <summary>
-        /// Выполнение положительного условия или возвращение предыдущей ошибки в результирующем ответе задачи-объекта
-        /// </summary>   
+        /// Execute task result value function if incoming result value hasn't errors
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="okFunc">Function if result value hasn't errors</param>
+        /// <returns>Outgoing result value</returns>   
         public static async Task<IResultValue<TValueOut>> ResultValueOkTaskAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                       Func<TValueIn, TValueOut> okFunc) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueOk(okFunc));
 
         /// <summary>
-        /// Выполнение негативного условия или возвращение положительного условия в результирующем ответе задачи-объекта
-        /// </summary>   
+        /// Execute task result value function if incoming result value has errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="badFunc">Function if result value has errors</param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ResultValueBadTaskAsync<TValue>(this Task<IResultValue<TValue>> @this,
                                                                                        Func<IReadOnlyCollection<IErrorResult>, TValue> badFunc) =>
             await @this.

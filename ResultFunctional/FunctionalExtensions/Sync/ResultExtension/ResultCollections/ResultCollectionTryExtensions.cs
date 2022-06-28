@@ -7,13 +7,17 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со коллекцией и обработкой исключений
+    /// Exception handling result collection extension methods
     /// </summary>
     public static class ResultCollectionTryExtensions
     {
         /// <summary>
-        /// Обработать функцию, вернуть результирующий ответ с коллекцией или ошибку исключения
+        /// Execute function and handle exception with result collection converting
         /// </summary>
+        /// <typeparam name="TValue">Collection type</typeparam>
+        /// <param name="func">Collection function</param>
+        /// <param name="exceptionFunc">Function converting exception to error</param>
+        /// <returns>Result collection</returns>
         public static IResultCollection<TValue> ResultCollectionTry<TValue>(Func<IEnumerable<TValue>> func,
                                                                             Func<Exception, IErrorResult> exceptionFunc)
         {
@@ -28,8 +32,12 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         }
 
         /// <summary>
-        /// Обработать функцию, вернуть результирующий ответ с коллекцией или ошибку исключения
+        /// Execute function and handle exception with result collection converting
         /// </summary>
+        /// <typeparam name="TValue">Collection type</typeparam>
+        /// <param name="func">Collection function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Result collection</returns>
         public static IResultCollection<TValue> ResultCollectionTry<TValue>(Func<IEnumerable<TValue>> func, IErrorResult error) =>
             ResultCollectionTry(func, error.AppendException);
     }

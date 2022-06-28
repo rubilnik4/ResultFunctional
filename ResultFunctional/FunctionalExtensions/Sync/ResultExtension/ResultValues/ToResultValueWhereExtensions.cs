@@ -6,13 +6,18 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Преобразование значения в результирующий ответ с условием
+    /// Result value extension methods with condition
     /// </summary>
     public static class ToResultValueWhereTaskAsyncExtensions
     {
         /// <summary>
-        /// Преобразовать значения в результирующий ответ с условием
+        /// Converting value to result value base on predicate
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValue> ToResultValueWhere<TValue>(this TValue @this, Func<TValue, bool> predicate,
                                                                       Func<TValue, IErrorResult> badFunc)
             where TValue : notnull =>
@@ -21,8 +26,13 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
                                 value => new ResultValue<TValue>(badFunc(value)));
 
         /// <summary>
-        /// Преобразовать значения в результирующий ответ с условием и проверкой на нуль
+        /// Converting value to result value base on predicate
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValue> ToResultValueWhereNull<TValue>(this TValue? @this, Func<TValue, bool> predicate,
                                                                           Func<TValue?, IErrorResult> badFunc)
             where TValue : class =>
@@ -30,8 +40,13 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
             ResultValueBindOk(value => value.ToResultValueWhere(predicate, badFunc));
 
         /// <summary>
-        /// Преобразовать значения в результирующий ответ с условием и проверкой на нуль
+        /// Converting value to result value base on predicate
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValue> ToResultValueWhereNull<TValue>(this TValue? @this, Func<TValue, bool> predicate,
                                                                           Func<TValue?, IErrorResult> badFunc)
             where TValue : struct =>
@@ -39,10 +54,16 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
             ResultValueBindOk(value => value.ToResultValueWhere(predicate,
                                                                 valueWhere => badFunc(valueWhere)));
 
-
         /// <summary>
-        /// Преобразовать значения в результирующий ответ с условием и проверкой на нуль
+        /// Converting value to result value base on predicate base with functor function
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Functor function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ToResultValueWhereNullOkBad<TValueIn, TValueOut>(this TValueIn? @this,
                                                                                       Func<TValueIn, bool> predicate,
                                                                                       Func<TValueIn, TValueOut> okFunc,
@@ -55,8 +76,15 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
                                  value => new ResultValue<TValueOut>(badFunc(value)));
 
         /// <summary>
-        /// Преобразовать значения в результирующий ответ с условием и проверкой на нуль
+        /// Converting value to result value base on predicate base with functor function
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Functor function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ToResultValueWhereNullOkBad<TValueIn, TValueOut>(this TValueIn? @this,
                                                                                       Func<TValueIn, bool> predicate,
                                                                                       Func<TValueIn, TValueOut> okFunc,

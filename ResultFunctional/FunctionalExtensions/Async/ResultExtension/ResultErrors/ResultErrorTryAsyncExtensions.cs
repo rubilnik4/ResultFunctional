@@ -7,13 +7,16 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со значением и обработкой исключений асинхронно
+    /// Exception handling result error async extension methods
     /// </summary>
     public static class ResultErrorTryAsyncExtensions
     {
         /// <summary>
-        /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// Execute async action and handle exception with result error converting
         /// </summary>
+        /// <param name="action">Action</param>
+        /// <param name="exceptionFunc">Function converting exception to error</param>
+        /// <returns>Result error</returns>
         public static async Task<IResultError> ResultErrorTryAsync(Func<Task> action, Func<Exception, IErrorResult> exceptionFunc)
         {
             try
@@ -29,8 +32,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
         }
 
         /// <summary>
-        /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// Execute async action and handle exception with result error converting
         /// </summary>
+        /// <param name="action">Action</param>
+        /// <param name="error">Error</param>
+        /// <returns>Result error</returns>
         public static async Task<IResultError> ResultErrorTryAsync(Func<Task> action, IErrorResult error) =>
             await ResultErrorTryAsync(action, error.AppendException);
     }

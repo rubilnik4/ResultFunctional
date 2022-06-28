@@ -8,21 +8,33 @@ using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCo
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со коллекцией и обработкой исключений
+    /// Exception handling result collection with conditions extension methods
     /// </summary>
     public static class ResultCollectionTryWhereExtensions
     {
         /// <summary>
-        /// Связать результирующий ответ с коллекцией с обработкой функции при положительном условии
+        /// Execute function and handle exception with result collection concat
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="func">Collection function</param>
+        /// <param name="exceptionFunc">Function converting exception to error</param>
+        /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValueOut> ResultCollectionTryOk<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                               Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
                                                                                               Func<Exception, IErrorResult> exceptionFunc) =>
             @this.ResultCollectionBindOk(value => ResultCollectionTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
-        /// Связать результирующий ответ с коллекцией с обработкой функции при положительном условии
+        /// Execute function and handle exception with result collection concat
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="func">Collection function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValueOut> ResultCollectionTryOk<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                   Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
                                                                                                   IErrorResult error) =>

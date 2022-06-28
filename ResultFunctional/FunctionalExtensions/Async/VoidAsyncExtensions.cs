@@ -4,13 +4,17 @@ using System.Threading.Tasks;
 namespace ResultFunctional.FunctionalExtensions.Async
 {
     /// <summary>
-    /// Методы расширения для асинхронных действий
+    /// Async extension methods for actions
     /// </summary>
     public static class VoidAsyncExtensions
     {
         /// <summary>
-        /// Выполнить асинхронное действие, вернуть тот же тип
-        /// </summary>       
+        /// Execute async action
+        /// </summary>
+        /// <typeparam name="TValue">Action type</typeparam>
+        /// <param name="this">Source</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged source</returns>     
         public static async Task<TValue> VoidAsync<TValue>(this TValue @this, Func<TValue, Task> action)
         {
             await action.Invoke(@this);
@@ -18,8 +22,13 @@ namespace ResultFunctional.FunctionalExtensions.Async
         }
 
         /// <summary>
-        /// Выполнить асинхронное действие при положительном условии
+        /// Execute async action with predicate
         /// </summary>
+        /// <typeparam name="TValue">Action type</typeparam>
+        /// <param name="this">Source</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged source</returns>
         public static async Task<TValue> VoidOkAsync<TValue>(this TValue @this, Func<TValue, bool> predicate,
                                                              Func<TValue, Task> action) =>
             predicate(@this)
@@ -27,8 +36,14 @@ namespace ResultFunctional.FunctionalExtensions.Async
                 : @this;
 
         /// <summary>
-        /// Выполнить асинхронное действие при положительном условии
+        /// Execute async action base on predicate condition
         /// </summary>
+        /// <typeparam name="TValue">Action type</typeparam>
+        /// <param name="this">Source</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="actionOk">Action if predicate <see langword="true"/></param>
+        /// <param name="actionBad">Action if predicate <see langword="false"/></param>
+        /// <returns>Unchanged source</returns>
         public static async Task<TValue> VoidWhereAsync<TValue>(this TValue @this, 
                                                                 Func<TValue, bool> predicate,
                                                                 Func<TValue, Task> actionOk,

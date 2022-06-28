@@ -5,9 +5,11 @@ using ResultFunctionalXUnit.Mocks.Interfaces;
 using Moq;
 using ResultFunctional.FunctionalExtensions.Sync;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
+using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
@@ -155,6 +157,38 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.Single(resultAfterWhere.Errors);
+        }
+
+        /// <summary>
+        /// Выполнение положительного условия со связыванием в результирующем ответе без ошибки
+        /// </summary>      
+        [Fact]
+        public void ResultCollectionBindOkBad_Ok_ReturnNewValue()
+        {
+            var initialCollection = GetRangeNumber();
+            var resultCollection = new ResultCollection<int>(initialCollection);
+
+            var resultAfterWhere = resultCollection.ResultCollectionBindOkBad(numbers => new ResultCollection<string>(CollectionToString(numbers)),
+                                                                              errors => new ResultCollection<string>(GetListByErrorsCountString(errors)));
+
+            Assert.True(resultAfterWhere.OkStatus);
+            Assert.True(CollectionToString(initialCollection).SequenceEqual(resultAfterWhere.Value));
+        }
+
+        /// <summary>
+        /// Выполнение негативного условия со связыванием в результирующем ответе с ошибкой
+        /// </summary>      
+        [Fact]
+        public void ResultCollectionBindOkBad_Bad_ReturnNewValueByErrors()
+        {
+            var errorsInitial = CreateErrorListTwoTest();
+            var resultCollection = new ResultCollection<int>(errorsInitial);
+
+            var resultAfterWhere = resultCollection.ResultCollectionBindOkBad(numbers => new ResultCollection<string>(CollectionToString(numbers)),
+                                                                              errors => new ResultCollection<string>(GetListByErrorsCountString(errors)));
+
+            Assert.True(resultAfterWhere.OkStatus);
+            Assert.True(GetListByErrorsCountString(errorsInitial).SequenceEqual(resultAfterWhere.Value));
         }
 
         /// <summary>

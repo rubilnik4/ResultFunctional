@@ -21,9 +21,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionContinueToValueTaskAsync_Ok_ReturnNewValue()
         {
             var numberCollection = Collections.GetRangeNumber();
-            var resultCollectionTask = ResultCollectionFactory.CreateTaskResultCollection(numberCollection);
+            var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(numberCollection);
 
-            var resultAfterWhere = await resultCollectionTask.ResultCollectionContinueToValueTaskAsync(_ => true,
+            var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueTaskAsync(_ => true,
                 okFunc: Collections.AggregateToString,
                 badFunc: _ => CreateErrorListTwoTest());
 
@@ -38,10 +38,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionContinueToValueTaskAsync_Ok_ReturnNewError()
         {
             var numberCollection = Collections.GetRangeNumber();
-            var resultCollectionTask = ResultCollectionFactory.CreateTaskResultCollection(numberCollection);
+            var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(numberCollection);
 
             var errorsBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await resultCollectionTask.ResultCollectionContinueToValueTaskAsync(_ => false,
+            var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueTaskAsync(_ => false,
                 okFunc: _ => String.Empty,
                 badFunc: _ => errorsBad);
 

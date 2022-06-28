@@ -7,19 +7,23 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors
 {
     /// <summary>
-    /// Преобразование в результирующий ответ
+    /// Result error extension methods
     /// </summary>  
     public static class ToResultErrorExtensions
     {
         /// <summary>
-        /// Преобразовать в результирующий ответ
-        /// </summary>  
+        /// Merge result errors collection
+        /// </summary>
+        /// <param name="this">Result error collection</param>
+        /// <returns>Result error</returns>
         public static IResultError ToResultError(this IEnumerable<IResultError> @this) =>
             new ResultError(@this.SelectMany(result => result.Errors));
 
         /// <summary>
-        /// Преобразовать в результирующий ответ
-        /// </summary>  
+        /// Merge errors collection
+        /// </summary>
+        /// <param name="this">Error collection</param>
+        /// <returns>Result error</returns>
         public static IResultError ToResultError(this IEnumerable<IErrorResult> @this) =>
             new ResultError(@this);
     }

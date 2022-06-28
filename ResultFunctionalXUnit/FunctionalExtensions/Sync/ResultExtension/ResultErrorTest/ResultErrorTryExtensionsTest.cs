@@ -1,4 +1,7 @@
 ﻿using System.Linq;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
+using ResultFunctional.Models.Implementations.ResultFactory;
+using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
@@ -15,10 +18,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         /// Обработать функцию, вернуть результирующий ответ
         /// </summary>
         [Fact]
-        public void ResultErrorTry_Ok()
+        public void ResultErrorTryWhere_Ok()
         {
             int initialValue = Numbers.Number;
-            var resultError = ResultErrorTry(() => SyncFunctions.Division(initialValue), Exceptions.ExceptionError());
+            var numberResult = new ResultError();
+
+            var resultError = numberResult.ResultErrorTryOk(() => SyncFunctions.Division(initialValue), Exceptions.ExceptionError());
 
             Assert.True(resultError.OkStatus);
         }
@@ -27,10 +32,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         /// Обработать функцию, вернуть результирующий ответ с ошибкой
         /// </summary>
         [Fact]
-        public void ResultErrorTry_Exception()
+        public void ResultErrorTryWhere_Exception()
         {
             const int initialValue = 0;
-            var resultError = ResultErrorTry(() => SyncFunctions.Division(initialValue), Exceptions.ExceptionError());
+            var numberResult = new ResultError();
+
+            var resultError = numberResult.ResultErrorTryOk(() => SyncFunctions.Division(initialValue), Exceptions.ExceptionError());
 
             Assert.True(resultError.HasErrors);
             Assert.NotNull(resultError.Errors.First().Exception);

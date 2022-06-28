@@ -43,7 +43,7 @@ namespace ResultFunctional.Models.Implementations.Results
         public IReadOnlyCollection<IErrorResult> Errors { get; }
 
         /// <summary>
-        /// Has no errors
+        /// hasn't errors
         /// </summary>
         public bool OkStatus =>
             !HasErrors;

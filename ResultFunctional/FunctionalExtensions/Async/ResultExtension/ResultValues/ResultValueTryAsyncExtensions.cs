@@ -7,13 +7,17 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со значением и обработкой исключений асинхронно
+    /// Exception handling result value async extension methods
     /// </summary>
     public static class ResultValueTryAsyncExtensions
     {
         /// <summary>
-        /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// Execute async function and handle exception with result value converting
         /// </summary>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="func">Value function</param>
+        /// <param name="exceptionFunc">Function converting exception to error</param>
+        /// <returns>Result value</returns>
         public static async Task<IResultValue<TValue>> ResultValueTryAsync<TValue>(Func<Task<TValue>> func,
                                                                                    Func<Exception, IErrorResult> exceptionFunc)
         {
@@ -28,8 +32,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         }
 
         /// <summary>
-        /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// Execute async function and handle exception with result value converting
         /// </summary>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="func">Value function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Result value</returns>
         public static async Task<IResultValue<TValue>> ResultValueTryAsync<TValue>(Func<Task<TValue>> func, IErrorResult error) =>
             await ResultValueTryAsync(func, error.AppendException);
     }

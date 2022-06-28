@@ -4,8 +4,8 @@ using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
-using ResultFunctionalXUnit.Data;
 using Xunit;
+using static ResultFunctionalXUnit.Data.ErrorData;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.ResultErrorTest
 {
@@ -22,8 +22,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             var results = new List<IResultError>
             {
-                new ResultError(ErrorData.CreateErrorListTwoTest()), 
-                new ResultError(ErrorData.CreateErrorTest())
+                new ResultError(CreateErrorListTwoTest()), 
+                new ResultError(CreateErrorTest())
             };
 
             var result = results.ToResultError();
@@ -39,8 +39,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             var results = new List<IErrorResult>
             {
-                 ErrorData.CreateErrorTest(),
-                ErrorData.CreateErrorTest()
+                 CreateErrorTest(),
+                CreateErrorTest()
             };
 
             var result = results.ToResultError();

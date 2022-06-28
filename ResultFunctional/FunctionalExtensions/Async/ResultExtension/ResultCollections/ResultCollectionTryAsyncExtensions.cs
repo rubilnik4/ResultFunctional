@@ -9,13 +9,17 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со значением и обработкой исключений асинхронно
+    /// Async exception handling result collection extension methods
     /// </summary>
     public static class ResultCollectionTryAsyncExtensions
     {
         /// <summary>
-        /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// Execute async function and handle exception with result collection converting
         /// </summary>
+        /// <typeparam name="TValue">Collection type</typeparam>
+        /// <param name="func">Collection function</param>
+        /// <param name="exceptionFunc">Function converting exception to error</param>
+        /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IEnumerable<TValue>>> func,
                                                                                              Func<Exception, IErrorResult> exceptionFunc)
         {
@@ -30,23 +34,34 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         }
 
         /// <summary>
-        /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// Execute async function and handle exception with result collection converting
         /// </summary>
+        /// <typeparam name="TValue">Collection type</typeparam>
+        /// <param name="func">Collection function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IEnumerable<TValue>>> func,
                                                                                              IErrorResult error) =>
             await ResultCollectionTryAsync(func, error.AppendException);
 
         /// <summary>
-        /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// Execute async function and handle exception with result collection converting
         /// </summary>
+        /// <typeparam name="TValue">Collection type</typeparam>
+        /// <param name="func">Collection function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IReadOnlyCollection<TValue>>> func,
                                                                                              IErrorResult error) =>
             await ResultCollectionTryAsync(async () => (IEnumerable<TValue>)await func.Invoke(), error);
 
-
         /// <summary>
-        /// Обработать асинхронную функцию, вернуть результирующий ответ со значением или ошибку исключения
+        /// Execute async function and handle exception with result collection converting
         /// </summary>
+        /// <typeparam name="TValue">Collection type</typeparam>
+        /// <param name="func">Collection function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<List<TValue>>> func,
                                                                                              IErrorResult error) =>
             await ResultCollectionTryAsync(async () => (IEnumerable<TValue>)await func.Invoke(), error);

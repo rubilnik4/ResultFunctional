@@ -7,7 +7,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
     /// <summary>
     /// Методы расширения для функций высшего порядка. Тесты
     /// </summary>
-    public class CurryExtensionsTest
+    public class CurryAsyncExtensionsTest
     {
         /// <summary>
         /// Проверка преобразования функции высшего порядка для одного аргумента

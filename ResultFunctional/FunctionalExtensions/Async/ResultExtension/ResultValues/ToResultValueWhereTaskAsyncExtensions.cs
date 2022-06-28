@@ -7,13 +7,18 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Преобразование значения в результирующий ответ с условием для задачи-объекта
+    /// Task result value extension methods with condition
     /// </summary>
     public static class ToResultValueWhereTaskAsyncExtensions
     {
         /// <summary>
-        /// Преобразовать значения в результирующий ответ с условием
+        /// Converting task value to result value base on predicate
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueWhereTaskAsync<TValue>(this Task<TValue> @this,
                                                                                            Func<TValue, bool> predicate,
                                                                                            Func<TValue, IErrorResult> badFunc)
@@ -22,8 +27,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             MapTaskAsync(thisAwaited => thisAwaited.ToResultValueWhere(predicate, badFunc));
 
         /// <summary>
-        /// Преобразовать значения в результирующий ответ с условием и проверкой на нуль
+        /// Converting task value to result value base on predicate
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueWhereNullTaskAsync<TValue>(this Task<TValue?> @this,
                                                                                       Func<TValue, bool> predicate,
                                                                                       Func<TValue?, IErrorResult> badFunc)
@@ -32,8 +42,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             MapTaskAsync(thisAwaited => thisAwaited.ToResultValueWhereNull(predicate, badFunc));
 
         /// <summary>
-        /// Преобразовать значения в результирующий ответ с условием и проверкой на нуль
+        /// Converting task value to result value base on predicate
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueWhereNullTaskAsync<TValue>(this Task<TValue?> @this,
                                                                                       Func<TValue, bool> predicate,
                                                                                       Func<TValue?, IErrorResult> badFunc)
@@ -42,8 +57,15 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             MapTaskAsync(thisAwaited => thisAwaited.ToResultValueWhereNull(predicate, badFunc));
 
         /// <summary>
-        /// Преобразовать значения в результирующий ответ с условием и проверкой на нуль
+        /// Converting task value to result value base on predicate base with functor function
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Functor function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValueOut>> ToResultValueWhereNullOkBadTaskAsync<TValueIn, TValueOut>(this Task<TValueIn?> @this,
                                                                                       Func<TValueIn, bool> predicate,
                                                                                       Func<TValueIn, TValueOut> okFunc,
@@ -54,8 +76,15 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             MapTaskAsync(thisAwaited => thisAwaited.ToResultValueWhereNullOkBad(predicate, okFunc, badFunc));
 
         /// <summary>
-        /// Преобразовать значения в результирующий ответ с условием и проверкой на нуль
+        /// Converting task value to result value base on predicate base with functor function
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Functor function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValueOut>> ToResultValueWhereNullOkBadTaskAsync<TValueIn, TValueOut>(this Task<TValueIn?> @this,
                                                                                       Func<TValueIn, bool> predicate,
                                                                                       Func<TValueIn, TValueOut> okFunc,

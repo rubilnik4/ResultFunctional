@@ -6,13 +6,17 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со связыванием со значением и обработкой исключений
+    /// Extension methods for result value monad function with exception handling
     /// </summary>
     public static class ResultValueBindTryExtensions
     {
         /// <summary>
-        /// Обработать функцию, вернуть результирующий ответ со связыванием со значением или ошибку исключения
+        /// Execute result value monad function with exception handling
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="func">Result value function</param>
+        /// <param name="exceptionFunc">Exception function</param>
+        /// <returns>Result value</returns>
         public static IResultValue<TValue> ResultValueBindTry<TValue>(Func<IResultValue<TValue>> func,
                                                                       Func<Exception, IErrorResult> exceptionFunc)
         {
@@ -27,8 +31,12 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         }
 
         /// <summary>
-        /// Обработать функцию, вернуть результирующий ответ со связыванием со значением или ошибку исключения
+        /// Execute result collection monad function with exception handling
         /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="func">Result value function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Result value</returns>
         public static IResultValue<TValue> ResultValueBindTry<TValue>(Func<IResultValue<TValue>> func, IErrorResult error) => 
             ResultValueBindTry(func, error.AppendException);
     }

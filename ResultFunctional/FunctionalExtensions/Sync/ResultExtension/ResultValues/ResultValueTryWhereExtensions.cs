@@ -7,21 +7,33 @@ using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultVa
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со значением и обработкой исключений
+    /// Exception handling result value with conditions extension methods
     /// </summary>
     public static class ResultValueTryWhereExtensions
     {
         /// <summary>
-        /// Результирующий ответ со значением с обработкой функции при положительном условии
+        /// Execute function and handle exception with result value concat
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="func">Value function</param>
+        /// <param name="exceptionFunc">Function converting exception to error</param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ResultValueTryOk<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                     Func<TValueIn, TValueOut> func,
-                                                                                     Func<Exception, IErrorResult> exceptionFunc) =>
+                                                                                    Func<Exception, IErrorResult> exceptionFunc) =>
             @this.ResultValueBindOk(value => ResultValueTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
-        /// Результирующий ответ со значением с обработкой функции при положительном условии
+        /// Execute function and handle exception with result value concat
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="func">Value function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ResultValueTryOk<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                     Func<TValueIn, TValueOut> func,
                                                                                     IErrorResult error) =>

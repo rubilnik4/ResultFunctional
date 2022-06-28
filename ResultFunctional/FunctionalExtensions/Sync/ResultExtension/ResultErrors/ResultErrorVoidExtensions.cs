@@ -6,46 +6,60 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors
 {
     /// <summary>
-    /// Действие над внутренним типом результирующего ответа
+    /// Result error action extension methods
     /// </summary>
     public static class ResultErrorVoidExtensions
     {
         /// <summary>
-        /// Выполнить действие при положительном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute action if result hasn't errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result error</returns>
         public static IResultError ResultErrorVoidOk(this IResultError @this, Action action) =>
             @this.
             VoidOk(_ => @this.OkStatus,
-                action: _ => action.Invoke());
+                   _ => action.Invoke());
 
         /// <summary>
-        /// Выполнить действие при отрицательном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute action if result has errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result error</returns>
         public static IResultError ResultErrorVoidBad(this IResultError @this,
-                                                      Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
+                                                      Action<IReadOnlyCollection<IErrorResult>> action) =>
             @this.
             VoidOk(_ => @this.HasErrors,
-                action: _ => actionBad.Invoke(@this.Errors));
+                   _ => action.Invoke(@this.Errors));
 
         /// <summary>
-        /// Выполнить действие, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute action depending on result errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="actionOk">Action if result hasn't errors</param>
+        /// <param name="actionBad">Action if result has errors</param>
+        /// <returns>Unchanged result error</returns>
         public static IResultError ResultErrorVoidOkBad(this IResultError @this,
-                                                                Action actionOk,
-                                                                Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
+                                                        Action actionOk,
+                                                        Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
             @this.
             VoidWhere(_ => @this.OkStatus,
-                actionOk: _ => actionOk.Invoke(),
-                actionBad: _ => actionBad.Invoke(@this.Errors));
+                      _ => actionOk.Invoke(),
+                      _ => actionBad.Invoke(@this.Errors));
 
         /// <summary>
-        /// Выполнить действие при положительном значении и выполнении условия вернуть результирующий ответ
-        /// </summary>    
+        /// Execute action depending on result errors and predicate
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="action">Function if predicate <see langword="true"/></param>
+        /// <returns>Unchanged result error</returns>
         public static IResultError ResultErrorVoidOkWhere(this IResultError @this,
                                                           Func<bool> predicate,
                                                           Action action) =>
             @this.
             VoidOk(_ => @this.OkStatus && predicate(),
-                action: _ => action.Invoke());
+                   _ => action.Invoke());
     }
 }

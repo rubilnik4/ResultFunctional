@@ -7,46 +7,60 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors
 {
     /// <summary>
-    /// Асинхронное действие над внутренним типом результирующего ответа задачи-объекта
+    /// Task result error async action extension methods
     /// </summary>
     public static class ResultErrorVoidBindAsyncExtensions
     {
         /// <summary>
-        /// Выполнить действие при положительном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute async action if task result hasn't errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result error</returns>
         public static async Task<IResultError> ResultErrorVoidOkBindAsync(this Task<IResultError> @this, Func<Task> action) =>
             await @this.
             VoidOkBindAsync(awaitedThis => awaitedThis.OkStatus,
-                action: _ => action.Invoke());
+                            _ => action.Invoke());
 
         /// <summary>
-        /// Выполнить действие при отрицательном значении, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute async action if task result has errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="action">Action</param>
+        /// <returns>Unchanged result error</returns>
         public static async Task<IResultError> ResultErrorVoidBadBindAsync(this Task<IResultError> @this,
-                                                                       Func<IReadOnlyCollection<IErrorResult>, Task> actionBad) =>
+                                                                       Func<IReadOnlyCollection<IErrorResult>, Task> action) =>
             await @this.
             VoidOkBindAsync(awaitedThis => awaitedThis.HasErrors,
-                action: awaitedThis => actionBad.Invoke(awaitedThis.Errors));
+                            awaitedThis => action.Invoke(awaitedThis.Errors));
 
         /// <summary>
-        /// Выполнить действие, вернуть результирующий ответ
-        /// </summary>      
+        /// Execute async action depending on task result errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="actionOk">Action if result hasn't errors</param>
+        /// <param name="actionBad">Action if result has errors</param>
+        /// <returns>Unchanged result error</returns>  
         public static async Task<IResultError> ResultErrorVoidOkBadBindAsync(this Task<IResultError> @this,
                                                                          Func<Task> actionOk,
                                                                          Func<IReadOnlyCollection<IErrorResult>, Task> actionBad) =>
             await @this.
             VoidWhereBindAsync(awaitedThis => awaitedThis.OkStatus,
-                actionOk: _ => actionOk.Invoke(),
-                actionBad: awaitedThis => actionBad.Invoke(awaitedThis.Errors));
+                               _ => actionOk.Invoke(),
+                               awaitedThis => actionBad.Invoke(awaitedThis.Errors));
 
         /// <summary>
-        /// Выполнить действие при положительном значении и выполнении условия вернуть результирующий ответ
-        /// </summary>    
+        /// Execute async action depending on task result errors and predicate
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="action">Function if predicate <see langword="true"/></param>
+        /// <returns>Unchanged result error</returns>  
         public static async Task<IResultError> ResultErrorVoidOkWhereBindAsync(this Task<IResultError> @this,
                                                                            Func<bool> predicate,
                                                                            Func<Task> action) =>
             await @this.
             VoidOkBindAsync(awaitedThis => awaitedThis.OkStatus && predicate(),
-                action: _ => action.Invoke());
+                            _ => action.Invoke());
     }
 }

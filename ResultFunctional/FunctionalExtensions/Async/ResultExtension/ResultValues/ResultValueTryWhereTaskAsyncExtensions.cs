@@ -7,13 +7,19 @@ using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultVa
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со значением и обработкой исключений для задачи-объекта
+    /// Exception handling task result value with conditions extension methods
     /// </summary>
     public static class ResultValueTryWhereTaskAsyncExtensions
     {
         /// <summary>
-        /// Связать результирующий ответ со значением с обработкой функции при положительном условии для задачи-объекта
+        /// Execute function and handle exception with task result value concat
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="func">Value function</param>
+        /// <param name="exceptionFunc">Function converting exception to error</param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValueOut>> ResultValueTryOkTaskAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                          Func<TValueIn, TValueOut> func,
                                                                                                          Func<Exception, IErrorResult> exceptionFunc) =>
@@ -21,8 +27,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             ResultValueBindOkTaskAsync(value => ResultValueTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
-        /// Связать результирующий ответ со значением с обработкой функции при положительном условии для задачи-объекта
+        /// Execute function and handle exception with task result value concat
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="func">Value function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValueOut>> ResultValueTryOkTaskAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                          Func<TValueIn, TValueOut> func, 
                                                                                                          IErrorResult error) =>

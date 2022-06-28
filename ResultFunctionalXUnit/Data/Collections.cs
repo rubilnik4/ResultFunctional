@@ -54,6 +54,12 @@ namespace ResultFunctionalXUnit.Data
             new List<int> { errors.Count };
 
         /// <summary>
+        /// Получить количество ошибок списком
+        /// </summary>
+        public static IList<string> GetListByErrorsCountString(IReadOnlyCollection<IErrorResult> errors) =>
+            new List<string> { errors.Count.ToString() };
+
+        /// <summary>
         /// Получить список с пустой строкой
         /// </summary>
         public static IList<string> GetEmptyStringList() =>

@@ -5,7 +5,7 @@ using ResultFunctional.Models.Implementations.ResultFactory;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections.ResultCollectionBindTryAsyncExtensions;
+using static ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections.ResultCollectionBindTryTaskAsyncExtensions;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultCollectionTest
@@ -21,7 +21,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultCollectionTry_Ok()
         {
-            var resultValue = await ResultCollectionBindTryAsync(
+            var resultValue = await ResultCollectionBindTryTaskAsync(
                 () => ResultCollectionFactory.CreateTaskResultCollection(DivisionCollection(1)), Exceptions.ExceptionError());
 
             Assert.True(resultValue.OkStatus);
@@ -34,7 +34,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultCollectionTry_Exception()
         {
-            var resultValue = await ResultCollectionBindTryAsync(
+            var resultValue = await ResultCollectionBindTryTaskAsync(
                 () => ResultCollectionFactory.CreateTaskResultCollection(DivisionCollection(0)), Exceptions.ExceptionError());
 
             Assert.True(resultValue.HasErrors);
@@ -47,7 +47,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultCollectionTryFunc_Ok()
         {
-            var resultValue = await ResultCollectionBindTryAsync(
+            var resultValue = await ResultCollectionBindTryTaskAsync(
                 () => ResultCollectionFactory.CreateTaskResultCollection(DivisionCollection(1)), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.OkStatus);
@@ -60,7 +60,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultCollectionTryFunc_Exception()
         {
-            var resultValue = await ResultCollectionBindTryAsync(
+            var resultValue = await ResultCollectionBindTryTaskAsync(
                  () => ResultCollectionFactory.CreateTaskResultCollection(DivisionCollection(0)), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.HasErrors);

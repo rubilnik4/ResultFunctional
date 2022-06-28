@@ -8,13 +8,19 @@ using static ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultV
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
 {
     /// <summary>
-    /// Методы расширения для результирующего ответа со связыванием со значением и обработкой исключений асинхронно для задач-объектов
+    /// Extension methods for task result value async monad function with conditions and exception handling
     /// </summary>
     public static class ResultValueBindTryWhereBindAsyncExtensions
     {
         /// <summary>
-        /// Результирующий ответ cj связыванием со значением с обработкой функции при положительном условии для задачи-объекта
+        /// Execute task result value async function in no error case; else catch exception
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="func">Monad result value function</param>
+        /// <param name="exceptionFunc">Exception function</param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValueOut>> ResultValueBindTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                        Func<TValueIn, Task<IResultValue<TValueOut>>> func,
                                                                                                        Func<Exception, IErrorResult> exceptionFunc) =>
@@ -22,8 +28,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             ResultValueBindOkBindAsync(value => ResultValueBindTryAsync(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
-        /// Результирующий ответ cj связыванием со значением с обработкой функции при положительном условии для задачи-объекта
+        /// Execute task result value async function in no error case; else catch exception
         /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="func">Monad result value function</param>
+        /// <param name="error">Error</param>
+        /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValueOut>> ResultValueBindTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                        Func<TValueIn, Task<IResultValue<TValueOut>>> func,
                                                                                                        IErrorResult error) =>
