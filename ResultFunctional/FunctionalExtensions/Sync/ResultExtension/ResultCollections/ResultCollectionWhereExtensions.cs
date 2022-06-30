@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
@@ -94,5 +95,21 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
             @this.OkStatus
                 ? @this
                 : new ResultCollection<TValue>(badFunc.Invoke(@this.Errors));
+
+        /// <summary>
+        /// Check errors by predicate to result collection if ones hasn't errors
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Result collection</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Result collection</returns>
+        public static IResultCollection<TValue> ResultCollectionCheckErrorsOk<TValue>(this IResultCollection<TValue> @this,
+                                                                           Func<IReadOnlyCollection<TValue>, bool> predicate,
+                                                                           Func<IReadOnlyCollection<TValue>, IEnumerable<IErrorResult>> badFunc) =>
+            @this.
+            ResultCollectionContinue(predicate,
+                                     value => value,
+                                     badFunc);
     }
 }

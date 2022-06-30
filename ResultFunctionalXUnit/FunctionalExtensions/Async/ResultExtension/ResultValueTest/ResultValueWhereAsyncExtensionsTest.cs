@@ -245,5 +245,70 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             Assert.True(resultAfterWhere.OkStatus);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.Value);
         }
+
+        /// <summary>
+        /// Выполнение асинхронного условия в положительном результирующем ответе
+        /// </summary>
+        [Fact]
+        public async Task ResultValueCheckErrorsOkAsync_Ok_CheckNoErrors()
+        {
+            int initialValue = Numbers.Number;
+            var resultValue = new ResultValue<int>(initialValue);
+
+            var resultAfterWhere = await resultValue.ResultValueCheckErrorsOkAsync(_ => true,
+                                                                              badFunc: _ => CreateErrorListTwoTestTask());
+
+            Assert.True(resultAfterWhere.OkStatus);
+            Assert.Equal(initialValue, resultAfterWhere.Value);
+        }
+
+        /// <summary>
+        /// Выполнение асинхронного условия в отрицательном результирующем ответе без ошибки
+        /// </summary>
+        [Fact]
+        public async Task ResultValueCheckErrorsOkAsync_Ok_CheckHasError()
+        {
+            int initialValue = Numbers.Number;
+            var resultValue = new ResultValue<int>(initialValue);
+
+            var errorsBad = CreateErrorEnumerableTwoTest();
+            var resultAfterWhere = await resultValue.ResultValueCheckErrorsOkAsync(_ => false,
+                                                                              badFunc: _ => Task.FromResult(errorsBad));
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.True(errorsBad.SequenceEqual(resultAfterWhere.Errors));
+        }
+
+        /// <summary>
+        /// Возвращение асинхронного предыдущей ошибки в положительном результирующем ответе с ошибкой
+        /// </summary>
+        [Fact]
+        public async Task ResultValueCheckErrorsOkAsync_Bad_CheckNoErrors()
+        {
+            var errorInitial = CreateErrorTest();
+            var resultValue = new ResultValue<int>(errorInitial);
+
+            var resultAfterWhere = await resultValue.ResultValueCheckErrorsOkAsync(_ => true,
+                                                                              badFunc: _ => CreateErrorListTwoTestTask());
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Single(resultAfterWhere.Errors);
+        }
+
+        /// <summary>
+        /// Возвращение предыдущей ошибки в асинхронном отрицательном результирующем ответе с ошибкой
+        /// </summary>
+        [Fact]
+        public async Task ResultValueCheckErrorsOkAsync_Bad_CheckHasError()
+        {
+            var errorInitial = CreateErrorTest();
+            var resultValue = new ResultValue<int>(errorInitial);
+
+            var resultAfterWhere = await resultValue.ResultValueCheckErrorsOkAsync(_ => false,
+                                                                              badFunc: _ => CreateErrorListTwoTestTask());
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Single(resultAfterWhere.Errors);
+        }
     }
 }

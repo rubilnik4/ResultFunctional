@@ -242,5 +242,70 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             Assert.True(resultAfterWhere.OkStatus);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.Value);
         }
+
+        /// <summary>
+        /// Выполнение условия в положительном результирующем ответе
+        /// </summary>
+        [Fact]
+        public void ResultValueCheckErrorsOk_Ok_CheckNoError()
+        {
+            int initialValue = Numbers.Number;
+            var resultValue = new ResultValue<int>(initialValue);
+
+            var resultAfterWhere = resultValue.ResultValueCheckErrorsOk(_ => true,
+                                                                        _ => CreateErrorListTwoTest());
+
+            Assert.True(resultAfterWhere.OkStatus);
+            Assert.Equal(initialValue, resultAfterWhere.Value);
+        }
+
+        /// <summary>
+        /// Выполнение условия в отрицательном результирующем ответе без ошибки
+        /// </summary>
+        [Fact]
+        public void ResultValueCheckErrorsOk_Ok_CheckHasError()
+        {
+            int initialValue = Numbers.Number;
+            var resultValue = new ResultValue<int>(initialValue);
+
+            var errorBad = CreateErrorListTwoTest();
+            var resultAfterWhere = resultValue.ResultValueCheckErrorsOk(_ => false,
+                                                                        _ => errorBad);
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Equal(errorBad.Count, resultAfterWhere.Errors.Count);
+        }
+
+        /// <summary>
+        /// Возвращение предыдущей ошибки в положительном результирующем ответе с ошибкой
+        /// </summary>
+        [Fact]
+        public void ResultValueCheckErrorsOk_Bad_CheckNoError()
+        {
+            var errorInitial = CreateErrorTest();
+            var resultValue = new ResultValue<int>(errorInitial);
+
+            var resultAfterWhere = resultValue.ResultValueCheckErrorsOk(_ => true,
+                                                                        _ => CreateErrorListTwoTest());
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Single(resultAfterWhere.Errors);
+        }
+
+        /// <summary>
+        /// Возвращение предыдущей ошибки в отрицательном результирующем ответе с ошибкой
+        /// </summary>
+        [Fact]
+        public void ResultValueCheckErrorsOk_Bad_CheckHasError()
+        {
+            var errorsInitial = CreateErrorTest();
+            var resultValue = new ResultValue<int>(errorsInitial);
+
+            var resultAfterWhere = resultValue.ResultValueCheckErrorsOk(_ => false,
+                                                                        badFunc: _ => CreateErrorListTwoTest());
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Single(resultAfterWhere.Errors);
+        }
     }
 }
