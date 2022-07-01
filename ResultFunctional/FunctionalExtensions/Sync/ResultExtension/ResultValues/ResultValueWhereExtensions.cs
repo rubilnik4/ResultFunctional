@@ -94,5 +94,21 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
             @this.OkStatus
                 ? @this
                 : new ResultValue<TValue>(badFunc.Invoke(@this.Errors));
+
+        /// <summary>
+        /// Check errors by predicate to result value if ones hasn't errors
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Result value</returns>
+        public static IResultValue<TValue> ResultValueCheckErrorsOk<TValue>(this IResultValue<TValue> @this,
+                                                                           Func<TValue, bool> predicate,
+                                                                           Func<TValue, IEnumerable<IErrorResult>> badFunc) =>
+            @this.
+            ResultValueContinue(predicate,
+                                value => value,
+                                badFunc);
     }
 }

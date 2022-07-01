@@ -4,81 +4,83 @@ using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
 using ResultFunctional.Models.Implementations.ResultFactory;
+using ResultFunctional.Models.Implementations.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
+using static ResultFunctionalXUnit.Extensions.TaskExtensions.TaskEnumerableExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultCollectionTest
 {
     /// <summary>
-    /// Обработка условий для результирующего ответа задачи-объекта с коллекцией. Тесты
+    /// Обработка асинхронных условий для результирующего ответа с коллекцией. Тесты
     /// </summary>
-    public class ResultCollectionWhereTaskAsyncExtensionsTest
+    public class ResultCollectionWhereBindAsyncExtensionsTest
     {
         /// <summary>
-        /// Выполнение условия в положительном результирующем ответе задачи-объекта с коллекцией
+        /// Выполнение условия в положительном асинхронном результирующем ответе с коллекцией
         /// </summary>
         [Fact]
-        public async Task ResultCollectionContinueTaskAsync_Ok_ReturnNewValue()
+        public async Task ResultCollectionContinueBindAsync_Ok_ReturnNewValue()
         {
             var initialCollection = GetRangeNumber();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionContinueTaskAsync(_ => true,
-                okFunc: CollectionToString,
-                badFunc: _ => CreateErrorListTwoTest());
+            var resultAfterWhere = await resultCollection.ResultCollectionContinueBindAsync(_ => true,
+                okFunc: CollectionToStringAsync,
+                badFunc: _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.Value));
         }
 
         /// <summary>
-        /// Выполнение условия в отрицательном результирующем ответе задачи-объекта с коллекцией без ошибки
+        /// Выполнение условия в отрицательном асинхронном результирующем ответе с коллекцией без ошибки
         /// </summary>
         [Fact]
-        public async Task ResultCollectionContinueTaskAsync_Ok_ReturnNewError()
+        public async Task ResultCollectionContinueBindAsync_Ok_ReturnNewError()
         {
             var initialCollection = GetRangeNumber();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
 
             var errorsBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await resultCollection.ResultCollectionContinueTaskAsync(_ => false,
-                okFunc: _ => GetEmptyStringList(),
-                badFunc: _ => errorsBad);
+            var resultAfterWhere = await resultCollection.ResultCollectionContinueBindAsync(_ => false,
+                okFunc: _ => ToTaskEnumerable(GetEmptyStringList()),
+                badFunc: _ => ToTaskEnumerable(errorsBad));
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.Equal(errorsBad.Count, resultAfterWhere.Errors.Count);
         }
 
         /// <summary>
-        /// Возвращение предыдущей ошибки в положительном результирующем ответе задачи-объекта с коллекцией с ошибкой
+        /// Возвращение предыдущей ошибки в положительном асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionContinueTaskAsync_Bad_ReturnNewValue()
+        public async Task ResultCollectionContinueBindAsync_Bad_ReturnNewValue()
         {
             var errorInitial = CreateErrorTest();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionContinueTaskAsync(_ => true,
-                okFunc: _ => GetEmptyStringList(),
-                badFunc: _ => CreateErrorListTwoTest());
+            var resultAfterWhere = await resultCollection.ResultCollectionContinueBindAsync(_ => true,
+                okFunc: _ => ToTaskEnumerable(GetEmptyStringList()),
+                badFunc: _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.Single(resultAfterWhere.Errors);
         }
 
         /// <summary>
-        /// Возвращение предыдущей ошибки в отрицательном результирующем ответе задачи-объекта с коллекцией с ошибкой
+        /// Возвращение предыдущей ошибки в отрицательном асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionContinueTaskAsync_Bad_ReturnNewError()
+        public async Task ResultCollectionContinueBindAsync_Bad_ReturnNewError()
         {
             var errorsInitial = CreateErrorTest();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionContinueTaskAsync(_ => false,
-                okFunc: _ => GetEmptyStringList(),
-                badFunc: _ => CreateErrorListTwoTest());
+            var resultAfterWhere = await resultCollection.ResultCollectionContinueBindAsync(_ => false,
+                okFunc: _ => ToTaskEnumerable(GetEmptyStringList()),
+                badFunc: _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.Single(resultAfterWhere.Errors);
@@ -88,14 +90,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Выполнение условия в асинхронном положительном результирующем ответе с коллекцией
         /// </summary>
         [Fact]
-        public async Task ResultCollectionWhereTaskAsync_Ok_ReturnNewValue()
+        public async Task ResultCollectionWhereBindAsync_Ok_ReturnNewValue()
         {
             var initialCollection = GetRangeNumber();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionWhereTaskAsync(_ => true,
-                okFunc: CollectionToString,
-                badFunc: _ => GetEmptyStringList());
+            var resultAfterWhere = await resultCollection.ResultCollectionWhereBindAsync(_ => true,
+                okFunc: CollectionToStringAsync,
+                badFunc: _ => ToTaskEnumerable(GetEmptyStringList()));
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.Value));
@@ -105,14 +107,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Выполнение условия в асинхронном отрицательном результирующем ответе с коллекцией без ошибки
         /// </summary>
         [Fact]
-        public async Task ResultCollectionWhereTaskAsync_Ok_ReturnNewValueByErrors()
+        public async Task ResultCollectionWhereBindAsync_Ok_ReturnNewValueByErrors()
         {
             var initialCollection = GetRangeNumber();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionWhereTaskAsync(_ => false,
-                okFunc: _ => GetEmptyStringList(),
-                badFunc: numbers => new List<string> { numbers.Count.ToString() });
+            var resultAfterWhere = await resultCollection.ResultCollectionWhereBindAsync(_ => false,
+                okFunc: _ => ToTaskEnumerable(GetEmptyStringList()),
+                badFunc: numbers => ToTaskEnumerable(new List<string> { numbers.Count.ToString() }));
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.Single(resultAfterWhere.Value);
@@ -123,14 +125,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Возвращение предыдущей ошибки в асинхронном положительном результирующем ответе с коллекцией с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionWhereTaskAsync_Ok_ReturnError()
+        public async Task ResultCollectionWhereBindAsync_Ok_ReturnError()
         {
             var errorsInitial = CreateErrorListTwoTest();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionWhereTaskAsync(_ => true,
-                okFunc: _ => GetEmptyStringList(),
-                badFunc: errors => new List<string> { errors.Count.ToString() });
+            var resultAfterWhere = await resultCollection.ResultCollectionWhereBindAsync(_ => true,
+                okFunc: _ => ToTaskEnumerable(GetEmptyStringList()),
+                badFunc: errors => ToTaskEnumerable(new List<string> { errors.Count.ToString() }));
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.Errors.Count);
@@ -140,48 +142,48 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         /// Возвращение предыдущей ошибки в асинхронном отрицательном результирующем ответе с коллекцией с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionWhereTaskAsync_Bad_ReturnError()
+        public async Task ResultCollectionWhereBindAsync_Bad_ReturnError()
         {
             var errorsInitial = CreateErrorListTwoTest();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionWhereTaskAsync(_ => false,
-                okFunc: _ => GetEmptyStringList(),
-                badFunc: errors => new List<string> { errors.Count.ToString() });
+            var resultAfterWhere = await resultCollection.ResultCollectionWhereBindAsync(_ => false,
+                okFunc: _ => ToTaskEnumerable(GetEmptyStringList()),
+                badFunc: errors => ToTaskEnumerable(new List<string> { errors.Count.ToString() }));
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.Errors.Count);
         }
 
         /// <summary>
-        /// Выполнение положительного условия в результирующем ответе задачи-объекта с коллекцией без ошибки
+        /// Выполнение положительного условия в асинхронном результирующем ответе с коллекцией без ошибки
         /// </summary>      
         [Fact]
-        public async Task ResultCollectionOkBadTaskAsync_Ok_ReturnNewValue()
+        public async Task ResultCollectionOkBadBindAsync_Ok_ReturnNewValue()
         {
             var initialCollection = GetRangeNumber();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionOkBadTaskAsync(
-                okFunc: CollectionToString,
-                badFunc: _ => GetEmptyStringList());
+            var resultAfterWhere = await resultCollection.ResultCollectionOkBadBindAsync(
+                okFunc: CollectionToStringAsync,
+                badFunc: _ => ToTaskEnumerable(GetEmptyStringList()));
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.Value));
         }
 
         /// <summary>
-        /// Выполнение негативного условия в результирующем ответе задачи-объекта с коллекцией с ошибкой
+        /// Выполнение негативного условия в асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>      
         [Fact]
-        public async Task ResultCollectionOkBadTaskAsync_Bad_ReturnNewValueByErrors()
+        public async Task ResultCollectionOkBadBindAsync_Bad_ReturnNewValueByErrors()
         {
             var errorsInitial = CreateErrorListTwoTest();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionOkBadTaskAsync(
-                okFunc: _ => GetEmptyStringList(),
-                badFunc: errors => new List<string> { errors.Count.ToString() });
+            var resultAfterWhere = await resultCollection.ResultCollectionOkBadBindAsync(
+                okFunc: _ => ToTaskEnumerable(GetEmptyStringList()),
+                badFunc: errors => ToTaskEnumerable(new List<string> { errors.Count.ToString() }));
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.Single(resultAfterWhere.Value);
@@ -189,125 +191,127 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         }
 
         /// <summary>
-        /// Выполнение положительного условия в результирующем ответе задачи-объекта с коллекцией без ошибки
+        /// Выполнение положительного условия в асинхронном результирующем ответе с коллекцией без ошибки
         /// </summary>   
         [Fact]
-        public async Task ResultCollectionOkTaskAsync_Ok_ReturnNewValue()
+        public async Task ResultCollectionOkBindAsync_Ok_ReturnNewValue()
         {
             var initialCollection = GetRangeNumber();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionOkTaskAsync(CollectionToString);
+            var resultAfterWhere = await resultCollection.ResultCollectionOkBindAsync(CollectionToStringAsync);
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.Value));
         }
 
         /// <summary>
-        /// Возвращение предыдущей ошибки в результирующем ответе задачи-объекта с коллекцией с ошибкой
+        /// Возвращение предыдущей ошибки в асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>   
         [Fact]
-        public async Task ResultCollectionOkTaskAsync_Bad_ReturnInitial()
+        public async Task ResultCollectionOkBindAsync_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionOkTaskAsync(CollectionToString);
+            var resultAfterWhere = await resultCollection.ResultCollectionOkBindAsync(CollectionToStringAsync);
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.True(errorInitial.Equals(resultAfterWhere.Errors.Last()));
         }
 
         /// <summary>
-        /// Выполнение отрицательного условия в результирующем ответе задачи-объекта с коллекцией без ошибки
+        /// Выполнение отрицательного условия в асинхронном результирующем ответе с коллекцией без ошибки
         /// </summary>   
         [Fact]
-        public async Task ResultCollectionBadTaskAsync_Ok_ReturnInitial()
+        public async Task ResultCollectionBadBindAsync_Ok_ReturnInitial()
         {
             var initialCollection = GetRangeNumber();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBadTaskAsync(errors => new List<int> { errors.Count });
+            var resultAfterWhere = await resultCollection.ResultCollectionBadBindAsync(
+                errors => ToTaskEnumerable(GetListByErrorsCount(errors)));
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.Equal(initialCollection, resultAfterWhere.Value);
         }
 
         /// <summary>
-        /// Возвращение предыдущей ошибки в результирующем ответе задачи-объекта с коллекцией с ошибкой
+        /// Возвращение предыдущей ошибки в асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>   
         [Fact]
-        public async Task ResultCollectionBadTaskAsync_Bad_ReturnNewValueByError()
+        public async Task ResultCollectionBadBindAsync_Bad_ReturnNewValueByError()
         {
             var errorsInitial = CreateErrorListTwoTest();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBadTaskAsync(errors => new List<int> { errors.Count });
+            var resultAfterWhere = await resultCollection.ResultCollectionBadBindAsync(
+                errors => ToTaskEnumerable(GetListByErrorsCount(errors)));
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.Value.First());
         }
 
         /// <summary>
-        /// Выполнение условия в положительном результирующем ответе задачи-объекта с коллекцией
+        /// Выполнение условия в положительном асинхронном результирующем ответе с коллекцией
         /// </summary>
         [Fact]
-        public async Task ResultCollectionCheckErrorsOkTaskAsync_Ok_ReturnNewValue()
+        public async Task ResultCollectionErrorOkBindAsync_Ok_CheckNoError()
         {
             var initialCollection = GetRangeNumber();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkTaskAsync(_ => true,
-                badFunc: _ => CreateErrorListTwoTest());
+            var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkBindAsync(_ => true,
+                badFunc: _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.True(initialCollection.SequenceEqual(resultAfterWhere.Value));
         }
 
         /// <summary>
-        /// Выполнение условия в отрицательном результирующем ответе задачи-объекта с коллекцией без ошибки
+        /// Выполнение условия в отрицательном асинхронном результирующем ответе с коллекцией без ошибки
         /// </summary>
         [Fact]
-        public async Task ResultCollectionCheckErrorsOkTaskAsync_Ok_ReturnNewError()
+        public async Task ResultCollectionErrorOkBindAsync_Ok_CheckHasError()
         {
             var initialCollection = GetRangeNumber();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
 
             var errorsBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkTaskAsync(_ => false,
-                badFunc: _ => errorsBad);
+            var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkBindAsync(_ => false,
+                badFunc: _ => ToTaskEnumerable(errorsBad));
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.Equal(errorsBad.Count, resultAfterWhere.Errors.Count);
         }
 
         /// <summary>
-        /// Возвращение предыдущей ошибки в положительном результирующем ответе задачи-объекта с коллекцией с ошибкой
+        /// Возвращение предыдущей ошибки в положительном асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionCheckErrorsOkTaskAsync_Bad_ReturnNewValue()
+        public async Task ResultCollectionErrorOkBindAsync_Bad_CheckNoError()
         {
             var errorInitial = CreateErrorTest();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkTaskAsync(_ => true,
-                badFunc: _ => CreateErrorListTwoTest());
+            var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkBindAsync(_ => true,
+                badFunc: _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.Single(resultAfterWhere.Errors);
         }
 
         /// <summary>
-        /// Возвращение предыдущей ошибки в отрицательном результирующем ответе задачи-объекта с коллекцией с ошибкой
+        /// Возвращение предыдущей ошибки в отрицательном асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionCheckErrorsOkTaskAsync_Bad_ReturnNewError()
+        public async Task ResultCollectionErrorOkBindAsync_Bad_CheckHasError()
         {
             var errorsInitial = CreateErrorTest();
             var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkTaskAsync(_ => false,
-                badFunc: _ => CreateErrorListTwoTest());
+            var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkBindAsync(_ => false,
+                badFunc: _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.Single(resultAfterWhere.Errors);

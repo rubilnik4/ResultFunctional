@@ -211,9 +211,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionOkAsync_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = new ResultCollection<int>(errorInitial);
+            var resultCollection = new ResultCollection<int>(errorInitial);
 
-            var resultAfterWhere = await resultValue.ResultCollectionOkAsync(CollectionToStringAsync);
+            var resultAfterWhere = await resultCollection.ResultCollectionOkAsync(CollectionToStringAsync);
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.True(errorInitial.Equals(resultAfterWhere.Errors.Last()));
@@ -242,13 +242,78 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionBadAsync_Bad_ReturnNewValueByError()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultValue = new ResultCollection<int>(errorsInitial);
+            var resultCollection = new ResultCollection<int>(errorsInitial);
 
-            var resultAfterWhere = await resultValue.ResultCollectionBadAsync(
+            var resultAfterWhere = await resultCollection.ResultCollectionBadAsync(
                 errors => ToTaskEnumerable(GetListByErrorsCount(errors)));
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.Value.First());
+        }
+
+        /// <summary>
+        /// Выполнение условия в положительном асинхронном результирующем ответе с коллекцией
+        /// </summary>
+        [Fact]
+        public async Task ResultCollectionErrorOkAsync_Ok_CheckNoError()
+        {
+            var initialCollection = GetRangeNumber();
+            var resultCollection = new ResultCollection<int>(initialCollection);
+
+            var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkAsync(_ => true,
+                badFunc: _ => CreateErrorListTwoTestTask());
+
+            Assert.True(resultAfterWhere.OkStatus);
+            Assert.True(initialCollection.SequenceEqual(resultAfterWhere.Value));
+        }
+
+        /// <summary>
+        /// Выполнение условия в отрицательном асинхронном результирующем ответе с коллекцией без ошибки
+        /// </summary>
+        [Fact]
+        public async Task ResultCollectionErrorOkAsync_Ok_CheckHasError()
+        {
+            var initialCollection = GetRangeNumber();
+            var resultCollection = new ResultCollection<int>(initialCollection);
+
+            var errorsBad = CreateErrorListTwoTest();
+            var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkAsync(_ => false,
+                badFunc: _ => ToTaskEnumerable(errorsBad));
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Equal(errorsBad.Count, resultAfterWhere.Errors.Count);
+        }
+
+        /// <summary>
+        /// Возвращение предыдущей ошибки в положительном асинхронном результирующем ответе с коллекцией с ошибкой
+        /// </summary>
+        [Fact]
+        public async Task ResultCollectionErrorOkAsync_Bad_CheckNoError()
+        {
+            var errorInitial = CreateErrorTest();
+            var resultCollection = new ResultCollection<int>(errorInitial);
+
+            var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkAsync(_ => true,
+                badFunc: _ => CreateErrorListTwoTestTask());
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Single(resultAfterWhere.Errors);
+        }
+
+        /// <summary>
+        /// Возвращение предыдущей ошибки в отрицательном асинхронном результирующем ответе с коллекцией с ошибкой
+        /// </summary>
+        [Fact]
+        public async Task ResultCollectionErrorOkAsync_Bad_CheckHasError()
+        {
+            var errorsInitial = CreateErrorTest();
+            var resultCollection = new ResultCollection<int>(errorsInitial);
+
+            var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkAsync(_ => false,
+                badFunc: _ => CreateErrorListTwoTestTask());
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Single(resultAfterWhere.Errors);
         }
     }
 }

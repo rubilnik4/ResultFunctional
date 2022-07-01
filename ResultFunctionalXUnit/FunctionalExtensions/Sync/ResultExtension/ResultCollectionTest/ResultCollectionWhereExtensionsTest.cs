@@ -246,5 +246,70 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             Assert.True(resultAfterWhere.OkStatus);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.Value.First());
         }
+
+        /// <summary>
+        /// Выполнение условия в положительном результирующем ответе с коллекцией
+        /// </summary>
+        [Fact]
+        public void ResultCollectionCheckErrorsOk_Ok_CheckNoError()
+        {
+            var initialCollection = GetRangeNumber();
+            var resultCollection = new ResultCollection<int>(initialCollection);
+
+            var resultAfterWhere = resultCollection.ResultCollectionCheckErrorsOk(_ => true,
+                                                                                  _ => CreateErrorListTwoTest());
+
+            Assert.True(resultAfterWhere.OkStatus);
+            Assert.True(initialCollection.SequenceEqual(resultAfterWhere.Value));
+        }
+
+        /// <summary>
+        /// Выполнение условия в отрицательном результирующем ответе с коллекцией без ошибки
+        /// </summary>
+        [Fact]
+        public void ResultCollectionCheckErrorsOk_Ok_CheckError()
+        {
+            var initialCollection = GetRangeNumber();
+            var resultCollection = new ResultCollection<int>(initialCollection);
+
+            var errorBad = CreateErrorListTwoTest();
+            var resultAfterWhere = resultCollection.ResultCollectionCheckErrorsOk(_ => false,
+                                                                                  _ => errorBad);
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Equal(errorBad.Count, resultAfterWhere.Errors.Count);
+        }
+
+        /// <summary>
+        /// Возвращение предыдущей ошибки в положительном результирующем ответе с коллекцией с ошибкой
+        /// </summary>
+        [Fact]
+        public void ResultCollectionCheckErrorsOk_Bad_CheckNoError()
+        {
+            var errorInitial = CreateErrorTest();
+            var resultCollection = new ResultCollection<int>(errorInitial);
+
+            var resultAfterWhere = resultCollection.ResultCollectionCheckErrorsOk(_ => true,
+                                                                             _ => CreateErrorListTwoTest());
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Single(resultAfterWhere.Errors);
+        }
+
+        /// <summary>
+        /// Возвращение предыдущей ошибки в отрицательном результирующем ответе с коллекцией с ошибкой
+        /// </summary>
+        [Fact]
+        public void ResultCollectionCheckErrorsOk_Bad_CheckError()
+        {
+            var errorsInitial = CreateErrorTest();
+            var resultCollection = new ResultCollection<int>(errorsInitial);
+
+            var resultAfterWhere = resultCollection.ResultCollectionCheckErrorsOk(_ => false,
+                                                                             _ => CreateErrorListTwoTest());
+
+            Assert.True(resultAfterWhere.HasErrors);
+            Assert.Single(resultAfterWhere.Errors);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
@@ -95,5 +96,21 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
             @this.OkStatus
                 ? @this
                 : new ResultValue<TValue>(await badFunc.Invoke(@this.Errors));
+
+        /// <summary>
+        /// Check errors by predicate async to result value if ones hasn't errors
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Result value</returns>
+        public static async Task<IResultValue<TValue>> ResultValueCheckErrorsOkAsync<TValue>(this IResultValue<TValue> @this,
+                                                                           Func<TValue, bool> predicate,
+                                                                           Func<TValue, Task<IEnumerable<IErrorResult>>> badFunc) =>
+            await @this.
+            ResultValueContinueAsync(predicate,
+                                     Task.FromResult,
+                                     badFunc);
     }
 }

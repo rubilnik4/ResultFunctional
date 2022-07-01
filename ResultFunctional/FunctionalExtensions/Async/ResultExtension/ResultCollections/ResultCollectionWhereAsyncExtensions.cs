@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
@@ -95,5 +96,21 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
             @this.OkStatus
                 ? @this
                 : new ResultCollection<TValue>(await badFunc.Invoke(@this.Errors));
+
+        /// <summary>
+        /// Check errors by predicate async to result collection if ones hasn't errors
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Result collection</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Result collection</returns>
+        public static async Task<IResultCollection<TValue>> ResultCollectionCheckErrorsOkAsync<TValue>(this IResultCollection<TValue> @this,
+                                                                           Func<IReadOnlyCollection<TValue>, bool> predicate,
+                                                                           Func<IReadOnlyCollection<TValue>, Task<IEnumerable<IErrorResult>>> badFunc) =>
+            await @this.
+            ResultCollectionContinueAsync(predicate,
+                                          collection => Task.FromResult((IEnumerable<TValue>)collection),
+                                          badFunc);
     }
 }

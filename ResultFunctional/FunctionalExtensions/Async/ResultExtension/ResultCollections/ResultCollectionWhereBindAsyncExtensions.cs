@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
 using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
@@ -84,5 +85,19 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
                                                                                        Func<IReadOnlyCollection<IErrorResult>, Task<IEnumerable<TValue>>> badFunc) =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultCollectionBadAsync(badFunc));
+
+        /// <summary>
+        /// Check errors by predicate async to task result collection if ones hasn't errors
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Result collection</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Result collection</returns>
+        public static async Task<IResultCollection<TValue>> ResultCollectionCheckErrorsOkBindAsync<TValue>(this Task<IResultCollection<TValue>> @this,
+                                                                           Func<IReadOnlyCollection<TValue>, bool> predicate,
+                                                                           Func<IReadOnlyCollection<TValue>, Task<IEnumerable<IErrorResult>>> badFunc) =>
+             await @this.
+             MapBindAsync(awaitedThis => awaitedThis.ResultCollectionCheckErrorsOkAsync(predicate, badFunc));
     }
 }
