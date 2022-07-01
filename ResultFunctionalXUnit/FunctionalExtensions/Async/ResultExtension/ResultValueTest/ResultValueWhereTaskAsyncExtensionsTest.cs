@@ -258,7 +258,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultValueTask = ResultValueFactory.CreateTaskResultValue(initialValue);
 
             var resultAfterWhere = await resultValueTask.ResultValueCheckErrorsOkTaskAsync(_ => true,
-                badFunc: _ => CreateErrorListTwoTestTask());
+                badFunc: _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.Equal(initialValue, resultAfterWhere.Value);
@@ -273,12 +273,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             int initialValue = Numbers.Number;
             var resultValueTask = ResultValueFactory.CreateTaskResultValue(initialValue);
 
-            var errorsBad = CreateErrorListTwoTestTask();
+            var errorsBad = CreateErrorListTwoTest();
             var resultAfterWhere = await resultValueTask.ResultValueCheckErrorsOkTaskAsync(_ => false,
                 badFunc: _ => errorsBad);
 
             Assert.True(resultAfterWhere.HasErrors);
-            Assert.True(errorsBad.Result.SequenceEqual(resultAfterWhere.Errors));
+            Assert.True(errorsBad.SequenceEqual(resultAfterWhere.Errors));
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultValueTask = ResultValueFactory.CreateTaskResultValueError<int>(errorInitial);
 
             var resultAfterWhere = await resultValueTask.ResultValueCheckErrorsOkTaskAsync(_ => true,
-                badFunc: _ => CreateErrorListTwoTestTask());
+                badFunc: _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.Single(resultAfterWhere.Errors);
@@ -307,7 +307,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultValueTask = ResultValueFactory.CreateTaskResultValueError<int>(errorInitial);
 
             var resultAfterWhere = await resultValueTask.ResultValueCheckErrorsOkTaskAsync(_ => false,
-                badFunc: _ => CreateErrorListTwoTestTask());
+                badFunc: _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.Single(resultAfterWhere.Errors);

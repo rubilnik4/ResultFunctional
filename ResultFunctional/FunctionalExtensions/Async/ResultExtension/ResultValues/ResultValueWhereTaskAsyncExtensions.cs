@@ -97,8 +97,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <returns>Result value</returns>
         public static async Task<IResultValue<TValue>> ResultValueCheckErrorsOkTaskAsync<TValue>(this Task<IResultValue<TValue>> @this,
                                                                            Func<TValue, bool> predicate,
-                                                                           Func<TValue, Task<IEnumerable<IErrorResult>>> badFunc) =>
+                                                                           Func<TValue, IEnumerable<IErrorResult>> badFunc) =>
              await @this.
-             MapBindAsync(awaitedThis => awaitedThis.ResultValueCheckErrorsOkAsync(predicate, badFunc));
+             MapTaskAsync(awaitedThis => awaitedThis.ResultValueCheckErrorsOk(predicate, badFunc));
     }
 }
