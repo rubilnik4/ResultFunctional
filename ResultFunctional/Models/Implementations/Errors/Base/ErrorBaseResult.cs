@@ -52,9 +52,19 @@ namespace ResultFunctional.Models.Implementations.Errors.Base
         /// </summary>
         /// <typeparam name="TErrorTypeCompare">Error type</typeparam>
         /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
-        public bool IsErrorType<TErrorTypeCompare>()
+        public override bool IsErrorType<TErrorTypeCompare>()
             where TErrorTypeCompare : struct =>
             typeof(TErrorType) == typeof(TErrorTypeCompare);
+
+        /// <summary>
+        /// Is error type value equal to current error type
+        /// </summary>
+        /// <typeparam name="TErrorTypeCompare">Error type</typeparam>
+        /// <param name="errorType">Error type value</param>
+        /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
+        public override bool IsErrorType<TErrorTypeCompare>(TErrorTypeCompare errorType)
+            where TErrorTypeCompare : struct =>
+            IsErrorType<TErrorTypeCompare>() && ErrorType.GetHashCode() == errorType.GetHashCode();
 
         /// <summary>
         /// Initialize base error

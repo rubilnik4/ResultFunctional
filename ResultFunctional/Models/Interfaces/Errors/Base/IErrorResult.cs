@@ -41,6 +41,23 @@ namespace ResultFunctional.Models.Interfaces.Errors.Base
             where TErrorType : IErrorResult;
 
         /// <summary>
+        /// Is error type equal to current error type
+        /// </summary>
+        /// <typeparam name="TErrorTypeCompare">Error type</typeparam>
+        /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
+        bool IsErrorType<TErrorTypeCompare>()
+            where TErrorTypeCompare : struct;
+
+        /// <summary>
+        /// Is error type value equal to current error type
+        /// </summary>
+        /// <typeparam name="TErrorTypeCompare">Error type</typeparam>
+        /// <param name="errorType">Error type value</param>
+        /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
+        bool IsErrorType<TErrorTypeCompare>(TErrorTypeCompare errorType)
+            where TErrorTypeCompare : struct;
+
+        /// <summary>
         /// Create error  with exception and base parameters.
         /// </summary>
         /// <param name="exception">Exception</param>

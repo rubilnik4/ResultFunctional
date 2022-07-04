@@ -13,13 +13,5 @@ namespace ResultFunctional.Models.Interfaces.Errors.Base
         /// Error type
         /// </summary>
         TErrorType ErrorType { get; }
-
-        /// <summary>
-        /// Is error type equal to current error type
-        /// </summary>
-        /// <typeparam name="TErrorTypeCompare">Error type</typeparam>
-        /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
-        bool IsErrorType<TErrorTypeCompare>()
-            where TErrorTypeCompare : struct;
     }
 }
