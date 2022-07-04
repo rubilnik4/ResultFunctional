@@ -28,7 +28,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void SimpleError()
         {
-            var errorResult = ErrorResultFactory.SimpleErrorType("Ошибка");
+            var errorResult = ErrorResultFactory.SimpleError("Ошибка");
 
             Assert.IsType<SimpleErrorResult>(errorResult);
             Assert.IsType<SimpleErrorResult>(errorResult.AppendException(new Exception()));
@@ -40,7 +40,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void ErrorType()
         {
-            var errorResult = ErrorResultFactory.ErrorType(CommonErrorType.Unknown, "Ошибка");
+            var errorResult = ErrorResultFactory.ErrorByType(CommonErrorType.Unknown, "Ошибка");
 
             Assert.IsType<ErrorTypeResult<CommonErrorType>>(errorResult);
             Assert.IsType<ErrorTypeResult<CommonErrorType>>(errorResult.AppendException(new Exception()));

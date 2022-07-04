@@ -25,7 +25,7 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// </summary>
         /// <param name="description">Description</param>
         /// <returns>Simple error</returns>
-        public static SimpleErrorResult SimpleErrorType(string description) =>
+        public static SimpleErrorResult SimpleError(string description) =>
             new SimpleErrorResult(description);
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace ResultFunctional.Models.Implementations.Errors
         /// <param name="errorType">Error subtype</param>
         /// <param name="description">Description</param>
         /// <returns>Common error type</returns>
-        public static ErrorTypeResult<TErrorType> ErrorType<TErrorType>(TErrorType errorType, string description)
+        public static ErrorTypeResult<TErrorType> ErrorByType<TErrorType>(TErrorType errorType, string description)
             where TErrorType : struct =>
             new ErrorTypeResult<TErrorType>(errorType, description);
 
