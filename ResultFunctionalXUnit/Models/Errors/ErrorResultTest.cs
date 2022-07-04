@@ -4,6 +4,7 @@ using ResultFunctional.Models.Implementations.Errors;
 using ResultFunctional.Models.Implementations.Errors.Base;
 using ResultFunctional.Models.Implementations.Errors.CommonErrors;
 using ResultFunctional.Models.Implementations.Errors.DatabaseErrors;
+using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Errors.DatabaseErrors;
 using ResultFunctionalXUnit.Data;
 using Xunit;
@@ -22,9 +23,48 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasErrorTypeCommon()
         {
-            var errorResult = ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
+            var errorResult = (IErrorResult)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType<CommonErrorType>();
+
+            Assert.True(hasType);
+        }
+
+        /// <summary>
+        /// Наличие типа ошибки
+        /// </summary>
+        [Fact]
+        public void HasNotErrorTypeCommon()
+        {
+            var errorResult = (IErrorResult)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
+
+            bool hasType = errorResult.IsErrorType<DatabaseErrorType>();
+
+            Assert.False(hasType);
+        }
+
+        /// <summary>
+        /// Наличие типа ошибки
+        /// </summary>
+        [Fact]
+        public void HasNotErrorTypeDatabase()
+        {
+            var errorResult = (IErrorResult)ErrorResultFactory.SimpleErrorType("Неизвестная ошибка");
+
+            bool hasType = errorResult.IsErrorType<DatabaseErrorType>();
+
+            Assert.False(hasType);
+        }
+        
+        /// <summary>
+        /// Наличие типа ошибки
+        /// </summary>
+        [Fact]
+        public void HasErrorTypeCommon_CommonType()
+        {
+            var errorResult = (IErrorResult)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
+
+            bool hasType = errorResult.IsErrorType(CommonErrorType.Unknown);
 
             Assert.True(hasType);
         }
@@ -34,13 +74,26 @@ namespace ResultFunctionalXUnit.Models.Errors
         /// Наличие типа ошибки
         /// </summary>
         [Fact]
-        public void HasErrorTypeDatabase()
+        public void HasNotErrorTypeCommon_CommonType()
         {
-            var errorResult = ErrorResultFactory.DatabaseValueNotValidError("Test", "TestTable", "Неизвестная ошибка");
+            var errorResult = (IErrorResult)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
 
-            bool hasType = errorResult.IsErrorType<DatabaseErrorType>();
+            bool hasType = errorResult.IsErrorType(CommonErrorType.ValueDuplicated);
 
-            Assert.True(hasType);
+            Assert.False(hasType);
+        }
+
+        /// <summary>
+        /// Наличие типа ошибки
+        /// </summary>
+        [Fact]
+        public void HasNotErrorTypeDatabase_CommonType()
+        {
+            var errorResult = (IErrorResult)ErrorResultFactory.SimpleErrorType("Неизвестная ошибка");
+
+            bool hasType = errorResult.IsErrorType(DatabaseErrorType.Connection);
+
+            Assert.False(hasType);
         }
 
         /// <summary>
