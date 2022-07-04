@@ -49,7 +49,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasNotErrorTypeDatabase()
         {
-            var errorResult = (IErrorResult)ErrorResultFactory.SimpleErrorType("Неизвестная ошибка");
+            var errorResult = (IErrorResult)ErrorResultFactory.SimpleError("Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType<DatabaseErrorType>();
 
@@ -89,7 +89,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasNotErrorTypeDatabase_CommonType()
         {
-            var errorResult = (IErrorResult)ErrorResultFactory.SimpleErrorType("Неизвестная ошибка");
+            var errorResult = (IErrorResult)ErrorResultFactory.SimpleError("Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType(DatabaseErrorType.Connection);
 
