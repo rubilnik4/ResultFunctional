@@ -87,7 +87,7 @@ public static class ToResultCollectionTaskAsyncExtensions
     /// <typeparam name="TValue">Result type</typeparam>
     /// <param name="this">Result collection</param>
     /// <returns>Result value</returns>
-    public static async Task<IResultValue<IReadOnlyCollection<TValue>>> ToResultValueTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this) =>
+    public static async Task<IResultValue<IReadOnlyCollection<TValue>>> ToResultValueFromCollectionTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this) =>
         await @this.
         MapTaskAsync(awaitedThis => awaitedThis.ToResultValue());
 
@@ -97,7 +97,7 @@ public static class ToResultCollectionTaskAsyncExtensions
     /// <typeparam name="TValue">Result type</typeparam>
     /// <param name="this">Result collection</param>
     /// <returns>Result error</returns>
-    public static async Task<IResultError> ToResultErrorTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this) =>
+    public static async Task<IResultError> ToResultErrorFromCollectionTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this) =>
         await @this.
         MapTaskAsync(awaitedThis => awaitedThis);
 

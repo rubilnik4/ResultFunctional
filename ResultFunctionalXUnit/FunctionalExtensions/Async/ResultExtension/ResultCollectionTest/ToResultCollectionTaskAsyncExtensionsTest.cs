@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
+using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.ResultFactory;
 using ResultFunctional.Models.Interfaces.Results;
@@ -152,7 +153,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
         var numbers = Collections.GetRangeNumber();
         var resultCollectionTask = ResultCollectionFactory.CreateTaskResultCollection(numbers);
 
-        var resultValue = await resultCollectionTask.ToResultValueTaskAsync();
+        var resultValue = await resultCollectionTask.ToResultValueFromCollectionTaskAsync();
 
         Assert.IsAssignableFrom<IResultValue<IReadOnlyCollection<int>>>(resultValue);
     }

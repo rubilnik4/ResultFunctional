@@ -18,7 +18,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="okFunc">Function if incoming result value hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultValueBindOkToCollectionBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
-                                                                                             Func<TValueIn, Task<IResultCollection<TValueOut>>> okFunc) =>
+                                                                                             Func<TValueIn, Task<IResultCollection<TValueOut>>> okFunc)
+            where TValueOut : notnull =>
             await @this.
             MapBindAsync(thisAwaited => thisAwaited.ResultValueBindOkToCollectionAsync(okFunc));
     }
