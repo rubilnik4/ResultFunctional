@@ -25,17 +25,6 @@ public static class ToResultValueTaskAsyncExtensions
         MapTaskAsync(awaitedThis => awaitedThis.ToResultValue());
 
     /// <summary>
-    /// Converting task result collection to result value
-    /// </summary>
-    /// <typeparam name="TValue">Result type</typeparam>
-    /// <param name="this">Incoming collection</param>
-    /// <returns>Outgoing result value</returns>
-    public static async Task<IResultValue<IReadOnlyCollection<TValue>>> ToResultValueTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this)
-        where TValue : notnull =>
-        await @this.
-        MapTaskAsync(awaitedThis => awaitedThis);
-
-    /// <summary>
     /// Converting value to result value with null checking
     /// </summary>
     /// <typeparam name="TValue">Result type</typeparam>
