@@ -25,6 +25,23 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         public static async Task<IResultValue<TValueOut>> ResultCollectionContinueToValueBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<TValueOut>> okFunc,
+                                                                                                            Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<IErrorResult>>> badFunc) =>
+            await @this.ResultCollectionContinueToValueBindAsync(predicate, okFunc,
+                                                      values => badFunc(values).GetEnumerableTaskAsync());
+
+        /// <summary>
+        /// Execute result collection task async function converting to result value base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>     
+        public static async Task<IResultValue<TValueOut>> ResultCollectionContinueToValueBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
+                                                                                                            Func<IReadOnlyCollection<TValueIn>, bool> predicate,
+                                                                                                            Func<IReadOnlyCollection<TValueIn>, Task<TValueOut>> okFunc,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<IErrorResult>>> badFunc) =>
             await @this.
             MapBindAsync(thisAwaited => thisAwaited.ResultCollectionContinueToValueAsync(predicate, okFunc, badFunc));

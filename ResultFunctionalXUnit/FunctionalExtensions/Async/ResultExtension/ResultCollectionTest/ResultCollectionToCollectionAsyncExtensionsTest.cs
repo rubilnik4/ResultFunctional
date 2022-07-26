@@ -26,7 +26,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var resultAfterWhere = await resultCollection.ResultCollectionToCollectionOkBadAsync(
                 okFunc: Collections.CollectionToStringAsync,
-                badFunc: _ => TaskEnumerableExtensions.ToTaskEnumerable(Collections.GetEmptyStringList()));
+                badFunc: _ => TaskEnumerableExtensions.ToTaskCollection(Collections.GetEmptyStringList()));
 
             Assert.True(Collections.CollectionToString(initialCollection).SequenceEqual(resultAfterWhere));
         }
@@ -42,7 +42,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var resultAfterWhere = await resultCollection.ResultCollectionToCollectionOkBadAsync(
                 okFunc: Collections.CollectionToStringAsync,
-                badFunc: errors => TaskEnumerableExtensions.ToTaskEnumerable(new List<string> { errors.Count.ToString() }));
+                badFunc: errors => TaskEnumerableExtensions.ToTaskCollection(new List<string> { errors.Count.ToString() }));
 
             Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere.First());
         }

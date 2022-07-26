@@ -43,13 +43,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             int initialValue = Numbers.Number;
             var resultValue = ResultValueFactory.CreateTaskResultValue(initialValue);
 
-            var errorsBad = CreateErrorListTwoTest();
+            var errorsBad = CreateErrorListTwoTestTask();
             var resultAfterWhere = await resultValue.ResultValueContinueToCollectionBindAsync(_ => false,
                 okFunc: NumberToCollectionAsync,
-                badFunc: _ => Task.FromResult((IEnumerable<IErrorResult>)errorsBad));
+                badFunc: _ => errorsBad);
 
             Assert.True(resultAfterWhere.HasErrors);
-            Assert.Equal(errorsBad.Count, resultAfterWhere.Errors.Count);
+            Assert.Equal(errorsBad.Result.Count, resultAfterWhere.Errors.Count);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var resultAfterWhere = await resultValue.ResultValueOkBadToCollectionBindAsync(
                 okFunc: NumberToCollectionAsync,
-                badFunc: _ => Task.FromResult(Enumerable.Empty<int>()));
+                badFunc: _ => Task.FromResult((IReadOnlyCollection<int>)new List<int>()));
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.True((await NumberToCollectionAsync(initialValue)).SequenceEqual(resultAfterWhere.Value));
@@ -114,7 +114,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var resultAfterWhere = await resultValue.ResultValueOkBadToCollectionBindAsync(
                 okFunc: NumberToCollectionAsync,
-                badFunc: errors => Task.FromResult((IEnumerable<int>)new List<int> { errors.Count }));
+                badFunc: errors => Task.FromResult((IReadOnlyCollection<int>)new List<int> { errors.Count }));
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.Value.First());

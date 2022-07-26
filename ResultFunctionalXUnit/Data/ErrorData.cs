@@ -30,7 +30,7 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Создать тестовый экземпляр множества ошибок
         /// </summary>
-        public static IEnumerable<IErrorResult> CreateErrorEnumerableTwoTest() =>
+        public static IReadOnlyCollection<IErrorResult> CreateErrorEnumerableTwoTest() =>
             CreateErrorListTwoTest();
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Создать тестовый экземпляр списка ошибок
         /// </summary>
-        public static Task<IEnumerable<IErrorResult>> CreateErrorListTwoTestTask() =>
+        public static Task<IReadOnlyCollection<IErrorResult>> CreateErrorListTwoTestTask() =>
             Task.FromResult(CreateErrorEnumerableTwoTest());
     }
 }
