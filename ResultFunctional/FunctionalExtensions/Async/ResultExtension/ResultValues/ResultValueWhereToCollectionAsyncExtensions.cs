@@ -24,11 +24,44 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <returns>Outgoing result collection</returns>  
         public static async Task<IResultCollection<TValueOut>> ResultValueContinueToCollectionAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                                                         Func<TValueIn, bool> predicate,
+                                                                                                                        Func<TValueIn, Task<IReadOnlyCollection<TValueOut>>> okFunc,
+                                                                                                                        Func<TValueIn, Task<IReadOnlyCollection<IErrorResult>>> badFunc) =>
+            await @this.ResultValueContinueToCollectionAsync(predicate,
+                                                             values => okFunc(values).GetEnumerableTaskAsync(),
+                                                             values => badFunc(values).GetEnumerableTaskAsync());
+
+        /// <summary>
+        /// Execute result value async function converting to result value base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result collection</returns>  
+        public static async Task<IResultCollection<TValueOut>> ResultValueContinueToCollectionAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
+                                                                                                                        Func<TValueIn, bool> predicate,
                                                                                                                         Func<TValueIn, Task<IEnumerable<TValueOut>>> okFunc,
                                                                                                                         Func<TValueIn, Task<IEnumerable<IErrorResult>>> badFunc) =>
             await @this.
             ResultValueContinueAsync(predicate, okFunc, badFunc).
             ToResultCollectionTaskAsync();
+
+        /// <summary>
+        /// Execute result value async function converting to result value depending on result value errors
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result collection</returns>     
+        public static async Task<IResultCollection<TValueOut>> ResultValueOkBadToCollectionAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
+                                                                                    Func<TValueIn, Task<IReadOnlyCollection<TValueOut>>> okFunc,
+                                                                                    Func<IReadOnlyCollection<IErrorResult>, Task<IReadOnlyCollection<TValueOut>>> badFunc) =>
+             await @this.ResultValueOkBadToCollectionAsync(values => okFunc(values).GetEnumerableTaskAsync(),
+                                                           values => badFunc(values).GetEnumerableTaskAsync());
 
         /// <summary>
         /// Execute result value async function converting to result value depending on result value errors
@@ -55,8 +88,20 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="okFunc">Function if result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultCollection<TValueOut>> ResultValueOkToCollectionAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
+                                                                                             Func<TValueIn, Task<IReadOnlyCollection<TValueOut>>> okFunc) =>
+             await @this.ResultValueOkToCollectionAsync(values => okFunc(values).GetEnumerableTaskAsync());
+
+        /// <summary>
+        /// Execute result value async function converting to result value if incoming result value hasn't errors
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="okFunc">Function if result value hasn't errors</param>
+        /// <returns>Outgoing result value</returns>
+        public static async Task<IResultCollection<TValueOut>> ResultValueOkToCollectionAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                              Func<TValueIn, Task<IEnumerable<TValueOut>>> okFunc) =>
-            await  @this.
+            await @this.
             ResultValueOkAsync(okFunc).
             ToResultCollectionTaskAsync();
     }

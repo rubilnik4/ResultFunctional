@@ -26,14 +26,20 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Преобразовать коллекцию чисел в коллекцию строк
         /// </summary>
-        public static IEnumerable<string> CollectionToString(IEnumerable<int> numbers) =>
-            numbers.Select(number => number.ToString());
+        public static IReadOnlyCollection<string> CollectionToString(IEnumerable<int> numbers) =>
+            numbers.Select(number => number.ToString()).ToList();
 
         /// <summary>
         /// Преобразовать коллекцию чисел в коллекцию строк асинхронно
         /// </summary>
-        public static async Task<IEnumerable<string>> CollectionToStringAsync(IEnumerable<int> numbers) =>
-            await Task.FromResult(numbers.Select(number => number.ToString()));
+        public static async Task<IEnumerable<string>> EnumerableToStringAsync(IEnumerable<int> numbers) =>
+            await Task.FromResult(numbers.Select(number => number.ToString()).ToList());
+
+        /// <summary>
+        /// Преобразовать коллекцию чисел в коллекцию строк асинхронно
+        /// </summary>
+        public static async Task<IReadOnlyCollection<string>> CollectionToStringAsync(IEnumerable<int> numbers) =>
+            await Task.FromResult(numbers.Select(number => number.ToString()).ToList());
 
         /// <summary>
         /// Преобразовать список чисел в строку
@@ -50,19 +56,19 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Получить количество ошибок списком
         /// </summary>
-        public static IList<int> GetListByErrorsCount(IReadOnlyCollection<IErrorResult> errors) =>
+        public static IReadOnlyCollection<int> GetListByErrorsCount(IReadOnlyCollection<IErrorResult> errors) =>
             new List<int> { errors.Count };
 
         /// <summary>
         /// Получить количество ошибок списком
         /// </summary>
-        public static IList<string> GetListByErrorsCountString(IReadOnlyCollection<IErrorResult> errors) =>
+        public static IReadOnlyCollection<string> GetListByErrorsCountString(IReadOnlyCollection<IErrorResult> errors) =>
             new List<string> { errors.Count.ToString() };
 
         /// <summary>
         /// Получить список с пустой строкой
         /// </summary>
-        public static IList<string> GetEmptyStringList() =>
+        public static IReadOnlyCollection<string> GetEmptyStringList() =>
             new List<string> { String.Empty };
     }
 }

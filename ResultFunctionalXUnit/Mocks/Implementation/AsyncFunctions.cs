@@ -61,7 +61,7 @@ namespace ResultFunctionalXUnit.Mocks.Implementation
         /// <summary>
         /// Преобразовать число в коллекцию повторений
         /// </summary>
-        public static async Task<IEnumerable<int>> NumberToCollectionAsync(int number) =>
-            await Task.FromResult(Enumerable.Repeat(number, 3));
+        public static async Task<IReadOnlyCollection<int>> NumberToCollectionAsync(int number) =>
+            await Task.FromResult(Enumerable.Repeat(number, 3).ToList());
     }
 }

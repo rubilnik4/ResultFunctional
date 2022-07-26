@@ -45,7 +45,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var errorsBad = CreateErrorListTwoTest();
             var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueBindAsync(_ => false,
                 okFunc: Collections.AggregateToStringAsync,
-                badFunc: _ => ToTaskEnumerable(errorsBad));
+                badFunc: _ => ToTaskCollection(errorsBad));
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.Equal(errorsBad.Count, resultAfterWhere.Errors.Count);

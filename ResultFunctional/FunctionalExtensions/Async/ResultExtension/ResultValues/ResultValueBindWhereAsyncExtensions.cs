@@ -27,6 +27,23 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         public static async Task<IResultValue<TValueOut>> ResultValueBindContinueAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                                             Func<TValueIn, bool> predicate,
                                                                                                             Func<TValueIn, Task<IResultValue<TValueOut>>> okFunc,
+                                                                                                            Func<TValueIn, Task<IReadOnlyCollection<IErrorResult>>> badFunc) =>
+            await @this.ResultValueBindContinueAsync(predicate, okFunc,
+                                                     values => badFunc(values).GetEnumerableTaskAsync());
+
+        /// <summary>
+        /// Execute monad result value async function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>     
+        public static async Task<IResultValue<TValueOut>> ResultValueBindContinueAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
+                                                                                                            Func<TValueIn, bool> predicate,
+                                                                                                            Func<TValueIn, Task<IResultValue<TValueOut>>> okFunc,
                                                                                                             Func<TValueIn, Task<IEnumerable<IErrorResult>>> badFunc) =>
             @this.OkStatus
                 ? predicate(@this.Value)
