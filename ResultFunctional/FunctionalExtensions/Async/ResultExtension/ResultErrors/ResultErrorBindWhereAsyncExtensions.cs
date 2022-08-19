@@ -7,7 +7,7 @@ using ResultFunctional.Models.Interfaces.Results;
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors
 {
     /// <summary>
-    /// Result error фынтс extension methods for merging errors
+    /// Result error async extension methods for merging errors
     /// </summary>
     public static class ResultErrorBindWhereAsyncExtensions
     {
