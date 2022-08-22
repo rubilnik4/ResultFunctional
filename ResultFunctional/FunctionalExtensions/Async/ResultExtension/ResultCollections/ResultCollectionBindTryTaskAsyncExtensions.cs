@@ -41,7 +41,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionBindTryTaskAsync<TValue>(Func<Task<IResultCollection<TValue>>> func,
-                                                                                             IErrorResult error) =>
+                                                                                                     IErrorResult error) =>
             await ResultCollectionBindTryTaskAsync(func, error.AppendException);
     }
 }
