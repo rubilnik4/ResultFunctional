@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors
@@ -18,7 +18,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultError
         /// <param name="badFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result error</returns>
         public static IResultError ResultErrorBindOkBad(this IResultError @this, Func<IResultError> okFunc,
-                                                        Func<IReadOnlyCollection<IErrorResult>, IResultError> badFunc) =>
+                                                        Func<IReadOnlyCollection<IRError>, IResultError> badFunc) =>
             @this.OkStatus
                 ? okFunc.Invoke()
                 : badFunc.Invoke(@this.Errors);

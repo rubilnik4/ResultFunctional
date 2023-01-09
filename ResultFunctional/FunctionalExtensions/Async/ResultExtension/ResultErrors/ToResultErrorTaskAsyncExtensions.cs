@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors
@@ -39,7 +39,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
         /// </summary>
         /// <param name="this">Error collection</param>
         /// <returns>Result error</returns>
-        public static async Task<IResultError> ToResultErrorTaskAsync(this Task<IEnumerable<IErrorResult>> @this) =>
+        public static async Task<IResultError> ToResultErrorTaskAsync(this Task<IEnumerable<IRError>> @this) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ToResultError());
 
@@ -48,9 +48,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
         /// </summary>
         /// <param name="this">Error collection</param>
         /// <returns>Result error</returns>
-        public static async Task<IResultError> ToResultErrorTaskAsync(this Task<IReadOnlyCollection<IErrorResult>> @this) =>
+        public static async Task<IResultError> ToResultErrorTaskAsync(this Task<IReadOnlyCollection<IRError>> @this) =>
             await @this.
-            MapTaskAsync(awaitedThis => (IEnumerable<IErrorResult>)awaitedThis).
+            MapTaskAsync(awaitedThis => (IEnumerable<IRError>)awaitedThis).
             ToResultErrorTaskAsync();
 
         /// <summary>

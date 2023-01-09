@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 
 namespace ResultFunctional.Models.Interfaces.Results
 {
@@ -13,7 +13,7 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// <summary>
         /// Errors
         /// </summary>
-        IReadOnlyCollection<IErrorResult> Errors { get; }
+        IReadOnlyCollection<IRError> Errors { get; }
 
         /// <summary>
         /// hasn't errors
@@ -30,14 +30,14 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// </summary>
         /// <typeparam name="TError">Error result type</typeparam>
         /// <returns><see langword="true"/> if error equal to the current type; otherwise <see langword="false"/></returns>
-        bool IsError<TError>() where TError : IErrorResult;
+        bool IsError<TError>() where TError : IRError;
 
         /// <summary>
         /// Is error result type equal to current or base type
         /// </summary>
         /// <typeparam name="TError">Error result type</typeparam>
         /// <returns><see langword="true"/> if error equal or derived to the current type; otherwise <see langword="false"/></returns>
-        bool HasError<TError>() where TError : IErrorResult;
+        bool HasError<TError>() where TError : IRError;
 
         /// <summary>
         /// Get type of errors
@@ -67,7 +67,7 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// </summary>
         /// <typeparam name="TErrorType">Error type</typeparam>
         /// <returns>Base error result filtered by error type</returns>
-        IErrorBaseResult<TErrorType>? GetErrorByType<TErrorType>()
+        IRBaseError<TErrorType>? GetErrorByType<TErrorType>()
             where TErrorType : struct;
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// </summary>
         /// <typeparam name="TErrorType">Error type</typeparam>
         /// <returns>Base errors result filtered by error type</returns>   
-        IReadOnlyCollection<IErrorBaseResult<TErrorType>> GetErrorsByTypes<TErrorType>()
+        IReadOnlyCollection<IRBaseError<TErrorType>> GetErrorsByTypes<TErrorType>()
             where TErrorType : struct;
 
         /// <summary>
@@ -83,14 +83,14 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// </summary>
         /// <param name="error">Error</param>
         /// <returns>Result with error</returns>      
-        IResultError AppendError(IErrorResult error);
+        IResultError AppendError(IRError error);
 
         /// <summary>
         /// Add errors to result
         /// </summary>
         /// <param name="errors">Errors</param>
         /// <returns>Result with error</returns>   
-        IResultError ConcatErrors(IEnumerable<IErrorResult> errors);
+        IResultError ConcatErrors(IEnumerable<IRError> errors);
 
         /// <summary>
         /// Add values and errors to current result

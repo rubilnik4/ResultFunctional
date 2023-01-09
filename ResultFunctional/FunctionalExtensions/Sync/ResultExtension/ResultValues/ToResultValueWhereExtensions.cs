@@ -1,6 +1,6 @@
 ﻿using System;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static IResultValue<TValue> ToResultValueWhere<TValue>(this TValue @this, Func<TValue, bool> predicate,
-                                                                      Func<TValue, IErrorResult> badFunc)
+                                                                      Func<TValue, IRError> badFunc)
             where TValue : notnull =>
             @this.WhereContinue(predicate,
                                 value => (IResultValue<TValue>)new ResultValue<TValue>(value),
@@ -34,7 +34,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static IResultValue<TValue> ToResultValueWhereNull<TValue>(this TValue? @this, Func<TValue, bool> predicate,
-                                                                          Func<TValue?, IErrorResult> badFunc)
+                                                                          Func<TValue?, IRError> badFunc)
             where TValue : class =>
             @this.ToResultValueNullCheck(badFunc(@this)).
             ResultValueBindOk(value => value.ToResultValueWhere(predicate, badFunc));
@@ -48,7 +48,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static IResultValue<TValue> ToResultValueWhereNull<TValue>(this TValue? @this, Func<TValue, bool> predicate,
-                                                                          Func<TValue?, IErrorResult> badFunc)
+                                                                          Func<TValue?, IRError> badFunc)
             where TValue : struct =>
             @this.ToResultValueNullCheck(badFunc(@this)).
             ResultValueBindOk(value => value.ToResultValueWhere(predicate,
@@ -67,7 +67,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         public static IResultValue<TValueOut> ToResultValueWhereNullOkBad<TValueIn, TValueOut>(this TValueIn? @this,
                                                                                       Func<TValueIn, bool> predicate,
                                                                                       Func<TValueIn, TValueOut> okFunc,
-                                                                                      Func<TValueIn?, IErrorResult> badFunc)
+                                                                                      Func<TValueIn?, IRError> badFunc)
             where TValueIn : class
             where TValueOut : notnull =>
             @this.ToResultValueNullCheck(badFunc(@this)).
@@ -88,7 +88,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         public static IResultValue<TValueOut> ToResultValueWhereNullOkBad<TValueIn, TValueOut>(this TValueIn? @this,
                                                                                       Func<TValueIn, bool> predicate,
                                                                                       Func<TValueIn, TValueOut> okFunc,
-                                                                                      Func<TValueIn?, IErrorResult> badFunc)
+                                                                                      Func<TValueIn?, IRError> badFunc)
             where TValueIn : struct
             where TValueOut : notnull =>
             @this.ToResultValueNullCheck(badFunc(@this)).

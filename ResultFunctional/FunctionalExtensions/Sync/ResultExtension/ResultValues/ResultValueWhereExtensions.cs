@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
@@ -24,7 +24,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         public static IResultValue<TValueOut> ResultValueContinue<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                        Func<TValueIn, bool> predicate,
                                                                                        Func<TValueIn, TValueOut> okFunc,
-                                                                                       Func<TValueIn, IEnumerable<IErrorResult>> badFunc) =>
+                                                                                       Func<TValueIn, IEnumerable<IRError>> badFunc) =>
          @this.OkStatus 
              ? predicate(@this.Value)
                  ? new ResultValue<TValueOut>(okFunc.Invoke(@this.Value))
@@ -62,7 +62,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ResultValueOkBad<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                     Func<TValueIn, TValueOut> okFunc,
-                                                                                    Func<IReadOnlyCollection<IErrorResult>, TValueOut> badFunc) =>
+                                                                                    Func<IReadOnlyCollection<IRError>, TValueOut> badFunc) =>
             @this.OkStatus
                 ? new ResultValue<TValueOut>(okFunc.Invoke(@this.Value))
                 : new ResultValue<TValueOut>(badFunc.Invoke(@this.Errors));
@@ -89,7 +89,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <param name="badFunc">Function if result value has errors</param>
         /// <returns>Outgoing result value</returns>
         public static IResultValue<TValue> ResultValueBad<TValue>(this IResultValue<TValue> @this,
-                                                                  Func<IReadOnlyCollection<IErrorResult>, TValue> badFunc) =>
+                                                                  Func<IReadOnlyCollection<IRError>, TValue> badFunc) =>
 
             @this.OkStatus
                 ? @this
@@ -105,7 +105,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <returns>Result value</returns>
         public static IResultValue<TValue> ResultValueCheckErrorsOk<TValue>(this IResultValue<TValue> @this,
                                                                            Func<TValue, bool> predicate,
-                                                                           Func<TValue, IEnumerable<IErrorResult>> badFunc) =>
+                                                                           Func<TValue, IEnumerable<IRError>> badFunc) =>
             @this.
             ResultValueContinue(predicate,
                                 value => value,

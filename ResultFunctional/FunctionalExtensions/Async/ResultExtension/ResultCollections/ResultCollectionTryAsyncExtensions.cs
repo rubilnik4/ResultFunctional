@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
@@ -21,7 +21,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IEnumerable<TValue>>> func,
-                                                                                             Func<Exception, IErrorResult> exceptionFunc)
+                                                                                             Func<Exception, IRError> exceptionFunc)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IEnumerable<TValue>>> func,
-                                                                                             IErrorResult error) =>
+                                                                                             IRError error) =>
             await ResultCollectionTryAsync(func, error.AppendException);
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IReadOnlyCollection<TValue>>> func,
-                                                                                             IErrorResult error) =>
+                                                                                             IRError error) =>
             await ResultCollectionTryAsync(async () => (IEnumerable<TValue>)await func.Invoke(), error);
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<List<TValue>>> func,
-                                                                                             IErrorResult error) =>
+                                                                                             IRError error) =>
             await ResultCollectionTryAsync(async () => (IEnumerable<TValue>)await func.Invoke(), error);
     }
 }

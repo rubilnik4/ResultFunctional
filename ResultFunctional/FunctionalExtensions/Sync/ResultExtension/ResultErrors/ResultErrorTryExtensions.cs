@@ -1,6 +1,6 @@
 ﻿using System;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors
@@ -16,7 +16,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultError
         /// <param name="action">Action</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result error</returns>
-        public static IResultError ResultErrorTry(Action action, Func<Exception, IErrorResult> exceptionFunc)
+        public static IResultError ResultErrorTry(Action action, Func<Exception, IRError> exceptionFunc)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultError
         /// <param name="action">Action</param>
         /// <param name="error">Error</param>
         /// <returns>Result error</returns>
-        public static IResultError ResultErrorTry(Action action, IErrorResult error) =>
+        public static IResultError ResultErrorTry(Action action, IRError error) =>
             ResultErrorTry(action, error.AppendException);
     }
 }

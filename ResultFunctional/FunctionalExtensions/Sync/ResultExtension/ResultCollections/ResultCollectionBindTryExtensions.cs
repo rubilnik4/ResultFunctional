@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <param name="exceptionFunc">Exception function</param>
         /// <returns>Result collection</returns>
         public static IResultCollection<TValue> ResultCollectionBindTry<TValue>(Func<IResultCollection<TValue>> func,
-                                                                                Func<Exception, IErrorResult> exceptionFunc)
+                                                                                Func<Exception, IRError> exceptionFunc)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <param name="func">Result collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
-        public static IResultCollection<TValue> ResultCollectionBindTry<TValue>(Func<IResultCollection<TValue>> func, IErrorResult error) =>
+        public static IResultCollection<TValue> ResultCollectionBindTry<TValue>(Func<IResultCollection<TValue>> func, IRError error) =>
             ResultCollectionBindTry(func, error.AppendException);
     }
 }

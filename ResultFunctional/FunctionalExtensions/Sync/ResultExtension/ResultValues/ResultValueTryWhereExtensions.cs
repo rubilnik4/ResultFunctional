@@ -1,6 +1,6 @@
 ﻿using System;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues.ResultValueTryExtensions;
 
@@ -22,7 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ResultValueTryOk<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                     Func<TValueIn, TValueOut> func,
-                                                                                    Func<Exception, IErrorResult> exceptionFunc) =>
+                                                                                    Func<Exception, IRError> exceptionFunc) =>
             @this.ResultValueBindOk(value => ResultValueTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ResultValueTryOk<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                     Func<TValueIn, TValueOut> func,
-                                                                                    IErrorResult error) =>
+                                                                                    IRError error) =>
             @this.ResultValueBindOk(value => ResultValueTry(() => func.Invoke(value), error));
     }
 }

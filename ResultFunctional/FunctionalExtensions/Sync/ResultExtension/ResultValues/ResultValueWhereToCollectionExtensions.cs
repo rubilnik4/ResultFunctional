@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
@@ -24,7 +24,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         public static IResultCollection<TValueOut> ResultValueContinueToCollection<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                        Func<TValueIn, bool> predicate,
                                                                                        Func<TValueIn, IEnumerable<TValueOut>> okFunc,
-                                                                                       Func<TValueIn, IEnumerable<IErrorResult>> badFunc) =>
+                                                                                       Func<TValueIn, IEnumerable<IRError>> badFunc) =>
             @this.
             ResultValueContinue(predicate, okFunc, badFunc).
             ToResultCollection();
@@ -40,7 +40,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <returns>Outgoing result collection</returns>   
         public static IResultCollection<TValueOut> ResultValueOkBadToCollection<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                                     Func<TValueIn, IEnumerable<TValueOut>> okFunc,
-                                                                                    Func<IReadOnlyCollection<IErrorResult>, IEnumerable<TValueOut>> badFunc) =>
+                                                                                    Func<IReadOnlyCollection<IRError>, IEnumerable<TValueOut>> badFunc) =>
             @this.
             ResultValueOkBad(okFunc, badFunc).
             ToResultCollection();

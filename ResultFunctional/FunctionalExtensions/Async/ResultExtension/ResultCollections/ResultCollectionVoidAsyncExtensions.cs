@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
@@ -32,7 +32,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <param name="action">Action</param>
         /// <returns>Unchanged result collection</returns>  
         public static async Task<IResultCollection<TValue>> ResultCollectionVoidBadAsync<TValue>(this IResultCollection<TValue> @this,
-                                                                                  Func<IReadOnlyCollection<IErrorResult>, Task> action) =>
+                                                                                  Func<IReadOnlyCollection<IRError>, Task> action) =>
             await @this.
             VoidOkAsync(_ => @this.HasErrors,
                 action: _ => action.Invoke(@this.Errors));
@@ -47,7 +47,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Unchanged result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionVoidOkBadAsync<TValue>(this IResultCollection<TValue> @this,
                                                                                                    Func<IReadOnlyCollection<TValue>, Task> actionOk,
-                                                                                                   Func<IReadOnlyCollection<IErrorResult>, Task> actionBad) =>
+                                                                                                   Func<IReadOnlyCollection<IRError>, Task> actionBad) =>
             await @this.
             VoidWhereAsync(_ => @this.OkStatus,
                 actionOk: _ => actionOk.Invoke(@this.Value),

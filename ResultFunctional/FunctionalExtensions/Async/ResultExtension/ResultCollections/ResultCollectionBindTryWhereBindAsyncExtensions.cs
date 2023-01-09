@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using static ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections.ResultCollectionBindTryTaskAsyncExtensions;
 
@@ -25,7 +25,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionBindTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                        Func<IEnumerable<TValueIn>, Task<IResultCollection<TValueOut>>> func,
-                                                                                                       Func<Exception, IErrorResult> exceptionFunc) =>
+                                                                                                       Func<Exception, IRError> exceptionFunc) =>
             await @this.
             ResultCollectionBindOkBindAsync(value => ResultCollectionBindTryTaskAsync(() => func.Invoke(value), exceptionFunc));
 
@@ -40,7 +40,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionBindTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                        Func<IEnumerable<TValueIn>, Task<IResultCollection<TValueOut>>> func,
-                                                                                                       IErrorResult error) =>
+                                                                                                       IRError error) =>
             await @this.
             ResultCollectionBindOkBindAsync(value => ResultCollectionBindTryTaskAsync(() => func.Invoke(value), error));
     }

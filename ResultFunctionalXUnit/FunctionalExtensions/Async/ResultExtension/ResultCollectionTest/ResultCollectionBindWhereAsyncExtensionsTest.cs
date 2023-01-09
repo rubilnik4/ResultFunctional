@@ -7,13 +7,13 @@ using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollecti
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
 using ResultFunctional.FunctionalExtensions.Sync;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
-using ResultFunctional.Models.Implementations.ResultFactory;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
 using static ResultFunctionalXUnit.Extensions.TaskExtensions.TaskEnumerableExtensions;
+using ResultFunctional.Models.Factories;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultCollectionTest
 {

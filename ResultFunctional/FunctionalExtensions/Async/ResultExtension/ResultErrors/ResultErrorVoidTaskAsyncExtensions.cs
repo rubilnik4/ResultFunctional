@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors
@@ -29,7 +29,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns>
         public static async Task<IResultError> ResultErrorVoidBadTaskAsync(this Task<IResultError> @this,
-                                                                       Action<IReadOnlyCollection<IErrorResult>> action) =>
+                                                                       Action<IReadOnlyCollection<IRError>> action) =>
             await @this.
             VoidOkTaskAsync(awaitedThis => awaitedThis.HasErrors,
                 action: awaitedThis => action.Invoke(awaitedThis.Errors));
@@ -42,7 +42,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
         /// <param name="actionBad">Action if result has errors</param>
         /// <returns>Unchanged result error</returns>   
         public static async Task<IResultError> ResultErrorVoidOkBadTaskAsync(this Task<IResultError> @this, Action actionOk,
-                                                                             Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
+                                                                             Action<IReadOnlyCollection<IRError>> actionBad) =>
             await @this.
             VoidWhereTaskAsync(awaitedThis => awaitedThis.OkStatus,
                 actionOk: _ => actionOk.Invoke(),

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors
@@ -20,7 +20,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
         /// <returns>Outgoing result error</returns>
         public static async Task<IResultError> ResultErrorBindOkBadBindAsync(this Task<IResultError> @this,
                                                              Func<Task<IResultError>> okFunc,
-                                                             Func<IReadOnlyCollection<IErrorResult>, Task<IResultError>> badFunc) =>
+                                                             Func<IReadOnlyCollection<IRError>, Task<IResultError>> badFunc) =>
            await @this.
            MapBindAsync(awaitedThis => awaitedThis.ResultErrorBindOkBadAsync(okFunc, badFunc));
 

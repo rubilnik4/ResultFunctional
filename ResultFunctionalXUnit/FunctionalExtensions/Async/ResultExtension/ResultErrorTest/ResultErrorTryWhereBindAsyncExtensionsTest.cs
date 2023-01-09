@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
-using ResultFunctional.Models.Implementations.ResultFactory;
+using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
@@ -29,7 +29,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <param name="this">Incoming value</param>
         /// <param name="error">Null error</param>
         /// <returns>Outgoing result value</returns>
-        public static IResultValue<TValue> ToResultValueNullValueCheck<TValue>(this TValue @this, IErrorResult error) =>
+        public static IResultValue<TValue> ToResultValueNullValueCheck<TValue>(this TValue @this, IRError error) =>
             @this != null
                 ? new ResultValue<TValue>(@this)
                 : new ResultValue<TValue>(error);
@@ -41,7 +41,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <param name="this">Incoming value</param>
         /// <param name="error">Null error</param>
         /// <returns>Outgoing result value</returns>
-        public static IResultValue<TValue> ToResultValueNullCheck<TValue>(this TValue? @this, IErrorResult error)
+        public static IResultValue<TValue> ToResultValueNullCheck<TValue>(this TValue? @this, IRError error)
             where TValue : class =>
             @this != null
                 ? new ResultValue<TValue>(@this)
@@ -54,7 +54,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <param name="this">Incoming value</param>
         /// <param name="error">Null error</param>
         /// <returns>Outgoing result value</returns>
-        public static IResultValue<TValue> ToResultValueNullCheck<TValue>(this TValue? @this, IErrorResult error)
+        public static IResultValue<TValue> ToResultValueNullCheck<TValue>(this TValue? @this, IRError error)
             where TValue : struct =>
             @this != null
                 ? new ResultValue<TValue>((TValue)@this)

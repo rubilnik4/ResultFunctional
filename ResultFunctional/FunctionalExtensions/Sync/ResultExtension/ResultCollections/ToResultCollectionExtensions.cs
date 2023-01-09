@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
@@ -30,7 +30,7 @@ public static class ToResultCollectionExtensions
     /// <param name="error">Null error</param>
     /// <returns>Outgoing result collection</returns>
     public static IResultCollection<TValue> ToResultCollectionNullCheck<TValue>(this IEnumerable<TValue?>? @this,
-                                                                                IErrorResult error)
+                                                                                IRError error)
         where TValue : class =>
         @this != null
             ? @this.Select(value => value.ToResultValueNullCheck(error)).

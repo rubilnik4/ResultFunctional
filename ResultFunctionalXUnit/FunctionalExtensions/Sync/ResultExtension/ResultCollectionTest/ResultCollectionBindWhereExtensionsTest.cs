@@ -7,12 +7,12 @@ using ResultFunctional.FunctionalExtensions.Sync;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
+using ResultFunctional.Models.Errors.Base;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.ResultCollectionTest
 {
@@ -336,7 +336,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         /// <summary>
         /// Получить результирующую коллекцию по количеству ошибок
         /// </summary>
-        private static IResultCollection<int> GetResultCollectionByErrorCount(IReadOnlyCollection<IErrorResult> errors) =>
+        private static IResultCollection<int> GetResultCollectionByErrorCount(IReadOnlyCollection<IRError> errors) =>
             new ResultCollection<int>(GetListByErrorsCount(errors));
     }
 }

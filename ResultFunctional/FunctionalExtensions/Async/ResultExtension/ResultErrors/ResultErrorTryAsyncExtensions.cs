@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors
@@ -17,7 +17,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
         /// <param name="action">Action</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result error</returns>
-        public static async Task<IResultError> ResultErrorTryAsync(Func<Task> action, Func<Exception, IErrorResult> exceptionFunc)
+        public static async Task<IResultError> ResultErrorTryAsync(Func<Task> action, Func<Exception, IRError> exceptionFunc)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
         /// <param name="action">Action</param>
         /// <param name="error">Error</param>
         /// <returns>Result error</returns>
-        public static async Task<IResultError> ResultErrorTryAsync(Func<Task> action, IErrorResult error) =>
+        public static async Task<IResultError> ResultErrorTryAsync(Func<Task> action, IRError error) =>
             await ResultErrorTryAsync(action, error.AppendException);
     }
 }

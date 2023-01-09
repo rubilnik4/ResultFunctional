@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="exceptionFunc">Exception function</param>
         /// <returns>Result value</returns>
         public static async Task<IResultValue<TValue>> ResultValueBindTryAsync<TValue>(Func<Task<IResultValue<TValue>>> func,
-                                                                                       Func<Exception, IErrorResult> exceptionFunc)
+                                                                                       Func<Exception, IRError> exceptionFunc)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="error">Error</param>
         /// <returns>Result value</returns>
         public static async Task<IResultValue<TValue>> ResultValueBindTryAsync<TValue>(Func<Task<IResultValue<TValue>>> func,
-                                                                                       IErrorResult error) =>
+                                                                                       IRError error) =>
              await ResultValueBindTryAsync(func, error.AppendException);
     }
 }

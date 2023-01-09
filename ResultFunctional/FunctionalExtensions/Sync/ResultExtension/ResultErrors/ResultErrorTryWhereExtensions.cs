@@ -1,6 +1,6 @@
 ﻿using System;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors.ResultErrorTryExtensions;
 
@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultError
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result error</returns>
         public static IResultError ResultErrorTryOk(this IResultError @this, Action action,
-                                                    Func<Exception, IErrorResult> exceptionFunc) =>
+                                                    Func<Exception, IRError> exceptionFunc) =>
             @this.ResultErrorBindOk(() => ResultErrorTry(action.Invoke, exceptionFunc));
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultError
         /// <param name="action">Action</param>
         /// <param name="error">Error</param>
         /// <returns>Outgoing result error</returns>
-        public static IResultError ResultErrorTryOk(this IResultError @this, Action action, IErrorResult error) =>
+        public static IResultError ResultErrorTryOk(this IResultError @this, Action action, IRError error) =>
             @this.ResultErrorTryOk(action, _ => error);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections.ResultCollectionTryExtensions;
 
@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
-                                                                                                     Func<Exception, IErrorResult> exceptionFunc) =>
+                                                                                                     Func<Exception, IRError> exceptionFunc) =>
             await @this.
             ResultCollectionBindOkTaskAsync(value => ResultCollectionTry(() => func.Invoke(value), exceptionFunc));
 
@@ -38,7 +38,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
-                                                                                                     IErrorResult error) =>
+                                                                                                     IRError error) =>
             await @this.
             ResultCollectionBindOkTaskAsync(value => ResultCollectionTry(() => func.Invoke(value), error));
     }

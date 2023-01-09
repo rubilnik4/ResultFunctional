@@ -1,6 +1,6 @@
 ﻿using System;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
@@ -18,7 +18,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <param name="exceptionFunc">Exception function</param>
         /// <returns>Result value</returns>
         public static IResultValue<TValue> ResultValueBindTry<TValue>(Func<IResultValue<TValue>> func,
-                                                                      Func<Exception, IErrorResult> exceptionFunc)
+                                                                      Func<Exception, IRError> exceptionFunc)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <param name="func">Result value function</param>
         /// <param name="error">Error</param>
         /// <returns>Result value</returns>
-        public static IResultValue<TValue> ResultValueBindTry<TValue>(Func<IResultValue<TValue>> func, IErrorResult error) => 
+        public static IResultValue<TValue> ResultValueBindTry<TValue>(Func<IResultValue<TValue>> func, IRError error) => 
             ResultValueBindTry(func, error.AppendException);
     }
 }

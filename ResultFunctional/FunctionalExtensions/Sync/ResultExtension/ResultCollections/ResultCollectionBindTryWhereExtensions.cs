@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections.ResultCollectionBindTryExtensions;
 
@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValueOut> ResultCollectionBindTryOk<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                   Func<IReadOnlyCollection<TValueIn>, IResultCollection<TValueOut>> func,
-                                                                                                  Func<Exception, IErrorResult> exceptionFunc) =>
+                                                                                                  Func<Exception, IRError> exceptionFunc) =>
             @this.ResultCollectionBindOk(value => ResultCollectionBindTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValueOut> ResultCollectionBindTryOk<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                   Func<IReadOnlyCollection<TValueIn>, IResultCollection<TValueOut>> func,
-                                                                                                  IErrorResult error) =>
+                                                                                                  IRError error) =>
             @this.ResultCollectionBindOk(value => ResultCollectionBindTry(() => func.Invoke(value), error));
     }
 }

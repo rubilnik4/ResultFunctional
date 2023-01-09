@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
@@ -18,7 +18,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="error">Null error</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueNullValueCheckBindAsync<TValue>(this Task<TValue> @this,
-                                                                                                    Task<IErrorResult> error) =>
+                                                                                                    Task<IRError> error) =>
             await @this.
             MapBindAsync(thisAwaited => thisAwaited.ToResultValueNullValueCheckAsync(error));
 
@@ -30,7 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="error">Null error</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueNullCheckBindAsync<TValue>(this Task<TValue?> @this,
-                                                                                               Task<IErrorResult> error)
+                                                                                               Task<IRError> error)
             where TValue : class =>
             await @this.
             MapBindAsync(thisAwaited => thisAwaited.ToResultValueNullCheckAsync(error));
@@ -43,7 +43,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="error">Null error</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueNullCheckBindAsync<TValue>(this Task<TValue?> @this,
-                                                                                               Task<IErrorResult> error)
+                                                                                               Task<IRError> error)
             where TValue : struct =>
             await @this.
             MapBindAsync(thisAwaited => thisAwaited.ToResultValueNullCheckAsync(error));

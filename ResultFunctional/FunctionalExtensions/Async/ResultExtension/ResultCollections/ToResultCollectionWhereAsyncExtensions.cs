@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
@@ -25,7 +25,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValue>> ToResultCollectionWhereAsync<TValue>(this IEnumerable<TValue> @this,
                                                                                             Func<IEnumerable<TValue>, bool> predicate,
-                                                                                            Func<IEnumerable<TValue>, Task<IErrorResult>> badFunc)
+                                                                                            Func<IEnumerable<TValue>, Task<IRError>> badFunc)
             where TValue : notnull =>
             await @this.WhereContinueAsync(predicate,
                                            value => Task.FromResult(new ResultCollection<TValue>(value)),

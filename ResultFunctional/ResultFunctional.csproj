@@ -59,4 +59,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
     <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Lists\" />
+    <Folder Include="Models\Units\" />
+  </ItemGroup>
 </Project>

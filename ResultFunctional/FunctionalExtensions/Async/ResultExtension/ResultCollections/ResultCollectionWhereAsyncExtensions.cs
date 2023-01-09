@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
@@ -27,7 +27,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         public static async Task<IResultCollection<TValueOut>> ResultCollectionContinueAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> okFunc,
-                                                                                                            Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<IErrorResult>>> badFunc) =>
+                                                                                                            Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<IRError>>> badFunc) =>
             await @this.ResultCollectionContinueAsync(predicate,
                                                       values => okFunc(values).GetEnumerableTaskAsync(),
                                                       values => badFunc(values).GetEnumerableTaskAsync());
@@ -45,7 +45,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         public static async Task<IResultCollection<TValueOut>> ResultCollectionContinueAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> okFunc,
-                                                                                                            Func<IReadOnlyCollection<TValueIn>, IEnumerable<IErrorResult>> badFunc) =>
+                                                                                                            Func<IReadOnlyCollection<TValueIn>, IEnumerable<IRError>> badFunc) =>
              await @this.ResultCollectionContinueAsync(predicate,
                                                        values => okFunc(values).GetEnumerableTaskAsync(),
                                                        values => badFunc(values).GetEnumerableTaskAsync());
@@ -63,7 +63,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         public static async Task<IResultCollection<TValueOut>> ResultCollectionContinueAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> okFunc,
-                                                                                                            Func<IReadOnlyCollection<TValueIn>, IEnumerable<IErrorResult>> badFunc) =>
+                                                                                                            Func<IReadOnlyCollection<TValueIn>, IEnumerable<IRError>> badFunc) =>
              await @this.ResultCollectionContinueAsync(predicate,
                                                       okFunc,
                                                       values => badFunc(values).GetEnumerableTaskAsync());
@@ -81,7 +81,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         public static async Task<IResultCollection<TValueOut>> ResultCollectionContinueAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> okFunc,
-                                                                                                            Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<IErrorResult>>> badFunc) =>
+                                                                                                            Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<IRError>>> badFunc) =>
               @this.OkStatus
              ? predicate(@this.Value)
                  ? new ResultCollection<TValueOut>(await okFunc.Invoke(@this.Value))
@@ -173,7 +173,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>   
         public static async Task<IResultCollection<TValueOut>> ResultCollectionOkBadAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                               Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> okFunc,
-                                                                                              Func<IReadOnlyCollection<IErrorResult>, Task<IReadOnlyCollection<TValueOut>>> badFunc) =>
+                                                                                              Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValueOut>>> badFunc) =>
              await @this.ResultCollectionOkBadAsync(values => okFunc(values).GetEnumerableTaskAsync(),
                                                     values => badFunc(values).GetEnumerableTaskAsync());
 
@@ -188,7 +188,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>   
         public static async Task<IResultCollection<TValueOut>> ResultCollectionOkBadAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                               Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> okFunc,
-                                                                                              Func<IReadOnlyCollection<IErrorResult>, Task<IEnumerable<TValueOut>>> badFunc) =>
+                                                                                              Func<IReadOnlyCollection<IRError>, Task<IEnumerable<TValueOut>>> badFunc) =>
             @this.OkStatus
                 ? new ResultCollection<TValueOut>(await okFunc.Invoke(@this.Value))
                 : new ResultCollection<TValueOut>(await badFunc.Invoke(@this.Errors));
@@ -227,7 +227,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <param name="badFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionBadAsync<TValue>(this IResultCollection<TValue> @this,
-                                                                            Func<IReadOnlyCollection<IErrorResult>, Task<IReadOnlyCollection<TValue>>> badFunc) =>
+                                                                            Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValue>>> badFunc) =>
 
             await @this.ResultCollectionBadAsync(values => badFunc(values).GetEnumerableTaskAsync());
 
@@ -239,7 +239,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <param name="badFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionBadAsync<TValue>(this IResultCollection<TValue> @this,
-                                                                            Func<IReadOnlyCollection<IErrorResult>, Task<IEnumerable<TValue>>> badFunc) =>
+                                                                            Func<IReadOnlyCollection<IRError>, Task<IEnumerable<TValue>>> badFunc) =>
 
             @this.OkStatus
                 ? @this
@@ -255,7 +255,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionCheckErrorsOkAsync<TValue>(this IResultCollection<TValue> @this,
                                                                            Func<IReadOnlyCollection<TValue>, bool> predicate,
-                                                                           Func<IReadOnlyCollection<TValue>, Task<IReadOnlyCollection<IErrorResult>>> badFunc) =>
+                                                                           Func<IReadOnlyCollection<TValue>, Task<IReadOnlyCollection<IRError>>> badFunc) =>
             await @this.ResultCollectionCheckErrorsOkAsync(predicate, values => badFunc(values).GetEnumerableTaskAsync());
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionCheckErrorsOkAsync<TValue>(this IResultCollection<TValue> @this,
                                                                            Func<IReadOnlyCollection<TValue>, bool> predicate,
-                                                                           Func<IReadOnlyCollection<TValue>, IEnumerable<IErrorResult>> badFunc) =>
+                                                                           Func<IReadOnlyCollection<TValue>, IEnumerable<IRError>> badFunc) =>
             await @this.ResultCollectionCheckErrorsOkAsync(predicate, values => badFunc(values).GetEnumerableTaskAsync());
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionCheckErrorsOkAsync<TValue>(this IResultCollection<TValue> @this,
                                                                            Func<IReadOnlyCollection<TValue>, bool> predicate,
-                                                                           Func<IReadOnlyCollection<TValue>, Task<IEnumerable<IErrorResult>>> badFunc) =>
+                                                                           Func<IReadOnlyCollection<TValue>, Task<IEnumerable<IRError>>> badFunc) =>
             await @this.
             ResultCollectionContinueAsync(predicate,
                                           collection => Task.FromResult((IEnumerable<TValue>)collection),

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <returns>Outgoing value</returns>
         public static async Task<TValueOut> ResultValueToValueOkBadBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                     Func<TValueIn, Task<TValueOut>> okFunc,
-                                                                                    Func<IReadOnlyCollection<IErrorResult>, Task<TValueOut>> badFunc) =>
+                                                                                    Func<IReadOnlyCollection<IRError>, Task<TValueOut>> badFunc) =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueToValueOkBadAsync(okFunc, badFunc));
     }

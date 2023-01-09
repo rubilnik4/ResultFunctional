@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors;
@@ -22,7 +22,7 @@ public static class ResultErrorWhereTaskAsyncExtensions
     /// <returns>Result error</returns>
     public static async Task<IResultError> ResultErrorCheckErrorsOkBindAsync(this Task<IResultError> @this,
                                                                          Func<bool> predicate,
-                                                                         Func<Task<IReadOnlyCollection<IErrorResult>>> badFunc) =>
+                                                                         Func<Task<IReadOnlyCollection<IRError>>> badFunc) =>
         await @this.ResultErrorCheckErrorsOkBindAsync(predicate,
                                                   () => badFunc().GetEnumerableTaskAsync());
 
@@ -35,7 +35,7 @@ public static class ResultErrorWhereTaskAsyncExtensions
     /// <returns>Result error</returns>
     public static async Task<IResultError> ResultErrorCheckErrorsOkBindAsync(this Task<IResultError> @this,
                                                                          Func<bool> predicate,
-                                                                         Func<Task<IEnumerable<IErrorResult>>> badFunc) =>
+                                                                         Func<Task<IEnumerable<IRError>>> badFunc) =>
         await @this.
         MapBindAsync(awaitedThis => awaitedThis.ResultErrorCheckErrorsOkAsync(predicate, badFunc));
 }

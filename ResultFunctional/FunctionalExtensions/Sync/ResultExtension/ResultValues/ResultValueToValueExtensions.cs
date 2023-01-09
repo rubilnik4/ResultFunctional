@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
@@ -22,7 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <returns>Outgoing value</returns>
         public static TValueOut ResultValueToValueOkBad<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
                                                                              Func<TValueIn, TValueOut> okFunc,
-                                                                             Func<IReadOnlyCollection<IErrorResult>, TValueOut> badFunc) =>
+                                                                             Func<IReadOnlyCollection<IRError>, TValueOut> badFunc) =>
             @this.OkStatus
                 ? okFunc.Invoke(@this.Value)
                 : badFunc.Invoke(@this.Errors);

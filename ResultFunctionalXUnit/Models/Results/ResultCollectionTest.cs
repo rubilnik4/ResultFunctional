@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.Models.Implementations.Errors;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
 using ResultFunctional.Models.Interfaces.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
+using ResultFunctional.Models.Errors.Base;
 
 namespace ResultFunctionalXUnit.Models.Results
 {
@@ -119,7 +118,7 @@ namespace ResultFunctionalXUnit.Models.Results
         {
             var collection = GetRangeNumber();
             var resultCollectionInitial = new ResultCollection<int>(collection);
-            var errorsToConcat = Enumerable.Empty<IErrorResult>();
+            var errorsToConcat = Enumerable.Empty<IRError>();
 
             var resultValueConcat = resultCollectionInitial.ConcatErrors(errorsToConcat);
 

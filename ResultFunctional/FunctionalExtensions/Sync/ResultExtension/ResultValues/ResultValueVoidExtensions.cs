@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues
@@ -30,7 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <param name="action">Action</param>
         /// <returns>Unchanged result value</returns> 
         public static IResultValue<TValue> ResultValueVoidBad<TValue>(this IResultValue<TValue> @this,
-                                                                      Action<IReadOnlyCollection<IErrorResult>> action) =>
+                                                                      Action<IReadOnlyCollection<IRError>> action) =>
             @this.
             VoidOk(_ => @this.HasErrors,
                 _ => action.Invoke(@this.Errors));
@@ -45,7 +45,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValue
         /// <returns>Unchanged result value</returns>
         public static IResultValue<TValue> ResultValueVoidOkBad<TValue>(this IResultValue<TValue> @this, 
                                                                         Action<TValue> actionOk,
-                                                                        Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
+                                                                        Action<IReadOnlyCollection<IRError>> actionBad) =>
             @this.
             VoidWhere(_ => @this.OkStatus,
                 _ => actionOk.Invoke(@this.Value),

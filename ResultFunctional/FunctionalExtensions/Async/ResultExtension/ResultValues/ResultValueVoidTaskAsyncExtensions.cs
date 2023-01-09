@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
@@ -32,7 +32,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="action">Action</param>
         /// <returns>Unchanged result value</returns>      
         public static async Task<IResultValue<TValue>> ResultValueVoidBadTaskAsync<TValue>(this Task<IResultValue<TValue>> @this,
-                                                                                      Action<IReadOnlyCollection<IErrorResult>> action) =>
+                                                                                      Action<IReadOnlyCollection<IRError>> action) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueVoidBad(action));
 
@@ -46,7 +46,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <returns>Unchanged result value</returns>  
         public static async Task<IResultValue<TValue>> ResultValueVoidOkBadTaskAsync<TValue>(this Task<IResultValue<TValue>> @this,
                                                                                            Action<TValue> actionOk,
-                                                                                           Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
+                                                                                           Action<IReadOnlyCollection<IRError>> actionBad) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueVoidOkBad(actionOk, actionBad));
 

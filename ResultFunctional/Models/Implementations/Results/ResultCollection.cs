@@ -4,7 +4,7 @@ using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.Models.Implementations.Results
@@ -19,14 +19,14 @@ namespace ResultFunctional.Models.Implementations.Results
         /// Initializing by error
         /// </summary>
         /// <param name="error">Error</param>
-        public ResultCollection(IErrorResult error)
+        public ResultCollection(IRError error)
             : this(error.AsEnumerable()) { }
 
         /// <summary>
         /// Initializing by errors
         /// </summary>
         /// <param name="errors">Errors</param>
-        public ResultCollection(IEnumerable<IErrorResult> errors)
+        public ResultCollection(IEnumerable<IRError> errors)
             : this(Enumerable.Empty<TValue>(), errors)
         { }
 
@@ -35,7 +35,7 @@ namespace ResultFunctional.Models.Implementations.Results
         /// </summary>
         /// <param name="values">Value collection</param>
         public ResultCollection(IEnumerable<TValue> values)
-            : this(values, Enumerable.Empty<IErrorResult>())
+            : this(values, Enumerable.Empty<IRError>())
         { }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace ResultFunctional.Models.Implementations.Results
         /// </summary>
         /// <param name="values">Value collection</param>
         /// <param name="errors">Errors</param>
-        protected ResultCollection(IEnumerable<TValue> values, IEnumerable<IErrorResult> errors)
+        protected ResultCollection(IEnumerable<TValue> values, IEnumerable<IRError> errors)
             : base(values.ToList().AsReadOnly(), errors)
         { }
 
@@ -52,7 +52,7 @@ namespace ResultFunctional.Models.Implementations.Results
         /// </summary>
         /// <param name="error">Error</param>
         /// <returns>Result collection with error</returns>
-        public new IResultCollection<TValue> AppendError(IErrorResult error) =>
+        public new IResultCollection<TValue> AppendError(IRError error) =>
             base.AppendError(error).
             ToResultCollection(Value);
 
@@ -61,7 +61,7 @@ namespace ResultFunctional.Models.Implementations.Results
         /// </summary>
         /// <param name="errors">Errors</param>
         /// <returns>Result collection with error</returns>  
-        public new IResultCollection<TValue> ConcatErrors(IEnumerable<IErrorResult> errors) =>
+        public new IResultCollection<TValue> ConcatErrors(IEnumerable<IRError> errors) =>
             base.ConcatErrors(errors).
             ToResultCollection(Value);
 

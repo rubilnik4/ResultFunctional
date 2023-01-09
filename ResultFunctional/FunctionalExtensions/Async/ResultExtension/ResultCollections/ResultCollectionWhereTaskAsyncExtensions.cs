@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
@@ -26,7 +26,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         public static async Task<IResultCollection<TValueOut>> ResultCollectionContinueTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> okFunc,
-                                                                                                            Func<IReadOnlyCollection<TValueIn>, IEnumerable<IErrorResult>> badFunc) =>
+                                                                                                            Func<IReadOnlyCollection<TValueIn>, IEnumerable<IRError>> badFunc) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionContinue(predicate, okFunc, badFunc));
 
@@ -58,7 +58,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>     
         public static async Task<IResultCollection<TValueOut>> ResultCollectionOkBadTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                          Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> okFunc,
-                                                                                                         Func<IReadOnlyCollection<IErrorResult>, IEnumerable<TValueOut>> badFunc) =>
+                                                                                                         Func<IReadOnlyCollection<IRError>, IEnumerable<TValueOut>> badFunc) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionOkBad(okFunc, badFunc));
 
@@ -83,7 +83,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <param name="badFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result collection</returns>  
         public static async Task<IResultCollection<TValue>> ResultCollectionBadTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this,
-                                                                                       Func<IReadOnlyCollection<IErrorResult>, IEnumerable<TValue>> badFunc) =>
+                                                                                       Func<IReadOnlyCollection<IRError>, IEnumerable<TValue>> badFunc) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionBad(badFunc));
 
@@ -97,7 +97,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Result collection</returns>
         public static async Task<IResultCollection<TValue>> ResultCollectionCheckErrorsOkTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this,
                                                                            Func<IReadOnlyCollection<TValue>, bool> predicate,
-                                                                           Func<IReadOnlyCollection<TValue>, IEnumerable<IErrorResult>> badFunc) =>
+                                                                           Func<IReadOnlyCollection<TValue>, IEnumerable<IRError>> badFunc) =>
              await @this.
              MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionCheckErrorsOk(predicate, badFunc));
     }

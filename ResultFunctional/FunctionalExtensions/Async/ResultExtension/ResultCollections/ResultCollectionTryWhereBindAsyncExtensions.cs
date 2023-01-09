@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using static ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections.ResultCollectionTryAsyncExtensions;
 
@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
-                                                                                                     Func<Exception, IErrorResult> exceptionFunc) =>
+                                                                                                     Func<Exception, IRError> exceptionFunc) =>
             await @this.ResultCollectionTryOkBindAsync(values => func(values).GetEnumerableTaskAsync(),
                                                        exceptionFunc);
 
@@ -38,7 +38,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> func,
-                                                                                                     Func<Exception, IErrorResult> exceptionFunc) =>
+                                                                                                     Func<Exception, IRError> exceptionFunc) =>
             await @this.
             ResultCollectionBindOkBindAsync(value => ResultCollectionTryAsync(() => func.Invoke(value), exceptionFunc));
 
@@ -53,7 +53,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
-                                                                                                     IErrorResult error) =>
+                                                                                                     IRError error) =>
             await @this.ResultCollectionTryOkBindAsync(values => func(values).GetEnumerableTaskAsync(),
                                                        error);
 
@@ -68,7 +68,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> func,
-                                                                                                     IErrorResult error) =>
+                                                                                                     IRError error) =>
             await @this.
             ResultCollectionBindOkBindAsync(value => ResultCollectionTryAsync(() => func.Invoke(value), error));
     }

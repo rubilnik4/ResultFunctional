@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
@@ -20,7 +20,7 @@ public static class ResultErrorWhereExtensions
     /// <returns>Result error</returns>
     public static IResultError ResultErrorCheckErrorsOk(this IResultError @this,
                                                         Func<bool> predicate,
-                                                        Func<IEnumerable<IErrorResult>> badFunc) =>
+                                                        Func<IEnumerable<IRError>> badFunc) =>
         @this.OkStatus
              ? predicate()
                  ? new ResultError()

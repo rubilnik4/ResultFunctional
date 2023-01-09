@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="error">Null error</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueNullValueCheckAsync<TValue>(this TValue @this,
-                                                                                                Task<IErrorResult> error) =>
+                                                                                                Task<IRError> error) =>
             @this.ToResultValueNullValueCheck(await error);
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="error">Null error</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueNullCheckAsync<TValue>(this TValue? @this,
-                                                                                           Task<IErrorResult> error)
+                                                                                           Task<IRError> error)
             where TValue : class =>
             @this.ToResultValueNullCheck(await error);
 
@@ -42,7 +42,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="error">Null error</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueNullCheckAsync<TValue>(this TValue? @this,
-                                                                                           Task<IErrorResult> error)
+                                                                                           Task<IRError> error)
             where TValue : struct =>
             @this.ToResultValueNullCheck(await error);
 

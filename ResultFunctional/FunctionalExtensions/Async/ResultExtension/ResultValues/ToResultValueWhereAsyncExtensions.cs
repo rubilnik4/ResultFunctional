@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
@@ -21,7 +21,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueWhereAsync<TValue>(this TValue @this,
                                                                                        Func<TValue, bool> predicate,
-                                                                                       Func<TValue, Task<IErrorResult>> badFunc)
+                                                                                       Func<TValue, Task<IRError>> badFunc)
             where TValue : notnull =>
           await @this.WhereContinueAsync(predicate,
                               value => Task.FromResult(new ResultValue<TValue>(value)),
@@ -38,7 +38,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueWhereNullAsync<TValue>(this TValue? @this,
                                                                                       Func<TValue, bool> predicate,
-                                                                                      Func<TValue?, Task<IErrorResult>> badFunc)
+                                                                                      Func<TValue?, Task<IRError>> badFunc)
             where TValue : class =>
             await @this.ToResultValueNullCheckAsync(badFunc(@this)).
             ResultValueBindOkBindAsync(value => value.ToResultValueWhereAsync(predicate, badFunc));
@@ -53,7 +53,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueWhereNullAsync<TValue>(this TValue? @this,
                                                                                       Func<TValue, bool> predicate,
-                                                                                      Func<TValue?, Task<IErrorResult>> badFunc)
+                                                                                      Func<TValue?, Task<IRError>> badFunc)
             where TValue : struct =>
             await @this.ToResultValueNullCheckAsync(badFunc(@this)).
             ResultValueBindOkBindAsync(value => value.ToResultValueWhereAsync(predicate, valueWhere => badFunc(valueWhere)));
@@ -71,7 +71,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         public static async Task<IResultValue<TValueOut>> ToResultValueWhereNullOkBadAsync<TValueIn, TValueOut>(this TValueIn? @this,
                                                                                       Func<TValueIn, bool> predicate,
                                                                                       Func<TValueIn, Task<TValueOut>> okFunc,
-                                                                                      Func<TValueIn?, Task<IErrorResult>> badFunc)
+                                                                                      Func<TValueIn?, Task<IRError>> badFunc)
             where TValueIn : class
             where TValueOut : notnull =>
             await @this.ToResultValueNullCheckAsync(badFunc(@this)).
@@ -92,7 +92,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         public static async Task<IResultValue<TValueOut>> ToResultValueWhereNullOkBadAsync<TValueIn, TValueOut>(this TValueIn? @this,
                                                                                       Func<TValueIn, bool> predicate,
                                                                                       Func<TValueIn, Task<TValueOut>> okFunc,
-                                                                                      Func<TValueIn?, Task<IErrorResult>> badFunc)
+                                                                                      Func<TValueIn?, Task<IRError>> badFunc)
             where TValueIn : struct
             where TValueOut : notnull =>
             await @this.ToResultValueNullCheckAsync(badFunc(@this)).

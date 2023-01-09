@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing collection</returns>
         public static async Task<IReadOnlyCollection<TValueOut>> ResultCollectionToCollectionOkBadAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> okFunc,
-                                                                                                                            Func<IReadOnlyCollection<IErrorResult>, Task<IEnumerable<TValueOut>>> badFunc) =>
+                                                                                                                            Func<IReadOnlyCollection<IRError>, Task<IEnumerable<TValueOut>>> badFunc) =>
             await @this.ResultCollectionToCollectionOkBadAsync(values => okFunc(values).GetCollectionTaskAsync(),
                                                                errors => badFunc(errors).GetCollectionTaskAsync());
 
@@ -38,7 +38,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing collection</returns>
         public static async Task<IReadOnlyCollection<TValueOut>> ResultCollectionToCollectionOkBadAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> okFunc,
-                                                                                                                            Func<IReadOnlyCollection<IErrorResult>, Task<IReadOnlyCollection<TValueOut>>> badFunc) =>
+                                                                                                                            Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValueOut>>> badFunc) =>
             @this.OkStatus
                 ? await okFunc.Invoke(@this.Value)
                 : await badFunc.Invoke(@this.Errors);

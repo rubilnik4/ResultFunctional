@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using ResultFunctionalXUnit.Mocks.Interfaces;
 using Moq;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
-using ResultFunctional.Models.Implementations.ResultFactory;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
+using ResultFunctional.Models.Factories;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultCollectionTest
 {

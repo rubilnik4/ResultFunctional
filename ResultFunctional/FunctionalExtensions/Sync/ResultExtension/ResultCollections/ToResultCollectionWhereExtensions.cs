@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
@@ -21,7 +21,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValue> ToResultCollectionWhere<TValue>(this IEnumerable<TValue> @this,
                                                                                 Func<IEnumerable<TValue>, bool> predicate,
-                                                                                Func<IEnumerable<TValue>, IErrorResult> badFunc)
+                                                                                Func<IEnumerable<TValue>, IRError> badFunc)
             where TValue : notnull =>
             @this.WhereContinue(predicate,
                                 values => new ResultCollection<TValue>(values),

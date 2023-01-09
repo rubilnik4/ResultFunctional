@@ -2,17 +2,9 @@
 using System.Net.Http;
 
 using ResultFunctional.Models.Enums;
-using ResultFunctional.Models.Implementations.Errors;
-using ResultFunctional.Models.Implementations.Errors.AuthorizeErrors;
-using ResultFunctional.Models.Implementations.Errors.Base;
-using ResultFunctional.Models.Implementations.Errors.CommonErrors;
-using ResultFunctional.Models.Implementations.Errors.ConversionErrors;
-using ResultFunctional.Models.Implementations.Errors.DatabaseErrors;
-using ResultFunctional.Models.Implementations.Errors.RestErrors;
-using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
-using ResultFunctional.Models.Interfaces.Errors.conversionErrors;
-using ResultFunctional.Models.Interfaces.Errors.ConversionErrors;
-using ResultFunctional.Models.Interfaces.Errors.DatabaseErrors;
+using ResultFunctional.Models.Errors.CommonErrors;
+using ResultFunctional.Models.Errors.ConversionErrors;
+using ResultFunctional.Models.Errors.DatabaseErrors;
 using Xunit;
 
 namespace ResultFunctionalXUnit.Models.Errors
@@ -66,8 +58,8 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = ErrorResultFactory.ValueNotFoundError<string>(String.Empty);
 
-            Assert.IsAssignableFrom<IValueNotFoundErrorResult>(errorResult);
-            Assert.IsAssignableFrom<IValueNotFoundErrorResult>(errorResult.AppendException(new Exception()));
+            Assert.IsAssignableFrom<IRValueNotFoundError>(errorResult);
+            Assert.IsAssignableFrom<IRValueNotFoundError>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>
@@ -78,8 +70,8 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = ErrorResultFactory.ValueNotValidError(String.Empty, "Ошибка");
 
-            Assert.IsAssignableFrom<IValueNotValidErrorResult>(errorResult);
-            Assert.IsAssignableFrom<IValueNotValidErrorResult>(errorResult.AppendException(new Exception()));
+            Assert.IsAssignableFrom<IRValueNotValidError>(errorResult);
+            Assert.IsAssignableFrom<IRValueNotValidError>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>
@@ -90,8 +82,8 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = ErrorResultFactory.ValueDuplicateError(String.Empty, "Ошибка");
 
-            Assert.IsAssignableFrom<IValueDuplicateErrorResult>(errorResult);
-            Assert.IsAssignableFrom<IValueDuplicateErrorResult>(errorResult.AppendException(new Exception()));
+            Assert.IsAssignableFrom<IRValueDuplicateError>(errorResult);
+            Assert.IsAssignableFrom<IRValueDuplicateError>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>
@@ -138,8 +130,8 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = ErrorResultFactory.DatabaseValueNotValidError(String.Empty, "Table", "Ошибка");
 
-            Assert.IsAssignableFrom<IDatabaseValueNotValidErrorResult>(errorResult);
-            Assert.IsAssignableFrom<IDatabaseValueNotValidErrorResult>(errorResult.AppendException(new Exception()));
+            Assert.IsAssignableFrom<IRDatabaseValueNotValidError>(errorResult);
+            Assert.IsAssignableFrom<IRDatabaseValueNotValidError>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>
@@ -150,8 +142,8 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = ErrorResultFactory.DatabaseValueNotFoundError(String.Empty, "Table", "Ошибка");
 
-            Assert.IsAssignableFrom<IDatabaseValueNotFoundErrorResult>(errorResult);
-            Assert.IsAssignableFrom<IDatabaseValueNotFoundErrorResult>(errorResult.AppendException(new Exception()));
+            Assert.IsAssignableFrom<IRDatabaseValueNotFoundError>(errorResult);
+            Assert.IsAssignableFrom<IRDatabaseValueNotFoundError>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>
@@ -162,8 +154,8 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = ErrorResultFactory.DatabaseValueDuplicateError(String.Empty, "Table", "Ошибка");
 
-            Assert.IsAssignableFrom<IDatabaseValueDuplicatedErrorResult>(errorResult);
-            Assert.IsAssignableFrom<IDatabaseValueDuplicatedErrorResult>(errorResult.AppendException(new Exception()));
+            Assert.IsAssignableFrom<IRDatabaseValueDuplicatedError>(errorResult);
+            Assert.IsAssignableFrom<IRDatabaseValueDuplicatedError>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>
@@ -210,8 +202,8 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = ErrorResultFactory.SerializeError(String.Empty, "Ошибка");
 
-            Assert.IsAssignableFrom<ISerializeErrorResult>(errorResult);
-            Assert.IsAssignableFrom<ISerializeErrorResult>(errorResult.AppendException(new Exception()));
+            Assert.IsAssignableFrom<IRSerializeError>(errorResult);
+            Assert.IsAssignableFrom<IRSerializeError>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>
@@ -222,8 +214,8 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = ErrorResultFactory.DeserializeError<string>(String.Empty, "Ошибка");
 
-            Assert.IsAssignableFrom<IDeserializeErrorResult>(errorResult);
-            Assert.IsAssignableFrom<IDeserializeErrorResult>(errorResult.AppendException(new Exception()));
+            Assert.IsAssignableFrom<IRDeserializeError>(errorResult);
+            Assert.IsAssignableFrom<IRDeserializeError>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>

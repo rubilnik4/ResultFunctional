@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.ResultFactory;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
@@ -58,12 +58,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ToResultErrorByError_Ok()
         {
-            var results = new List<IErrorResult>
+            var results = new List<IRError>
             {
                 ErrorData.CreateErrorTest(),
                 ErrorData.CreateErrorTest()
             };
-            var resultsTask = Task.FromResult((IEnumerable<IErrorResult>)results);
+            var resultsTask = Task.FromResult((IEnumerable<IRError>)results);
 
             var result = await resultsTask.ToResultErrorTaskAsync();
 

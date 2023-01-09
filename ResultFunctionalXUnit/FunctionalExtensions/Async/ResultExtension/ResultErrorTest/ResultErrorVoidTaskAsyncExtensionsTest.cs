@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using ResultFunctionalXUnit.Mocks.Interfaces;
 using Moq;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors;
-using ResultFunctional.Models.Implementations.ResultFactory;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
+using ResultFunctional.Models.Factories;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultErrorTest
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
@@ -32,7 +32,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <param name="action">Action</param>
         /// <returns>Unchanged result collection</returns>  
         public static async Task<IResultCollection<TValue>> ResultCollectionVoidBadTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this,
-                                                                                      Action<IReadOnlyCollection<IErrorResult>> action) =>
+                                                                                      Action<IReadOnlyCollection<IRError>> action) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionVoidBad(action));
 
@@ -46,7 +46,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Unchanged result collection</returns>      
         public static async Task<IResultCollection<TValue>> ResultCollectionVoidOkBadTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this,
                                                                                                      Action<IReadOnlyCollection<TValue>> actionOk,
-                                                                                                     Action<IReadOnlyCollection<IErrorResult>> actionBad) =>
+                                                                                                     Action<IReadOnlyCollection<IRError>> actionBad) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionVoidOkBad(actionOk, actionBad));
 

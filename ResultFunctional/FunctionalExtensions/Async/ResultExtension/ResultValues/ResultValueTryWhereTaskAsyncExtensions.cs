@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues.ResultValueTryExtensions;
 
@@ -22,7 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValueOut>> ResultValueTryOkTaskAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                          Func<TValueIn, TValueOut> func,
-                                                                                                         Func<Exception, IErrorResult> exceptionFunc) =>
+                                                                                                         Func<Exception, IRError> exceptionFunc) =>
             await @this.
             ResultValueBindOkTaskAsync(value => ResultValueTry(() => func.Invoke(value), exceptionFunc));
 
@@ -37,7 +37,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValueOut>> ResultValueTryOkTaskAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                          Func<TValueIn, TValueOut> func, 
-                                                                                                         IErrorResult error) =>
+                                                                                                         IRError error) =>
             await @this.
             ResultValueBindOkTaskAsync(value => ResultValueTry(() => func.Invoke(value), error));
     }

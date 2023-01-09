@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 
 namespace ResultFunctional.Models.Interfaces.Results
 {
@@ -20,14 +20,14 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// </summary>
         /// <param name="error">Error</param>
         /// <returns>Result value with error</returns>
-        new IResultValue<TValue> AppendError(IErrorResult error);
+        new IResultValue<TValue> AppendError(IRError error);
 
         /// <summary>
         /// Add errors to result
         /// </summary>
         /// <param name="errors">Errors</param>
         /// <returns>Result value with error</returns>  
-        new IResultValue<TValue> ConcatErrors(IEnumerable<IErrorResult> errors);
+        new IResultValue<TValue> ConcatErrors(IEnumerable<IRError> errors);
 
         /// <summary>
         /// Add values and errors to current result

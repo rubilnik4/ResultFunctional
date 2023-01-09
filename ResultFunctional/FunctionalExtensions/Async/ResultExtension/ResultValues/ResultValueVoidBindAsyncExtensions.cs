@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
@@ -31,7 +31,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="action">Action</param>
         /// <returns>Unchanged result value</returns> 
         public static async Task<IResultValue<TValue>> ResultValueVoidBadBindAsync<TValue>(this Task<IResultValue<TValue>> @this,
-                                                                                      Func<IReadOnlyCollection<IErrorResult>, Task> action) =>
+                                                                                      Func<IReadOnlyCollection<IRError>, Task> action) =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueVoidBadAsync(action));
 
@@ -45,7 +45,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <returns>Unchanged result value</returns>  
         public static async Task<IResultValue<TValue>> ResultValueVoidOkBadBindAsync<TValue>(this Task<IResultValue<TValue>> @this,
                                                                                              Func<TValue, Task> actionOk,
-                                                                                             Func<IReadOnlyCollection<IErrorResult>, Task> actionBad) =>
+                                                                                             Func<IReadOnlyCollection<IRError>, Task> actionBad) =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueVoidOkBadAsync(actionOk, actionBad));
 

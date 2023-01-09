@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result collection</returns>
         public static IResultCollection<TValue> ResultCollectionTry<TValue>(Func<IEnumerable<TValue>> func,
-                                                                            Func<Exception, IErrorResult> exceptionFunc)
+                                                                            Func<Exception, IRError> exceptionFunc)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <param name="func">Collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
-        public static IResultCollection<TValue> ResultCollectionTry<TValue>(Func<IEnumerable<TValue>> func, IErrorResult error) =>
+        public static IResultCollection<TValue> ResultCollectionTry<TValue>(Func<IEnumerable<TValue>> func, IRError error) =>
             ResultCollectionTry(func, error.AppendException);
     }
 }

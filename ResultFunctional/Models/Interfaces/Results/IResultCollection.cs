@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 
 namespace ResultFunctional.Models.Interfaces.Results
 {
@@ -14,14 +14,14 @@ namespace ResultFunctional.Models.Interfaces.Results
         /// </summary>
         /// <param name="error">Error</param>
         /// <returns>Result collection with error</returns> 
-        new IResultCollection<TValue> AppendError(IErrorResult error);
+        new IResultCollection<TValue> AppendError(IRError error);
 
         /// <summary>
         /// Add errors to result
         /// </summary>
         /// <param name="errors">Errors</param>
         /// <returns>Result collection with error</returns>       
-        new IResultCollection<TValue> ConcatErrors(IEnumerable<IErrorResult> errors);
+        new IResultCollection<TValue> ConcatErrors(IEnumerable<IRError> errors);
 
         /// <summary>
         /// Add values and errors to current result

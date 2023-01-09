@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors
@@ -24,7 +24,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultError
         /// </summary>
         /// <param name="this">Error collection</param>
         /// <returns>Result error</returns>
-        public static IResultError ToResultError(this IEnumerable<IErrorResult> @this) =>
+        public static IResultError ToResultError(this IEnumerable<IRError> @this) =>
             new ResultError(@this);
     }
 }

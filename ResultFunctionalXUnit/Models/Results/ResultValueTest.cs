@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.Models.Implementations.Errors;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
 using ResultFunctional.Models.Interfaces.Results;
 using Xunit;
@@ -118,7 +117,7 @@ namespace ResultFunctionalXUnit.Models.Results
         {
             const string value = "OK";
             var resultValueInitial = new ResultValue<string>(value);
-            var errorsToConcat = Enumerable.Empty<IErrorResult>();
+            var errorsToConcat = Enumerable.Empty<IRError>();
 
             var resultValueConcat = resultValueInitial.ConcatErrors(errorsToConcat);
 

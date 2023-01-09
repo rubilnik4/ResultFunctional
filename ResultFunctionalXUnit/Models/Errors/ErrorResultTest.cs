@@ -1,11 +1,7 @@
 ﻿using System;
 using ResultFunctional.Models.Enums;
-using ResultFunctional.Models.Implementations.Errors;
-using ResultFunctional.Models.Implementations.Errors.Base;
-using ResultFunctional.Models.Implementations.Errors.CommonErrors;
-using ResultFunctional.Models.Implementations.Errors.DatabaseErrors;
-using ResultFunctional.Models.Interfaces.Errors.Base;
-using ResultFunctional.Models.Interfaces.Errors.DatabaseErrors;
+using ResultFunctional.Models.Errors.Base;
+using ResultFunctional.Models.Errors.DatabaseErrors;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -23,7 +19,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasErrorTypeCommon()
         {
-            var errorResult = (IErrorResult)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
+            var errorResult = (IRError)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType<CommonErrorType>();
 
@@ -36,7 +32,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasNotErrorTypeCommon()
         {
-            var errorResult = (IErrorResult)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
+            var errorResult = (IRError)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType<DatabaseErrorType>();
 
@@ -49,7 +45,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasNotErrorTypeDatabase()
         {
-            var errorResult = (IErrorResult)ErrorResultFactory.SimpleError("Неизвестная ошибка");
+            var errorResult = (IRError)ErrorResultFactory.SimpleError("Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType<DatabaseErrorType>();
 
@@ -62,7 +58,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasErrorTypeCommon_CommonType()
         {
-            var errorResult = (IErrorResult)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
+            var errorResult = (IRError)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType(CommonErrorType.Unknown);
 
@@ -76,7 +72,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasNotErrorTypeCommon_CommonType()
         {
-            var errorResult = (IErrorResult)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
+            var errorResult = (IRError)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType(CommonErrorType.ValueDuplicated);
 
@@ -89,7 +85,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasNotErrorTypeDatabase_CommonType()
         {
-            var errorResult = (IErrorResult)ErrorResultFactory.SimpleError("Неизвестная ошибка");
+            var errorResult = (IRError)ErrorResultFactory.SimpleError("Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType(DatabaseErrorType.Connection);
 
@@ -196,7 +192,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
 
-            Assert.True(databaseTableError.HasErrorResult<IDatabaseAccessErrorResult>());
+            Assert.True(databaseTableError.HasErrorResult<IRDatabaseAccessError>());
             Assert.True(databaseTableError.HasErrorResult<DatabaseAccessErrorResult>());
         }
 
@@ -208,7 +204,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
 
-            Assert.False(databaseTableError.IsErrorResult<IDatabaseAccessErrorResult>());
+            Assert.False(databaseTableError.IsErrorResult<IRDatabaseAccessError>());
             Assert.True(databaseTableError.IsErrorResult<DatabaseAccessErrorResult>());
         }
     }

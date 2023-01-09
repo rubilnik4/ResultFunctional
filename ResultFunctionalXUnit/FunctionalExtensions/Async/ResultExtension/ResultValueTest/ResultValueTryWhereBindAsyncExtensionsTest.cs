@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
-using ResultFunctional.Models.Implementations.ResultFactory;
+using ResultFunctional.Models.Factories;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;

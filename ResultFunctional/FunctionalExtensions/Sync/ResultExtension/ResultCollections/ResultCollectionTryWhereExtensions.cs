@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections.ResultCollectionTryExtensions;
 
@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValueOut> ResultCollectionTryOk<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                               Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
-                                                                                              Func<Exception, IErrorResult> exceptionFunc) =>
+                                                                                              Func<Exception, IRError> exceptionFunc) =>
             @this.ResultCollectionBindOk(value => ResultCollectionTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <returns>Outgoing result collection</returns>
         public static IResultCollection<TValueOut> ResultCollectionTryOk<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                   Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
-                                                                                                  IErrorResult error) =>
+                                                                                                  IRError error) =>
             @this.ResultCollectionBindOk(value => ResultCollectionTry(() => func.Invoke(value), error));
     }
 }

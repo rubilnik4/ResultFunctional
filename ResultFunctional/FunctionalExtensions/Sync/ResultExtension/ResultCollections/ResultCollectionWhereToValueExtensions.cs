@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
@@ -24,7 +24,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         public static IResultValue<TValueOut> ResultCollectionContinueToValue<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                         Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                         Func<IReadOnlyCollection<TValueIn>, TValueOut> okFunc,
-                                                                                        Func<IReadOnlyCollection<TValueIn>, IEnumerable<IErrorResult>> badFunc) =>
+                                                                                        Func<IReadOnlyCollection<TValueIn>, IEnumerable<IRError>> badFunc) =>
              @this.ToResultValue().
              ResultValueContinue(predicate, okFunc, badFunc);
 
@@ -39,7 +39,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <returns>Outgoing result value</returns>
         public static IResultValue<TValueOut> ResultCollectionOkBadToValue<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                     Func<IReadOnlyCollection<TValueIn>, TValueOut> okFunc,
-                                                                                    Func<IReadOnlyCollection<IErrorResult>, TValueOut> badFunc) =>
+                                                                                    Func<IReadOnlyCollection<IRError>, TValueOut> badFunc) =>
             @this.ToResultValue().
             ResultValueOkBad(okFunc, badFunc);
 

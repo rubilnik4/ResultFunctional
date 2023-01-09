@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -37,7 +37,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ToResultErrorByError_Ok()
         {
-            var results = new List<IErrorResult>
+            var results = new List<IRError>
             {
                  CreateErrorTest(),
                 CreateErrorTest()

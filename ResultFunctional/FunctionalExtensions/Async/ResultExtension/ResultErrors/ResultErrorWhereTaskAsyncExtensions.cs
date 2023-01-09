@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors;
@@ -22,7 +22,7 @@ public static class ResultErrorWhereBindAsyncExtensions
     /// <returns>Result error</returns>
     public static async Task<IResultError> ResultErrorCheckErrorsOkTaskAsync(this Task<IResultError> @this,
                                                                          Func<bool> predicate,
-                                                                         Func<IEnumerable<IErrorResult>> badFunc) =>
+                                                                         Func<IEnumerable<IRError>> badFunc) =>
         await @this.
         MapTaskAsync(awaitedThis => awaitedThis.ResultErrorCheckErrorsOk(predicate, badFunc));
 }

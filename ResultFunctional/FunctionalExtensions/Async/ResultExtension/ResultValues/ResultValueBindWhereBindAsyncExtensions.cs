@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues
@@ -24,7 +24,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         public static async Task<IResultValue<TValueOut>> ResultValueBindContinueBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                             Func<TValueIn, bool> predicate,
                                                                                                             Func<TValueIn, Task<IResultValue<TValueOut>>> okFunc,
-                                                                                                            Func<TValueIn, Task<IReadOnlyCollection<IErrorResult>>> badFunc) =>
+                                                                                                            Func<TValueIn, Task<IReadOnlyCollection<IRError>>> badFunc) =>
             await @this.ResultValueBindContinueBindAsync(predicate, okFunc,
                                                          values => badFunc(values).GetEnumerableTaskAsync());
 
@@ -41,7 +41,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         public static async Task<IResultValue<TValueOut>> ResultValueBindContinueBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                             Func<TValueIn, bool> predicate,
                                                                                                             Func<TValueIn, Task<IResultValue<TValueOut>>> okFunc,
-                                                                                                            Func<TValueIn, IEnumerable<IErrorResult>> badFunc) =>
+                                                                                                            Func<TValueIn, IEnumerable<IRError>> badFunc) =>
             await @this.ResultValueBindContinueBindAsync(predicate, okFunc,
                                                          values => badFunc(values).GetEnumerableTaskAsync());
 
@@ -58,7 +58,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         public static async Task<IResultValue<TValueOut>> ResultValueBindContinueBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                             Func<TValueIn, bool> predicate,
                                                                                                             Func<TValueIn, Task<IResultValue<TValueOut>>> okFunc,
-                                                                                                            Func<TValueIn, Task<IEnumerable<IErrorResult>>> badFunc) =>
+                                                                                                            Func<TValueIn, Task<IEnumerable<IRError>>> badFunc) =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueBindContinueAsync(predicate, okFunc, badFunc));
 
@@ -90,7 +90,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <returns>Outgoing result value</returns>   
         public static async Task<IResultValue<TValueOut>> ResultValueBindOkBadBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
                                                                                                              Func<TValueIn, Task<IResultValue<TValueOut>>> okFunc,
-                                                                                                             Func<IReadOnlyCollection<IErrorResult>, Task<IResultValue<TValueOut>>> badFunc) =>
+                                                                                                             Func<IReadOnlyCollection<IRError>, Task<IResultValue<TValueOut>>> badFunc) =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueBindOkBadAsync(okFunc, badFunc));
 
@@ -115,7 +115,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <param name="badFunc">Function if incoming result value has errors</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ResultValueBindBadBindAsync<TValue>(this Task<IResultValue<TValue>> @this,
-                                                                                           Func<IReadOnlyCollection<IErrorResult>, Task<IResultValue<TValue>>> badFunc) =>
+                                                                                           Func<IReadOnlyCollection<IRError>, Task<IResultValue<TValue>>> badFunc) =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueBindBadAsync(badFunc));
 

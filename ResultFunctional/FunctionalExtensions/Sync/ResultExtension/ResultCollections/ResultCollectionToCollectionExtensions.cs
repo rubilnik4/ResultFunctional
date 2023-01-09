@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections
@@ -22,7 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultColle
         /// <returns>Outgoing collection</returns>
         public static IReadOnlyCollection<TValueOut> ResultCollectionToCollectionOkBad<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                     Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> okFunc,
-                                                                                    Func<IReadOnlyCollection<IErrorResult>, IEnumerable<TValueOut>> badFunc) =>
+                                                                                    Func<IReadOnlyCollection<IRError>, IEnumerable<TValueOut>> badFunc) =>
             @this.OkStatus
                 ? okFunc.Invoke(@this.Value).ToList()
                 : badFunc.Invoke(@this.Errors).ToList();

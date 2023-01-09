@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.Base;
 using ResultFunctional.Models.Interfaces.Results;
 using static ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections.ResultCollectionTryAsyncExtensions;
 
@@ -25,7 +25,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
-                                                                                                     Func<Exception, IErrorResult> exceptionFunc) =>
+                                                                                                     Func<Exception, IRError> exceptionFunc) =>
             await @this.ResultCollectionTryOkAsync(values => func(values).GetEnumerableTaskAsync(),
                                                    exceptionFunc);
 
@@ -40,7 +40,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> func,
-                                                                                                     Func<Exception, IErrorResult> exceptionFunc) =>
+                                                                                                     Func<Exception, IRError> exceptionFunc) =>
             await @this.
             ResultCollectionBindOkAsync(value => ResultCollectionTryAsync(() => func.Invoke(value), exceptionFunc));
 
@@ -55,7 +55,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
-                                                                                                     IErrorResult error) =>
+                                                                                                     IRError error) =>
             await @this.ResultCollectionTryOkAsync(values => func(values).GetEnumerableTaskAsync(),
                                                    error);
 
@@ -70,7 +70,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <returns>Outgoing result collection</returns>
         public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkAsync<TValueIn, TValueOut>(this IResultCollection<TValueIn> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> func,
-                                                                                                     IErrorResult error) =>
+                                                                                                     IRError error) =>
             await @this.
             ResultCollectionBindOkAsync(value => ResultCollectionTryAsync(() => func.Invoke(value), error));
     }
