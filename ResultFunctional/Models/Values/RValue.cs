@@ -5,6 +5,10 @@ using System.Linq;
 
 namespace ResultFunctional.Models.Values;
 
+/// <summary>
+/// Result with value
+/// </summary>
+/// <typeparam name="TValue">Value</typeparam>
 internal class RValue<TValue> : ROption<TValue, IRValue<TValue>>, IRValue<TValue>
     where TValue : notnull
 {
@@ -20,12 +24,26 @@ internal class RValue<TValue> : ROption<TValue, IRValue<TValue>>, IRValue<TValue
         : base(errors)
     { }
 
+    /// <summary>
+    /// Initialize result by errors
+    /// </summary>
+    /// <param name="errors">Errors</param>
+    /// <returns>Result option</returns>
     protected override IRValue<TValue> Initialize(IReadOnlyCollection<IRError> errors) =>
         new RValue<TValue>(errors);
 
+    /// <summary>
+    /// Initialize result by unit
+    /// </summary>
+    /// <returns>Result unit</returns>
     public static IRValue<TValue> Some(TValue value) =>
         new RValue<TValue>(value);
 
+    /// <summary>
+    /// Initialize result by error
+    /// </summary>
+    /// <param name="error">Error</param>
+    /// <returns>Result unit</returns>
     public static IRValue<TValue> None(IRError error) =>
         new RValue<TValue>(error);
 }
