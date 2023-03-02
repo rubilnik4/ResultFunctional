@@ -28,6 +28,28 @@ public static class ToResultCollectionTaskAsyncExtensions
     /// <param name="this">Incoming collection of result value</param>
     /// <returns>Outgoing result collection</returns>   
     public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IList<IResultValue<TValue>>> @this) =>
+        await @this
+             .MapTaskAsync(awaitedThis => (IEnumerable<IResultValue<TValue>>)awaitedThis)
+             .ToResultCollectionTaskAsync();
+
+    /// <summary>
+    /// Converting task collection of result value to result collection
+    /// </summary>
+    /// <typeparam name="TValue">Result type</typeparam>
+    /// <param name="this">Incoming collection of result value</param>
+    /// <returns>Outgoing result collection</returns>   
+    public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IReadOnlyCollection<IResultValue<TValue>>> @this) =>
+         await @this
+             .MapTaskAsync(awaitedThis => (IEnumerable<IResultValue<TValue>>)awaitedThis)
+             .ToResultCollectionTaskAsync();
+
+    /// <summary>
+    /// Converting task collection of result value to result collection
+    /// </summary>
+    /// <typeparam name="TValue">Result type</typeparam>
+    /// <param name="this">Incoming collection of result value</param>
+    /// <returns>Outgoing result collection</returns>   
+    public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IEnumerable<IResultCollection<TValue>>> @this) =>
         await @this.
         MapTaskAsync(awaitedThis => awaitedThis.ToResultCollection());
 
@@ -37,9 +59,21 @@ public static class ToResultCollectionTaskAsyncExtensions
     /// <typeparam name="TValue">Result type</typeparam>
     /// <param name="this">Incoming collection of result value</param>
     /// <returns>Outgoing result collection</returns>   
-    public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IReadOnlyCollection<IResultValue<TValue>>> @this) =>
-        await @this.
-        MapTaskAsync(awaitedThis => awaitedThis.ToResultCollection());
+    public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IList<IResultCollection<TValue>>> @this) =>
+         await @this
+             .MapTaskAsync(awaitedThis => (IEnumerable<IResultCollection<TValue>>)awaitedThis)
+             .ToResultCollectionTaskAsync();
+
+    /// <summary>
+    /// Converting task collection of result value to result collection
+    /// </summary>
+    /// <typeparam name="TValue">Result type</typeparam>
+    /// <param name="this">Incoming collection of result value</param>
+    /// <returns>Outgoing result collection</returns>   
+    public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IReadOnlyCollection<IResultCollection<TValue>>> @this) =>
+         await @this
+             .MapTaskAsync(awaitedThis => (IEnumerable<IResultCollection<TValue>>)awaitedThis)
+             .ToResultCollectionTaskAsync();
 
     /// <summary>
     /// Converting task result with collection type to result collection
@@ -100,12 +134,19 @@ public static class ToResultCollectionTaskAsyncExtensions
     public static async Task<IResultError> ToResultErrorFromCollectionTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this) =>
         await @this.
         MapTaskAsync(awaitedThis => awaitedThis);
-
-
+    
     /// <summary>
     /// Преобразовать в результирующий ответ коллекции
     /// </summary>  
     public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this IEnumerable<Task<IResultValue<TValue>>> @this)
+        where TValue : notnull =>
+        await Task.WhenAll(@this).
+        MapTaskAsync(result => result.ToResultCollection());
+
+    /// <summary>
+    /// Преобразовать в результирующий ответ коллекции
+    /// </summary>  
+    public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this IEnumerable<Task<IResultCollection<TValue>>> @this)
         where TValue : notnull =>
         await Task.WhenAll(@this).
         MapTaskAsync(result => result.ToResultCollection());

@@ -19,7 +19,7 @@ public class ToResultCollectionExtensionsTest
     /// Вернуть результирующий ответ с коллекцией без ошибок
     /// </summary>      
     [Fact]
-    public void ToResultCollection_OkStatus()
+    public void ToResultCollection_Default_OkStatus()
     {
         var resultNoError = new ResultError();
         var collection = new List<string> { "OkStatus" };
@@ -34,7 +34,7 @@ public class ToResultCollectionExtensionsTest
     /// Вернуть результирующий ответ с коллекцией с ошибкой
     /// </summary>      
     [Fact]
-    public void ToResultCollection_HasErrors()
+    public void ToResultCollection_Default_HasErrors()
     {
         var error = CreateErrorTest();
         var resultHasError = new ResultError(error);
@@ -89,5 +89,105 @@ public class ToResultCollectionExtensionsTest
 
         Assert.True(resultString.HasErrors);
         Assert.True(resultString.Errors.First().Equals(initialError));
+    }
+
+    /// <summary>
+    /// Вернуть результирующий ответ с коллекцией без ошибок
+    /// </summary>      
+    [Fact]
+    public void ToResultCollection_OkStatus()
+    {
+        var collection = GetRangeNumber();
+        var resultNoError = new ResultValue<IEnumerable<int>>(collection);
+
+        var resultCollection = resultNoError.ToResultCollection();
+
+        Assert.True(resultCollection.OkStatus);
+        Assert.True(collection.SequenceEqual(resultCollection.Value));
+    }
+
+    /// <summary>
+    /// Вернуть результирующий ответ со значением с ошибкой
+    /// </summary>      
+    [Fact]
+    public void ToResultCollection_HasErrors()
+    {
+        var error = CreateErrorTest();
+        var resultHasError = new ResultValue<IEnumerable<int>>(error);
+
+        var resultCollection = resultHasError.ToResultCollection();
+
+        Assert.True(resultCollection.HasErrors);
+        Assert.Single(resultCollection.Errors);
+        Assert.True(error.Equals(resultCollection.Errors.Last()));
+    }
+
+    /// <summary>
+    /// Вернуть результирующий ответ с коллекцией без ошибок
+    /// </summary>      
+    [Fact]
+    public void ToResultCollection_Enumerable_OkStatus()
+    {
+        var collection = GetRangeNumber();
+        var resultValues = collection.Select(value => value.ToResultValue());
+
+        var resultCollection = resultValues.ToResultCollection();
+
+        Assert.True(resultCollection.OkStatus);
+        Assert.True(collection.SequenceEqual(resultCollection.Value));
+    }
+
+    /// <summary>
+    /// Вернуть результирующий ответ с коллекцией с ошибкой
+    /// </summary>      
+    [Fact]
+    public void ToResultCollection_Enumerable_HasErrors()
+    {
+        var error = CreateErrorTest();
+        var collection = Enumerable.Range(0, 3).ToList();
+        var resultValues = collection.Select(value => value.ToResultValue()).
+                                      Append(new ResultValue<int>(error));
+
+        var resultCollection = resultValues.ToResultCollection();
+
+        Assert.True(resultCollection.HasErrors);
+        Assert.Single(resultCollection.Errors);
+        Assert.True(error.Equals(resultCollection.Errors.Last()));
+    }
+
+    /// <summary>
+    /// Вернуть результирующий ответ с коллекцией без ошибок
+    /// </summary>      
+    [Fact]
+    public void ToResultCollection_Collection_Enumerable_OkStatus()
+    {
+        var collection = Enumerable.Range(0, 3).ToList();
+        var collections = Enumerable.Range(0, 3).Select(_ => collection).ToList();
+        var aggregate = collections.SelectMany(value => value).ToList();
+        var resultCollections = collections.Select(value => value.ToResultCollection());
+
+        var resultCollection = resultCollections.ToResultCollection();
+
+        Assert.True(resultCollection.OkStatus);
+        Assert.True(aggregate.SequenceEqual(resultCollection.Value));
+    }
+
+    /// <summary>
+    /// Вернуть результирующий ответ с коллекцией с ошибкой
+    /// </summary>      
+    [Fact]
+    public void ToResultCollection_Collection_Enumerable_HasErrors()
+    {
+        var error = CreateErrorTest();
+        var collection = Enumerable.Range(0, 3).ToList();
+        var collections = Enumerable.Range(0, 3).Select(_ => collection).ToList();
+        var resultValues = collections.Select(value => value.ToResultCollection()).
+                                       Append(new ResultCollection<int>(error));
+
+        var resultCollection = resultValues.ToResultCollection();
+
+        Assert.True(resultCollection.HasErrors);
+        Assert.Single(resultCollection.Errors);
+        Assert.True(error.Equals(resultCollection.Errors.Last()));
     }
 }

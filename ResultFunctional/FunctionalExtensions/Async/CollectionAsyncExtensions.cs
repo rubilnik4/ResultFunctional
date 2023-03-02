@@ -29,6 +29,15 @@ public static class CollectionAsyncExtensions
         collection.MapTaskAsync(values => (IEnumerable<T>)values);
 
     /// <summary>
+    /// Converting collection to enumerable type
+    /// </summary>
+    /// <typeparam name="T">Collection type</typeparam>
+    /// <param name="collection">Collection</param>
+    /// <returns>Enumerable</returns>
+    public static Task<IReadOnlyCollection<T>> GetCollectionTaskAsync<T>(this IEnumerable<T> collection) =>
+         Task.FromResult((IReadOnlyCollection<T>)collection.ToList());
+
+    /// <summary>
     /// Converting enumerable to collection type
     /// </summary>
     /// <typeparam name="T">Collection type</typeparam>
