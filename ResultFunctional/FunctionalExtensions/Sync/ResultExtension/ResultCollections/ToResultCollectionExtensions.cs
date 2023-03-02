@@ -59,4 +59,16 @@ public static class ToResultCollectionExtensions
          Map(collection => collection.All(result => result.OkStatus)
                  ? new ResultCollection<TValue>(collection.Select(result => result.Value))
                  : new ResultCollection<TValue>(collection.SelectMany(result => result.Errors)));
+
+    /// <summary>
+    /// Concat collection of result collection
+    /// </summary>
+    /// <typeparam name="TValue">Result type</typeparam>
+    /// <param name="this">Incoming result collection</param>
+    /// <returns>Outgoing result collection</returns>
+    public static IResultCollection<TValue> ToResultCollection<TValue>(this IEnumerable<IResultCollection<TValue>> @this) =>
+         @this.ToList().
+         Map(collection => collection.All(result => result.OkStatus)
+                 ? new ResultCollection<TValue>(collection.SelectMany(result => result.Value))
+                 : new ResultCollection<TValue>(collection.SelectMany(result => result.Errors)));
 }

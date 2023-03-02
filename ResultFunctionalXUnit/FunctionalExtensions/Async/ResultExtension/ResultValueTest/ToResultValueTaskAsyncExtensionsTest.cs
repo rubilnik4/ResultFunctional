@@ -98,7 +98,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ToResultBindValueTaskAsync_HasErrors()
         {
-            var error = ErrorData.CreateErrorTest();
+            var error = CreateErrorTest();
             var resultHasError = ResultErrorFactory.CreateTaskResultError(error);
             const string value = "BadStatus";
             var resultValue = new ResultValue<string>(value);
@@ -117,7 +117,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ToResultBindValueTaskAsync_HasErrorsBind()
         {
             var resultNoError = ResultErrorFactory.CreateTaskResultError();
-            var error = ErrorData.CreateErrorTest();
+            var error = CreateErrorTest();
             var resultValue = new ResultValue<string>(error);
 
             var resultValueAfter = await resultNoError.ToResultBindValueTaskAsync(resultValue);
@@ -133,9 +133,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ToResultValueBindTaskAsync_HasErrorsBindInitial()
         {
-            var error = ErrorData.CreateErrorTest();
+            var error = CreateErrorTest();
             var resultHasError = ResultErrorFactory.CreateTaskResultError(error);
-            var errors = ErrorData.CreateErrorListTwoTest();
+            var errors = CreateErrorListTwoTest();
             var resultValue = new ResultValue<string>(errors);
 
             var resultValueAfter = await resultHasError.ToResultBindValueTaskAsync(resultValue);

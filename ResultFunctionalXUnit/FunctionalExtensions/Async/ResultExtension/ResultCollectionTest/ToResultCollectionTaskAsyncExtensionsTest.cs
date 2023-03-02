@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
 using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
@@ -11,6 +12,9 @@ using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
+using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
+using ResultFunctional.Models.Implementations.Results;
+using Newtonsoft.Json.Linq;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultCollectionTest;
 
@@ -164,16 +168,118 @@ public class ToResultCollectionTaskAsyncExtensionsTest
     [Fact]
     public async Task ToResultCollectionTaskAsync()
     {
-        var rangeTasks = Enumerable.Range(1, 10).Select(GetTaskNumber);
+        var rangeTasks = Enumerable.Range(1, 10).Select(number => Task.FromResult(number.ToResultValue()));
         var resultCollection = await rangeTasks.ToResultCollectionTaskAsync();
 
         Assert.True(resultCollection.OkStatus);
         Assert.True(resultCollection.Value.SequenceEqual(Enumerable.Range(1, 10)));
     }
 
-    private static async Task<IResultValue<int>> GetTaskNumber(int number)
+    /// <summary>
+    /// Вернуть результирующий ответ с коллекцией без ошибок
+    /// </summary>      
+    [Fact]
+    public async Task ToResultCollection_Enumerable_OkStatus()
     {
-        await Task.Delay(1);
-        return number.ToResultValue();
+        var collection = GetRangeNumber();
+        var resultValues = collection.Select(value => value.ToResultValue()).GetCollectionTaskAsync();
+
+        var resultCollection = await resultValues.ToResultCollectionTaskAsync();
+
+        Assert.True(resultCollection.OkStatus);
+        Assert.True(collection.SequenceEqual(resultCollection.Value));
+    }
+
+    /// <summary>
+    /// Вернуть результирующий ответ с коллекцией с ошибкой
+    /// </summary>      
+    [Fact]
+    public async Task ToResultCollection_Enumerable_HasErrors()
+    {
+        var error = CreateErrorTest();
+        var collection = Enumerable.Range(0, 3).ToList();
+        var resultValues = collection.Select(value => value.ToResultValue()).
+                                      Append(new ResultValue<int>(error)).
+                                      GetCollectionTaskAsync();
+
+        var resultCollection = await resultValues.ToResultCollectionTaskAsync();
+
+        Assert.True(resultCollection.HasErrors);
+        Assert.Single(resultCollection.Errors);
+        Assert.True(error.Equals(resultCollection.Errors.Last()));
+    }
+
+    /// <summary>
+    /// Вернуть результирующий ответ с коллекцией без ошибок
+    /// </summary>      
+    [Fact]
+    public async Task ToResultCollection_Collection_Enumerable_OkStatus()
+    {
+        var collection = Enumerable.Range(0, 3).ToList();
+        var collections = Enumerable.Range(0, 3).Select(_ => collection).ToList();
+        var aggregate = collections.SelectMany(value => value).ToList();
+        var resultCollections = collections.Select(value => value.ToResultCollection()).GetCollectionTaskAsync();
+
+        var resultCollection = await resultCollections.ToResultCollectionTaskAsync();
+
+        Assert.True(resultCollection.OkStatus);
+        Assert.True(aggregate.SequenceEqual(resultCollection.Value));
+    }
+
+    /// <summary>
+    /// Вернуть результирующий ответ с коллекцией с ошибкой
+    /// </summary>      
+    [Fact]
+    public async Task ToResultCollection_Collection_Enumerable_HasErrors()
+    {
+        var error = CreateErrorTest();
+        var collection = Enumerable.Range(0, 3).ToList();
+        var collections = Enumerable.Range(0, 3).Select(_ => collection).ToList();
+        var resultValues = collections.Select(value => value.ToResultCollection()).
+                                       Append(new ResultCollection<int>(error))
+                                      .GetCollectionTaskAsync();
+
+        var resultCollection = await resultValues.ToResultCollectionTaskAsync();
+
+        Assert.True(resultCollection.HasErrors);
+        Assert.Single(resultCollection.Errors);
+        Assert.True(error.Equals(resultCollection.Errors.Last()));
+    }
+
+    /// <summary>
+    /// Вернуть результирующий ответ с коллекцией без ошибок
+    /// </summary>      
+    [Fact]
+    public async Task ToResultCollectionTaskAsync_Collection_Enumerable_OkStatus()
+    {
+        var collection = Enumerable.Range(0, 3).ToList();
+        var collections = Enumerable.Range(0, 3).Select(_ => collection).ToList();
+        var aggregate = collections.SelectMany(value => value).ToList();
+        var resultCollections = collections.Select(value => Task.FromResult(value.ToResultCollection()));
+
+        var resultCollection = await resultCollections.ToResultCollectionTaskAsync();
+
+        Assert.True(resultCollection.OkStatus);
+        Assert.True(aggregate.SequenceEqual(resultCollection.Value));
+    }
+
+    /// <summary>
+    /// Вернуть результирующий ответ с коллекцией с ошибкой
+    /// </summary>      
+    [Fact]
+    public async Task ToResultCollectionTaskAsync_Collection_Enumerable_HasErrors()
+    {
+        var error = CreateErrorTest();
+        var collection = Enumerable.Range(0, 3).ToList();
+        var collections = Enumerable.Range(0, 3).Select(_ => collection).ToList();
+        var resultValues = collections.Select(value => value.ToResultCollection()).
+                                       Append(new ResultCollection<int>(error))
+                                      .Select(Task.FromResult);
+
+        var resultCollection = await resultValues.ToResultCollectionTaskAsync();
+
+        Assert.True(resultCollection.HasErrors);
+        Assert.Single(resultCollection.Errors);
+        Assert.True(error.Equals(resultCollection.Errors.Last()));
     }
 }
