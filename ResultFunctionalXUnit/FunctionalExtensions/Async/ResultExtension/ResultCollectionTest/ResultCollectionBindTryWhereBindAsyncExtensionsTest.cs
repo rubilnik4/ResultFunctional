@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;

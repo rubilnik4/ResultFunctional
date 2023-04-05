@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Implementations.Results;
 using Xunit;

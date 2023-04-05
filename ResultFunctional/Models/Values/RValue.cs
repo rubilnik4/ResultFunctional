@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.Models.Values;
 
@@ -55,4 +56,13 @@ internal class RValue<TValue> : ROption<TValue, IRValue<TValue>>, IRValue<TValue
     /// <returns>Result value</returns>
     public static IRValue<TValue> None(IReadOnlyCollection<IRError> errors) =>
         new RValue<TValue>(errors);
+
+    /// <summary>
+    /// Convert to result unit
+    /// </summary>
+    /// <returns>Result unit></returns>
+    public IRUnit ToRUnit() =>
+        Success
+            ? RUnit.Some()
+            : RUnit.None(GetErrors());
 }

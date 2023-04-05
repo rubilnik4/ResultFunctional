@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
 using ResultFunctional.Models.Implementations.ResultFactory;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctionalXUnit.Mocks.Interfaces;
 using Moq;
-using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;

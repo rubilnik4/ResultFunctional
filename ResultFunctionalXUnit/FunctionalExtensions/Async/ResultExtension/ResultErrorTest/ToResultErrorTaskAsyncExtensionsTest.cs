@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Implementations.ResultFactory;
 using ResultFunctional.Models.Implementations.Results;
