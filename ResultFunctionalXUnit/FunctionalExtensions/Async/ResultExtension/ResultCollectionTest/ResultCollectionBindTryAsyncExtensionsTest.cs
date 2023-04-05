@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
 using ResultFunctional.Models.Factories;
-using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections.ResultCollectionBindTryTaskAsyncExtensions;
@@ -22,9 +20,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionTry_Ok()
         {
             var resultValue = await ResultCollectionBindTryTaskAsync(
-                () => ResultCollectionFactory.CreateTaskResultCollection(DivisionCollection(1)), Exceptions.ExceptionError());
+                () => RListFactory.SomeTask(DivisionCollection(1)), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.OkStatus);
+            Assert.True(resultValue.Success);
             Assert.Equal(DivisionCollection(1), resultValue.Value);
         }
 
@@ -35,10 +33,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionTry_Exception()
         {
             var resultValue = await ResultCollectionBindTryTaskAsync(
-                () => ResultCollectionFactory.CreateTaskResultCollection(DivisionCollection(0)), Exceptions.ExceptionError());
+                () => RListFactory.SomeTask(DivisionCollection(0)), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -48,9 +46,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionTryFunc_Ok()
         {
             var resultValue = await ResultCollectionBindTryTaskAsync(
-                () => ResultCollectionFactory.CreateTaskResultCollection(DivisionCollection(1)), Exceptions.ExceptionFunc());
+                () => RListFactory.SomeTask(DivisionCollection(1)), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.OkStatus);
+            Assert.True(resultValue.Success);
             Assert.Equal(DivisionCollection(1), resultValue.Value);
         }
 
@@ -61,9 +59,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionTryFunc_Exception()
         {
             var resultValue = await ResultCollectionBindTryTaskAsync(
-                 () => ResultCollectionFactory.CreateTaskResultCollection(DivisionCollection(0)), Exceptions.ExceptionFunc());
+                 () => RListFactory.SomeTask(DivisionCollection(0)), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         } }
 }

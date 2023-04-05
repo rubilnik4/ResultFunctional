@@ -24,10 +24,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionBindTryBindAsyncOk_OkResult_OkTry()
         {
             var initialNumbers = GetRangeNumber();
-            var numbersResult = ResultCollectionFactory.CreateTaskResultCollection(initialNumbers);
+            var numbersResult = RListFactory.SomeTask(initialNumbers);
 
             var numbersAfterTry = await numbersResult.ResultCollectionBindTryOkBindAsync(
-                numbers => ResultCollectionFactory.CreateTaskResultCollection(DivisionByCollection(numbers)), Exceptions.ExceptionError());
+                numbers => RListFactory.GetRListAsync(DivisionByCollection(numbers)), Exceptions.ExceptionError());
 
             Assert.True(numbersAfterTry.OkStatus);
             Assert.True((await DivisionByCollectionAsync(initialNumbers)).SequenceEqual(numbersAfterTry.Value));
@@ -40,10 +40,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionBindTryBindAsyncOk_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
-            var numbersResult = ResultCollectionFactory.CreateTaskResultCollectionError<int>(initialError);
+            var numbersResult = RListFactory.NoneTask<int>(initialError);
 
             var numbersAfterTry = await numbersResult.ResultCollectionBindTryOkBindAsync(
-               numbers => ResultCollectionFactory.CreateTaskResultCollection(DivisionByCollection(numbers)), Exceptions.ExceptionError());
+               numbers => RListFactory.GetRListAsync(DivisionByCollection(numbers)), Exceptions.ExceptionError());
 
             Assert.True(numbersAfterTry.HasErrors);
             Assert.True(initialError.Equals(numbersAfterTry.Errors.First()));
@@ -56,10 +56,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionBindTryBindAsyncOk_OkResult_ExceptionTry()
         {
             var initialNumbers = GetRangeNumberWithZero();
-            var numbersResult = ResultCollectionFactory.CreateTaskResultCollection(initialNumbers);
+            var numbersResult = RListFactory.SomeTask(initialNumbers);
 
             var numbersAfterTry = await numbersResult.ResultCollectionBindTryOkBindAsync(
-                 numbers => ResultCollectionFactory.CreateTaskResultCollection(DivisionByCollection(numbers)), Exceptions.ExceptionError());
+                 numbers => RListFactory.GetRListAsync(DivisionByCollection(numbers)), Exceptions.ExceptionError());
 
             Assert.True(numbersAfterTry.HasErrors);
             Assert.NotNull(numbersAfterTry.Errors.First().Exception);
@@ -72,10 +72,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionBindTryBindAsyncOk_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
-            var numbersResult = ResultCollectionFactory.CreateTaskResultCollectionError<int>(initialError);
+            var numbersResult = RListFactory.NoneTask<int>(initialError);
 
             var numberAfterTry = await numbersResult.ResultCollectionBindTryOkBindAsync(
-                 numbers => ResultCollectionFactory.CreateTaskResultCollection(DivisionByCollection(numbers)), Exceptions.ExceptionError());
+                 numbers => RListFactory.GetRListAsync(DivisionByCollection(numbers)), Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.HasErrors);
             Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
@@ -88,10 +88,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionBindTryBindAsyncOkFunc_OkResult_OkTry()
         {
             var initialNumbers = GetRangeNumber();
-            var numbersResult = ResultCollectionFactory.CreateTaskResultCollection(initialNumbers);
+            var numbersResult = RListFactory.SomeTask(initialNumbers);
 
             var numbersAfterTry = await numbersResult.ResultCollectionBindTryOkBindAsync(
-                numbers => ResultCollectionFactory.CreateTaskResultCollection(DivisionByCollection(numbers)), Exceptions.ExceptionFunc());
+                numbers => RListFactory.GetRListAsync(DivisionByCollection(numbers)), Exceptions.ExceptionFunc());
 
             Assert.True(numbersAfterTry.OkStatus);
             Assert.True((await DivisionByCollectionAsync(initialNumbers)).SequenceEqual(numbersAfterTry.Value));
@@ -104,10 +104,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionBindTryBindAsyncOkFunc_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
-            var numbersResult = ResultCollectionFactory.CreateTaskResultCollectionError<int>(initialError);
+            var numbersResult = RListFactory.NoneTask<int>(initialError);
 
             var numbersAfterTry = await numbersResult.ResultCollectionBindTryOkBindAsync(
-               numbers => ResultCollectionFactory.CreateTaskResultCollection(DivisionByCollection(numbers)), Exceptions.ExceptionFunc());
+               numbers => RListFactory.GetRListAsync(DivisionByCollection(numbers)), Exceptions.ExceptionFunc());
 
             Assert.True(numbersAfterTry.HasErrors);
             Assert.True(initialError.Equals(numbersAfterTry.Errors.First()));
@@ -120,10 +120,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionBindTryBindAsyncOkFunc_OkResult_ExceptionTry()
         {
             var initialNumbers = GetRangeNumberWithZero();
-            var numbersResult = ResultCollectionFactory.CreateTaskResultCollection(initialNumbers);
+            var numbersResult = RListFactory.SomeTask(initialNumbers);
 
             var numbersAfterTry = await numbersResult.ResultCollectionBindTryOkBindAsync(
-                 numbers => ResultCollectionFactory.CreateTaskResultCollection(DivisionByCollection(numbers)), Exceptions.ExceptionFunc());
+                 numbers => RListFactory.GetRListAsync(DivisionByCollection(numbers)), Exceptions.ExceptionFunc());
 
             Assert.True(numbersAfterTry.HasErrors);
             Assert.NotNull(numbersAfterTry.Errors.First().Exception);
@@ -136,10 +136,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionBindTryBindAsyncOkFunc_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
-            var numbersResult = ResultCollectionFactory.CreateTaskResultCollectionError<int>(initialError);
+            var numbersResult = RListFactory.NoneTask<int>(initialError);
 
             var numberAfterTry = await numbersResult.ResultCollectionBindTryOkBindAsync(
-                 numbers => ResultCollectionFactory.CreateTaskResultCollection(DivisionByCollection(numbers)), Exceptions.ExceptionFunc());
+                 numbers => RListFactory.GetRListAsync(DivisionByCollection(numbers)), Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.HasErrors);
             Assert.True(initialError.Equals(numberAfterTry.Errors.First()));

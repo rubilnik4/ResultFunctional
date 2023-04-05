@@ -1,13 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors.ResultErrorTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Units.ResultErrorTryExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultErrorTest
 {
@@ -23,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultErrorTryWhereBindAsync_Ok()
         {
             int initialValue = Numbers.Number;
-            var numberResult = ResultErrorFactory.CreateTaskResultError();
+            var numberResult = RUnitFactory.SomeTask();
 
             var resultError = await numberResult.ResultErrorTryOkBindAsync(() => AsyncFunctions.DivisionAsync(initialValue), 
                                                                        Exceptions.ExceptionError());
@@ -38,7 +37,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultErrorTryWhereBindAsync_Exception()
         {
             const int initialValue = 0;
-            var numberResult = ResultErrorFactory.CreateTaskResultError();
+            var numberResult = RUnitFactory.SomeTask();
 
             var resultError = await numberResult.ResultErrorTryOkBindAsync(() => AsyncFunctions.DivisionAsync(initialValue),
                                                                        Exceptions.ExceptionError());

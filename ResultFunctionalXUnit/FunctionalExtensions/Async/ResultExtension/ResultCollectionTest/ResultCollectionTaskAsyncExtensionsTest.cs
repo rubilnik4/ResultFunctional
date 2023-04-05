@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
 using ResultFunctional.FunctionalExtensions.Sync;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
-using ResultFunctional.Models.Implementations.ResultFactory;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctional.Models.Interfaces.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
@@ -25,8 +24,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ConcatResultCollection_Ok()
         {
-            var resultCollectionFirst = GetRangeNumber().ToResultCollection();
-            var resultCollectionSecond = GetRangeNumber().ToResultCollection();
+            var resultCollectionFirst = GetRangeNumber().ToRList();
+            var resultCollectionSecond = GetRangeNumber().ToRList();
             var results = Enumerable.Empty<IResultCollection<int>>().Append(resultCollectionFirst).Append(resultCollectionSecond).
                                      Map(Task.FromResult);
 
@@ -43,9 +42,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ConcatResultCollection_Error()
         {
-            var resultCollectionFirst = GetRangeNumber().ToResultCollection();
-            var resultCollectionErrorFirst = CreateErrorTest().ToResultCollection<int>();
-            var resultCollectionErrorSecond = CreateErrorTest().ToResultCollection<int>();
+            var resultCollectionFirst = GetRangeNumber().ToRList();
+            var resultCollectionErrorFirst = CreateErrorTest().ToRList<int>();
+            var resultCollectionErrorSecond = CreateErrorTest().ToRList<int>();
             var results = Enumerable.Empty<IResultCollection<int>>().Append(resultCollectionFirst).Append(resultCollectionErrorFirst).Append(resultCollectionErrorSecond).
                                      Map(Task.FromResult);
 

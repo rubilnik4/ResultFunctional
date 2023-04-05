@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
@@ -23,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionToCollectionAsync_Ok_ReturnNewValue()
         {
             var initialCollection = Collections.GetRangeNumber();
-            var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
+            var resultCollection = RListFactory.SomeTask(initialCollection);
 
             var resultAfterWhere = await resultCollection.ResultCollectionToCollectionOkBadBindAsync(
                 okFunc: Collections.CollectionToStringAsync,
@@ -39,7 +38,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionToCollectionAsync_Bad_ReturnNewValue()
         {
             var errorsInitial = ErrorData.CreateErrorListTwoTest();
-            var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
+            var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
 
             var resultAfterWhere = await resultCollection.ResultCollectionToCollectionOkBadBindAsync(
                 okFunc: Collections.CollectionToStringAsync,

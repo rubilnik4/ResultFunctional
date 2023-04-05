@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
-using ResultFunctional.Models.Errors.Base;
+using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Interfaces.Results;
 using static ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErrors.ResultErrorTryAsyncExtensions;
 

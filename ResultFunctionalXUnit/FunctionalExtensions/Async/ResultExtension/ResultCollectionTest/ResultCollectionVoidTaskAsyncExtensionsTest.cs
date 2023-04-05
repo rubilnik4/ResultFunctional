@@ -23,7 +23,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionOkBindAsync_Ok_CallVoid()
         {
             var initialCollection = GetRangeNumber();
-            var resultOkTask = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
+            var resultOkTask = RListFactory.SomeTask(initialCollection);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOkTask.ResultCollectionVoidOkTaskAsync(
@@ -41,7 +41,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionOkBindAsync_Bad_NotCallVoid()
         {
             var initialError = CreateErrorTest();
-            var resultErrorTask = ResultCollectionFactory.CreateTaskResultCollectionError<int>(initialError);
+            var resultErrorTask = RListFactory.NoneTask<int>(initialError);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultErrorTask.ResultCollectionVoidOkTaskAsync(
@@ -59,7 +59,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionBadBindAsync_Ok_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultErrorTask = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
+            var resultErrorTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultErrorTask.ResultCollectionVoidBadTaskAsync(
@@ -77,7 +77,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionBadBindAsync_Bad_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultErrorTask = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
+            var resultErrorTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultErrorTask.ResultCollectionVoidBadTaskAsync(
@@ -95,7 +95,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionVoidOkBadTaskAsync_Ok()
         {
             var initialCollection = GetRangeNumber();
-            var resultOk = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
+            var resultOk = RListFactory.SomeTask(initialCollection);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOk.ResultCollectionVoidOkBadTaskAsync(numbers => voidObjectMock.Object.TestNumbersVoid(numbers),
@@ -113,7 +113,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionVoidOkBadTaskAsync_Bad()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
+            var resultError = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultCollectionVoidOkBadTaskAsync(
@@ -132,7 +132,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionOkWhereBindAsync_Ok_OkPredicate_CallVoid()
         {
             var initialCollection = GetRangeNumber();
-            var resultOkTask = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
+            var resultOkTask = RListFactory.SomeTask(initialCollection);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOkTask.ResultCollectionVoidOkWhereTaskAsync(_ => true,
@@ -150,7 +150,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionOkWhereBindAsync_Ok_BadPredicate_NotCallVoid()
         {
             var initialCollection = GetRangeNumber();
-            var resultOkTask = ResultCollectionFactory.CreateTaskResultCollection(initialCollection);
+            var resultOkTask = RListFactory.SomeTask(initialCollection);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOkTask.ResultCollectionVoidOkWhereTaskAsync(_ => false,
@@ -168,7 +168,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionOkWhereBindAsync_Bad_OkPredicate_NotCallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultErrorTask = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
+            var resultErrorTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultErrorTask.ResultCollectionVoidOkWhereTaskAsync(_ => true,
@@ -187,7 +187,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionOkWhereBindAsync_Bad_BadPredicate_NotCallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultErrorTask = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
+            var resultErrorTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultErrorTask.ResultCollectionVoidOkWhereTaskAsync(_ => false,

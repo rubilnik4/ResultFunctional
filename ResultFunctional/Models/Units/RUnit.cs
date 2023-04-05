@@ -1,9 +1,9 @@
 ﻿using ResultFunctional.Models.Constants;
-using ResultFunctional.Models.Errors.Base;
 using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Values;
 using System.Collections.Generic;
 using System.Linq;
+using ResultFunctional.Models.Errors.BaseErrors;
 
 namespace ResultFunctional.Models.Units;
 
@@ -46,4 +46,12 @@ internal class RUnit : ROption<Unit, IRUnit>, IRUnit
     /// <returns>Result unit</returns>
     public static IRUnit None(IRError error) =>
         new RUnit(error);
+
+    /// <summary>
+    /// Initialize result by errors
+    /// </summary>
+    /// <param name="errors">Errors</param>
+    /// <returns>Result unit</returns>
+    public static IRUnit None(IReadOnlyCollection<IRError> errors) =>
+        new RUnit(errors);
 }

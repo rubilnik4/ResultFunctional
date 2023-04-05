@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Errors.Base;
+using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Interfaces.Results;
-using static ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections.ResultCollectionTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists.ResultCollectionTryExtensions;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
 {

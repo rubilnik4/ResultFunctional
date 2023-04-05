@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using ResultFunctional.Models.Errors.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.Models.Options;
 
@@ -10,8 +10,10 @@ namespace ResultFunctional.Models.Options;
 /// Base result with value
 /// </summary>
 /// <typeparam name="TValue">Value</typeparam>
-public interface IROption<out TValue>
+/// <typeparam name="TOption">Base result</typeparam>
+public interface IROption<out TValue, out TOption>
     where TValue : notnull
+    where TOption : IROption<TValue, TOption>
 {
     /// <summary>
     /// Value
@@ -26,12 +28,12 @@ public interface IROption<out TValue>
     /// <summary>
     /// Has value
     /// </summary>
-    bool IsSuccess { get; }
+    bool Success { get; }
 
     /// <summary>
     /// Has errors
     /// </summary>
-    bool HasErrors { get; }
+    bool Failure { get; }
 
     /// <summary>
     /// Get value
@@ -106,20 +108,19 @@ public interface IROption<out TValue>
     /// <typeparam name="TErrorType">Error type</typeparam>
     /// <returns>Base errors filtered by error type</returns>
     IReadOnlyCollection<IRBaseError<TErrorType>> GetErrorsByTypes<TErrorType>()
-        where TErrorType : struct =>
-        Errors?.OfType<IRBaseError<TErrorType>>().ToList() ?? new List<IRBaseError<TErrorType>>();
+        where TErrorType : struct ;
 
     /// <summary>
     /// Add error to result
     /// </summary>
     /// <param name="error">Error</param>
     /// <returns>Result with error</returns>    
-    IROption<TValue> AppendError(IRError error);
+    TOption AppendError(IRError error);
 
     /// <summary>
     /// Add errors to result
     /// </summary>
     /// <param name="errors">Errors</param>
     /// <returns>Result option with errors</returns>  
-    IROption<TValue> ConcatErrors(IEnumerable<IRError> errors);
+    TOption ConcatErrors(IEnumerable<IRError> errors);
 }

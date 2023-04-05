@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultVoidOkTaskAsync_Ok_CallVoid()
         {
             int initialValue = Numbers.Number;
-            var resultOkTask = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultOkTask = RValueFactory.SomeTask(initialValue);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOkTask.ResultValueVoidOkTaskAsync(
@@ -40,7 +40,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultVoidOkTaskAsync_Bad_NotCallVoid()
         {
             var initialError = CreateErrorTest();
-            var resultErrorTask = ResultValueFactory.CreateTaskResultValueError<int>(initialError);
+            var resultErrorTask = RValueFactory.NoneTask<int>(initialError);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultErrorTask.ResultValueVoidOkTaskAsync(
@@ -58,7 +58,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultVoidBadTaskAsync_Ok_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultErrorTask = ResultValueFactory.CreateTaskResultValueError<int>(errorsInitial);
+            var resultErrorTask = RValueFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultErrorTask.ResultValueVoidBadTaskAsync(
@@ -76,7 +76,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultVoidBadTaskAsync_Bad_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultErrorTask = ResultValueFactory.CreateTaskResultValueError<int>(errorsInitial);
+            var resultErrorTask = RValueFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultErrorTask.ResultValueVoidBadTaskAsync(
@@ -94,7 +94,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueVoidOkBadBindAsync_Ok()
         {
             int initialValue = Numbers.Number;
-            var resultOk = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultOk = RValueFactory.SomeTask(initialValue);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOk.ResultValueVoidOkBadTaskAsync(number => voidObjectMock.Object.TestNumberVoid(number),
@@ -112,7 +112,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueVoidOkBadBindAsync_Bad()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = ResultValueFactory.CreateTaskResultValueError<int>(errorsInitial);
+            var resultError = RValueFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultValueVoidOkBadTaskAsync(_ => voidObjectMock.Object.TestVoid(),
@@ -130,7 +130,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultVoidOkWhereTaskAsync_Ok_OkPredicate_CallVoid()
         {
             int initialValue = Numbers.Number;
-            var resultOkTask = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultOkTask = RValueFactory.SomeTask(initialValue);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOkTask.ResultValueVoidOkWhereTaskAsync(_ => true,
@@ -148,7 +148,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultVoidOkWhereTaskAsync_Ok_BadPredicate_NotCallVoid()
         {
             int initialValue = Numbers.Number;
-            var resultOkTask = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultOkTask = RValueFactory.SomeTask(initialValue);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOkTask.ResultValueVoidOkWhereTaskAsync(_ => false,
@@ -166,7 +166,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultVoidOkWhereTaskAsync_Bad_OkPredicate_NotCallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultErrorTask = ResultValueFactory.CreateTaskResultValueError<int>(errorsInitial);
+            var resultErrorTask = RValueFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultErrorTask.ResultValueVoidOkWhereTaskAsync(_ => true,
@@ -185,7 +185,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultVoidOkWhereTaskAsync_Bad_BadPredicate_NotCallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultErrorTask = ResultValueFactory.CreateTaskResultValueError<int>(errorsInitial);
+            var resultErrorTask = RValueFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultErrorTask.ResultValueVoidOkWhereTaskAsync(_ => false,

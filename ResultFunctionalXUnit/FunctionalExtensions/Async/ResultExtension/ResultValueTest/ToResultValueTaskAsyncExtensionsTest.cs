@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Results;
 using ResultFunctionalXUnit.Data;
@@ -82,7 +81,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ToResultBindValueTaskAsync_OkStatus()
         {
-            var resultNoError = ResultErrorFactory.CreateTaskResultError();
+            var resultNoError = RUnitFactory.SomeTask();
             const string value = "OkStatus";
             var resultValue = new ResultValue<string>(value);
 
@@ -99,7 +98,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ToResultBindValueTaskAsync_HasErrors()
         {
             var error = ErrorData.CreateErrorTest();
-            var resultHasError = ResultErrorFactory.CreateTaskResultError(error);
+            var resultHasError = RUnitFactory.SomeTask(error);
             const string value = "BadStatus";
             var resultValue = new ResultValue<string>(value);
 
@@ -116,7 +115,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ToResultBindValueTaskAsync_HasErrorsBind()
         {
-            var resultNoError = ResultErrorFactory.CreateTaskResultError();
+            var resultNoError = RUnitFactory.SomeTask();
             var error = ErrorData.CreateErrorTest();
             var resultValue = new ResultValue<string>(error);
 
@@ -134,7 +133,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ToResultValueBindTaskAsync_HasErrorsBindInitial()
         {
             var error = ErrorData.CreateErrorTest();
-            var resultHasError = ResultErrorFactory.CreateTaskResultError(error);
+            var resultHasError = RUnitFactory.SomeTask(error);
             var errors = ErrorData.CreateErrorListTwoTest();
             var resultValue = new ResultValue<string>(errors);
 

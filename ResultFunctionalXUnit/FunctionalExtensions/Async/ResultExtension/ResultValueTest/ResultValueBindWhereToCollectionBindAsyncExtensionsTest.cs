@@ -21,10 +21,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindOkToCollectionBindAsync_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValue = RValueFactory.SomeTask(initialValue);
 
             var resultAfterWhere = await resultValue.ResultValueBindOkToCollectionBindAsync(
-                number => ResultCollectionFactory.CreateTaskResultCollection(NumberToCollection(number)));
+                number => RListFactory.GetRListAsync(NumberToCollection(number)));
 
             Assert.True(resultAfterWhere.OkStatus);
             Assert.True(NumberToCollection(initialValue).SequenceEqual(resultAfterWhere.Value));
@@ -37,10 +37,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindOkToCollectionBindAsync_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = ResultValueFactory.CreateTaskResultValueError<int>(errorInitial);
+            var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
             var resultAfterWhere = await resultValue.ResultValueBindOkToCollectionBindAsync(
-                number => ResultCollectionFactory.CreateTaskResultCollection(NumberToCollection(number)));
+                number => RListFactory.GetRListAsync(NumberToCollection(number)));
 
             Assert.True(resultAfterWhere.HasErrors);
             Assert.True(errorInitial.Equals(resultAfterWhere.Errors.Last()));

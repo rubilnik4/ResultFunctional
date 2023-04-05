@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueContinueToCollectionTaskAsync_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValue = RValueFactory.SomeTask(initialValue);
 
             var resultAfterWhere = await resultValue.ResultValueContinueToCollectionTaskAsync(_ => true,
                 okFunc: NumberToCollection,
@@ -39,7 +39,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueContinueToCollectionTaskAsync_Ok_ReturnNewError()
         {
             int initialValue = Numbers.Number;
-            var resultValue = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValue = RValueFactory.SomeTask(initialValue);
 
             var errorBad = CreateErrorListTwoTest();
             var resultAfterWhere = await resultValue.ResultValueContinueToCollectionTaskAsync(_ => false,
@@ -57,7 +57,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueContinueToCollectionTaskAsync_Bad_ReturnNewValue()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = ResultValueFactory.CreateTaskResultValueError<int>(errorInitial);
+            var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
             var resultAfterWhere = await resultValue.ResultValueContinueToCollectionTaskAsync(_ => true,
                 okFunc: NumberToCollection,
@@ -74,7 +74,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueContinueToCollectionTaskAsync_Bad_ReturnNewError()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = ResultValueFactory.CreateTaskResultValueError<int>(errorInitial);
+            var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
             var resultAfterWhere = await resultValue.ResultValueContinueToCollectionTaskAsync(_ => false,
                 okFunc: NumberToCollection,
@@ -91,7 +91,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueOkBadToCollectionTaskAsync_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValue = RValueFactory.SomeTask(initialValue);
 
             var resultAfterWhere = await resultValue.ResultValueOkBadToCollectionTaskAsync(
                 okFunc: NumberToCollection,
@@ -108,7 +108,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueOkBadToCollectionTaskAsync_Bad_ReturnNewValueByErrors()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultValue = ResultValueFactory.CreateTaskResultValueError<int>(errorsInitial);
+            var resultValue = RValueFactory.NoneTask<int>(errorsInitial);
 
             var resultAfterWhere = await resultValue.ResultValueOkBadToCollectionTaskAsync(
                 okFunc: NumberToCollection,
@@ -125,7 +125,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueOkToCollectionTaskAsync_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValue = RValueFactory.SomeTask(initialValue);
 
             var resultAfterWhere = await resultValue.ResultValueOkToCollectionTaskAsync(NumberToCollection);
 
@@ -140,7 +140,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueOkToCollectionTaskAsync_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = ResultValueFactory.CreateTaskResultValueError<int>(errorInitial);
+            var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
             var resultAfterWhere = await resultValue.ResultValueOkToCollectionTaskAsync(NumberToCollection);
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
@@ -26,7 +25,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var initialValue = Collections.GetRangeNumber();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, string>>(CurryFunctions.IntCollectionToString);
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollection(initialValue);
+            var resultArgument = RListFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -43,7 +42,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, string>>(CurryFunctions.IntCollectionToString);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -61,7 +60,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var errorFunc = CreateErrorTest();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, string>>(errorFunc);
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollection(Collections.GetRangeNumber());
+            var resultArgument = RListFactory.SomeTask(Collections.GetRangeNumber());
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -80,7 +79,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var errorFunc = CreateErrorTest();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, string>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -99,7 +98,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var initialValue = Collections.GetRangeNumber();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, string>>(CurryFunctions.AggregateCollectionTwoToString);
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollection(initialValue);
+            var resultArgument = RListFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -116,7 +115,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, string>>(CurryFunctions.AggregateCollectionTwoToString);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -135,7 +134,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var initialValue = Collections.GetRangeNumber();
             var errorFunc = CreateErrorTest();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, string>>(errorFunc);
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollection(initialValue);
+            var resultArgument = RListFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -154,7 +153,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var errorFunc = CreateErrorTest();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, string>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -173,7 +172,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var initialValue = Collections.GetRangeNumber();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, string>>(CurryFunctions.AggregateCollectionThreeToString);
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollection(initialValue);
+            var resultArgument = RListFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -190,7 +189,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, string>>(CurryFunctions.AggregateCollectionThreeToString);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -209,7 +208,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var initialValue = Collections.GetRangeNumber();
             var errorFunc = CreateErrorTest();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, string>>(errorFunc);
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollection(initialValue);
+            var resultArgument = RListFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -228,7 +227,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var errorFunc = CreateErrorTest();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, string>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -247,7 +246,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var initialValue = Collections.GetRangeNumber();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, string>>(CurryFunctions.AggregateCollectionFourToString);
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollection(initialValue);
+            var resultArgument = RListFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -264,7 +263,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, string>>(CurryFunctions.AggregateCollectionFourToString);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -283,7 +282,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var initialValue = Collections.GetRangeNumber();
             var errorFunc = CreateErrorTest();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, string>>(errorFunc);
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollection(initialValue);
+            var resultArgument = RListFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -302,7 +301,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var errorFunc = CreateErrorTest();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, string>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -321,7 +320,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var initialValue = Collections.GetRangeNumber();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, int, string>>(CurryFunctions.AggregateCollectionFiveToString);
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollection(initialValue);
+            var resultArgument = RListFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -338,7 +337,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, int, string>>(CurryFunctions.AggregateCollectionFiveToString);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -357,7 +356,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var initialValue = Collections.GetRangeNumber();
             var errorFunc = CreateErrorTest();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, int, string>>(errorFunc);
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollection(initialValue);
+            var resultArgument = RListFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 
@@ -376,7 +375,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var errorFunc = CreateErrorTest();
             var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, int, string>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkAsync(resultArgument);
 

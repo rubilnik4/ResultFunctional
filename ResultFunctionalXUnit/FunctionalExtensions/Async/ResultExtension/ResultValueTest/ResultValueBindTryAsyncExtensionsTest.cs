@@ -25,7 +25,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
 
-            var resultValue = await ResultValueBindTryAsync(() => ResultValueFactory.CreateTaskResultValue(Division(initialValue)),
+            var resultValue = await ResultValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
                                                             Exceptions.ExceptionError());
 
             Assert.True(resultValue.OkStatus);
@@ -40,7 +40,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             const int initialValue = 0;
 
-            var resultValue = await ResultValueBindTryAsync(() => ResultValueFactory.CreateTaskResultValue(Division(initialValue)),
+            var resultValue = await ResultValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
                                                             Exceptions.ExceptionError());
 
             Assert.True(resultValue.HasErrors);
@@ -55,7 +55,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
 
-            var resultValue = await ResultValueBindTryAsync(() => ResultValueFactory.CreateTaskResultValue(Division(initialValue)),
+            var resultValue = await ResultValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
                                                             Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.OkStatus);
@@ -70,7 +70,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             const int initialValue = 0;
 
-            var resultValue = await ResultValueBindTryAsync(() => ResultValueFactory.CreateTaskResultValue(Division(initialValue)),
+            var resultValue = await ResultValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
                                                             Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.HasErrors);

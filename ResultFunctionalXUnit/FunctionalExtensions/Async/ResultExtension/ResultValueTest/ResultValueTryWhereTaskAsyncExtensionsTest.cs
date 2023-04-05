@@ -21,7 +21,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueTryOkTaskAsync_OkResult_OkTry()
         {
             int initialValue = Numbers.Number;
-            var numberResult = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var numberResult = RValueFactory.SomeTask(initialValue);
 
             var numberAfterTry = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionError());
 
@@ -36,7 +36,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueTryOkTaskAsync_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = ResultValueFactory.CreateTaskResultValueError<int>(initialError);
+            var numberResult = RValueFactory.NoneTask<int>(initialError);
 
             var numberAfterTry = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionError());
 
@@ -51,7 +51,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueTryOkTaskAsync_OkResult_ExceptionTry()
         {
             const int initialValue = 0;
-            var numberResult = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var numberResult = RValueFactory.SomeTask(initialValue);
 
             var resultValue = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionError());
 
@@ -66,7 +66,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueTryOkTaskAsync_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = ResultValueFactory.CreateTaskResultValueError<int>(initialError);
+            var numberResult = RValueFactory.NoneTask<int>(initialError);
 
             var numberAfterTry = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionError());
 
@@ -81,7 +81,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueTryOkTaskAsyncFunc_OkResult_OkTry()
         {
             int initialValue = Numbers.Number;
-            var numberResult = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var numberResult = RValueFactory.SomeTask(initialValue);
 
             var numberAfterTry = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionFunc());
 
@@ -96,7 +96,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueTryOkTaskAsyncFunc_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = ResultValueFactory.CreateTaskResultValueError<int>(initialError);
+            var numberResult = RValueFactory.NoneTask<int>(initialError);
 
             var numberAfterTry = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionFunc());
 
@@ -111,7 +111,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueTryOkTaskAsyncFunc_OkResult_ExceptionTry()
         {
             const int initialValue = 0;
-            var numberResult = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var numberResult = RValueFactory.SomeTask(initialValue);
 
             var resultValue = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionFunc());
 
@@ -126,7 +126,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueTryOkTaskAsyncFunc_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = ResultValueFactory.CreateTaskResultValueError<int>(initialError);
+            var numberResult = RValueFactory.NoneTask<int>(initialError);
 
             var numberAfterTry = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionFunc());
 

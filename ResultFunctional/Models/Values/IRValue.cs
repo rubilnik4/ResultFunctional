@@ -6,6 +6,6 @@ namespace ResultFunctional.Models.Values;
 /// Result with value
 /// </summary>
 /// <typeparam name="TValue">Value</typeparam>
-public interface IRValue<out TValue>: IROption<TValue>
+public interface IRValue<out TValue>: IROption<TValue, IRValue<TValue>>
     where TValue : notnull
 { }

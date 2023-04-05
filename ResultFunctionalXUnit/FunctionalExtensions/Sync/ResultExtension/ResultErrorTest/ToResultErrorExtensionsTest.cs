@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
-using ResultFunctional.Models.Errors.Base;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
+using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Results;
 using Xunit;
@@ -43,7 +43,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
                 CreateErrorTest()
             };
 
-            var result = results.ToResultError();
+            var result = results.ToRUnit();
 
             Assert.True(result.Errors.SequenceEqual(results));
         }

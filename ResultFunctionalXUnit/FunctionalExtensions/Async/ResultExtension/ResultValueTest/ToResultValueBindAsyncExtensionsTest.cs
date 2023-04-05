@@ -103,9 +103,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ToResultBindValueBindAsync_OkStatus()
         {
-            var resultNoError = ResultErrorFactory.CreateTaskResultError();
+            var resultNoError = RUnitFactory.SomeTask();
             const string value = "OkStatus";
-            var resultValue = ResultValueFactory.CreateTaskResultValue(value);
+            var resultValue = RValueFactory.SomeTask(value);
 
             var resultValueAfter = await resultNoError.ToResultBindValueBindAsync(resultValue);
 
@@ -120,9 +120,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ToResultBindValueBindAsync_HasErrors()
         {
             var error = ErrorData.CreateErrorTest();
-            var resultHasError = ResultErrorFactory.CreateTaskResultError(error);
+            var resultHasError = RUnitFactory.SomeTask(error);
             const string value = "BadStatus";
-            var resultValue = ResultValueFactory.CreateTaskResultValue(value);
+            var resultValue = RValueFactory.SomeTask(value);
 
             var resultValueAfter = await resultHasError.ToResultBindValueBindAsync(resultValue);
 
@@ -137,9 +137,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ToResultBindValueBindAsync_HasErrorsBind()
         {
-            var resultNoError = ResultErrorFactory.CreateTaskResultError();
+            var resultNoError = RUnitFactory.SomeTask();
             var error = ErrorData.CreateErrorTest();
-            var resultValue = ResultValueFactory.CreateTaskResultValueError<string>(error);
+            var resultValue = RValueFactory.NoneTask<string>(error);
 
             var resultValueAfter = await resultNoError.ToResultBindValueBindAsync(resultValue);
             Assert.True(resultValueAfter.HasErrors);
@@ -154,9 +154,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ToResultValueBindBindAsync_HasErrorsBindInitial()
         {
             var error = ErrorData.CreateErrorTest();
-            var resultHasError = ResultErrorFactory.CreateTaskResultError(error);
+            var resultHasError = RUnitFactory.SomeTask(error);
             var errors = ErrorData.CreateErrorListTwoTest();
-            var resultValue = ResultValueFactory.CreateTaskResultValueError<string>(errors);
+            var resultValue = RValueFactory.NoneTask<string>(errors);
 
             var resultValueAfter = await resultHasError.ToResultBindValueBindAsync(resultValue);
 

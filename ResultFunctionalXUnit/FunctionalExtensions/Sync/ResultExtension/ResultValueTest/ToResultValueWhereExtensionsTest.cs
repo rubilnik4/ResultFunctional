@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -19,7 +19,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             const int number = 1;
 
-            var result = number.ToResultValueWhere(_ => true,
+            var result = number.ToRValueWhere(_ => true,
                                                    _ => CreateErrorTest());
 
             Assert.True(result.OkStatus);
@@ -34,7 +34,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             const int number = 1;
             var errorInitial = CreateErrorTest();
-            var result = number.ToResultValueWhere(_ => false,
+            var result = number.ToRValueWhere(_ => false,
                                                    _ => errorInitial);
 
             Assert.True(result.HasErrors);
@@ -49,7 +49,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             const string testString = "Test";
             var errorInitial = CreateErrorTest();
-            var result = testString.ToResultValueWhereNull(_ => true,
+            var result = testString.ToRValueWhereNull(_ => true,
                                                            _ => errorInitial);
 
             Assert.True(result.OkStatus);
@@ -64,7 +64,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             string testString = String.Empty;
             var errorInitial = CreateErrorTest();
-            var result = testString.ToResultValueWhereNull(_ => false ,
+            var result = testString.ToRValueWhereNull(_ => false ,
                                                            _ => errorInitial);
 
             Assert.True(result.HasErrors);
@@ -79,7 +79,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             string? testString = null;
             var errorInitial = CreateErrorTest();
-            var result = testString.ToResultValueWhereNull(_ => true,
+            var result = testString.ToRValueWhereNull(_ => true,
                                                            _ => errorInitial);
 
             Assert.True(result.HasErrors);
@@ -94,7 +94,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             int? testInt = 1;
             var errorInitial = CreateErrorTest();
-            var result = testInt.ToResultValueWhereNull(_ => true,
+            var result = testInt.ToRValueWhereNull(_ => true,
                                                         _ => errorInitial);
 
             Assert.True(result.OkStatus);
@@ -109,7 +109,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             int? testInt = 0;
             var errorInitial = CreateErrorTest();
-            var result = testInt.ToResultValueWhereNull(_ => false,
+            var result = testInt.ToRValueWhereNull(_ => false,
                                                         _ => errorInitial);
 
             Assert.True(result.HasErrors);
@@ -124,7 +124,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             int? testInt = null;
             var errorInitial = CreateErrorTest();
-            var result = testInt.ToResultValueWhereNull(_ => true,
+            var result = testInt.ToRValueWhereNull(_ => true,
                                                         _ => errorInitial);
 
             Assert.True(result.HasErrors);
@@ -139,7 +139,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             const string testString = "Test";
 
-            var result = testString.ToResultValueWhereNullOkBad(_ => true,
+            var result = testString.ToRValueWhereNullOkBad(_ => true,
                                                             test => test,
                                                             _ => CreateErrorTest());
 
@@ -156,7 +156,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             string testString = String.Empty;
             var errorInitial = CreateErrorTest();
 
-            var result = testString.ToResultValueWhereNullOkBad(_ => false,
+            var result = testString.ToRValueWhereNullOkBad(_ => false,
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
@@ -173,7 +173,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             string? testString = null;
             var errorInitial = CreateErrorTest();
 
-            var result = testString.ToResultValueWhereNullOkBad(_ => true,
+            var result = testString.ToRValueWhereNullOkBad(_ => true,
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
@@ -189,7 +189,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             int? testInt = 1;
 
-            var result = testInt.ToResultValueWhereNullOkBad(_ => true,
+            var result = testInt.ToRValueWhereNullOkBad(_ => true,
                                                             test => test,
                                                             _ => CreateErrorTest());
 
@@ -206,7 +206,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             int? testInt = 0;
             var errorInitial = CreateErrorTest();
 
-            var result = testInt.ToResultValueWhereNullOkBad(_ => false,
+            var result = testInt.ToRValueWhereNullOkBad(_ => false,
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
@@ -223,7 +223,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             int? testInt = null;
             var errorInitial = CreateErrorTest();
 
-            var result = testInt.ToResultValueWhereNullOkBad(_ => true,
+            var result = testInt.ToRValueWhereNullOkBad(_ => true,
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 

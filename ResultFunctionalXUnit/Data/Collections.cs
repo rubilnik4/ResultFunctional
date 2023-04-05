@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Errors.Base;
+using ResultFunctional.Models.Errors.BaseErrors;
 
 namespace ResultFunctionalXUnit.Data
 {

@@ -23,7 +23,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindTryOkTaskAsync_OkResult_OkTry()
         {
             int initialValue = Numbers.Number;
-            var numberResult = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var numberResult = RValueFactory.SomeTask(initialValue);
 
             var numberAfterTry = await numberResult.ResultValueBindTryOkTaskAsync(
                 numbers => new ResultValue<int>(Division(numbers)), Exceptions.ExceptionError());
@@ -39,7 +39,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindTryOkTaskAsync_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = ResultValueFactory.CreateTaskResultValueError<int>(initialError);
+            var numberResult = RValueFactory.NoneTask<int>(initialError);
 
             var numberAfterTry = await numberResult.ResultValueBindTryOkTaskAsync(
                 numbers => new ResultValue<int>(Division(numbers)), Exceptions.ExceptionError());
@@ -55,7 +55,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindTryOkTaskAsync_OkResult_ExceptionTry()
         {
             const int initialNumber = 0;
-            var numberResult = ResultValueFactory.CreateTaskResultValue(initialNumber);
+            var numberResult = RValueFactory.SomeTask(initialNumber);
 
             var resultValue = await numberResult.ResultValueBindTryOkTaskAsync(
                 numbers => new ResultValue<int>(Division(numbers)), Exceptions.ExceptionError());
@@ -71,7 +71,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindTryOkTaskAsync_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = ResultValueFactory.CreateTaskResultValueError<int>(initialError);
+            var numberResult = RValueFactory.NoneTask<int>(initialError);
 
             var numberAfterTry = await numberResult.ResultValueBindTryOkTaskAsync(
                 numbers => new ResultValue<int>(Division(numbers)), Exceptions.ExceptionError());
@@ -87,7 +87,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindTryOkTaskAsyncFunc_OkResult_OkTry()
         {
             int initialValue = Numbers.Number;
-            var numberResult = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var numberResult = RValueFactory.SomeTask(initialValue);
 
             var numberAfterTry = await numberResult.ResultValueBindTryOkTaskAsync(
                 numbers => new ResultValue<int>(Division(numbers)), Exceptions.ExceptionFunc());
@@ -103,7 +103,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindTryOkTaskAsyncFunc_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = ResultValueFactory.CreateTaskResultValueError<int>(initialError);
+            var numberResult = RValueFactory.NoneTask<int>(initialError);
 
             var numberAfterTry = await numberResult.ResultValueBindTryOkTaskAsync(
                 numbers => new ResultValue<int>(Division(numbers)), Exceptions.ExceptionFunc());
@@ -119,7 +119,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindTryOkTaskAsyncFunc_OkResult_ExceptionTry()
         {
             const int initialNumber = 0;
-            var numberResult = ResultValueFactory.CreateTaskResultValue(initialNumber);
+            var numberResult = RValueFactory.SomeTask(initialNumber);
 
             var resultValue = await numberResult.ResultValueBindTryOkTaskAsync(
                 numbers => new ResultValue<int>(Division(numbers)), Exceptions.ExceptionFunc());
@@ -135,7 +135,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindTryOkTaskAsyncFunc_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = ResultValueFactory.CreateTaskResultValueError<int>(initialError);
+            var numberResult = RValueFactory.NoneTask<int>(initialError);
 
             var numberAfterTry = await numberResult.ResultValueBindTryOkTaskAsync(
                 numbers => new ResultValue<int>(Division(numbers)), Exceptions.ExceptionFunc());

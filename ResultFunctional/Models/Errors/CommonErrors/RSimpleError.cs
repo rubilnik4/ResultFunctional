@@ -1,5 +1,5 @@
 ﻿using System;
-using ResultFunctional.Models.Errors.Base;
+using ResultFunctional.Models.Errors.BaseErrors;
 
 namespace ResultFunctional.Models.Errors.CommonErrors
 {

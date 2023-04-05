@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctional.Models.Interfaces.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
@@ -21,7 +21,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             var initialCollection = GetRangeNumber();
 
-            var result = initialCollection.ToResultCollectionWhere(_ => true,
+            var result = initialCollection.ToRListWhere(_ => true,
                                                                    _ => CreateErrorTest());
 
             Assert.True(result.OkStatus);
@@ -37,7 +37,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var initialCollection = GetRangeNumber();
             var errorInitial = CreateErrorTest();
 
-            var result = initialCollection.ToResultCollectionWhere(_ => false,
+            var result = initialCollection.ToRListWhere(_ => false,
                                                                    _ => errorInitial);
 
             Assert.True(result.HasErrors);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
@@ -25,8 +24,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkCollectionTaskAsync_OkStatus_AddOkStatus()
         {
             var initialValue = Collections.GetRangeNumber();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.IntCollectionToString);
-            var resultArgument = ResultCollectionFactory.CreateResultCollection(initialValue);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.IntCollectionToString);
+            var resultArgument = RListFactory.Some(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -41,9 +40,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkCollectionTaskAsync_OkStatus_AddBadStatus()
         {
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.IntCollectionToString);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.IntCollectionToString);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.None<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -60,8 +59,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkCollectionTaskAsync_BadStatus_AddOkStatus()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<IEnumerable<int>, string>>(errorFunc);
-            var resultArgument = ResultCollectionFactory.CreateResultCollection(Collections.GetRangeNumber());
+            var resultValueFunc = RValueFactory.NoneTask<Func<IEnumerable<int>, string>>(errorFunc);
+            var resultArgument = RListFactory.Some(Collections.GetRangeNumber());
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -78,9 +77,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkCollectionTaskAsync_BadStatus_AddBadStatus()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<IEnumerable<int>, string>>(errorFunc);
+            var resultValueFunc = RValueFactory.NoneTask<Func<IEnumerable<int>, string>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.None<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -98,8 +97,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkCollectionTaskAsync_OkStatus_AddOkStatus_TwoArguments()
         {
             var initialValue = Collections.GetRangeNumber();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateCollectionTwoToString);
-            var resultArgument = ResultCollectionFactory.CreateResultCollection(initialValue);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateCollectionTwoToString);
+            var resultArgument = RListFactory.Some(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -114,9 +113,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkCollectionTaskAsync_OkStatus_AddBadStatus_TwoArguments()
         {
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateCollectionTwoToString);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateCollectionTwoToString);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.None<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -134,8 +133,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var initialValue = Collections.GetRangeNumber();
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<IEnumerable<int>, int, string>>(errorFunc);
-            var resultArgument = ResultCollectionFactory.CreateResultCollection(initialValue);
+            var resultValueFunc = RValueFactory.NoneTask<Func<IEnumerable<int>, int, string>>(errorFunc);
+            var resultArgument = RListFactory.Some(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -152,9 +151,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkCollectionTaskAsync_BadStatus_AddBadStatus_TwoArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<IEnumerable<int>, int, string>>(errorFunc);
+            var resultValueFunc = RValueFactory.NoneTask<Func<IEnumerable<int>, int, string>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.None<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -172,8 +171,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkCollectionTaskAsync_OkStatus_AddOkStatus_ThreeArguments()
         {
             var initialValue = Collections.GetRangeNumber();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateCollectionThreeToString);
-            var resultArgument = ResultCollectionFactory.CreateResultCollection(initialValue);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateCollectionThreeToString);
+            var resultArgument = RListFactory.Some(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -188,9 +187,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkCollectionTaskAsync_OkStatus_AddBadStatus_ThreeArguments()
         {
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateCollectionThreeToString);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateCollectionThreeToString);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.None<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -208,8 +207,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var initialValue = Collections.GetRangeNumber();
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<IEnumerable<int>, int, int, string>>(errorFunc);
-            var resultArgument = ResultCollectionFactory.CreateResultCollection(initialValue);
+            var resultValueFunc = RValueFactory.NoneTask<Func<IEnumerable<int>, int, int, string>>(errorFunc);
+            var resultArgument = RListFactory.Some(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -226,9 +225,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkCollectionTaskAsync_BadStatus_AddBadStatus_ThreeArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<IEnumerable<int>, int, int, string>>(errorFunc);
+            var resultValueFunc = RValueFactory.NoneTask<Func<IEnumerable<int>, int, int, string>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.None<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -246,8 +245,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkCollectionTaskAsync_OkStatus_AddOkStatus_FourArguments()
         {
             var initialValue = Collections.GetRangeNumber();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateCollectionFourToString);
-            var resultArgument = ResultCollectionFactory.CreateResultCollection(initialValue);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateCollectionFourToString);
+            var resultArgument = RListFactory.Some(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -262,9 +261,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkCollectionTaskAsync_OkStatus_AddBadStatus_FourArguments()
         {
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateCollectionFourToString);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateCollectionFourToString);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.None<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -282,8 +281,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var initialValue = Collections.GetRangeNumber();
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<IEnumerable<int>, int, int, int, string>>(errorFunc);
-            var resultArgument = ResultCollectionFactory.CreateResultCollection(initialValue);
+            var resultValueFunc = RValueFactory.NoneTask<Func<IEnumerable<int>, int, int, int, string>>(errorFunc);
+            var resultArgument = RListFactory.Some(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -300,9 +299,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkCollectionTaskAsync_BadStatus_AddBadStatus_FourArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<IEnumerable<int>, int, int, int, string>>(errorFunc);
+            var resultValueFunc = RValueFactory.NoneTask<Func<IEnumerable<int>, int, int, int, string>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.None<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -320,8 +319,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkCollectionTaskAsync_OkStatus_AddOkStatus_FiveArguments()
         {
             var initialValue = Collections.GetRangeNumber();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateCollectionFiveToString);
-            var resultArgument = ResultCollectionFactory.CreateResultCollection(initialValue);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateCollectionFiveToString);
+            var resultArgument = RListFactory.Some(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -336,9 +335,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkCollectionTaskAsync_OkStatus_AddBadStatus_FiveArguments()
         {
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateCollectionFiveToString);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateCollectionFiveToString);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.None<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -356,8 +355,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var initialValue = Collections.GetRangeNumber();
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<IEnumerable<int>, int, int, int, int, string>>(errorFunc);
-            var resultArgument = ResultCollectionFactory.CreateResultCollection(initialValue);
+            var resultValueFunc = RValueFactory.NoneTask<Func<IEnumerable<int>, int, int, int, int, string>>(errorFunc);
+            var resultArgument = RListFactory.Some(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 
@@ -374,9 +373,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkCollectionTaskAsync_BadStatus_AddBadStatus_FiveArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<IEnumerable<int>, int, int, int, int, string>>(errorFunc);
+            var resultValueFunc = RValueFactory.NoneTask<Func<IEnumerable<int>, int, int, int, int, string>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultCollectionFactory.CreateResultCollectionError<int>(errorArgument);
+            var resultArgument = RListFactory.None<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryCollectionOkTaskAsync(resultArgument);
 

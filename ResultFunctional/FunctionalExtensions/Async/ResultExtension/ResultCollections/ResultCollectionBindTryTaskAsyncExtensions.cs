@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Errors.Base;
-using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Results;
+using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Lists;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections
 {
@@ -20,8 +17,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <param name="func">Result collection function</param>
         /// <param name="exceptionFunc">Exception function</param>
         /// <returns>Result collection</returns>
-        public static async Task<IResultCollection<TValue>> ResultCollectionBindTryTaskAsync<TValue>(Func<Task<IResultCollection<TValue>>> func,
-                                                                                                     Func<Exception, IRError> exceptionFunc)
+        public static async Task<IRList<TValue>> ResultCollectionBindTryTaskAsync<TValue>(Func<Task<IRList<TValue>>> func,
+                                                                                          Func<Exception, IRError> exceptionFunc)
+            where TValue : notnull
         {
             try
             {
@@ -29,7 +27,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
             }
             catch (Exception ex)
             {
-                return new ResultCollection<TValue>(exceptionFunc(ex));
+                return exceptionFunc(ex).ToRList<TValue>();
             }
         }
 
@@ -40,8 +38,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
         /// <param name="func">Result collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
-        public static async Task<IResultCollection<TValue>> ResultCollectionBindTryTaskAsync<TValue>(Func<Task<IResultCollection<TValue>>> func,
-                                                                                                     IRError error) =>
+        public static async Task<IRList<TValue>> ResultCollectionBindTryTaskAsync<TValue>(Func<Task<IRList<TValue>>> func,
+                                                                                          IRError error)
+            where TValue : notnull =>
             await ResultCollectionBindTryTaskAsync(func, error.AppendException);
     }
 }

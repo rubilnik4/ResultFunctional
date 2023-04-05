@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Results;
 using Xunit;
@@ -21,8 +20,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ConcatResultCollection_Ok()
         {
-            var resultCollectionFirst = GetRangeNumber().ToResultCollection();
-            var resultCollectionSecond = GetRangeNumber().ToResultCollection();
+            var resultCollectionFirst = GetRangeNumber().ToRList();
+            var resultCollectionSecond = GetRangeNumber().ToRList();
             var results = Enumerable.Empty<IResultCollection<int>>().Append(resultCollectionFirst).Append(resultCollectionSecond);
 
             var resultCollection = results.ConcatResultCollection();
@@ -38,9 +37,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ConcatResultCollection_Error()
         {
-            var resultCollectionFirst = GetRangeNumber().ToResultCollection();
-            var resultCollectionErrorFirst = CreateErrorTest().ToResultCollection<int>();
-            var resultCollectionErrorSecond = CreateErrorTest().ToResultCollection<int>();
+            var resultCollectionFirst = GetRangeNumber().ToRList();
+            var resultCollectionErrorFirst = CreateErrorTest().ToRList<int>();
+            var resultCollectionErrorSecond = CreateErrorTest().ToRList<int>();
             var results = Enumerable.Empty<IResultCollection<int>>().Append(resultCollectionFirst).Append(resultCollectionErrorFirst).Append(resultCollectionErrorSecond);
 
             var resultCollection = results.ConcatResultCollection();

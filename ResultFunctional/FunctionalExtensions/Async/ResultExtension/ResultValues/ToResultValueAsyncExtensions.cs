@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
-using ResultFunctional.Models.Errors.Base;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Results;
 
@@ -20,7 +20,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         /// <returns>Outgoing result value</returns>
         public static async Task<IResultValue<TValue>> ToResultValueNullValueCheckAsync<TValue>(this TValue @this,
                                                                                                 Task<IRError> error) =>
-            @this.ToResultValueNullValueCheck(await error);
+            @this.ToRValueNullValueCheck(await error);
 
         /// <summary>
         /// Converting value to result value async with null checking
@@ -32,7 +32,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         public static async Task<IResultValue<TValue>> ToResultValueNullCheckAsync<TValue>(this TValue? @this,
                                                                                            Task<IRError> error)
             where TValue : class =>
-            @this.ToResultValueNullCheck(await error);
+            @this.ToRValueNullCheck(await error);
 
         /// <summary>
         /// Converting value to result value async with null checking
@@ -44,7 +44,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValu
         public static async Task<IResultValue<TValue>> ToResultValueNullCheckAsync<TValue>(this TValue? @this,
                                                                                            Task<IRError> error)
             where TValue : struct =>
-            @this.ToResultValueNullCheck(await error);
+            @this.ToRValueNullCheck(await error);
 
         /// <summary>
         /// Async converting result error to result value

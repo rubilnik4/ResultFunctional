@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Results;
 using ResultFunctionalXUnit.Data;
@@ -54,7 +52,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ToResultCollection_Enumerable_OkStatus()
         {
             var collection = Enumerable.Range(0, 3).ToList().AsReadOnly();
-            var resultValues = collection.Select(value => value.ToResultValue());
+            var resultValues = collection.Select(value => value.ToRValue());
 
             var resultCollection = resultValues.ToResultCollection();
 
@@ -70,7 +68,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             var error = CreateErrorTest();
             var collection = Enumerable.Range(0, 3).ToList().AsReadOnly();
-            var resultValues = collection.Select(value => value.ToResultValue()).
+            var resultValues = collection.Select(value => value.ToRValue()).
                                           Append(new ResultValue<int>(error));
 
             var resultCollection = resultValues.ToResultCollection();
@@ -88,7 +86,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             const string initialString = "NotNull";
 
-            var resultString = initialString.ToResultValue();
+            var resultString = initialString.ToRValue();
 
             Assert.True(resultString.OkStatus);
             Assert.Equal(initialString, resultString.Value);
@@ -102,7 +100,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             const string initialString = "NotNull";
 
-            var resultString = initialString.ToResultValueNullValueCheck(CreateErrorTest());
+            var resultString = initialString.ToRValueNullValueCheck(CreateErrorTest());
 
             Assert.True(resultString.OkStatus);
             Assert.Equal(initialString, resultString.Value);
@@ -116,7 +114,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             const string? initialString = null;
             var initialError = CreateErrorTest();
-            var resultString = initialString!.ToResultValueNullValueCheck(initialError);
+            var resultString = initialString!.ToRValueNullValueCheck(initialError);
 
             Assert.True(resultString.HasErrors);
             Assert.True(resultString.Errors.First().Equals(initialError));
@@ -130,7 +128,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             const string initialString = "NotNull";
 
-            var result = initialString.ToResultValueNullCheck(CreateErrorTest());
+            var result = initialString.ToRValueNullCheck(CreateErrorTest());
 
             Assert.True(result.OkStatus);
             Assert.Equal(initialString, result.Value);
@@ -144,7 +142,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             const string? initialString = null;
             var initialError = CreateErrorTest();
-            var result = initialString.ToResultValueNullCheck(initialError);
+            var result = initialString.ToRValueNullCheck(initialError);
 
             Assert.True(result.HasErrors);
             Assert.True(result.Errors.First().Equals(initialError));
@@ -158,7 +156,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             int? initialInt = 1;
 
-            var result = initialInt.ToResultValueNullCheck(CreateErrorTest());
+            var result = initialInt.ToRValueNullCheck(CreateErrorTest());
 
             Assert.True(result.OkStatus);
             Assert.Equal(initialInt, result.Value);
@@ -172,7 +170,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             int? initialInt = null;
             var initialError = CreateErrorTest();
-            var result = initialInt.ToResultValueNullCheck(initialError);
+            var result = initialInt.ToRValueNullCheck(initialError);
 
             Assert.True(result.HasErrors);
             Assert.True(result.Errors.First().Equals(initialError));

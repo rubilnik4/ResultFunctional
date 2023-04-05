@@ -1,7 +1,9 @@
 ﻿using System;
 using ResultFunctional.Models.Enums;
-using ResultFunctional.Models.Errors.Base;
+using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Errors.CommonErrors;
 using ResultFunctional.Models.Errors.DatabaseErrors;
+using ResultFunctional.Models.Factories;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -19,7 +21,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasErrorTypeCommon()
         {
-            var errorResult = (IRError)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
+            var errorResult = (IRError)RErrorFactory.Common(CommonErrorType.Unknown, "Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType<CommonErrorType>();
 
@@ -32,7 +34,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasNotErrorTypeCommon()
         {
-            var errorResult = (IRError)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
+            var errorResult = (IRError)RErrorFactory.Common(CommonErrorType.Unknown, "Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType<DatabaseErrorType>();
 
@@ -45,7 +47,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasNotErrorTypeDatabase()
         {
-            var errorResult = (IRError)ErrorResultFactory.SimpleError("Неизвестная ошибка");
+            var errorResult = (IRError)RErrorFactory.Simple("Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType<DatabaseErrorType>();
 
@@ -58,7 +60,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasErrorTypeCommon_CommonType()
         {
-            var errorResult = (IRError)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
+            var errorResult = (IRError)RErrorFactory.Common(CommonErrorType.Unknown, "Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType(CommonErrorType.Unknown);
 
@@ -72,7 +74,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasNotErrorTypeCommon_CommonType()
         {
-            var errorResult = (IRError)ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
+            var errorResult = (IRError)RErrorFactory.Common(CommonErrorType.Unknown, "Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType(CommonErrorType.ValueDuplicated);
 
@@ -85,7 +87,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasNotErrorTypeDatabase_CommonType()
         {
-            var errorResult = (IRError)ErrorResultFactory.SimpleError("Неизвестная ошибка");
+            var errorResult = (IRError)RErrorFactory.Simple("Неизвестная ошибка");
 
             bool hasType = errorResult.IsErrorType(DatabaseErrorType.Connection);
 
@@ -98,7 +100,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void ToStringCommon()
         {
-            var errorResult = ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Неизвестная ошибка");
+            var errorResult = RErrorFactory.Common(CommonErrorType.Unknown, "Неизвестная ошибка");
 
             var error = errorResult.ToString();
 
@@ -113,10 +115,10 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var error = CreateErrorTest();
 
-            var resultError = error.ToResult();
+            var resultError = error.ToRUnit();
 
-            Assert.True(resultError.HasErrors);
-            Assert.Equal(1, resultError.Errors.Count);
+            Assert.True(resultError.Failure);
+            Assert.Equal(1, resultError.GetErrors().Count);
         }
 
         /// <summary>
@@ -127,10 +129,10 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var error = CreateErrorTest();
 
-            var resultValue = error.ToResultValue<string>();
+            var resultValue = error.ToRValue<string>();
 
-            Assert.True(resultValue.HasErrors);
-            Assert.Equal(1, resultValue.Errors.Count);
+            Assert.True(resultValue.Failure);
+            Assert.Equal(1, resultValue.GetErrors().Count);
         }
 
         /// <summary>
@@ -141,10 +143,10 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var error = CreateErrorTest();
 
-            var resultCollection = error.ToResultCollection<string>();
+            var resultCollection = error.ToRList<string>();
 
-            Assert.True(resultCollection.HasErrors);
-            Assert.Equal(1, resultCollection.Errors.Count);
+            Assert.True(resultCollection.Failure);
+            Assert.Equal(1, resultCollection.GetErrors().Count);
         }
 
         /// <summary>
@@ -166,8 +168,8 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var error = CreateErrorTest();
 
-            Assert.IsType<CommonErrorResult>(error);
-            Assert.Equal(((CommonErrorResult)error).ErrorType.ToString(), error.ToString());
+            Assert.IsType<RCommonError>(error);
+            Assert.Equal(((RCommonError)error).ErrorType.ToString(), error.ToString());
         }
 
         /// <summary>
@@ -190,10 +192,10 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void HasError()
         {
-            var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
+            var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
 
-            Assert.True(databaseTableError.HasErrorResult<IRDatabaseAccessError>());
-            Assert.True(databaseTableError.HasErrorResult<DatabaseAccessErrorResult>());
+            Assert.True(databaseTableError.HasError<IRDatabaseAccessError>());
+            Assert.True(databaseTableError.HasError<RDatabaseAccessError>());
         }
 
         /// <summary>
@@ -202,10 +204,10 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void IsError()
         {
-            var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
+            var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
 
-            Assert.False(databaseTableError.IsErrorResult<IRDatabaseAccessError>());
-            Assert.True(databaseTableError.IsErrorResult<DatabaseAccessErrorResult>());
+            Assert.False(databaseTableError.IsError<IRDatabaseAccessError>());
+            Assert.True(databaseTableError.IsError<RDatabaseAccessError>());
         }
     }
 }

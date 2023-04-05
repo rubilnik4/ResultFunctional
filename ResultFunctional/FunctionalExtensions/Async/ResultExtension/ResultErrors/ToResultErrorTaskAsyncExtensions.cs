@@ -2,9 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
-using ResultFunctional.Models.Errors.Base;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
+using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Results;
 
@@ -41,7 +40,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultErro
         /// <returns>Result error</returns>
         public static async Task<IResultError> ToResultErrorTaskAsync(this Task<IEnumerable<IRError>> @this) =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.ToResultError());
+            MapTaskAsync(awaitedThis => awaitedThis.ToRUnit());
 
         /// <summary>
         /// Merge errors collection

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
-using ResultFunctional.Models.Errors.Base;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
+using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Results;
 
@@ -28,7 +27,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultColl
                                                                                             Func<IEnumerable<TValue>, IRError> badFunc)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.ToResultCollectionWhere(predicate, badFunc));
+            MapTaskAsync(awaitedThis => awaitedThis.ToRListWhere(predicate, badFunc));
 
         /// <summary>
         /// Converting task collection to result collection base on predicate

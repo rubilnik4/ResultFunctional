@@ -1,7 +1,8 @@
-﻿using ResultFunctional.Models.Errors.Base;
-using ResultFunctional.Models.Options;
+﻿using ResultFunctional.Models.Options;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using ResultFunctional.Models.Errors.BaseErrors;
 
 namespace ResultFunctional.Models.Values;
 
@@ -33,9 +34,9 @@ internal class RValue<TValue> : ROption<TValue, IRValue<TValue>>, IRValue<TValue
         new RValue<TValue>(errors);
 
     /// <summary>
-    /// Initialize result by unit
+    /// Initialize result by value
     /// </summary>
-    /// <returns>Result unit</returns>
+    /// <returns>Result value</returns>
     public static IRValue<TValue> Some(TValue value) =>
         new RValue<TValue>(value);
 
@@ -43,7 +44,15 @@ internal class RValue<TValue> : ROption<TValue, IRValue<TValue>>, IRValue<TValue
     /// Initialize result by error
     /// </summary>
     /// <param name="error">Error</param>
-    /// <returns>Result unit</returns>
+    /// <returns>Result value</returns>
     public static IRValue<TValue> None(IRError error) =>
         new RValue<TValue>(error);
+
+    /// <summary>
+    /// Initialize result by errors
+    /// </summary>
+    /// <param name="errors">Errors</param>
+    /// <returns>Result value</returns>
+    public static IRValue<TValue> None(IReadOnlyCollection<IRError> errors) =>
+        new RValue<TValue>(errors);
 }

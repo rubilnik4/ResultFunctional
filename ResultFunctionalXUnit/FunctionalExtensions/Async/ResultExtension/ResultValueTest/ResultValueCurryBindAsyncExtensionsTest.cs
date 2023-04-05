@@ -23,8 +23,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
 
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.IntToStringAsync);
-            var resultArgument = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.IntToStringAsync);
+            var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -39,9 +39,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkBindAsync_OkStatus_AddBadStatus()
         {
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.IntToStringAsync);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.IntToStringAsync);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultValueFactory.CreateTaskResultValueError<int>(errorArgument);
+            var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -59,8 +59,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<int, Task<string>>>(errorFunc);
-            var resultArgument = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValueFunc = RValueFactory.NoneTask<Func<int, Task<string>>>(errorFunc);
+            var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -77,9 +77,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkBindAsync_BadStatus_AddBadStatus()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.NoneTask<Func<int, Task<string>>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultValueFactory.CreateTaskResultValueError<int>(errorArgument);
+            var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -97,8 +97,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkBindAsync_OkStatus_AddOkStatus_TwoArguments()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateTwoToStringAsync);
-            var resultArgument = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateTwoToStringAsync);
+            var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -113,9 +113,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkBindAsync_OkStatus_AddBadStatus_TwoArguments()
         {
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateTwoToStringAsync);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateTwoToStringAsync);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultValueFactory.CreateTaskResultValueError<int>(errorArgument);
+            var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -133,8 +133,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<int, Task<string>>>(errorFunc);
-            var resultArgument = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValueFunc = RValueFactory.NoneTask<Func<int, Task<string>>>(errorFunc);
+            var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -151,9 +151,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkBindAsync_BadStatus_AddBadStatus_TwoArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.NoneTask<Func<int, Task<string>>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultValueFactory.CreateTaskResultValueError<int>(errorArgument);
+            var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -171,8 +171,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkBindAsync_OkStatus_AddOkStatus_ThreeArguments()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateThreeToStringAsync);
-            var resultArgument = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateThreeToStringAsync);
+            var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -187,9 +187,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkBindAsync_OkStatus_AddBadStatus_ThreeArguments()
         {
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateThreeToStringAsync);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateThreeToStringAsync);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultValueFactory.CreateTaskResultValueError<int>(errorArgument);
+            var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -207,8 +207,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<int, Task<string>>>(errorFunc);
-            var resultArgument = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValueFunc = RValueFactory.NoneTask<Func<int, Task<string>>>(errorFunc);
+            var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -225,9 +225,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkBindAsync_BadStatus_AddBadStatus_ThreeArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.NoneTask<Func<int, Task<string>>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultValueFactory.CreateTaskResultValueError<int>(errorArgument);
+            var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -245,8 +245,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkBindAsync_OkStatus_AddOkStatus_FourArguments()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateFourToStringAsync);
-            var resultArgument = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateFourToStringAsync);
+            var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -261,9 +261,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkBindAsync_OkStatus_AddBadStatus_FourArguments()
         {
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateFourToStringAsync);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateFourToStringAsync);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultValueFactory.CreateTaskResultValueError<int>(errorArgument);
+            var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -281,8 +281,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<int, Task<string>>>(errorFunc);
-            var resultArgument = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValueFunc = RValueFactory.NoneTask<Func<int, Task<string>>>(errorFunc);
+            var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -299,9 +299,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkBindAsync_BadStatus_AddBadStatus_FourArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.NoneTask<Func<int, Task<string>>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultValueFactory.CreateTaskResultValueError<int>(errorArgument);
+            var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -319,8 +319,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkBindAsync_OkStatus_AddOkStatus_FiveArguments()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateFiveToStringAsync);
-            var resultArgument = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateFiveToStringAsync);
+            var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -335,9 +335,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkBindAsync_OkStatus_AddBadStatus_FiveArguments()
         {
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValue(CurryFunctions.AggregateFiveToStringAsync);
+            var resultValueFunc = RValueFactory.SomeTask(CurryFunctions.AggregateFiveToStringAsync);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultValueFactory.CreateTaskResultValueError<int>(errorArgument);
+            var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -355,8 +355,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<int, Task<string>>>(errorFunc);
-            var resultArgument = ResultValueFactory.CreateTaskResultValue(initialValue);
+            var resultValueFunc = RValueFactory.NoneTask<Func<int, Task<string>>>(errorFunc);
+            var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 
@@ -373,9 +373,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkBindAsync_BadStatus_AddBadStatus_FiveArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = ResultValueFactory.CreateTaskResultValueError<Func<int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.NoneTask<Func<int, Task<string>>>(errorFunc);
             var errorArgument = CreateErrorTest();
-            var resultArgument = ResultValueFactory.CreateTaskResultValueError<int>(errorArgument);
+            var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkBindAsync(resultArgument);
 

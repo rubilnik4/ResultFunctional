@@ -23,7 +23,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionContinueToValueBindAsync_Ok_ReturnNewValue()
         {
             var numberCollection = Collections.GetRangeNumber();
-            var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(numberCollection);
+            var resultCollection = RListFactory.SomeTask(numberCollection);
 
             var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueBindAsync(_ => true,
                 okFunc: Collections.AggregateToStringAsync,
@@ -40,7 +40,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionContinueToValueBindAsync_Ok_ReturnNewError()
         {
             var numberCollection = Collections.GetRangeNumber();
-            var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(numberCollection);
+            var resultCollection = RListFactory.SomeTask(numberCollection);
 
             var errorsBad = CreateErrorListTwoTest();
             var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueBindAsync(_ => false,
@@ -58,7 +58,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionContinueToValueBindAsync_Bad_ReturnNewValue()
         {
             var errorInitial = CreateErrorTest();
-            var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorInitial);
+            var resultCollection = RListFactory.NoneTask<int>(errorInitial);
 
             var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueBindAsync(_ => true,
                 okFunc: Collections.AggregateToStringAsync,
@@ -75,7 +75,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionContinueToValueBindAsync_Bad_ReturnNewError()
         {
             var errorInitial = CreateErrorTest();
-            var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorInitial);
+            var resultCollection = RListFactory.NoneTask<int>(errorInitial);
 
             var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueBindAsync(_ => false,
                 okFunc: Collections.AggregateToStringAsync,
@@ -92,7 +92,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionOkBadToValueBindAsync_Ok_ReturnNewValue()
         {
             var numberCollection = Collections.GetRangeNumber();
-            var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(numberCollection);
+            var resultCollection = RListFactory.SomeTask(numberCollection);
 
             var resultAfterWhere = await resultCollection.ResultCollectionOkBadToValueBindAsync(
                 okFunc: Collections.AggregateToStringAsync,
@@ -109,7 +109,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionOkBadToValueBindAsync_Bad_ReturnNewValueByErrors()
         {
             var errorsInitial = CreateErrorListTwoTest(); ;
-            var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorsInitial);
+            var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
 
             var resultAfterWhere = await resultCollection.ResultCollectionOkBadToValueBindAsync(
                 okFunc: Collections.AggregateToStringAsync,
@@ -126,7 +126,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionOkToValueBindAsync_Ok_ReturnNewValue()
         {
             var numberCollection = Collections.GetRangeNumber();
-            var resultCollection = ResultCollectionFactory.CreateTaskResultCollection(numberCollection);
+            var resultCollection = RListFactory.SomeTask(numberCollection);
 
             var resultAfterWhere = await resultCollection.ResultCollectionOkToValueBindAsync(Collections.AggregateToStringAsync);
 
@@ -141,7 +141,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionOkToValueBindAsync_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
-            var resultCollection = ResultCollectionFactory.CreateTaskResultCollectionError<int>(errorInitial);
+            var resultCollection = RListFactory.NoneTask<int>(errorInitial);
 
             var resultAfterWhere = await resultCollection.ResultCollectionOkToValueBindAsync(Collections.AggregateToStringAsync);
 

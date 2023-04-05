@@ -18,9 +18,9 @@ namespace ResultFunctionalXUnit.Models.ResultFactory
         [Fact]
         public async Task CreateTaskResultError_Ok()
         {
-            var resultValue = await ResultErrorFactory.CreateTaskResultError();
+            var resultValue = await RUnitFactory.SomeTask();
 
-            Assert.True(resultValue.OkStatus);
+            Assert.True(resultValue.Success);
         }
 
         /// <summary>
@@ -31,10 +31,10 @@ namespace ResultFunctionalXUnit.Models.ResultFactory
         {
             var initialError = CreateErrorTest();
 
-            var resultValue = await ResultErrorFactory.CreateTaskResultError(initialError);
+            var resultValue = await RUnitFactory.NoneTask(initialError);
 
-            Assert.True(resultValue.HasErrors);
-            Assert.True(initialError.Equals(resultValue.Errors.First()));
+            Assert.True(resultValue.Failure);
+            Assert.True(initialError.Equals(resultValue.GetErrors().First()));
         }
 
         /// <summary>
@@ -45,10 +45,10 @@ namespace ResultFunctionalXUnit.Models.ResultFactory
         {
             var initialError = CreateErrorListTwoTest();
 
-            var resultValue = await ResultErrorFactory.CreateTaskResultError(initialError);
+            var resultValue = await RUnitFactory.NoneTask(initialError);
 
-            Assert.True(resultValue.HasErrors);
-            Assert.True(initialError.SequenceEqual(resultValue.Errors));
+            Assert.True(resultValue.Failure);
+            Assert.True(initialError.SequenceEqual(resultValue.GetErrors()));
         }
 
         /// <summary>
@@ -57,9 +57,9 @@ namespace ResultFunctionalXUnit.Models.ResultFactory
         [Fact]
         public async Task CreateTaskResultErrorAsync_Ok()
         {
-            var resultValue = await ResultErrorFactory.CreateTaskResultError();
+            var resultValue = await RUnitFactory.SomeTask();
 
-            Assert.True(resultValue.OkStatus);
+            Assert.True(resultValue.Success);
         }
 
         /// <summary>
@@ -70,10 +70,10 @@ namespace ResultFunctionalXUnit.Models.ResultFactory
         {
             var initialError = CreateErrorTest();
 
-            var resultValue = await ResultErrorFactory.CreateTaskResultError(initialError);
+            var resultValue = await RUnitFactory.NoneTask(initialError);
 
-            Assert.True(resultValue.HasErrors);
-            Assert.True(initialError.Equals(resultValue.Errors.First()));
+            Assert.True(resultValue.Failure);
+            Assert.True(initialError.Equals(resultValue.GetErrors().First()));
         }
 
         /// <summary>
@@ -84,10 +84,10 @@ namespace ResultFunctionalXUnit.Models.ResultFactory
         {
             var initialError = CreateErrorListTwoTest();
 
-            var resultValue = await ResultErrorFactory.CreateTaskResultError(initialError);
+            var resultValue = await RUnitFactory.NoneTask(initialError);
 
-            Assert.True(resultValue.HasErrors);
-            Assert.True(initialError.SequenceEqual(resultValue.Errors));
+            Assert.True(resultValue.Failure);
+            Assert.True(initialError.SequenceEqual(resultValue.GetErrors()));
         }
     }
 }

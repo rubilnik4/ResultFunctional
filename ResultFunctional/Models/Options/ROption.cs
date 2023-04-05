@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync;
-using ResultFunctional.Models.Errors.Base;
-using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Results;
-using ResultFunctional.Models.Units;
+using ResultFunctional.Models.Errors.BaseErrors;
 
 namespace ResultFunctional.Models.Options;
 
@@ -14,9 +11,9 @@ namespace ResultFunctional.Models.Options;
 /// </summary>
 /// <typeparam name="TValue">Value</typeparam>
 /// <typeparam name="TOption">Result option</typeparam>
-internal abstract class ROption<TValue, TOption> : IROption<TValue>
+internal abstract class ROption<TValue, TOption> : IROption<TValue, TOption>
     where TValue : notnull
-    where TOption : IROption<TValue>
+    where TOption : IROption<TValue, TOption>
 {
     protected ROption(TValue value)
     {
@@ -45,13 +42,13 @@ internal abstract class ROption<TValue, TOption> : IROption<TValue>
     /// <summary>
     /// Has value
     /// </summary>
-    public bool IsSuccess =>
-        !HasErrors;
+    public bool Success =>
+        !Failure;
 
     /// <summary>
     /// Has errors
     /// </summary>
-    public bool HasErrors =>
+    public bool Failure =>
         Errors?.Any() == true;
 
     /// <summary>
@@ -155,7 +152,7 @@ internal abstract class ROption<TValue, TOption> : IROption<TValue>
     /// </summary>
     /// <param name="error">Error</param>
     /// <returns>Result with error</returns>    
-    public IROption<TValue> AppendError(IRError error) =>
+    public TOption AppendError(IRError error) =>
         GetErrorsOrEmpty().Concat(error).ToList()
             .Map(Initialize);
 
@@ -164,7 +161,7 @@ internal abstract class ROption<TValue, TOption> : IROption<TValue>
     /// </summary>
     /// <param name="errors">Errors</param>
     /// <returns>Result option with errors</returns>  
-    public IROption<TValue> ConcatErrors(IEnumerable<IRError> errors) =>
+    public TOption ConcatErrors(IEnumerable<IRError> errors) =>
         GetErrorsOrEmpty().Concat(errors).ToList()
             .Map(Initialize);
 }

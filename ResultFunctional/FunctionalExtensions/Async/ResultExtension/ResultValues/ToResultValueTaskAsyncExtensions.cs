@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
-using ResultFunctional.Models.Errors.Base;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Results;
 
@@ -22,7 +21,7 @@ public static class ToResultValueTaskAsyncExtensions
     public static async Task<IResultValue<TValue>> ToResultValueTaskAsync<TValue>(this Task<TValue> @this)
         where TValue : notnull =>
         await @this.
-        MapTaskAsync(awaitedThis => awaitedThis.ToResultValue());
+        MapTaskAsync(awaitedThis => awaitedThis.ToRValue());
 
     /// <summary>
     /// Converting value to result value with null checking
@@ -33,7 +32,7 @@ public static class ToResultValueTaskAsyncExtensions
     /// <returns>Outgoing result value</returns>
     public static async Task<IResultValue<TValue>> ToResultValueNullValueCheckTaskAsync<TValue>(this Task<TValue> @this, IRError error) =>
         await @this.
-        MapTaskAsync(awaitedThis => awaitedThis.ToResultValueNullValueCheck(error));
+        MapTaskAsync(awaitedThis => awaitedThis.ToRValueNullValueCheck(error));
 
     /// <summary>
     /// Converting value to result value with null checking
@@ -45,7 +44,7 @@ public static class ToResultValueTaskAsyncExtensions
     public static async Task<IResultValue<TValue>> ToResultValueNullCheckTaskAsync<TValue>(this Task<TValue?> @this, IRError error)
         where TValue : class =>
         await @this.
-        MapTaskAsync(awaitedThis => awaitedThis.ToResultValueNullCheck(error));
+        MapTaskAsync(awaitedThis => awaitedThis.ToRValueNullCheck(error));
 
     /// <summary>
     /// Converting value to result value with null checking
@@ -57,7 +56,7 @@ public static class ToResultValueTaskAsyncExtensions
     public static async Task<IResultValue<TValue>> ToResultValueNullCheckTaskAsync<TValue>(this Task<TValue?> @this, IRError error)
         where TValue : struct =>
         await @this.
-        MapTaskAsync(awaitedThis => awaitedThis.ToResultValueNullCheck(error));
+        MapTaskAsync(awaitedThis => awaitedThis.ToRValueNullCheck(error));
 
     /// <summary>
     /// Converting task result error to result value

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctional.Models.Interfaces.Results;
 
 namespace ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
@@ -19,7 +19,7 @@ public static class ToResultCollectionTaskAsyncExtensions
     /// <returns>Outgoing result collection</returns>   
     public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IEnumerable<IResultValue<TValue>>> @this) =>
         await @this.
-        MapTaskAsync(awaitedThis => awaitedThis.ToResultCollection());
+        MapTaskAsync(awaitedThis => awaitedThis.ToRList());
 
     /// <summary>
     /// Converting task collection of result value to result collection
@@ -29,7 +29,7 @@ public static class ToResultCollectionTaskAsyncExtensions
     /// <returns>Outgoing result collection</returns>   
     public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IList<IResultValue<TValue>>> @this) =>
         await @this.
-        MapTaskAsync(awaitedThis => awaitedThis.ToResultCollection());
+        MapTaskAsync(awaitedThis => awaitedThis.ToRList());
 
     /// <summary>
     /// Converting task collection of result value to result collection
@@ -39,7 +39,7 @@ public static class ToResultCollectionTaskAsyncExtensions
     /// <returns>Outgoing result collection</returns>   
     public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this Task<IReadOnlyCollection<IResultValue<TValue>>> @this) =>
         await @this.
-        MapTaskAsync(awaitedThis => awaitedThis.ToResultCollection());
+        MapTaskAsync(awaitedThis => awaitedThis.ToRList());
 
     /// <summary>
     /// Converting task result with collection type to result collection
@@ -108,5 +108,5 @@ public static class ToResultCollectionTaskAsyncExtensions
     public static async Task<IResultCollection<TValue>> ToResultCollectionTaskAsync<TValue>(this IEnumerable<Task<IResultValue<TValue>>> @this)
         where TValue : notnull =>
         await Task.WhenAll(@this).
-        MapTaskAsync(result => result.ToResultCollection());
+        MapTaskAsync(result => result.ToRList());
 }

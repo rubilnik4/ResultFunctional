@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.Models.Enums;
-using ResultFunctional.Models.Errors.Base;
+using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Errors.DatabaseErrors;
+using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Errors.CommonErrors;
-using ResultFunctional.Models.Interfaces.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -96,11 +95,11 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void HasError()
         {
-            var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
-            var result = databaseTableError.ToResult();
+            var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
+            var result = databaseTableError.ToRUnit();
 
             Assert.True(result.HasError<IRDatabaseAccessError>());
-            Assert.True(result.HasError<DatabaseAccessErrorResult>());
+            Assert.True(result.HasError<RDatabaseAccessError>());
         }
 
         /// <summary>
@@ -109,11 +108,11 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void IsError()
         {
-            var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
-            var result = databaseTableError.ToResult();
+            var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
+            var result = databaseTableError.ToRUnit();
 
             Assert.False(result.IsError<IRDatabaseAccessError>());
-            Assert.True(result.IsError<DatabaseAccessErrorResult>());
+            Assert.True(result.IsError<RDatabaseAccessError>());
         }
 
         /// <summary>
@@ -122,8 +121,8 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void GetErrorTypes()
         {
-            var valueNotFoundError = ErrorResultFactory.ValueNotFoundError<string>("value");
-            var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
+            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
+            var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);
 
@@ -138,8 +137,8 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void HasErrorType()
         {
-            var valueNotFoundError = ErrorResultFactory.ValueNotFoundError<string>("value");
-            var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
+            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
+            var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);
 
@@ -152,8 +151,8 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void HasErrorTypeByType()
         {
-            var valueNotFoundError = ErrorResultFactory.ValueNotFoundError<string>("value");
-            var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
+            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
+            var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);
 
@@ -167,8 +166,8 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void GetErrorType()
         {
-            var valueNotFoundError = ErrorResultFactory.ValueNotFoundError<string>("value");
-            var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
+            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
+            var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);
 
@@ -183,8 +182,8 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void GetErrorTypesT()
         {
-            var valueNotFoundError = ErrorResultFactory.ValueNotFoundError<string>("value");
-            var databaseTableError = ErrorResultFactory.DatabaseAccessError("TestTable", "error");
+            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
+            var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);
 

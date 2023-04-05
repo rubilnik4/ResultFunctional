@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultCollections;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultErrors;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctional.Models.Implementations.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -55,7 +53,7 @@ public class ToResultCollectionExtensionsTest
     {
         var collection = new List<string?> { "1", "2", "3" };
 
-        var resultString = collection.ToResultCollectionNullCheck(CreateErrorTest());
+        var resultString = collection.ToRListNullCheck(CreateErrorTest());
 
         Assert.True(resultString.OkStatus);
         Assert.True(collection.SequenceEqual(resultString.Value));
@@ -70,7 +68,7 @@ public class ToResultCollectionExtensionsTest
         List<string?>? collection = null;
         var initialError = CreateErrorTest();
 
-        var resultString = collection.ToResultCollectionNullCheck(initialError);
+        var resultString = collection.ToRListNullCheck(initialError);
 
         Assert.True(resultString.HasErrors);
         Assert.True(resultString.Errors.First().Equals(initialError));
@@ -85,7 +83,7 @@ public class ToResultCollectionExtensionsTest
         var collection = new List<string?> { "1", null, "3" };
         var initialError = CreateErrorTest();
 
-        var resultString = collection.ToResultCollectionNullCheck(initialError);
+        var resultString = collection.ToRListNullCheck(initialError);
 
         Assert.True(resultString.HasErrors);
         Assert.True(resultString.Errors.First().Equals(initialError));

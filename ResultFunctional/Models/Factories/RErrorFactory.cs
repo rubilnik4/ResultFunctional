@@ -18,7 +18,7 @@ namespace ResultFunctional.Models.Factories
         /// </summary>
         /// <param name="description">Description</param>
         /// <returns>Simple error</returns>
-        public static RSimpleError SimpleError(string description) =>
+        public static RSimpleError Simple(string description) =>
             new(description);
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="errorType">Error subtype</param>
         /// <param name="description">Description</param>
         /// <returns>Common error type</returns>
-        public static RTypeError<TErrorType> ErrorByType<TErrorType>(TErrorType errorType, string description)
+        public static RTypeError<TErrorType> ByType<TErrorType>(TErrorType errorType, string description)
             where TErrorType : struct =>
             new(errorType, description);
 
@@ -38,7 +38,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="commonErrorType">Common error type</param>
         /// <param name="description">Description</param>
         /// <returns>Common error type</returns>
-        public static RCommonError CommonError(CommonErrorType commonErrorType, string description) =>
+        public static RCommonError Common(CommonErrorType commonErrorType, string description) =>
             new(commonErrorType, description);
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="authorizeErrorType">Authorize error type</param>
         /// <param name="description">Description</param>
         /// <returns>Authorize error</returns>
-        public static RAuthorizeError AuthorizeError(AuthorizeErrorType authorizeErrorType, string description) =>
+        public static RAuthorizeError Authorize(AuthorizeErrorType authorizeErrorType, string description) =>
             new(authorizeErrorType, description);
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace ResultFunctional.Models.Factories
         /// </summary>
         /// <param name="description">Description</param>
         /// <returns>Database save transaction error</returns>
-        public static RDatabaseSaveError DatabaseSaveError(string description) =>
+        public static RDatabaseSaveError DatabaseSave(string description) =>
             new(description);
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="parameter">Database parameter name</param>
         /// <param name="description">Description</param>
         /// <returns>Database connection error</returns>
-        public static RDatabaseConnectionError DatabaseConnectionError(string parameter, string description) =>
+        public static RDatabaseConnectionError DatabaseConnection(string parameter, string description) =>
             new(parameter, description);
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="tableName">Database table name</param>
         /// <param name="description">Description</param>
         /// <returns>Table access database error</returns>
-        public static RDatabaseAccessError DatabaseAccessError(string tableName, string description) =>
+        public static RDatabaseAccessError DatabaseAccess(string tableName, string description) =>
             new(tableName, description);
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="tableName">Database table name</param>
         /// <param name="description">Description</param>
         /// <returns>Database not found value error</returns>
-        public static IRDatabaseValueNotFoundError DatabaseValueNotFoundError<TValue>(TValue value, string tableName, string description)
+        public static IRDatabaseValueNotFoundError DatabaseValueNotFound<TValue>(TValue value, string tableName, string description)
             where TValue : notnull =>
             new RDatabaseValueNotFoundError<TValue>(value, tableName, description);
 
@@ -96,7 +96,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="tableName">Database table name</param>
         /// <param name="description">Description</param>
         /// <returns>Database not valid value error</returns>
-        public static IRDatabaseValueNotValidError DatabaseValueNotValidError<TValue>(TValue value, string tableName, string description)
+        public static IRDatabaseValueNotValidError DatabaseValueNotValid<TValue>(TValue value, string tableName, string description)
             where TValue : notnull =>
             new RDatabaseValueNotValidError<TValue>(value, tableName, description);
 
@@ -108,7 +108,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="tableName">Database table name</param>
         /// <param name="description">Description</param>
         /// <returns>Database duplicate value error</returns>
-        public static IRDatabaseValueDuplicatedError DatabaseValueDuplicateError<TValue>(TValue value, string tableName, string description)
+        public static IRDatabaseValueDuplicatedError DatabaseValueDuplicate<TValue>(TValue value, string tableName, string description)
             where TValue : notnull =>
             new RDatabaseValueDuplicatedError<TValue>(value, tableName, description);
 
@@ -119,7 +119,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="value">Serialize instance</param>
         /// <param name="description">Description</param>
         /// <returns>Serialize error</returns>
-        public static IRSerializeError SerializeError<TValue>(TValue value, string description)
+        public static IRSerializeError Serialize<TValue>(TValue value, string description)
             where TValue : notnull =>
             new RSerializeError<TValue>(value, description);
 
@@ -130,7 +130,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="value">Deserialize instance</param>
         /// <param name="description">Description</param>
         /// <returns>Deserialize error</returns>
-        public static IRDeserializeError DeserializeError<TValue>(string value, string description)
+        public static IRDeserializeError Deserialize<TValue>(string value, string description)
             where TValue : notnull =>
             new RDeserializeError<TValue>(value, description);
 
@@ -140,7 +140,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="jsonScheme">Json scheme</param>
         /// <param name="description">Description</param>
         /// <returns>Json scheme error</returns>
-        public static RJsonSchemeError JsonSchemeError(string jsonScheme, string description) =>
+        public static RJsonSchemeError JsonScheme(string jsonScheme, string description) =>
             new(jsonScheme, description);
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace ResultFunctional.Models.Factories
         /// <typeparam name="TValue">Not found instance</typeparam>
         /// <param name="description">Description</param>
         /// <returns>Not found error</returns>
-        public static IRValueNotFoundError ValueNotFoundError<TValue>(string description)
+        public static IRValueNotFoundError ValueNotFound<TValue>(string description)
             where TValue : class =>
             new RValueNotFoundError<TValue>(description);
 
@@ -160,7 +160,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="value">>Not valid instance</param>
         /// <param name="description">Description</param>
         /// <returns></returns>
-        public static IRValueNotValidError ValueNotValidError<TValue>(TValue value, string description)
+        public static IRValueNotValidError ValueNotValid<TValue>(TValue value, string description)
             where TValue : notnull =>
             new RValueNotValidError<TValue>(value, nameof(TValue));
 
@@ -171,7 +171,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="value">>Not valid instance</param>
         /// <param name="description">Description</param>
         /// <returns>Duplicate error</returns>
-        public static IRValueDuplicateError ValueDuplicateError<TValue>(TValue value, string description)
+        public static IRValueDuplicateError ValueDuplicate<TValue>(TValue value, string description)
             where TValue : notnull =>
             new RValueDuplicateError<TValue>(value, nameof(TValue));
 
@@ -182,7 +182,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="host">Host</param>
         /// <param name="description">Description</param>
         /// <returns>Host connection error</returns>
-        public static RRestHostError RestHostError(RestErrorType restErrorType, string host, string description) =>
+        public static RRestHostError RestHost(RestErrorType restErrorType, string host, string description) =>
             new(restErrorType, host, description);
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="timeout">Timeout</param>
         /// <param name="description">Description</param>
         /// <returns>Timeout rest error</returns>
-        public static RRestTimeoutError RestTimeoutError(string host, TimeSpan timeout, string description) =>
+        public static RRestTimeoutError RestTimeout(string host, TimeSpan timeout, string description) =>
             new(host, timeout, description);
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace ResultFunctional.Models.Factories
         /// <param name="reasonPhrase">Reason phrase</param>
         /// <param name="description">Description</param>
         /// <returns> Rest error with response message</returns>
-        public static RRestMessageError RestError(RestErrorType restErrorType, string reasonPhrase, string description) =>
+        public static RRestMessageError Rest(RestErrorType restErrorType, string reasonPhrase, string description) =>
             new(restErrorType, reasonPhrase, description);
     }
 }

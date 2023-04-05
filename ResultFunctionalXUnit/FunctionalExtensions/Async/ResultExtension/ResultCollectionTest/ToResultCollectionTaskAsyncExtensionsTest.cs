@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultCollections;
 using ResultFunctional.FunctionalExtensions.Async.ResultExtension.ResultValues;
-using ResultFunctional.FunctionalExtensions.Sync.ResultExtension.ResultValues;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctional.Models.Interfaces.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
@@ -26,7 +26,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
     public async Task ToResultCollectionTaskAsync_Enumerable_OkStatus()
     {
         var collection = GetRangeNumber();
-        var resultNoError = ResultValueFactory.CreateTaskResultValue<IEnumerable<int>>(collection);
+        var resultNoError = RValueFactory.SomeTask<IEnumerable<int>>(collection);
 
         var resultValue = await resultNoError.ToResultCollectionTaskAsync();
 
@@ -41,7 +41,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
     public async Task ToResultCollectionTaskAsync_Enumerable_HasErrors()
     {
         var error = CreateErrorTest();
-        var resultHasError = ResultValueFactory.CreateTaskResultValueError<IEnumerable<int>>(error);
+        var resultHasError = RValueFactory.NoneTask<IEnumerable<int>>(error);
 
         var resultValue = await resultHasError.ToResultCollectionTaskAsync();
 
@@ -57,7 +57,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
     public async Task ToResultCollectionTaskAsync_IReadOnlyCollection_OkStatus()
     {
         var collection = GetRangeNumber();
-        var resultNoError = ResultValueFactory.CreateTaskResultValue(collection);
+        var resultNoError = RValueFactory.SomeTask(collection);
 
         var resultValue = await resultNoError.ToResultCollectionTaskAsync();
 
@@ -72,7 +72,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
     public async Task ToResultCollectionTaskAsync_IReadOnlyCollection_HasErrors()
     {
         var error = CreateErrorTest();
-        var resultHasError = ResultValueFactory.CreateTaskResultValueError<IReadOnlyCollection<int>>(error);
+        var resultHasError = RValueFactory.NoneTask<IReadOnlyCollection<int>>(error);
 
         var resultValue = await resultHasError.ToResultCollectionTaskAsync();
 
@@ -88,7 +88,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
     public async Task ToResultCollectionTaskAsync_ReadOnlyCollection_OkStatus()
     {
         var collection = GetRangeNumber().ToList().AsReadOnly();
-        var resultNoError = ResultValueFactory.CreateTaskResultValue(collection);
+        var resultNoError = RValueFactory.SomeTask(collection);
 
         var resultValue = await resultNoError.ToResultCollectionTaskAsync();
 
@@ -103,7 +103,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
     public async Task ToResultCollectionTaskAsync_ReadOnlyCollection_HasErrors()
     {
         var error = CreateErrorTest();
-        var resultHasError = ResultValueFactory.CreateTaskResultValueError<ReadOnlyCollection<int>>(error);
+        var resultHasError = RValueFactory.NoneTask<ReadOnlyCollection<int>>(error);
 
         var resultValue = await resultHasError.ToResultCollectionTaskAsync();
 
@@ -120,7 +120,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
     public async Task ToResultCollectionTaskAsync_List_OkStatus()
     {
         var collection = GetRangeNumber().ToList();
-        var resultNoError = ResultValueFactory.CreateTaskResultValue(collection);
+        var resultNoError = RValueFactory.SomeTask(collection);
 
         var resultValue = await resultNoError.ToResultCollectionTaskAsync();
 
@@ -135,7 +135,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
     public async Task ToResultCollectionTaskAsync_List_HasErrors()
     {
         var error = CreateErrorTest();
-        var resultHasError = ResultValueFactory.CreateTaskResultValueError<List<int>>(error);
+        var resultHasError = RValueFactory.NoneTask<List<int>>(error);
 
         var resultValue = await resultHasError.ToResultCollectionTaskAsync();
 
@@ -151,7 +151,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
     public async Task ToResultValue_Ok()
     {
         var numbers = Collections.GetRangeNumber();
-        var resultCollectionTask = ResultCollectionFactory.CreateTaskResultCollection(numbers);
+        var resultCollectionTask = RListFactory.SomeTask(numbers);
 
         var resultValue = await resultCollectionTask.ToResultValueFromCollectionTaskAsync();
 
@@ -174,6 +174,6 @@ public class ToResultCollectionTaskAsyncExtensionsTest
     private static async Task<IResultValue<int>> GetTaskNumber(int number)
     {
         await Task.Delay(1);
-        return number.ToResultValue();
+        return number.ToRValue();
     }
 }
