@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
@@ -111,7 +112,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
         /// <param name="okFunc">Error function if incoming result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValue> ResultValueBindErrorsOk<TValue>(this IRValue<TValue> @this,
-                                                                           Func<TValue, IRUnit> okFunc)
+                                                                      Func<TValue, IROption> okFunc)
             where TValue : notnull =>
             @this.
             ResultValueBindOk(value => okFunc.Invoke(value).ToRValue(value));

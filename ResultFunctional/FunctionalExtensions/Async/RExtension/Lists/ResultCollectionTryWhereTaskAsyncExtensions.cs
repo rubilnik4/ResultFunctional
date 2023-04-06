@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Lists;
 using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists.ResultCollectionTryExtensions;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
@@ -20,9 +21,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="func">Collection function</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
-                                                                                                     Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
-                                                                                                     Func<Exception, IRError> exceptionFunc) =>
+        public static async Task<IRList<TValueOut>> ResultCollectionTryOkTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+                                                                                                        Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
+                                                                                                        Func<Exception, IRError> exceptionFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.
             ResultCollectionBindOkTaskAsync(value => ResultCollectionTry(() => func.Invoke(value), exceptionFunc));
 
@@ -35,9 +38,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="func">Collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
+        public static async Task<IRList<TValueOut>> ResultCollectionTryOkTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
-                                                                                                     IRError error) =>
+                                                                                                     IRError error)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.
             ResultCollectionBindOkTaskAsync(value => ResultCollectionTry(() => func.Invoke(value), error));
     }

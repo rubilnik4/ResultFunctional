@@ -1,24 +1,22 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
 using System.Collections.Generic;
+using System;
 using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Factories;
+using ResultFunctional.Models.Lists;
+using ResultFunctional.Models.Units;
+using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.Models.Options;
 
 /// <summary>
-/// Base result with value
+/// Base result
 /// </summary>
-/// <typeparam name="TValue">Value</typeparam>
-/// <typeparam name="TOption">Result option</typeparam>
-internal abstract class ROption<TValue, TOption> : IROption<TValue, TOption>
-    where TValue : notnull
-    where TOption : IROption<TValue, TOption>
+public abstract class ROption : IROption
 {
-    protected ROption(TValue value)
-    {
-        Value = value;
-    }
+    protected ROption()
+    { }
 
     protected ROption(IRError error)
         : this(error.ToList())
@@ -28,11 +26,6 @@ internal abstract class ROption<TValue, TOption> : IROption<TValue, TOption>
     {
         Errors = errors;
     }
-
-    /// <summary>
-    /// Value
-    /// </summary>
-    public TValue? Value { get; }
 
     /// <summary>
     /// Errors
@@ -50,21 +43,6 @@ internal abstract class ROption<TValue, TOption> : IROption<TValue, TOption>
     /// </summary>
     public bool Failure =>
         Errors?.Any() == true;
-
-    /// <summary>
-    /// Initialize result by errors
-    /// </summary>
-    /// <param name="errors">Errors</param>
-    /// <returns>Result option</returns>
-    protected abstract TOption Initialize(IReadOnlyCollection<IRError> errors);
-
-    /// <summary>
-    /// Get value
-    /// </summary>
-    /// <returns>Value</returns>
-    /// <exception cref="ArgumentNullException">Throw exception if value not found</exception>
-    public TValue GetValue() =>
-        Value ?? throw new ArgumentNullException(nameof(Value));
 
     /// <summary>
     /// Get errors
@@ -106,7 +84,7 @@ internal abstract class ROption<TValue, TOption> : IROption<TValue, TOption>
     public IReadOnlyCollection<Type> GetErrorTypes() =>
         Errors?.Select(error => error.GetType())
                .Distinct()
-               .ToList() 
+               .ToList()
         ?? new List<Type>();
 
     /// <summary>
@@ -148,20 +126,33 @@ internal abstract class ROption<TValue, TOption> : IROption<TValue, TOption>
         Errors?.OfType<IRBaseError<TErrorType>>().ToList() ?? new List<IRBaseError<TErrorType>>();
 
     /// <summary>
-    /// Add error to result
+    /// Converting to result unit
     /// </summary>
-    /// <param name="error">Error</param>
-    /// <returns>Result with error</returns>    
-    public TOption AppendError(IRError error) =>
-        GetErrorsOrEmpty().Concat(error).ToList()
-            .Map(Initialize);
+    /// <returns>Result unit</returns>
+    public IRUnit ToRUnit() =>
+        Success 
+            ? RUnitFactory.Some() 
+            : RUnitFactory.None(GetErrors());
 
     /// <summary>
-    /// Add errors to result
+    /// Converting to result value
     /// </summary>
-    /// <param name="errors">Errors</param>
-    /// <returns>Result option with errors</returns>  
-    public TOption ConcatErrors(IEnumerable<IRError> errors) =>
-        GetErrorsOrEmpty().Concat(errors).ToList()
-            .Map(Initialize);
+    /// <typeparam name="TValue">Value</typeparam>
+    /// <returns>Result value</returns>
+    public IRValue<TValue> ToRValue<TValue>(TValue value)
+        where TValue : notnull =>
+        Success
+            ? RValueFactory.Some(value)
+            : RValueFactory.None<TValue>(GetErrors());
+
+    /// <summary>
+    /// Converting to result collection
+    /// </summary>
+    /// <typeparam name="TValue">Value</typeparam>
+    /// <returns>Result collection</returns>
+    public IRList<TValue> ToRList<TValue>(IReadOnlyCollection<TValue> values)
+        where TValue : notnull =>
+        Success
+            ? RListFactory.Some(values)
+            : RListFactory.None<TValue>(GetErrors());
 }

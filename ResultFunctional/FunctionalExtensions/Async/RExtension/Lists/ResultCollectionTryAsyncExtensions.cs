@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Lists;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
 {
@@ -17,16 +18,17 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="func">Collection function</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result collection</returns>
-        public static async Task<IResultCollection<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IEnumerable<TValue>>> func,
-                                                                                             Func<Exception, IRError> exceptionFunc)
+        public static async Task<IRList<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IReadOnlyCollection<TValue>>> func,
+                                                                                  Func<Exception, IRError> exceptionFunc)
+            where TValue : notnull
         {
             try
             {
-                return new ResultCollection<TValue>(await func.Invoke());
+                return await func.Invoke().ToRListTaskAsync();
             }
             catch (Exception ex)
             {
-                return new ResultCollection<TValue>(exceptionFunc(ex));
+                return exceptionFunc(ex).ToRList<TValue>();
             }
         }
 
@@ -37,30 +39,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="func">Collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
-        public static async Task<IResultCollection<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IEnumerable<TValue>>> func,
-                                                                                             IRError error) =>
+        public static async Task<IRList<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IReadOnlyCollection<TValue>>> func,
+                                                                                  IRError error)
+            where TValue : notnull =>
             await ResultCollectionTryAsync(func, error.AppendException);
-
-        /// <summary>
-        /// Execute async function and handle exception with result collection converting
-        /// </summary>
-        /// <typeparam name="TValue">Collection type</typeparam>
-        /// <param name="func">Collection function</param>
-        /// <param name="error">Error</param>
-        /// <returns>Result collection</returns>
-        public static async Task<IResultCollection<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IReadOnlyCollection<TValue>>> func,
-                                                                                             IRError error) =>
-            await ResultCollectionTryAsync(async () => (IEnumerable<TValue>)await func.Invoke(), error);
-
-        /// <summary>
-        /// Execute async function and handle exception with result collection converting
-        /// </summary>
-        /// <typeparam name="TValue">Collection type</typeparam>
-        /// <param name="func">Collection function</param>
-        /// <param name="error">Error</param>
-        /// <returns>Result collection</returns>
-        public static async Task<IResultCollection<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<List<TValue>>> func,
-                                                                                             IRError error) =>
-            await ResultCollectionTryAsync(async () => (IEnumerable<TValue>)await func.Invoke(), error);
     }
 }

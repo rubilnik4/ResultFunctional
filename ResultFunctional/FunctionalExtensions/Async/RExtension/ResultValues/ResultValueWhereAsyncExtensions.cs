@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
 {
@@ -20,12 +22,17 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="okFunc">Function if predicate <see langword="true"/></param>
         /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValueOut>> ResultValueContinueAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
-                                                                                                        Func<TValueIn, bool> predicate,
-                                                                                                        Func<TValueIn, Task<TValueOut>> okFunc,
-                                                                                                        Func<TValueIn, Task<IReadOnlyCollection<IRError>>> badFunc) =>
-            await @this.ResultValueContinueAsync(predicate, okFunc,
-                                                 values => badFunc(values).GetEnumerableTaskAsync());
+        public static async Task<IRValue<TValueOut>> ResultValueContinueAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+                                                                                                   Func<TValueIn, bool> predicate,
+                                                                                                   Func<TValueIn, Task<TValueOut>> okFunc,
+                                                                                                   Func<TValueIn, Task<IReadOnlyCollection<IRError>>> badFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
+            @this.Success
+                ? predicate(@this.GetValue())
+                    ? await okFunc.Invoke(@this.GetValue()).ToRValueTaskAsync()
+                    : await badFunc.Invoke(@this.GetValue()).ToRValueTaskAsync<TValueOut>()
+                : @this.GetErrors().ToRValue<TValueOut>();
 
         /// <summary>
         /// Execute result value async function base on predicate condition
@@ -37,32 +44,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="okFunc">Function if predicate <see langword="true"/></param>
         /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValueOut>> ResultValueContinueAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
+        public static async Task<IRValue<TValueOut>> ResultValueContinueAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
                                                                                                         Func<TValueIn, bool> predicate,
                                                                                                         Func<TValueIn, Task<TValueOut>> okFunc,
-                                                                                                        Func<TValueIn, IEnumerable<IRError>> badFunc) =>
+                                                                                                        Func<TValueIn, IReadOnlyCollection<IRError>> badFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.ResultValueContinueAsync(predicate, okFunc,
-                                                 values => badFunc(values).GetEnumerableTaskAsync());
-
-        /// <summary>
-        /// Execute result value async function base on predicate condition
-        /// </summary>
-        /// <typeparam name="TValueIn">Incoming type</typeparam>
-        /// <typeparam name="TValueOut">Outgoing type</typeparam>
-        /// <param name="this">Incoming result value</param>
-        /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
-        /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValueOut>> ResultValueContinueAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
-                                                                                                        Func<TValueIn, bool> predicate,
-                                                                                                        Func<TValueIn, Task<TValueOut>> okFunc,
-                                                                                                        Func<TValueIn, Task<IEnumerable<IRError>>> badFunc) =>
-         @this.OkStatus
-             ? predicate(@this.Value)
-                 ? new ResultValue<TValueOut>(await okFunc.Invoke(@this.Value))
-                 : new ResultValue<TValueOut>(await badFunc.Invoke(@this.Value))
-             : new ResultValue<TValueOut>(@this.Errors);
+                                                 values => badFunc(values).GetCollectionTaskAsync());
 
         /// <summary>
         /// Execute result value async function base on predicate condition returning value in any case
@@ -74,15 +63,17 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="okFunc">Function if predicate <see langword="true"/></param>
         /// <param name="badFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>   
-        public static async Task<IResultValue<TValueOut>> ResultValueWhereAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
+        public static async Task<IRValue<TValueOut>> ResultValueWhereAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
                                                                                                      Func<TValueIn, bool> predicate,
                                                                                                      Func<TValueIn, Task<TValueOut>> okFunc,
-                                                                                                     Func<TValueIn, Task<TValueOut>> badFunc) =>
-         @this.OkStatus
-             ? predicate(@this.Value)
-                 ? new ResultValue<TValueOut>(await okFunc.Invoke(@this.Value))
-                 : new ResultValue<TValueOut>(await badFunc.Invoke(@this.Value))
-             : new ResultValue<TValueOut>(@this.Errors);
+                                                                                                     Func<TValueIn, Task<TValueOut>> badFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
+         @this.Success
+             ? predicate(@this.GetValue())
+                 ? await okFunc.Invoke(@this.GetValue()).ToRValueTaskAsync()
+                 : await badFunc.Invoke(@this.GetValue()).ToRValueTaskAsync()
+             : @this.GetErrors().ToRValue<TValueOut>();
 
         /// <summary>
         /// Execute result value async function depending on result value errors
@@ -93,12 +84,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="okFunc">Function if result value hasn't errors</param>
         /// <param name="badFunc">Function if result value has errors</param>
         /// <returns>Outgoing result value</returns> 
-        public static async Task<IResultValue<TValueOut>> ResultValueOkBadAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
+        public static async Task<IRValue<TValueOut>> ResultValueOkBadAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
                                                                                                      Func<TValueIn, Task<TValueOut>> okFunc,
-                                                                                                     Func<IReadOnlyCollection<IRError>, Task<TValueOut>> badFunc) =>
-            @this.OkStatus
-                ? new ResultValue<TValueOut>(await okFunc.Invoke(@this.Value))
-                : new ResultValue<TValueOut>(await badFunc.Invoke(@this.Errors));
+                                                                                                     Func<IReadOnlyCollection<IRError>, Task<TValueOut>> badFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
+            @this.Success
+                ? await okFunc.Invoke(@this.GetValue()).ToRValueTaskAsync()
+                : await badFunc.Invoke(@this.GetErrors()).ToRValueTaskAsync();
 
         /// <summary>
         /// Execute result value async function if incoming result value hasn't errors
@@ -108,11 +101,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="this">Incoming result value</param>
         /// <param name="okFunc">Function if result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>  
-        public static async Task<IResultValue<TValueOut>> ResultValueOkAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
-                                                                                             Func<TValueIn, Task<TValueOut>> okFunc) =>
-            @this.OkStatus
-                ? new ResultValue<TValueOut>(await okFunc.Invoke(@this.Value))
-                : new ResultValue<TValueOut>(@this.Errors);
+        public static async Task<IRValue<TValueOut>> ResultValueOkAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+                                                                                             Func<TValueIn, Task<TValueOut>> okFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
+            @this.Success
+                ? await okFunc.Invoke(@this.GetValue()).ToRValueTaskAsync()
+                : @this.GetErrors().ToRValue<TValueOut>();
 
         /// <summary>
         /// Execute result value async function if incoming result value has errors
@@ -121,12 +116,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="this">Incoming result value</param>
         /// <param name="badFunc">Function if result value has errors</param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValue>> ResultValueBadAsync<TValue>(this IResultValue<TValue> @this,
-                                                                                   Func<IReadOnlyCollection<IRError>, Task<TValue>> badFunc) =>
-
-            @this.OkStatus
+        public static async Task<IRValue<TValue>> ResultValueBadAsync<TValue>(this IRValue<TValue> @this,
+                                                                                   Func<IReadOnlyCollection<IRError>, Task<TValue>> badFunc)
+            where TValue : notnull =>
+            @this.Success
                 ? @this
-                : new ResultValue<TValue>(await badFunc.Invoke(@this.Errors));
+                : await badFunc.Invoke(@this.GetErrors()).ToRValueTaskAsync();
 
         /// <summary>
         /// Check errors by predicate async to result value if ones hasn't errors
@@ -136,26 +131,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="predicate">Predicate function</param>
         /// <param name="badFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Result value</returns>
-        public static async Task<IResultValue<TValue>> ResultValueCheckErrorsOkAsync<TValue>(this IResultValue<TValue> @this,
-                                                                           Func<TValue, bool> predicate,
-                                                                           Func<TValue, Task<IReadOnlyCollection<IRError>>> badFunc) =>
-             await @this.ResultValueCheckErrorsOkAsync(predicate,
-                                                  values => badFunc(values).GetEnumerableTaskAsync());
-
-        /// <summary>
-        /// Check errors by predicate async to result value if ones hasn't errors
-        /// </summary>
-        /// <typeparam name="TValue">Result type</typeparam>
-        /// <param name="this">Result value</param>
-        /// <param name="predicate">Predicate function</param>
-        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
-        /// <returns>Result value</returns>
-        public static async Task<IResultValue<TValue>> ResultValueCheckErrorsOkAsync<TValue>(this IResultValue<TValue> @this,
-                                                                           Func<TValue, bool> predicate,
-                                                                           Func<TValue, Task<IEnumerable<IRError>>> badFunc) =>
-            await @this.
-            ResultValueContinueAsync(predicate,
-                                     Task.FromResult,
-                                     badFunc);
+        public static async Task<IRValue<TValue>> ResultValueCheckErrorsOkAsync<TValue>(this IRValue<TValue> @this,
+                                                                                        Func<TValue, bool> predicate,
+                                                                                        Func<TValue, Task<IReadOnlyCollection<IRError>>> badFunc)
+            where TValue : notnull =>
+            await @this
+                .ResultValueContinueAsync(predicate,
+                                          Task.FromResult,
+                                          badFunc);
     }
 }

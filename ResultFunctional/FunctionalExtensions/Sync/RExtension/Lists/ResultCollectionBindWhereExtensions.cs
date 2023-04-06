@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Lists;
+using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists
@@ -112,7 +113,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists
         /// <param name="okFunc">Error function if incoming result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
         public static IRList<TValue> ResultCollectionBindErrorsOk<TValue>(this IRList<TValue> @this,
-                                                                          Func<IReadOnlyCollection<TValue>, IRUnit> okFunc) 
+                                                                          Func<IReadOnlyCollection<TValue>, IROption> okFunc) 
             where TValue : notnull =>
             @this.
             ResultCollectionBindOk(collection => okFunc.Invoke(collection).ToRList(collection));

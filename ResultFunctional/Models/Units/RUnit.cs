@@ -1,5 +1,4 @@
 ﻿using ResultFunctional.Models.Constants;
-using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Values;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ namespace ResultFunctional.Models.Units;
 /// <summary>
 /// Result with unit value
 /// </summary>
-internal class RUnit : ROption<Unit, IRUnit>, IRUnit
+internal class RUnit : RBase<Unit, IRUnit>, IRUnit
 {
     protected RUnit()
         : base(Unit.Value)

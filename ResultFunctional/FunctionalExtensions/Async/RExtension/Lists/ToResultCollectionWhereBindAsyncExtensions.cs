@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Lists;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
 {
@@ -18,9 +19,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValue>> ToResultCollectionWhereBindAsync<TValue>(this Task<IEnumerable<TValue>> @this,
-                                                                                            Func<IEnumerable<TValue>, bool> predicate,
-                                                                                            Func<IEnumerable<TValue>, Task<IRError>> badFunc)
+        public static async Task<IRList<TValue>> ToResultCollectionWhereBindAsync<TValue>(this Task<IEnumerable<TValue>> @this,
+                                                                                          Func<IEnumerable<TValue>, bool> predicate,
+                                                                                          Func<IEnumerable<TValue>, Task<IRError>> badFunc)
             where TValue : notnull =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ToResultCollectionWhereAsync(predicate, badFunc));
@@ -33,7 +34,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValue>> ToResultCollectionWhereBindAsync<TValue>(this Task<IReadOnlyCollection<TValue>> @this,
+        public static async Task<IRList<TValue>> ToResultCollectionWhereBindAsync<TValue>(this Task<IReadOnlyCollection<TValue>> @this,
                                                                                             Func<IEnumerable<TValue>, bool> predicate,
                                                                                             Func<IEnumerable<TValue>, Task<IRError>> badFunc)
             where TValue : notnull =>

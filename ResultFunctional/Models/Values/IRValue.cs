@@ -1,4 +1,4 @@
-﻿using ResultFunctional.Models.Options;
+﻿using ResultFunctional.Models.Base;
 using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.Models.Values;
@@ -7,7 +7,7 @@ namespace ResultFunctional.Models.Values;
 /// Result with value
 /// </summary>
 /// <typeparam name="TValue">Value</typeparam>
-public interface IRValue<out TValue>: IROption<TValue, IRValue<TValue>>
+public interface IRValue<out TValue>: IRBase<TValue, IRValue<TValue>>
     where TValue : notnull
 {
     /// <summary>

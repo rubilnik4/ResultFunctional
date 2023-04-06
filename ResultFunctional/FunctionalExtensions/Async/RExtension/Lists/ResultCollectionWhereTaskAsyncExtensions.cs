@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Lists;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
 {
@@ -20,10 +22,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="okFunc">Function if predicate <see langword="true"/></param>
         /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>           
-        public static async Task<IResultCollection<TValueOut>> ResultCollectionContinueTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
-                                                                                                            Func<IReadOnlyCollection<TValueIn>, bool> predicate,
-                                                                                                            Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> okFunc,
-                                                                                                            Func<IReadOnlyCollection<TValueIn>, IEnumerable<IRError>> badFunc) =>
+        public static async Task<IRList<TValueOut>> ResultCollectionContinueTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+                                                                                                           Func<IReadOnlyCollection<TValueIn>, bool> predicate,
+                                                                                                           Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> okFunc,
+                                                                                                           Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> badFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionContinue(predicate, okFunc, badFunc));
 
@@ -37,10 +41,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="okFunc">Function if predicate <see langword="true"/></param>
         /// <param name="badFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValueOut>> ResultCollectionWhereTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
+        public static async Task<IRList<TValueOut>> ResultCollectionWhereTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
-                                                                                                            Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> okFunc,
-                                                                                                            Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> badFunc) =>
+                                                                                                            Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> okFunc,
+                                                                                                            Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> badFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionWhere(predicate, okFunc, badFunc));
 
@@ -53,9 +59,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="okFunc">Function if result collection hasn't errors</param>
         /// <param name="badFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result collection</returns>     
-        public static async Task<IResultCollection<TValueOut>> ResultCollectionOkBadTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
-                                                                                                         Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> okFunc,
-                                                                                                         Func<IReadOnlyCollection<IRError>, IEnumerable<TValueOut>> badFunc) =>
+        public static async Task<IRList<TValueOut>> ResultCollectionOkBadTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+                                                                                                         Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> okFunc,
+                                                                                                         Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValueOut>> badFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionOkBad(okFunc, badFunc));
 
@@ -67,8 +75,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="okFunc">Function if result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValueOut>> ResultCollectionOkTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
-                                                                                                      Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> okFunc) =>
+        public static async Task<IRList<TValueOut>> ResultCollectionOkTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+                                                                                                      Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> okFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionOk(okFunc));
 
@@ -79,8 +89,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="badFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result collection</returns>  
-        public static async Task<IResultCollection<TValue>> ResultCollectionBadTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this,
-                                                                                       Func<IReadOnlyCollection<IRError>, IEnumerable<TValue>> badFunc) =>
+        public static async Task<IRList<TValue>> ResultCollectionBadTaskAsync<TValue>(this Task<IRList<TValue>> @this,
+                                                                                       Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValue>> badFunc)
+            where TValue : notnull =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionBad(badFunc));
 
@@ -92,9 +103,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="badFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Result collection</returns>
-        public static async Task<IResultCollection<TValue>> ResultCollectionCheckErrorsOkTaskAsync<TValue>(this Task<IResultCollection<TValue>> @this,
+        public static async Task<IRList<TValue>> ResultCollectionCheckErrorsOkTaskAsync<TValue>(this Task<IRList<TValue>> @this,
                                                                            Func<IReadOnlyCollection<TValue>, bool> predicate,
-                                                                           Func<IReadOnlyCollection<TValue>, IEnumerable<IRError>> badFunc) =>
+                                                                           Func<IReadOnlyCollection<TValue>, IReadOnlyCollection<IRError>> badFunc)
+            where TValue : notnull =>
              await @this.
              MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionCheckErrorsOk(predicate, badFunc));
     }

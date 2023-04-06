@@ -137,6 +137,17 @@ public static class ToResultCollectionTaskAsyncExtensions
         MapTaskAsync(awaitedThis => awaitedThis.ToRList<TValue>());
 
     /// <summary>
+    /// Converting task error to result collection
+    /// </summary>
+    /// <typeparam name="TValue">Result type</typeparam>
+    /// <param name="this">Incoming errors</param>
+    /// <returns>Outgoing result collection</returns>
+    public static async Task<IRList<TValue>> ToRListTaskAsync<TValue>(this Task<IRError> @this)
+        where TValue : notnull =>
+        await @this.
+            MapTaskAsync(awaitedThis => awaitedThis.ToRList<TValue>());
+
+    /// <summary>
     /// Converting task result unit to result collection
     /// </summary>
     /// <typeparam name="TValue">Result type</typeparam>
@@ -154,7 +165,7 @@ public static class ToResultCollectionTaskAsyncExtensions
     /// <typeparam name="TValue">Result type</typeparam>
     /// <param name="this">Incoming collection</param>
     /// <returns>Outgoing result collection</returns>
-    public static async Task<IRList<TValue>> ToRListTaskAsync<TValue>(Task<IReadOnlyCollection<TValue>> @this)
+    public static async Task<IRList<TValue>> ToRListTaskAsync<TValue>(this Task<IReadOnlyCollection<TValue>> @this)
         where TValue : notnull =>
         await @this.
         MapTaskAsync(awaitedThis => awaitedThis.ToRList());

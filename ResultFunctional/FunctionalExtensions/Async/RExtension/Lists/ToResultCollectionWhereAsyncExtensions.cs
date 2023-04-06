@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Lists;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
 {
@@ -18,13 +20,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValue>> ToResultCollectionWhereAsync<TValue>(this IEnumerable<TValue> @this,
-                                                                                            Func<IEnumerable<TValue>, bool> predicate,
-                                                                                            Func<IEnumerable<TValue>, Task<IRError>> badFunc)
+        public static async Task<IRList<TValue>> ToResultCollectionWhereAsync<TValue>(this IEnumerable<TValue> @this,
+                                                                                      Func<IEnumerable<TValue>, bool> predicate,
+                                                                                      Func<IEnumerable<TValue>, Task<IRError>> badFunc)
             where TValue : notnull =>
             await @this.WhereContinueAsync(predicate,
-                                           value => Task.FromResult(new ResultCollection<TValue>(value)),
-                                           value => badFunc(value).
-                                                    MapTaskAsync(error => new ResultCollection<TValue>(error)));
+                                           value => value.ToRList().ToTask(),
+                                           value => badFunc(value).ToRListTaskAsync<TValue>());
     }
 }

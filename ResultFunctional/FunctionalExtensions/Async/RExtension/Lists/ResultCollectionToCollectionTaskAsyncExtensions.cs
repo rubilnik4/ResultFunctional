@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Lists;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
 {
@@ -19,9 +21,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="okFunc">Function if incoming result collection hasn't errors</param>
         /// <param name="badFunc">Function if incoming result collection has errors</param>
         /// <returns>Outgoing collection</returns> 
-        public static async Task<IReadOnlyCollection<TValueOut>> ResultCollectionToCollectionOkBadTaskAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
-                                                                                                                                Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> okFunc,
-                                                                                                                                Func<IReadOnlyCollection<IRError>, IEnumerable<TValueOut>> badFunc) =>
+        public static async Task<IReadOnlyCollection<TValueOut>> ResultCollectionToCollectionOkBadTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+                                                                                                                                Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> okFunc,
+                                                                                                                                Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValueOut>> badFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionToCollectionOkBad(okFunc, badFunc));
     }

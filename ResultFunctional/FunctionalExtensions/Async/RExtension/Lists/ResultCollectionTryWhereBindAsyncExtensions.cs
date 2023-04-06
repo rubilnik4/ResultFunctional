@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Lists;
 using static ResultFunctional.FunctionalExtensions.Async.RExtension.Lists.ResultCollectionTryAsyncExtensions;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
@@ -20,26 +21,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="func">Collection function</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
-                                                                                                     Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
-                                                                                                     Func<Exception, IRError> exceptionFunc) =>
-            await @this.ResultCollectionTryOkBindAsync(values => func(values).GetEnumerableTaskAsync(),
-                                                       exceptionFunc);
-
-        /// <summary>
-        /// Execute async function and handle exception with task result collection concat
-        /// </summary>
-        /// <typeparam name="TValueIn">Incoming type</typeparam>
-        /// <typeparam name="TValueOut">Outgoing type</typeparam>
-        /// <param name="this">Incoming result collection</param>
-        /// <param name="func">Collection function</param>
-        /// <param name="exceptionFunc">Function converting exception to error</param>
-        /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
-                                                                                                     Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> func,
-                                                                                                     Func<Exception, IRError> exceptionFunc) =>
+        public static async Task<IRList<TValueOut>> ResultCollectionTryOkBindAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+                                                                                                        Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
+                                                                                                        Func<Exception, IRError> exceptionFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.
-            ResultCollectionBindOkBindAsync(value => ResultCollectionTryAsync(() => func.Invoke(value), exceptionFunc));
+                ResultCollectionBindOkBindAsync(value => ResultCollectionTryAsync(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
         /// Execute async function and handle exception with task result collection concat
@@ -50,24 +38,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="func">Collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
+        public static async Task<IRList<TValueOut>> ResultCollectionTryOkBindAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
                                                                                                      Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
-                                                                                                     IRError error) =>
-            await @this.ResultCollectionTryOkBindAsync(values => func(values).GetEnumerableTaskAsync(),
-                                                       error);
-
-        /// <summary>
-        /// Execute async function and handle exception with task result collection concat
-        /// </summary>
-        /// <typeparam name="TValueIn">Incoming type</typeparam>
-        /// <typeparam name="TValueOut">Outgoing type</typeparam>
-        /// <param name="this">Incoming result collection</param>
-        /// <param name="func">Collection function</param>
-        /// <param name="error">Error</param>
-        /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValueOut>> ResultCollectionTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultCollection<TValueIn>> @this,
-                                                                                                     Func<IReadOnlyCollection<TValueIn>, Task<IEnumerable<TValueOut>>> func,
-                                                                                                     IRError error) =>
+                                                                                                     IRError error)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.
             ResultCollectionBindOkBindAsync(value => ResultCollectionTryAsync(() => func.Invoke(value), error));
     }

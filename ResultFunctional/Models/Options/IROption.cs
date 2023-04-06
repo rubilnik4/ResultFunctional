@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Lists;
 using ResultFunctional.Models.Units;
+using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.Models.Options;
-
 /// <summary>
-/// Base result with value
+/// Base result
 /// </summary>
-/// <typeparam name="TValue">Value</typeparam>
-/// <typeparam name="TOption">Base result</typeparam>
-public interface IROption<out TValue, out TOption>
-    where TValue : notnull
-    where TOption : IROption<TValue, TOption>
+public interface IROption
 {
-    /// <summary>
-    /// Value
-    /// </summary>
-    TValue? Value { get; }
-
     /// <summary>
     /// Errors
     /// </summary>
@@ -34,13 +25,6 @@ public interface IROption<out TValue, out TOption>
     /// Has errors
     /// </summary>
     bool Failure { get; }
-
-    /// <summary>
-    /// Get value
-    /// </summary>
-    /// <returns>Value</returns>
-    /// <exception cref="ArgumentNullException">Throw exception if value not found</exception>
-    TValue GetValue();
 
     /// <summary>
     /// Get errors
@@ -60,7 +44,7 @@ public interface IROption<out TValue, out TOption>
     /// </summary>
     /// <typeparam name="TError">Error type</typeparam>
     /// <returns><see langword="true"/> if error equal to the current type; otherwise <see langword="false"/></returns>
-    bool IsError<TError>() 
+    bool IsError<TError>()
         where TError : IRError;
 
     /// <summary>
@@ -68,7 +52,7 @@ public interface IROption<out TValue, out TOption>
     /// </summary>
     /// <typeparam name="TError">Error type</typeparam>
     /// <returns><see langword="true"/> if error equal or derived to the current type; otherwise <see langword="false"/></returns>
-    bool HasError<TError>() 
+    bool HasError<TError>()
         where TError : IRError;
 
     /// <summary>
@@ -82,7 +66,7 @@ public interface IROption<out TValue, out TOption>
     /// </summary>
     /// <typeparam name="TErrorType">Error type</typeparam>
     /// <returns><see langword="true"/> if error type equal to the current error type; otherwise <see langword="false"/></returns>
-    bool HasErrorType<TErrorType>() 
+    bool HasErrorType<TErrorType>()
         where TErrorType : struct;
 
     /// <summary>
@@ -100,7 +84,7 @@ public interface IROption<out TValue, out TOption>
     /// <typeparam name="TErrorType">Error type</typeparam>
     /// <returns>Base error result filtered by error type</returns>
     IRBaseError<TErrorType>? GetErrorByType<TErrorType>()
-        where TErrorType : struct ;
+        where TErrorType : struct;
 
     /// <summary>
     /// Get errors filtered by error type
@@ -108,19 +92,27 @@ public interface IROption<out TValue, out TOption>
     /// <typeparam name="TErrorType">Error type</typeparam>
     /// <returns>Base errors filtered by error type</returns>
     IReadOnlyCollection<IRBaseError<TErrorType>> GetErrorsByTypes<TErrorType>()
-        where TErrorType : struct ;
+        where TErrorType : struct;
 
     /// <summary>
-    /// Add error to result
+    /// Converting to result unit
     /// </summary>
-    /// <param name="error">Error</param>
-    /// <returns>Result with error</returns>    
-    TOption AppendError(IRError error);
+    /// <returns>Result unit</returns>
+    IRUnit ToRUnit();
 
     /// <summary>
-    /// Add errors to result
+    /// Converting to result value
     /// </summary>
-    /// <param name="errors">Errors</param>
-    /// <returns>Result option with errors</returns>  
-    TOption ConcatErrors(IEnumerable<IRError> errors);
+    /// <typeparam name="TValue">Value</typeparam>
+    /// <returns>Result value</returns>
+    IRValue<TValue> ToRValue<TValue>(TValue value) 
+        where TValue : notnull;
+
+    /// <summary>
+    /// Converting to result collection
+    /// </summary>
+    /// <typeparam name="TValue">Value</typeparam>
+    /// <returns>Result collection</returns>
+    IRList<TValue> ToRList<TValue>(IReadOnlyCollection<TValue> values)
+        where TValue : notnull;
 }

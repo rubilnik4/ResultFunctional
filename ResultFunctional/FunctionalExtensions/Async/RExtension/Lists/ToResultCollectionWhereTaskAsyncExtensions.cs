@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Lists;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
 {
@@ -19,9 +20,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValue>> ToResultCollectionWhereTaskAsync<TValue>(this Task<IEnumerable<TValue>> @this,
-                                                                                            Func<IEnumerable<TValue>, bool> predicate,
-                                                                                            Func<IEnumerable<TValue>, IRError> badFunc)
+        public static async Task<IRList<TValue>> ToResultCollectionWhereTaskAsync<TValue>(this Task<IEnumerable<TValue>> @this,
+                                                                                          Func<IEnumerable<TValue>, bool> predicate,
+                                                                                          Func<IEnumerable<TValue>, IRError> badFunc)
             where TValue : notnull =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ToRListWhere(predicate, badFunc));
@@ -34,7 +35,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValue>> ToResultCollectionWhereTaskAsync<TValue>(this Task<IReadOnlyCollection<TValue>> @this,
+        public static async Task<IRList<TValue>> ToResultCollectionWhereTaskAsync<TValue>(this Task<IReadOnlyCollection<TValue>> @this,
                                                                                             Func<IEnumerable<TValue>, bool> predicate,
                                                                                             Func<IEnumerable<TValue>, IRError> badFunc)
             where TValue : notnull =>

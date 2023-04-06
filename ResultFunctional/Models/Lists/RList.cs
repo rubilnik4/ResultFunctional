@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
@@ -34,6 +33,13 @@ internal class RList<TValue>: RValue<IReadOnlyCollection<TValue>>, IRList<TValue
     /// <returns>Result option</returns>
     protected override IRList<TValue> Initialize(IReadOnlyCollection<IRError> errors) =>
         new RList<TValue>(errors);
+
+    /// <summary>
+    /// Converting to result value
+    /// </summary>
+    /// <returns>Result value</returns>
+    public IRValue<IReadOnlyCollection<TValue>> ToRValue() =>
+        this;
 
     /// <summary>
     /// Initialize result collection by values

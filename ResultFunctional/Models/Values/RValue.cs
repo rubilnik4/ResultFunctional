@@ -1,7 +1,7 @@
-﻿using ResultFunctional.Models.Options;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ResultFunctional.Models.Base;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Units;
 
@@ -11,7 +11,7 @@ namespace ResultFunctional.Models.Values;
 /// Result with value
 /// </summary>
 /// <typeparam name="TValue">Value</typeparam>
-internal class RValue<TValue> : ROption<TValue, IRValue<TValue>>, IRValue<TValue>
+internal class RValue<TValue> : RBase<TValue, IRValue<TValue>>, IRValue<TValue>
     where TValue : notnull
 {
     protected RValue(TValue value)
