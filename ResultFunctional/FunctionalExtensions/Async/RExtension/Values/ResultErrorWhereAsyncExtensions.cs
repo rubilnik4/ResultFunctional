@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values;
 
@@ -17,25 +19,12 @@ public static class ResultErrorWhereAsyncExtensions
     /// <param name="predicate">Predicate function</param>
     /// <param name="badFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
-    public static async Task<IResultError> ResultErrorCheckErrorsOkAsync(this IResultError @this,
+    public static async Task<IRUnit> ResultErrorCheckErrorsOkAsync(this IRUnit @this,
                                                                          Func<bool> predicate,
                                                                          Func<Task<IReadOnlyCollection<IRError>>> badFunc) =>
-        await @this.ResultErrorCheckErrorsOkAsync(predicate,
-                                                  () => badFunc().GetEnumerableTaskAsync());
-
-    /// <summary>
-    /// Check errors by predicate async to result error if ones hasn't errors
-    /// </summary>
-    /// <param name="this">Result error</param>
-    /// <param name="predicate">Predicate function</param>
-    /// <param name="badFunc">Function if predicate <see langword="false"/></param>
-    /// <returns>Result error</returns>
-    public static async Task<IResultError> ResultErrorCheckErrorsOkAsync(this IResultError @this,
-                                                                         Func<bool> predicate,
-                                                                         Func<Task<IEnumerable<IRError>>> badFunc) =>
-        @this.OkStatus
+         @this.Success
              ? predicate()
-                 ? new ResultError()
-                 : new ResultError(await badFunc.Invoke())
-             : new ResultError(@this.Errors);
+                 ? RUnit.Some()
+                 : await badFunc.Invoke().ToRUnitTaskAsync()
+             : @this.GetErrors().ToRUnit();
 }

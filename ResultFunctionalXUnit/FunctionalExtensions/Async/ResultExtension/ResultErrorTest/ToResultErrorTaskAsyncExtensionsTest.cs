@@ -47,7 +47,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             };
             var taskResults = results.Select(Task.FromResult);
 
-            var result = await taskResults.ToResultErrorTaskAsync();
+            var result = await taskResults.ToRUnitTaskAsync();
 
             Assert.True(result.Errors.SequenceEqual(results.SelectMany(resultError => resultError.Errors)));
         }
@@ -65,7 +65,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             };
             var resultsTask = Task.FromResult((IEnumerable<IRError>)results);
 
-            var result = await resultsTask.ToResultErrorTaskAsync();
+            var result = await resultsTask.ToRUnitTaskAsync();
 
             Assert.True(result.Errors.SequenceEqual(results));
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values;
 
@@ -17,22 +18,9 @@ public static class ResultErrorWhereTaskAsyncExtensions
     /// <param name="predicate">Predicate function</param>
     /// <param name="badFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
-    public static async Task<IResultError> ResultErrorCheckErrorsOkBindAsync(this Task<IResultError> @this,
+    public static async Task<IRUnit> ResultErrorCheckErrorsOkBindAsync(this Task<IRUnit> @this,
                                                                          Func<bool> predicate,
                                                                          Func<Task<IReadOnlyCollection<IRError>>> badFunc) =>
-        await @this.ResultErrorCheckErrorsOkBindAsync(predicate,
-                                                  () => badFunc().GetEnumerableTaskAsync());
-
-    /// <summary>
-    /// Check errors by predicate async to task result error if ones hasn't errors
-    /// </summary>
-    /// <param name="this">Result error</param>
-    /// <param name="predicate">Predicate function</param>
-    /// <param name="badFunc">Function if predicate <see langword="false"/></param>
-    /// <returns>Result error</returns>
-    public static async Task<IResultError> ResultErrorCheckErrorsOkBindAsync(this Task<IResultError> @this,
-                                                                         Func<bool> predicate,
-                                                                         Func<Task<IEnumerable<IRError>>> badFunc) =>
-        await @this.
+         await @this.
         MapBindAsync(awaitedThis => awaitedThis.ResultErrorCheckErrorsOkAsync(predicate, badFunc));
 }

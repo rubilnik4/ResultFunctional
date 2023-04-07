@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
 {
@@ -15,7 +16,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="action">Action</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result error</returns>
-        public static async Task<IResultError> ResultErrorTryAsync(Func<Task> action, Func<Exception, IRError> exceptionFunc)
+        public static async Task<IRUnit> ResultErrorTryAsync(Func<Task> action, Func<Exception, IRError> exceptionFunc)
         {
             try
             {
@@ -23,10 +24,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
             }
             catch (Exception ex)
             {
-                return new ResultError(exceptionFunc(ex));
+                return exceptionFunc(ex).ToRUnit();
             }
 
-            return new ResultError();
+            return RUnit.Some();
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="action">Action</param>
         /// <param name="error">Error</param>
         /// <returns>Result error</returns>
-        public static async Task<IResultError> ResultErrorTryAsync(Func<Task> action, IRError error) =>
+        public static async Task<IRUnit> ResultErrorTryAsync(Func<Task> action, IRError error) =>
             await ResultErrorTryAsync(action, error.AppendException);
     }
 }

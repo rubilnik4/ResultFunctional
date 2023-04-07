@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
 {
@@ -17,9 +19,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="okFunc">Function if result error hasn't errors</param>
         /// <param name="badFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IResultError> ResultErrorBindOkBadTaskAsync(this Task<IResultError> @this,
-                                                             Func<IResultError> okFunc,
-                                                             Func<IReadOnlyCollection<IRError>, IResultError> badFunc) =>
+        public static async Task<IRUnit> ResultErrorBindOkBadTaskAsync(this Task<IRUnit> @this, Func<IRUnit> okFunc,
+                                                             Func<IReadOnlyCollection<IRError>, IRUnit> badFunc) =>
            await @this.
            MapTaskAsync(awaitedThis => awaitedThis.ResultErrorBindOkBad(okFunc, badFunc));
 
@@ -29,8 +30,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="this">Incoming result error</param>
         /// <param name="okFunc">Function if result error hasn't errors</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IResultError> ResultErrorBindOkTaskAsync(this Task<IResultError> @this,
-                                                                          Func<IResultError> okFunc) =>
+        public static async Task<IRUnit> ResultErrorBindOkTaskAsync(this Task<IRUnit> @this,
+                                                                          Func<IRUnit> okFunc) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultErrorBindOk(okFunc));
     }

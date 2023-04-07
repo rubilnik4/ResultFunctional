@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
 {
@@ -16,7 +18,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="action">Action</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IResultError> ResultErrorTryOkTaskAsync(this Task<IResultError> @this, Action action,
+        public static async Task<IRUnit> ResultErrorTryOkTaskAsync(this Task<IRUnit> @this, Action action,
                                                                      Func<Exception, IRError> exceptionFunc) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultErrorTryOk(action, exceptionFunc));
@@ -28,7 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="action">Action</param>
         /// <param name="error">Error</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IResultError> ResultErrorTryOkTaskAsync(this Task<IResultError> @this, Action action,
+        public static async Task<IRUnit> ResultErrorTryOkTaskAsync(this Task<IRUnit> @this, Action action,
                                                                          IRError error) =>
             await @this.ResultErrorTryOkTaskAsync(action, _ => error);
     }
