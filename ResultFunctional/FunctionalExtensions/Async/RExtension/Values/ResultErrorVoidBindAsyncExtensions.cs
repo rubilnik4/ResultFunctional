@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
 {
@@ -16,9 +17,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="this">Incoming result error</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns>
-        public static async Task<IResultError> ResultErrorVoidOkBindAsync(this Task<IResultError> @this, Func<Task> action) =>
+        public static async Task<IRUnit> ResultErrorVoidOkBindAsync(this Task<IRUnit> @this, Func<Task> action) =>
             await @this.
-            VoidOkBindAsync(awaitedThis => awaitedThis.OkStatus,
+            VoidOkBindAsync(awaitedThis => awaitedThis.Success,
                             _ => action.Invoke());
 
         /// <summary>
@@ -27,11 +28,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="this">Incoming result error</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns>
-        public static async Task<IResultError> ResultErrorVoidBadBindAsync(this Task<IResultError> @this,
+        public static async Task<IRUnit> ResultErrorVoidBadBindAsync(this Task<IRUnit> @this,
                                                                        Func<IReadOnlyCollection<IRError>, Task> action) =>
             await @this.
-            VoidOkBindAsync(awaitedThis => awaitedThis.HasErrors,
-                            awaitedThis => action.Invoke(awaitedThis.Errors));
+            VoidOkBindAsync(awaitedThis => awaitedThis.Failure,
+                            awaitedThis => action.Invoke(awaitedThis.GetErrors()));
 
         /// <summary>
         /// Execute async action depending on task result errors
@@ -40,13 +41,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="actionOk">Action if result hasn't errors</param>
         /// <param name="actionBad">Action if result has errors</param>
         /// <returns>Unchanged result error</returns>  
-        public static async Task<IResultError> ResultErrorVoidOkBadBindAsync(this Task<IResultError> @this,
+        public static async Task<IRUnit> ResultErrorVoidOkBadBindAsync(this Task<IRUnit> @this,
                                                                          Func<Task> actionOk,
                                                                          Func<IReadOnlyCollection<IRError>, Task> actionBad) =>
             await @this.
-            VoidWhereBindAsync(awaitedThis => awaitedThis.OkStatus,
+            VoidWhereBindAsync(awaitedThis => awaitedThis.Success,
                                _ => actionOk.Invoke(),
-                               awaitedThis => actionBad.Invoke(awaitedThis.Errors));
+                               awaitedThis => actionBad.Invoke(awaitedThis.GetErrors()));
 
         /// <summary>
         /// Execute async action depending on task result errors and predicate
@@ -55,11 +56,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result error</returns>  
-        public static async Task<IResultError> ResultErrorVoidOkWhereBindAsync(this Task<IResultError> @this,
+        public static async Task<IRUnit> ResultErrorVoidOkWhereBindAsync(this Task<IRUnit> @this,
                                                                            Func<bool> predicate,
                                                                            Func<Task> action) =>
             await @this.
-            VoidOkBindAsync(awaitedThis => awaitedThis.OkStatus && predicate(),
+            VoidOkBindAsync(awaitedThis => awaitedThis.Success && predicate(),
                             _ => action.Invoke());
     }
 }

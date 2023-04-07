@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
 {
@@ -16,7 +17,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="action">Action</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IResultError> ResultErrorTryOkBindAsync(this Task<IResultError> @this, Func<Task> action,
+        public static async Task<IRUnit> ResultErrorTryOkBindAsync(this Task<IRUnit> @this, Func<Task> action,
                                                                      Func<Exception, IRError> exceptionFunc) =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultErrorTryOkAsync(action, exceptionFunc));
@@ -28,7 +29,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="action">Action</param>
         /// <param name="error">Error</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IResultError> ResultErrorTryOkBindAsync(this Task<IResultError> @this, Func<Task> action,
+        public static async Task<IRUnit> ResultErrorTryOkBindAsync(this Task<IRUnit> @this, Func<Task> action,
                                                                          IRError error) =>
             await @this.ResultErrorTryOkBindAsync(action, _ => error);
     }

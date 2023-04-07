@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Units;
+using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
 {
@@ -15,26 +17,26 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// </summary>
         /// <param name="this">Result error collection</param>
         /// <returns>Result error</returns>
-        public static async Task<IResultError> ToResultErrorTaskAsync(this Task<IEnumerable<IResultError>> @this) =>
+        public static async Task<IRUnit> ToRUnitTaskAsync(this Task<IEnumerable<IRUnit>> @this) =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.ToResultError());
+            MapTaskAsync(awaitedThis => awaitedThis.ToRUnit());
 
         /// <summary>
         /// Merge task result errors collection
         /// </summary>
         /// <param name="this">Result error collection</param>
         /// <returns>Result error</returns>
-        public static async Task<IResultError> ToResultErrorTaskAsync(this Task<IReadOnlyCollection<IResultError>> @this) =>
+        public static async Task<IRUnit> ToRUnitTaskAsync(this Task<IReadOnlyCollection<IRUnit>> @this) =>
             await @this.
-            MapTaskAsync(awaitedThis => (IEnumerable<IResultError>)awaitedThis).
-            ToResultErrorTaskAsync();
+            MapTaskAsync(awaitedThis => (IEnumerable<IRUnit>)awaitedThis).
+            ToRUnitTaskAsync();
 
         /// <summary>
         /// Merge errors collection
         /// </summary>
         /// <param name="this">Error collection</param>
         /// <returns>Result error</returns>
-        public static async Task<IResultError> ToResultErrorTaskAsync(this Task<IEnumerable<IRError>> @this) =>
+        public static async Task<IRUnit> ToRUnitTaskAsync(this Task<IEnumerable<IRError>> @this) =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ToRUnit());
 
@@ -43,23 +45,24 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// </summary>
         /// <param name="this">Error collection</param>
         /// <returns>Result error</returns>
-        public static async Task<IResultError> ToResultErrorTaskAsync(this Task<IReadOnlyCollection<IRError>> @this) =>
+        public static async Task<IRUnit> ToRUnitTaskAsync(this Task<IReadOnlyCollection<IRError>> @this) =>
             await @this.
             MapTaskAsync(awaitedThis => (IEnumerable<IRError>)awaitedThis).
-            ToResultErrorTaskAsync();
+            ToRUnitTaskAsync();
 
         /// <summary>
         /// Преобразовать в результирующий ответ
         /// </summary>  
-        public static async Task<IResultError> ToResultErrorTaskAsync(this IEnumerable<Task<IResultError>> @this) =>
+        public static async Task<IRUnit> ToRUnitTaskAsync(this IEnumerable<Task<IRUnit>> @this) =>
             await Task.WhenAll(@this).
-                       MapTaskAsync(result => result.ToResultError());
+                       MapTaskAsync(result => result.ToRUnit());
 
         /// <summary>
         /// Преобразовать в результирующий ответ
         /// </summary>      
-        public static async Task<IResultError> ToResultErrorTaskAsync<TValue>(this Task<IResultValue<TValue>> @this) =>
+        public static async Task<IRUnit> ToRUnitTaskAsync<TValue>(this Task<IRValue<TValue>> @this)
+            where TValue : notnull =>
             await @this.
-                MapTaskAsync(awaitedThis => awaitedThis);
+                MapTaskAsync(awaitedThis => awaitedThis.ToRUnit());
     }
 }

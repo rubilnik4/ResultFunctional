@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
 {
@@ -16,9 +17,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="this">Incoming result error</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns> 
-        public static async Task<IResultError> ResultErrorVoidOkTaskAsync(this Task<IResultError> @this, Action action) =>
+        public static async Task<IRUnit> ResultErrorVoidOkTaskAsync(this Task<IRUnit> @this, Action action) =>
             await @this.
-            VoidOkTaskAsync(awaitedThis => awaitedThis.OkStatus,
+            VoidOkTaskAsync(awaitedThis => awaitedThis.Success,
                 action: _ => action.Invoke());
 
         /// <summary>
@@ -27,11 +28,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="this">Incoming result error</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns>
-        public static async Task<IResultError> ResultErrorVoidBadTaskAsync(this Task<IResultError> @this,
+        public static async Task<IRUnit> ResultErrorVoidBadTaskAsync(this Task<IRUnit> @this,
                                                                        Action<IReadOnlyCollection<IRError>> action) =>
             await @this.
-            VoidOkTaskAsync(awaitedThis => awaitedThis.HasErrors,
-                action: awaitedThis => action.Invoke(awaitedThis.Errors));
+            VoidOkTaskAsync(awaitedThis => awaitedThis.Failure,
+                action: awaitedThis => action.Invoke(awaitedThis.GetErrors()));
 
         /// <summary>
         /// Execute action depending on task result errors
@@ -40,12 +41,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="actionOk">Action if result hasn't errors</param>
         /// <param name="actionBad">Action if result has errors</param>
         /// <returns>Unchanged result error</returns>   
-        public static async Task<IResultError> ResultErrorVoidOkBadTaskAsync(this Task<IResultError> @this, Action actionOk,
+        public static async Task<IRUnit> ResultErrorVoidOkBadTaskAsync(this Task<IRUnit> @this, Action actionOk,
                                                                              Action<IReadOnlyCollection<IRError>> actionBad) =>
             await @this.
-            VoidWhereTaskAsync(awaitedThis => awaitedThis.OkStatus,
+            VoidWhereTaskAsync(awaitedThis => awaitedThis.Success,
                 actionOk: _ => actionOk.Invoke(),
-                actionBad: awaitedThis => actionBad.Invoke(awaitedThis.Errors));
+                actionBad: awaitedThis => actionBad.Invoke(awaitedThis.GetErrors()));
 
         /// <summary>
         /// Execute action depending on task result errors and predicate
@@ -54,11 +55,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result error</returns>  
-        public static async Task<IResultError> ResultErrorVoidOkWhereTaskAsync(this Task<IResultError> @this,
+        public static async Task<IRUnit> ResultErrorVoidOkWhereTaskAsync(this Task<IRUnit> @this,
                                                                            Func<bool> predicate,
                                                                            Action action) =>
             await @this.
-            VoidOkTaskAsync(awaitedThis=> awaitedThis.OkStatus && predicate(),
+            VoidOkTaskAsync(awaitedThis=> awaitedThis.Success && predicate(),
                 action: _ => action.Invoke());
     }
 }
