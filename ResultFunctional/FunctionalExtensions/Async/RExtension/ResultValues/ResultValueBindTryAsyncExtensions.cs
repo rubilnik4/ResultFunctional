@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
 {
@@ -16,8 +17,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="func">Result value function</param>
         /// <param name="exceptionFunc">Exception function</param>
         /// <returns>Result value</returns>
-        public static async Task<IResultValue<TValue>> ResultValueBindTryAsync<TValue>(Func<Task<IResultValue<TValue>>> func,
-                                                                                       Func<Exception, IRError> exceptionFunc)
+        public static async Task<IRValue<TValue>> ResultValueBindTryAsync<TValue>(Func<Task<IRValue<TValue>>> func,
+                                                                                  Func<Exception, IRError> exceptionFunc)
+            where TValue : notnull
         {
             try
             {
@@ -25,7 +27,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
             }
             catch (Exception ex)
             {
-                return new ResultValue<TValue>(exceptionFunc(ex));
+                return exceptionFunc(ex).ToRValue<TValue>();
             }
         }
 
@@ -36,8 +38,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="func">Result value function</param>
         /// <param name="error">Error</param>
         /// <returns>Result value</returns>
-        public static async Task<IResultValue<TValue>> ResultValueBindTryAsync<TValue>(Func<Task<IResultValue<TValue>>> func,
-                                                                                       IRError error) =>
+        public static async Task<IRValue<TValue>> ResultValueBindTryAsync<TValue>(Func<Task<IRValue<TValue>>> func,
+                                                                                  IRError error)
+            where TValue : notnull =>
              await ResultValueBindTryAsync(func, error.AppendException);
     }
 }

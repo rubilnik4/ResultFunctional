@@ -4,6 +4,7 @@ using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
+using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
@@ -61,7 +62,7 @@ public static class ToResultValueTaskAsyncExtensions
         MapTaskAsync(awaitedThis => awaitedThis.ToRValueNullCheck(error));
 
     /// <summary>
-    /// Converting task result error to result value
+    /// Converting task result unit to result value
     /// </summary>
     /// <typeparam name="TValue">Result type</typeparam>
     /// <param name="this">Incoming result error</param>
@@ -71,6 +72,18 @@ public static class ToResultValueTaskAsyncExtensions
         where TValue : notnull =>
         await @this.
         MapTaskAsync(awaitedThis => awaitedThis.ToRValue(value));
+    
+    /// <summary>
+    /// Converting task result to result value
+    /// </summary>
+    /// <typeparam name="TValue">Result type</typeparam>
+    /// <param name="this">Incoming result error</param>
+    /// <param name="value">Value</param>
+    /// <returns>Outgoing result value</returns>
+    public static async Task<IRValue<TValue>> ToRValueTaskAsync<TValue>(this Task<IROption> @this, TValue value)
+        where TValue : notnull =>
+        await @this.
+            MapTaskAsync(awaitedThis => awaitedThis.ToRValue(value));
 
     /// <summary>
     /// Merge task result error with result value

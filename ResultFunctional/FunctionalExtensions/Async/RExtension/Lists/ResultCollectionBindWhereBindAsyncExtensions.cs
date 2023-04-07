@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
+using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
@@ -122,7 +123,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="okFunc">Error function if incoming result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValue>> ResultCollectionBindErrorsOkBindAsync<TValue>(this Task<IRList<TValue>> @this,
-                                                                                               Func<IReadOnlyCollection<TValue>, Task<IRUnit>> okFunc)
+                                                                                               Func<IReadOnlyCollection<TValue>, Task<IROption>> okFunc)
             where TValue : notnull =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultCollectionBindErrorsOkAsync(okFunc));

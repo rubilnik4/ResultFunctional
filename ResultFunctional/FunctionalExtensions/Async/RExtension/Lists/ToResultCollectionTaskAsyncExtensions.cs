@@ -8,6 +8,7 @@ using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Lists;
+using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
@@ -158,6 +159,18 @@ public static class ToResultCollectionTaskAsyncExtensions
         where TValue : notnull =>
         await @this.
         MapTaskAsync(awaitedThis => awaitedThis.ToRList(values));
+
+    /// <summary>
+    /// Converting task result to result collection
+    /// </summary>
+    /// <typeparam name="TValue">Result type</typeparam>
+    /// <param name="this">Incoming errors</param>
+    /// <param name="values">Collection</param>
+    /// <returns>Outgoing result collection</returns>
+    public static async Task<IRList<TValue>> ToRListTaskAsync<TValue>(this Task<IROption> @this, IReadOnlyCollection<TValue> values)
+        where TValue : notnull =>
+        await @this.
+            MapTaskAsync(awaitedThis => awaitedThis.ToRList(values));
 
     /// <summary>
     /// Converting task collection to result collection

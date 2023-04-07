@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
+using ResultFunctional.Models.Lists;
+using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
 {
@@ -16,11 +19,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="this">Incoming result value</param>
         /// <param name="okFunc">Function if incoming result value hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IResultCollection<TValueOut>> ResultValueBindOkToCollectionAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
-                                                                                             Func<TValueIn, Task<IResultCollection<TValueOut>>> okFunc) 
+        public static async Task<IRList<TValueOut>> ResultValueBindOkToCollectionAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+                                                                                                            Func<TValueIn, Task<IRList<TValueOut>>> okFunc)
+            where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            ResultValueBindOkAsync(valueIn => okFunc(valueIn).ToResultValueFromCollectionTaskAsync()).
-            ToResultCollectionTaskAsync();
+            ResultValueBindOkAsync(valueIn => okFunc(valueIn).ToRValueFromCollectionTaskAsync()).
+            ToRListTaskAsync();
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
+using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
@@ -103,7 +104,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="okFunc">Function if incoming result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValueOut>> ResultCollectionBindOkAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                                                Func<IReadOnlyCollection<TValueIn>, Task<IRList<TValueOut>>> okFunc)
+                                                                                                     Func<IReadOnlyCollection<TValueIn>, Task<IRList<TValueOut>>> okFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
@@ -132,7 +133,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         /// <param name="okFunc">Error function if incoming result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValue>> ResultCollectionBindErrorsOkAsync<TValue>(this IRList<TValue> @this,
-                                                                                           Func<IReadOnlyCollection<TValue>, Task<IRUnit>> okFunc)
+                                                                                           Func<IReadOnlyCollection<TValue>, Task<IROption>> okFunc)
             where TValue : notnull =>
             await @this.
                 ResultCollectionBindOkAsync(collection => okFunc.Invoke(collection).ToRListTaskAsync(collection));

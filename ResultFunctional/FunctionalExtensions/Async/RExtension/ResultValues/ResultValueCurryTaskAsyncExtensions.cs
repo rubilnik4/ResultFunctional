@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
 {
@@ -16,8 +18,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="this">Result value one argument high order function</param>
         /// <param name="arg1">Result value argument</param>
         /// <returns>Result value higher order function</returns>
-        public static async Task<IResultValue<Func<TOut>>> ResultValueCurryOkTaskAsync<TIn1, TOut>(this Task<IResultValue<Func<TIn1, TOut>>> @this,
-                                                                                                  IResultValue<TIn1> arg1) =>
+        public static async Task<IRValue<Func<TOut>>> ResultValueCurryOkTaskAsync<TIn1, TOut>(this Task<IRValue<Func<TIn1, TOut>>> @this,
+                                                                                              IRValue<TIn1> arg1)
+            where TIn1 : notnull
+            where TOut : notnull =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueCurryOk(arg1));
 
@@ -30,8 +34,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="this">Result value two arguments high order function</param>
         /// <param name="arg1">Result value argument</param>
         /// <returns>Result value higher order function</returns>
-        public static async Task<IResultValue<Func<TIn2, TOut>>> ResultValueCurryOkTaskAsync<TIn1, TIn2, TOut>(this Task<IResultValue<Func<TIn1, TIn2, TOut>>> @this,
-                                                                                                          IResultValue<TIn1> arg1) =>
+        public static async Task<IRValue<Func<TIn2, TOut>>> ResultValueCurryOkTaskAsync<TIn1, TIn2, TOut>(this Task<IRValue<Func<TIn1, TIn2, TOut>>> @this,
+                                                                                                          IRValue<TIn1> arg1)
+            where TIn1 : notnull
+            where TIn2 : notnull
+            where TOut : notnull =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueCurryOk(arg1));
 
@@ -45,8 +52,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="this">Result value three arguments high order function</param>
         /// <param name="arg1">Result value argument</param>
         /// <returns>Result value higher order function</returns>
-        public static async Task<IResultValue<Func<TIn2, TIn3, TOut>>> ResultValueCurryOkTaskAsync<TIn1, TIn2, TIn3, TOut>(this Task<IResultValue<Func<TIn1, TIn2, TIn3, TOut>>> @this,
-                                                                                                                      IResultValue<TIn1> arg1) =>
+        public static async Task<IRValue<Func<TIn2, TIn3, TOut>>> ResultValueCurryOkTaskAsync<TIn1, TIn2, TIn3, TOut>(this Task<IRValue<Func<TIn1, TIn2, TIn3, TOut>>> @this,
+                                                                                                                      IRValue<TIn1> arg1)
+            where TIn1 : notnull
+            where TIn2 : notnull
+            where TIn3 : notnull
+            where TOut : notnull =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueCurryOk(arg1));
 
@@ -61,8 +72,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="this">Result value four arguments high order function</param>
         /// <param name="arg1">Result value argument</param>
         /// <returns>Result value higher order function</returns>
-        public static async Task<IResultValue<Func<TIn2, TIn3, TIn4, TOut>>> ResultValueCurryOkTaskAsync<TIn1, TIn2, TIn3, TIn4, TOut>(this Task<IResultValue<Func<TIn1, TIn2, TIn3, TIn4, TOut>>> @this,
-                                                                                                                                      IResultValue<TIn1> arg1) =>
+        public static async Task<IRValue<Func<TIn2, TIn3, TIn4, TOut>>> ResultValueCurryOkTaskAsync<TIn1, TIn2, TIn3, TIn4, TOut>(this Task<IRValue<Func<TIn1, TIn2, TIn3, TIn4, TOut>>> @this,
+                                                                                                                                      IRValue<TIn1> arg1)
+            where TIn1 : notnull
+            where TIn2 : notnull
+            where TIn3 : notnull
+            where TIn4 : notnull
+            where TOut : notnull =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueCurryOk(arg1));
 
@@ -78,8 +94,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="this">Result value five arguments high order function</param>
         /// <param name="arg1">Result value argument</param>
         /// <returns>Result value higher order function</returns>
-        public static async Task<IResultValue<Func<TIn2, TIn3, TIn4, TIn5, TOut>>> ResultValueCurryOkTaskAsync<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>(this Task<IResultValue<Func<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>>> @this,
-                                                                                                                                              IResultValue<TIn1> arg1) =>
+        public static async Task<IRValue<Func<TIn2, TIn3, TIn4, TIn5, TOut>>> ResultValueCurryOkTaskAsync<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>(this Task<IRValue<Func<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>>> @this,
+                                                                                                                                              IRValue<TIn1> arg1)
+            where TIn1 : notnull
+            where TIn2 : notnull
+            where TIn3 : notnull
+            where TIn4 : notnull
+            where TIn5 : notnull
+            where TOut : notnull =>
             await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ResultValueCurryOk(arg1));
     }
