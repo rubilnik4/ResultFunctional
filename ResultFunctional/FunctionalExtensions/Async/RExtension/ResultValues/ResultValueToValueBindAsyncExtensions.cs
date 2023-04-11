@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
 {
@@ -19,9 +20,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="okFunc">Function if incoming result value hasn't errors</param>
         /// <param name="badFunc">Function if incoming result value has errors</param>
         /// <returns>Outgoing value</returns>
-        public static async Task<TValueOut> ResultValueToValueOkBadBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
+        public static async Task<TValueOut> ResultValueToValueOkBadBindAsync<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
                                                                                     Func<TValueIn, Task<TValueOut>> okFunc,
-                                                                                    Func<IReadOnlyCollection<IRError>, Task<TValueOut>> badFunc) =>
+                                                                                    Func<IReadOnlyCollection<IRError>, Task<TValueOut>> badFunc) 
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueToValueOkBadAsync(okFunc, badFunc));
     }

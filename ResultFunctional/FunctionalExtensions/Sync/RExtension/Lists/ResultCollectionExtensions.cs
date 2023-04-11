@@ -30,7 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists
             where TValue : notnull =>
              @this.SelectMany(result => result.GetValue())
                   .ToRList()
-                  .ConcatErrors(@this.SelectMany(result => result.GetErrors()));
+                  .ConcatErrors(@this.SelectMany(result => result.GetErrors())).Map(tt => tt);
 
     }
 }

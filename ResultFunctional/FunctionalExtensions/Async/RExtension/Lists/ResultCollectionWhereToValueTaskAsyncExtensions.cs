@@ -26,7 +26,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
         public static async Task<IRValue<TValueOut>> ResultCollectionContinueToValueTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
                                                                                                                    Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                                    Func<IReadOnlyCollection<TValueIn>, TValueOut> okFunc,
-                                                                                                                   Func<IReadOnlyCollection<TValueIn>, IEnumerable<IRError>> badFunc)
+                                                                                                                   Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> badFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.ToRValueFromCollectionTaskAsync().

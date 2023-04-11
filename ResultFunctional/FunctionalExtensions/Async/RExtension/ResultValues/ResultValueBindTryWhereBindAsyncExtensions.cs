@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Values;
+using static ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues.ResultValueBindTryAsyncExtensions;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
 {
@@ -18,9 +20,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="func">Monad result value function</param>
         /// <param name="exceptionFunc">Exception function</param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValueOut>> ResultValueBindTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
-                                                                                                       Func<TValueIn, Task<IResultValue<TValueOut>>> func,
-                                                                                                       Func<Exception, IRError> exceptionFunc) =>
+        public static async Task<IRValue<TValueOut>> ResultValueBindTryOkBindAsync<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
+                                                                                                        Func<TValueIn, Task<IRValue<TValueOut>>> func,
+                                                                                                        Func<Exception, IRError> exceptionFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.
             ResultValueBindOkBindAsync(value => ResultValueBindTryAsync(() => func.Invoke(value), exceptionFunc));
 
@@ -33,9 +37,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="func">Monad result value function</param>
         /// <param name="error">Error</param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValueOut>> ResultValueBindTryOkBindAsync<TValueIn, TValueOut>(this Task<IResultValue<TValueIn>> @this,
-                                                                                                       Func<TValueIn, Task<IResultValue<TValueOut>>> func,
-                                                                                                       IRError error) =>
+        public static async Task<IRValue<TValueOut>> ResultValueBindTryOkBindAsync<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
+                                                                                                       Func<TValueIn, Task<IRValue<TValueOut>>> func,
+                                                                                                       IRError error)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             await @this.
             ResultValueBindOkBindAsync(value => ResultValueBindTryAsync(() => func.Invoke(value), error));
     }

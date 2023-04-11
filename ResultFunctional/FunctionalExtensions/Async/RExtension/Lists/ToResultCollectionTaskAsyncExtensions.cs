@@ -105,7 +105,7 @@ public static class ToResultCollectionTaskAsyncExtensions
     public static async Task<IRValue<IReadOnlyCollection<TValue>>> ToRValueFromCollectionTaskAsync<TValue>(this Task<IRList<TValue>> @this)
         where TValue : notnull =>
         await @this.
-        MapTaskAsync(awaitedThis => awaitedThis);
+        MapTaskAsync(awaitedThis => awaitedThis.ToRValue());
 
     /// <summary>
     /// Converting task result collection to result error

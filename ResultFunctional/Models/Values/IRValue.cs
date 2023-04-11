@@ -9,10 +9,4 @@ namespace ResultFunctional.Models.Values;
 /// <typeparam name="TValue">Value</typeparam>
 public interface IRValue<out TValue>: IRBase<TValue, IRValue<TValue>>
     where TValue : notnull
-{
-    /// <summary>
-    /// Convert to result unit
-    /// </summary>
-    /// <returns>Result unit></returns>
-    IRUnit ToRUnit();
-}
+{ }

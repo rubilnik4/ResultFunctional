@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
 {
@@ -19,11 +20,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="okFunc">Function if incoming result value hasn't errors</param>
         /// <param name="badFunc">Function if incoming result value has errors</param>
         /// <returns>Outgoing value</returns>
-        public static async Task<TValueOut> ResultValueToValueOkBadAsync<TValueIn, TValueOut>(this IResultValue<TValueIn> @this,
+        public static async Task<TValueOut> ResultValueToValueOkBadAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
                                                                                     Func<TValueIn, Task<TValueOut>> okFunc,
-                                                                                    Func<IReadOnlyCollection<IRError>, Task<TValueOut>> badFunc) =>
-            @this.OkStatus
-                ? await okFunc.Invoke(@this.Value)
-                : await badFunc.Invoke(@this.Errors);
+                                                                                    Func<IReadOnlyCollection<IRError>, Task<TValueOut>> badFunc) 
+            where TValueIn : notnull
+            where TValueOut : notnull =>
+            @this.Success
+                ? await okFunc.Invoke(@this.GetValue())
+                : await badFunc.Invoke(@this.GetErrors());
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
 {
@@ -16,16 +17,17 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="func">Value function</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result value</returns>
-        public static async Task<IResultValue<TValue>> ResultValueTryAsync<TValue>(Func<Task<TValue>> func,
-                                                                                   Func<Exception, IRError> exceptionFunc)
+        public static async Task<IRValue<TValue>> ResultValueTryAsync<TValue>(Func<Task<TValue>> func,
+                                                                              Func<Exception, IRError> exceptionFunc)
+            where TValue : notnull
         {
             try
             {
-                return new ResultValue<TValue>(await func.Invoke());
+                return await func.Invoke().ToRValueTaskAsync();
             }
             catch (Exception ex)
             {
-                return new ResultValue<TValue>(exceptionFunc(ex));
+                return exceptionFunc(ex).ToRValue<TValue>();
             }
         }
 
@@ -36,7 +38,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="func">Value function</param>
         /// <param name="error">Error</param>
         /// <returns>Result value</returns>
-        public static async Task<IResultValue<TValue>> ResultValueTryAsync<TValue>(Func<Task<TValue>> func, IRError error) =>
+        public static async Task<IRValue<TValue>> ResultValueTryAsync<TValue>(Func<Task<TValue>> func, IRError error)
+            where TValue : notnull =>
             await ResultValueTryAsync(func, error.AppendException);
     }
 }

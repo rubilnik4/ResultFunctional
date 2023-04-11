@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.
-            ResultValueBindOk(okFunc).
+            ResultValueBindOk(value => okFunc(value).ToRValue()).
             ToRList();
     }
 }

@@ -2,6 +2,7 @@
 using ResultFunctional.Models.Values;
 using System.Collections.Generic;
 using System.Linq;
+using ResultFunctional.Models.Base;
 using ResultFunctional.Models.Errors.BaseErrors;
 
 namespace ResultFunctional.Models.Units;

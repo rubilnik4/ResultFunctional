@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
 {
@@ -17,8 +18,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="this">Incoming result value</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result value</returns>
-        public static async Task<IResultValue<TValue>> ResultValueVoidOkBindAsync<TValue>(this Task<IResultValue<TValue>> @this,
-                                                                                     Func<TValue, Task> action) =>
+        public static async Task<IRValue<TValue>> ResultValueVoidOkBindAsync<TValue>(this Task<IRValue<TValue>> @this,
+                                                                                     Func<TValue, Task> action)
+            where TValue : notnull =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueVoidOkAsync(action));
 
@@ -29,8 +31,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="this">Incoming result value</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result value</returns> 
-        public static async Task<IResultValue<TValue>> ResultValueVoidBadBindAsync<TValue>(this Task<IResultValue<TValue>> @this,
-                                                                                      Func<IReadOnlyCollection<IRError>, Task> action) =>
+        public static async Task<IRValue<TValue>> ResultValueVoidBadBindAsync<TValue>(this Task<IRValue<TValue>> @this,
+                                                                                      Func<IReadOnlyCollection<IRError>, Task> action)
+            where TValue : notnull =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueVoidBadAsync(action));
 
@@ -42,9 +45,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="actionOk">Action if result value hasn't errors</param>
         /// <param name="actionBad">Action if result value has errors</param>
         /// <returns>Unchanged result value</returns>  
-        public static async Task<IResultValue<TValue>> ResultValueVoidOkBadBindAsync<TValue>(this Task<IResultValue<TValue>> @this,
+        public static async Task<IRValue<TValue>> ResultValueVoidOkBadBindAsync<TValue>(this Task<IRValue<TValue>> @this,
                                                                                              Func<TValue, Task> actionOk,
-                                                                                             Func<IReadOnlyCollection<IRError>, Task> actionBad) =>
+                                                                                             Func<IReadOnlyCollection<IRError>, Task> actionBad)
+            where TValue : notnull =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueVoidOkBadAsync(actionOk, actionBad));
 
@@ -56,9 +60,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result value</returns>   
-        public static async Task<IResultValue<TValue>> ResultValueVoidOkWhereBindAsync<TValue>(this Task<IResultValue<TValue>> @this,
+        public static async Task<IRValue<TValue>> ResultValueVoidOkWhereBindAsync<TValue>(this Task<IRValue<TValue>> @this,
                                                                                           Func<TValue, bool> predicate,
-                                                                                          Func<TValue, Task> action) =>
+                                                                                          Func<TValue, Task> action)
+            where TValue : notnull =>
             await @this.
             MapBindAsync(awaitedThis => awaitedThis.ResultValueVoidOkWhereAsync(predicate, action));
     }

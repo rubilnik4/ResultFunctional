@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using ResultFunctional.Models.Base;
+using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.Models.Lists;
@@ -7,7 +10,7 @@ namespace ResultFunctional.Models.Lists;
 /// Result with collection
 /// </summary>
 /// <typeparam name="TValue">Value</typeparam>
-public interface IRList<out TValue> : IRValue<IReadOnlyCollection<TValue>>
+public interface IRList<out TValue> : IRBase<IReadOnlyCollection<TValue>, IRList<TValue>>
     where TValue : notnull
 {
     /// <summary>

@@ -33,7 +33,8 @@ public static class ToResultValueTaskAsyncExtensions
     /// <param name="this">Incoming value</param>
     /// <param name="error">Null error</param>
     /// <returns>Outgoing result value</returns>
-    public static async Task<IRValue<TValue>> ToResultValueNullValueCheckTaskAsync<TValue>(this Task<TValue> @this, IRError error) =>
+    public static async Task<IRValue<TValue>> ToResultValueNullValueCheckTaskAsync<TValue>(this Task<TValue> @this, IRError error)
+        where TValue : notnull =>
         await @this.
         MapTaskAsync(awaitedThis => awaitedThis.ToRValueNullValueCheck(error));
 
@@ -104,6 +105,17 @@ public static class ToResultValueTaskAsyncExtensions
     /// <param name="this">Incoming errors</param>
     /// <returns>Outgoing result collection</returns>
     public static async Task<IRValue<TValue>> ToRValueTaskAsync<TValue>(this Task<IReadOnlyCollection<IRError>> @this)
+        where TValue : notnull =>
+        await @this.
+            MapTaskAsync(awaitedThis => awaitedThis.ToRValue<TValue>());
+
+    /// <summary>
+    /// Converting task errors to result collection
+    /// </summary>
+    /// <typeparam name="TValue">Result type</typeparam>
+    /// <param name="this">Incoming errors</param>
+    /// <returns>Outgoing result collection</returns>
+    public static async Task<IRValue<TValue>> ToRValueTaskAsync<TValue>(this Task<IRError> @this)
         where TValue : notnull =>
         await @this.
             MapTaskAsync(awaitedThis => awaitedThis.ToRValue<TValue>());

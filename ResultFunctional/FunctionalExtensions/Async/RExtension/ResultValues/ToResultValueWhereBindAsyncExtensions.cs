@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
 {
@@ -17,9 +18,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="predicate">Predicate function</param>
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValue>> ToResultValueWhereBindAsync<TValue>(this Task<TValue> @this,
-                                                                                           Func<TValue, bool> predicate,
-                                                                                           Func<TValue, Task<IRError>> badFunc)
+        public static async Task<IRValue<TValue>> ToResultValueWhereBindAsync<TValue>(this Task<TValue> @this,
+                                                                                      Func<TValue, bool> predicate,
+                                                                                      Func<TValue, Task<IRError>> badFunc)
             where TValue : notnull =>
           await @this.
           MapBindAsync(thisAwaited => thisAwaited.ToResultValueWhereAsync(predicate, badFunc));
@@ -32,7 +33,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="predicate">Predicate function</param>
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValue>> ToResultValueWhereNullBindAsync<TValue>(this Task<TValue?> @this,
+        public static async Task<IRValue<TValue>> ToResultValueWhereNullBindAsync<TValue>(this Task<TValue?> @this,
                                                                                       Func<TValue, bool> predicate,
                                                                                       Func<TValue?, Task<IRError>> badFunc)
             where TValue : class =>
@@ -47,7 +48,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="predicate">Predicate function</param>
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValue>> ToResultValueWhereNullBindAsync<TValue>(this Task<TValue?> @this,
+        public static async Task<IRValue<TValue>> ToResultValueWhereNullBindAsync<TValue>(this Task<TValue?> @this,
                                                                                       Func<TValue, bool> predicate,
                                                                                       Func<TValue?, Task<IRError>> badFunc)
             where TValue : struct =>
@@ -64,7 +65,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="okFunc">Functor function if predicate <see langword="true"/></param>
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValueOut>> ToResultValueWhereNullOkBadBindAsync<TValueIn, TValueOut>(this Task<TValueIn?> @this,
+        public static async Task<IRValue<TValueOut>> ToResultValueWhereNullOkBadBindAsync<TValueIn, TValueOut>(this Task<TValueIn?> @this,
                                                                                       Func<TValueIn, bool> predicate,
                                                                                       Func<TValueIn, Task<TValueOut>> okFunc,
                                                                                       Func<TValueIn?, Task<IRError>> badFunc)
@@ -83,7 +84,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues
         /// <param name="okFunc">Functor function if predicate <see langword="true"/></param>
         /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IResultValue<TValueOut>> ToResultValueWhereNullOkBadBindAsync<TValueIn, TValueOut>(this Task<TValueIn?> @this,
+        public static async Task<IRValue<TValueOut>> ToResultValueWhereNullOkBadBindAsync<TValueIn, TValueOut>(this Task<TValueIn?> @this,
                                                                                       Func<TValueIn, bool> predicate,
                                                                                       Func<TValueIn, Task<TValueOut>> okFunc,
                                                                                       Func<TValueIn?, Task<IRError>> badFunc)
