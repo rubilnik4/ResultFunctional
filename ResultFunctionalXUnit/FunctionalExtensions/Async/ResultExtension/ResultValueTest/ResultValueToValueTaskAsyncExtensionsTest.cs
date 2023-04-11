@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues;
 using ResultFunctional.Models.Factories;
-using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.Models.Enums;
-using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Errors.DatabaseErrors;
+using ResultFunctional.Models.GetErrors().BaseErrors;
+using ResultFunctional.Models.GetErrors().DatabaseErrors;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Implementations.Results;
 using Xunit;
@@ -23,9 +23,9 @@ namespace ResultFunctionalXUnit.Models.Results
         {
             var resultError = new ResultError();
 
-            Assert.True(resultError.OkStatus);
-            Assert.False(resultError.HasErrors);
-            Assert.Empty(resultError.Errors);
+            Assert.True(resultError.Success);
+            Assert.False(resultError.Failure);
+            Assert.Empty(resultError.GetErrors());
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace ResultFunctionalXUnit.Models.Results
         {
             var resultError = new ResultError(CreateErrorTest());
 
-            Assert.False(resultError.OkStatus);
-            Assert.True(resultError.HasErrors);
-            Assert.Single(resultError.Errors);
+            Assert.False(resultError.Success);
+            Assert.True(resultError.Failure);
+            Assert.Single(resultError.GetErrors());
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace ResultFunctionalXUnit.Models.Results
 
             var resultErrorConcat = resultErrorInitial.AppendError(errorToConcat);
 
-            Assert.True(resultErrorConcat.HasErrors);
-            Assert.Equal(1, resultErrorConcat.Errors.Count);
-            Assert.True(errorToConcat.Equals(resultErrorConcat.Errors.Last()));
+            Assert.True(resultErrorConcat.Failure);
+            Assert.Equal(1, resultErrorConcat.GetErrors().Count);
+            Assert.True(errorToConcat.Equals(resultErrorConcat.GetErrors().Last()));
         }
 
         /// <summary>
@@ -68,9 +68,9 @@ namespace ResultFunctionalXUnit.Models.Results
 
             var resultErrorConcat = resultErrorInitial.ConcatErrors(errorToConcat);
 
-            Assert.True(resultErrorConcat.HasErrors);
-            Assert.Equal(1, resultErrorConcat.Errors.Count);
-            Assert.True(errorToConcat.Equals(resultErrorConcat.Errors.Last()));
+            Assert.True(resultErrorConcat.Failure);
+            Assert.Equal(1, resultErrorConcat.GetErrors().Count);
+            Assert.True(errorToConcat.Equals(resultErrorConcat.GetErrors().Last()));
         }
 
         /// <summary>
@@ -84,9 +84,9 @@ namespace ResultFunctionalXUnit.Models.Results
 
             var resultErrorConcat = resultErrorInitial.ConcatErrors(errorToConcat);
 
-            Assert.True(resultErrorConcat.HasErrors);
-            Assert.Equal(2, resultErrorConcat.Errors.Count);
-            Assert.True(errorToConcat.Equals(resultErrorConcat.Errors.Last()));
+            Assert.True(resultErrorConcat.Failure);
+            Assert.Equal(2, resultErrorConcat.GetErrors().Count);
+            Assert.True(errorToConcat.Equals(resultErrorConcat.GetErrors().Last()));
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void GetErrorTypes()
         {
-            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
+            var valueNotFoundError = RErrorFactory.GetValue()NotFound<string>("value");
             var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);
@@ -137,7 +137,7 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void HasErrorType()
         {
-            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
+            var valueNotFoundError = RErrorFactory.GetValue()NotFound<string>("value");
             var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);
@@ -151,13 +151,13 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void HasErrorTypeByType()
         {
-            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
+            var valueNotFoundError = RErrorFactory.GetValue()NotFound<string>("value");
             var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);
 
-            Assert.True(result.HasErrorType(CommonErrorType.ValueNotFound));
-            Assert.False(result.HasErrorType(CommonErrorType.ValueNotValid));
+            Assert.True(result.HasErrorType(CommonErrorType.GetValue()NotFound));
+            Assert.False(result.HasErrorType(CommonErrorType.GetValue()NotValid));
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void GetErrorType()
         {
-            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
+            var valueNotFoundError = RErrorFactory.GetValue()NotFound<string>("value");
             var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);
@@ -182,7 +182,7 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void GetErrorTypesT()
         {
-            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
+            var valueNotFoundError = RErrorFactory.GetValue()NotFound<string>("value");
             var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
             var result = new ResultError(errors);

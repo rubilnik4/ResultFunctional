@@ -1,11 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
 using static ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues.ResultValueTryAsyncExtensions;
-using static ResultFunctionalXUnit.Data.ErrorData;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.ResultValueTest
 {
@@ -23,8 +21,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             int initialValue = Numbers.Number;
             var resultValue = await ResultValueTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.OkStatus);
-            Assert.Equal(await AsyncFunctions.DivisionAsync(initialValue), resultValue.Value);
+            Assert.True(resultValue.Success);
+            Assert.Equal(await AsyncFunctions.DivisionAsync(initialValue), resultValue.GetValue());
         }
 
         /// <summary>
@@ -36,8 +34,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             const int initialValue = 0;
             var resultValue = await ResultValueTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -49,8 +47,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             int initialValue = Numbers.Number;
             var resultValue = await ResultValueTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.OkStatus);
-            Assert.Equal(await AsyncFunctions.DivisionAsync(initialValue), resultValue.Value);
+            Assert.True(resultValue.Success);
+            Assert.Equal(await AsyncFunctions.DivisionAsync(initialValue), resultValue.GetValue());
         }
 
         /// <summary>
@@ -62,8 +60,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             const int initialValue = 0;
             var resultValue = await ResultValueTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues;
 using ResultFunctional.Models.Factories;
-using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
@@ -27,8 +27,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var numberAfterTry = await numberResult.ResultValueBindTryOkBindAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionError());
 
-            Assert.True(numberAfterTry.OkStatus);
-            Assert.Equal(await AsyncFunctions.DivisionAsync(initialValue), numberAfterTry.Value);
+            Assert.True(numberAfterTry.Success);
+            Assert.Equal(await AsyncFunctions.DivisionAsync(initialValue), numberAfterTry.GetValue());
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var numberAfterTry = await numberResult.ResultValueBindTryOkBindAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionError());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultValue = await numberResult.ResultValueBindTryOkBindAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var numberAfterTry = await numberResult.ResultValueBindTryOkBindAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionError());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -91,8 +91,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var numberAfterTry = await numberResult.ResultValueBindTryOkBindAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionFunc());
 
-            Assert.True(numberAfterTry.OkStatus);
-            Assert.Equal(await AsyncFunctions.DivisionAsync(initialValue), numberAfterTry.Value);
+            Assert.True(numberAfterTry.Success);
+            Assert.Equal(await AsyncFunctions.DivisionAsync(initialValue), numberAfterTry.GetValue());
         }
 
         /// <summary>
@@ -107,8 +107,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var numberAfterTry = await numberResult.ResultValueBindTryOkBindAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionFunc());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -123,8 +123,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultValue = await numberResult.ResultValueBindTryOkBindAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -139,8 +139,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var numberAfterTry = await numberResult.ResultValueBindTryOkBindAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionFunc());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
     }
 }

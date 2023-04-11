@@ -2,7 +2,7 @@
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Values.ResultValueTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtension.GetValue()s.ResultValueTryExtensions;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
 
@@ -22,8 +22,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             int initialValue = Numbers.Number;
             var resultValue = ResultValueTry(() => Division(initialValue), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.OkStatus);
-            Assert.Equal(Division(initialValue), resultValue.Value);
+            Assert.True(resultValue.Success);
+            Assert.Equal(Division(initialValue), resultValue.GetValue());
         }
 
         /// <summary>
@@ -35,8 +35,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             const int initialValue = 0;
             var resultValue = ResultValueTry(() => Division(initialValue), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             int initialValue = Numbers.Number;
             var resultValue = ResultValueTry(() => Division(initialValue), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.OkStatus);
-            Assert.Equal(Division(initialValue), resultValue.Value);
+            Assert.True(resultValue.Success);
+            Assert.Equal(Division(initialValue), resultValue.GetValue());
         }
 
         /// <summary>
@@ -61,8 +61,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             const int initialValue = 0;
             var resultValue = ResultValueTry(() => Division(initialValue), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
     }
 }

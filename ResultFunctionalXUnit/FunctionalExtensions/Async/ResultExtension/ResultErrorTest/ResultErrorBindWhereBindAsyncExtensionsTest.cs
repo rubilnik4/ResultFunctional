@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Values;
 using ResultFunctional.Models.Factories;
-using ResultFunctional.Models.Implementations.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -18,14 +19,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultErrorBindOkBadBindAsync_Ok()
         {
-            var initialResult = new ResultError();
-            var addingResult = new ResultError();
+            var initialResult = RUnitFactory.Some();
+            var addingResult = RUnitFactory.Some();
 
-            var result = await RUnitFactory.CreateTaskResultError(initialResult).
-                               ResultErrorBindOkBadBindAsync(() => RUnitFactory.CreateTaskResultError(addingResult),
-                                                            _ => RUnitFactory.SomeTask(CreateErrorTest()));
+            var result = await RUnitFactory.NoneTask(initialResult).
+                               ResultErrorBindOkBadBindAsync(() => addingResult.ToTask(),
+                                                            _ => RUnitFactory.NoneTask(CreateErrorTest()));
 
-            Assert.True(result.OkStatus);
+            Assert.True(result.Success);
         }
 
         /// <summary>
@@ -34,16 +35,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultErrorBindOkBadBindAsync_Error()
         {
-            var initialResult = new ResultError(CreateErrorListTwoTest());
-            var addingResult = new ResultError();
-            var addingResultBad = new ResultError(CreateErrorTest());
+            var initialResult = RUnitFactory.None(CreateErrorListTwoTest());
+            var addingResult = RUnitFactory.Some();
+            var addingResultBad = RUnitFactory.None(CreateErrorTest());
 
-            var result = await RUnitFactory.CreateTaskResultError(initialResult).
-                               ResultErrorBindOkBadBindAsync(() => RUnitFactory.CreateTaskResultError(addingResult),
-                                                            _ => RUnitFactory.CreateTaskResultError(addingResultBad));
+            var result = await RUnitFactory.NoneTask(initialResult).
+                               ResultErrorBindOkBadBindAsync(() => addingResult.ToTask(),
+                                                            _ => addingResultBad.ToTask());
 
-            Assert.True(result.HasErrors);
-            Assert.Equal(addingResultBad.Errors.Count, result.Errors.Count);
+            Assert.True(result.Failure);
+            Assert.Equal(addingResultBad.GetErrors().Count, result.GetErrors().Count);
         }
 
 
@@ -58,7 +59,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var result = await initialResult.ResultErrorBindOkBindAsync(() => addingResult);
 
-            Assert.True(result.OkStatus);
+            Assert.True(result.Success);
         }
 
         /// <summary>
@@ -69,12 +70,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var initialError = CreateErrorTest();
             var initialResult = RUnitFactory.SomeTask();
-            var addingResult = RUnitFactory.SomeTask(initialError);
+            var addingResult = RUnitFactory.NoneTask(initialError);
 
             var result = await initialResult.ResultErrorBindOkBindAsync(() => addingResult);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(initialError));
+            Assert.True(result.Success);
+            Assert.True(result.GetErrors().First().Equals(initialError));
         }
 
         /// <summary>
@@ -84,12 +85,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultErrorBindOkBindAsync_Bad_NoError()
         {
             var initialError = CreateErrorTest();
-            var initialResult = RUnitFactory.SomeTask(initialError);
+            var initialResult = RUnitFactory.NoneTask(initialError);
             var addingResult = RUnitFactory.SomeTask();
 
             var result = await initialResult.ResultErrorBindOkBindAsync(() => addingResult);
 
-            Assert.True(result.HasErrors);
+            Assert.True(result.Success);
             Assert.True(result.Equals(initialResult.Result));
         }
 
@@ -100,13 +101,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultErrorBindOkBindAsync_Bad_HasError()
         {
             var initialError = CreateErrorTest();
-            var initialResult = RUnitFactory.SomeTask(initialError);
-            var addingResult = RUnitFactory.SomeTask(initialError);
+            var initialResult = RUnitFactory.NoneTask(initialError);
+            var addingResult = RUnitFactory.NoneTask(initialError);
 
             var result = await initialResult.ResultErrorBindOkBindAsync(() => addingResult);
 
-            Assert.True(result.HasErrors);
-            Assert.Single(result.Errors);
+            Assert.True(result.Success);
+            Assert.Single(result.GetErrors());
             Assert.True(result.Equals(initialResult.Result));
         }
     }

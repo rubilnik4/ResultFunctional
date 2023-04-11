@@ -3,8 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues;
-using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -28,8 +27,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var resultString = await initialString!.ToResultValueNullCheckTaskAsync(CreateErrorTest());
 
-            Assert.True(resultString.OkStatus);
-            Assert.Equal(initialString.Result, resultString.Value);
+            Assert.True(resultString.Success);
+            Assert.Equal(initialString.Result, resultString.GetValue());
         }
 
         /// <summary>
@@ -42,8 +41,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var initialError = CreateErrorTest();
             var resultString = await initialString.ToResultValueNullCheckTaskAsync(initialError);
 
-            Assert.True(resultString.HasErrors);
-            Assert.True(resultString.Errors.First().Equals(initialError));
+            Assert.True(resultString.Failure);
+            Assert.True(resultString.GetErrors().First().Equals(initialError));
         }
 
         /// <summary>
@@ -56,8 +55,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var resultString = await initialString.ToResultValueNullValueCheckTaskAsync(CreateErrorTest());
 
-            Assert.True(resultString.OkStatus);
-            Assert.Equal(initialString.Result, resultString.Value);
+            Assert.True(resultString.Success);
+            Assert.Equal(initialString.Result, resultString.GetValue());
         }
 
         /// <summary>
@@ -70,8 +69,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var initialError = CreateErrorTest();
             var resultString = await initialString.ToResultValueNullValueCheckTaskAsync(initialError);
 
-            Assert.True(resultString.HasErrors);
-            Assert.True(resultString.Errors.First().Equals(initialError));
+            Assert.True(resultString.Failure);
+            Assert.True(resultString.GetErrors().First().Equals(initialError));
         }
 
         /// <summary>
@@ -82,12 +81,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             var resultNoError = RUnitFactory.SomeTask();
             const string value = "OkStatus";
-            var resultValue = new ResultValue<string>(value);
+            var resultValue = value.ToRValue();
 
             var resultValueAfter = await resultNoError.ToResultBindValueTaskAsync(resultValue);
 
-            Assert.True(resultValueAfter.OkStatus);
-            Assert.Equal(value, resultValueAfter.Value);
+            Assert.True(resultValueAfter.Success);
+            Assert.Equal(value, resultValueAfter.GetValue());
         }
 
         /// <summary>
@@ -96,16 +95,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ToResultBindValueTaskAsync_HasErrors()
         {
-            var error = ErrorData.CreateErrorTest();
-            var resultHasError = RUnitFactory.SomeTask(error);
+            var error = CreateErrorTest();
+            var resultHasError = RUnitFactory.NoneTask(error);
             const string value = "BadStatus";
-            var resultValue = new ResultValue<string>(value);
+            var resultValue = value.ToRValue();
 
             var resultValueAfter = await resultHasError.ToResultBindValueTaskAsync(resultValue);
 
-            Assert.True(resultValueAfter.HasErrors);
-            Assert.Single(resultValueAfter.Errors);
-            Assert.True(error.Equals(resultValueAfter.Errors.Last()));
+            Assert.True(resultValueAfter.Failure);
+            Assert.Single(resultValueAfter.GetErrors());
+            Assert.True(error.Equals(resultValueAfter.GetErrors().Last()));
         }
 
         /// <summary>
@@ -115,14 +114,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ToResultBindValueTaskAsync_HasErrorsBind()
         {
             var resultNoError = RUnitFactory.SomeTask();
-            var error = ErrorData.CreateErrorTest();
-            var resultValue = new ResultValue<string>(error);
+            var error = CreateErrorTest();
+            var resultValue = error.ToRValue<int>();
 
             var resultValueAfter = await resultNoError.ToResultBindValueTaskAsync(resultValue);
 
-            Assert.True(resultValueAfter.HasErrors);
-            Assert.Single(resultValueAfter.Errors);
-            Assert.True(error.Equals(resultValueAfter.Errors.Last()));
+            Assert.True(resultValueAfter.Failure);
+            Assert.Single(resultValueAfter.GetErrors());
+            Assert.True(error.Equals(resultValueAfter.GetErrors().Last()));
         }
 
         /// <summary>
@@ -131,16 +130,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ToResultValueBindTaskAsync_HasErrorsBindInitial()
         {
-            var error = ErrorData.CreateErrorTest();
-            var resultHasError = RUnitFactory.SomeTask(error);
-            var errors = ErrorData.CreateErrorListTwoTest();
-            var resultValue = new ResultValue<string>(errors);
+            var error = CreateErrorTest();
+            var resultHasError = RUnitFactory.NoneTask(error);
+            var errors = CreateErrorListTwoTest();
+            var resultValue = errors.ToRValue<int>();
 
             var resultValueAfter = await resultHasError.ToResultBindValueTaskAsync(resultValue);
 
-            Assert.True(resultValueAfter.HasErrors);
-            Assert.Single(resultValueAfter.Errors);
-            Assert.True(error.Equals(resultValueAfter.Errors.Last()));
+            Assert.True(resultValueAfter.Failure);
+            Assert.Single(resultValueAfter.GetErrors());
+            Assert.True(error.Equals(resultValueAfter.GetErrors().Last()));
         }
     }
 }

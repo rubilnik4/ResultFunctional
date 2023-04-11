@@ -3,7 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctionalXUnit.Mocks.Interfaces;
 using Moq;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
@@ -22,14 +23,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionVoidOkAsync_Ok_CallVoid()
         {
             var initialCollection = GetRangeNumber();
-            var resultOk = new ResultCollection<int>(initialCollection);
+            var resultOk = initialCollection.ToRList();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOk.ResultCollectionVoidOkAsync(
                 numbers => voidObjectMock.Object.TestNumbersVoidAsync(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultOk));
-            Assert.True(initialCollection.SequenceEqual(resultAfterVoid.Value));
+            Assert.True(initialCollection.SequenceEqual(resultAfterVoid.GetValue()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
 
@@ -40,14 +41,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionVoidOkAsync_Bad_NotCallVoid()
         {
             var initialError = CreateErrorTest();
-            var resultError = new ResultCollection<int>(initialError);
+            var resultError = initialError.ToRList<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultCollectionVoidOkAsync(
                 numbers => voidObjectMock.Object.TestNumbersVoidAsync(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultError));
-            Assert.True(resultAfterVoid.Errors.Last().Equals(initialError));
+            Assert.True(resultAfterVoid.GetErrors().Last().Equals(initialError));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Never);
         }
 
@@ -58,14 +59,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionVoidBadAsync_Ok_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = new ResultCollection<int>(errorsInitial);
+            var resultError = errorsInitial.ToRList<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultCollectionVoidBadAsync(
                 errors => voidObjectMock.Object.TestNumbersVoidAsync(GetListByErrorsCount(errors)));
 
             Assert.True(resultAfterVoid.Equals(resultError));
-            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.Errors));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
 
@@ -76,14 +77,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionVoidBadAsync_Bad_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = new ResultCollection<int>(errorsInitial);
+            var resultError = errorsInitial.ToRList<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultCollectionVoidBadAsync(
                 errors => voidObjectMock.Object.TestNumbersVoidAsync(GetListByErrorsCount(errors)));
 
             Assert.True(resultAfterVoid.Equals(resultError));
-            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.Errors));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
 
@@ -94,14 +95,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionVoidOkBadAsync_Ok()
         {
             var initialCollection = GetRangeNumber();
-            var resultOk = new ResultCollection<int>(initialCollection);
+            var resultOk = initialCollection.ToRList();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOk.ResultCollectionVoidOkBadAsync(numbers => voidObjectMock.Object.TestNumbersVoidAsync(numbers),
                                                                                 _ => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultOk));
-            Assert.Equal(initialCollection, resultAfterVoid.Value);
+            Assert.Equal(initialCollection, resultAfterVoid.GetValue());
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
 
@@ -112,7 +113,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionVoidOkBadAsync_Bad()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = new ResultCollection<int>(errorsInitial);
+            var resultError = errorsInitial.ToRList<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultCollectionVoidOkBadAsync(
@@ -120,7 +121,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 errors => voidObjectMock.Object.TestNumbersVoidAsync(GetListByErrorsCount(errors)));
 
             Assert.True(resultAfterVoid.Equals(resultError));
-            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.Errors));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
 
@@ -131,14 +132,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionVoidOkWhereAsync_Ok_OkPredicate_CallVoid()
         {
             var initialCollection = GetRangeNumber();
-            var resultOk = new ResultCollection<int>(initialCollection);
+            var resultOk = initialCollection.ToRList();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOk.ResultCollectionVoidOkWhereAsync(_ => true,
                 numbers => voidObjectMock.Object.TestNumbersVoidAsync(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultOk));
-            Assert.True(initialCollection.SequenceEqual(resultAfterVoid.Value));
+            Assert.True(initialCollection.SequenceEqual(resultAfterVoid.GetValue()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
 
@@ -149,7 +150,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionVoidOkWhereAsync_Ok_BadPredicate_NotCallVoid()
         {
             var initialCollection = GetRangeNumber();
-            var resultOk = new ResultCollection<int>(initialCollection);
+            var resultOk = initialCollection.ToRList();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOk.ResultCollectionVoidOkWhereAsync(_ => false,
@@ -165,7 +166,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultCollectionVoidOkWhereAsync_Bad_OkPredicate_NotCallVoid()
         {
-            var resultError = new ResultCollection<int>(CreateErrorTest());
+            var resultError = CreateErrorTest().ToRList<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultCollectionVoidOkWhereAsync(_ => true,
@@ -182,7 +183,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultCollectionVoidOkWhereAsync_Bad_BadPredicate_NotCallVoid()
         {
-            var resultError = new ResultCollection<int>(CreateErrorTest());
+            var resultError = CreateErrorTest().ToRList<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultCollectionVoidOkWhereAsync(_ => false,

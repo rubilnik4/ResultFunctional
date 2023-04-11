@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.GetErrors().BaseErrors;
 using ResultFunctional.Models.Implementations.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -20,9 +20,9 @@ namespace ResultFunctionalXUnit.Models.Results
         {
             var resultValue = new ResultValue<string>(CreateErrorTest());
 
-            Assert.False(resultValue.OkStatus);
-            Assert.True(resultValue.HasErrors);
-            Assert.Single(resultValue.Errors);
+            Assert.False(resultValue.Success);
+            Assert.True(resultValue.Failure);
+            Assert.Single(resultValue.GetErrors());
         }
 
         /// <summary>
@@ -34,9 +34,9 @@ namespace ResultFunctionalXUnit.Models.Results
             var errors = CreateErrorListTwoTest();
             var resultValue = new ResultValue<string>(errors);
 
-            Assert.False(resultValue.OkStatus);
-            Assert.True(resultValue.HasErrors);
-            Assert.Equal(errors.Count, resultValue.Errors.Count);
+            Assert.False(resultValue.Success);
+            Assert.True(resultValue.Failure);
+            Assert.Equal(errors.Count, resultValue.GetErrors().Count);
         }
 
         /// <summary>
@@ -47,10 +47,10 @@ namespace ResultFunctionalXUnit.Models.Results
         {
             var resultValue = new ResultValue<string>("OK");
 
-            Assert.True(resultValue.OkStatus);
-            Assert.False(resultValue.HasErrors);
-            Assert.Empty(resultValue.Errors);
-            Assert.True(resultValue.Value != null);
+            Assert.True(resultValue.Success);
+            Assert.False(resultValue.Failure);
+            Assert.Empty(resultValue.GetErrors());
+            Assert.True(resultValue.GetValue() != null);
         }
 
         /// <summary>
@@ -65,10 +65,10 @@ namespace ResultFunctionalXUnit.Models.Results
 
             var resultValueConcat = resultValueInitial.AppendError(errorToConcat);
 
-            Assert.True(resultValueConcat.HasErrors);
-            Assert.Single(resultValueConcat.Errors);
-            Assert.True(errorToConcat.Equals(resultValueConcat.Errors.Last()));
-            Assert.Null(resultValueConcat.Value);
+            Assert.True(resultValueConcat.Failure);
+            Assert.Single(resultValueConcat.GetErrors());
+            Assert.True(errorToConcat.Equals(resultValueConcat.GetErrors().Last()));
+            Assert.Null(resultValueConcat.GetValue());
         }
 
         /// <summary>
@@ -83,10 +83,10 @@ namespace ResultFunctionalXUnit.Models.Results
 
             var resultValueConcat = resultValueInitial.ConcatErrors(errorToConcat);
 
-            Assert.True(resultValueConcat.HasErrors);
-            Assert.Single(resultValueConcat.Errors);
-            Assert.True(errorToConcat.Equals(resultValueConcat.Errors.Last()));
-            Assert.Null(resultValueConcat.Value);
+            Assert.True(resultValueConcat.Failure);
+            Assert.Single(resultValueConcat.GetErrors());
+            Assert.True(errorToConcat.Equals(resultValueConcat.GetErrors().Last()));
+            Assert.Null(resultValueConcat.GetValue());
         }
 
         /// <summary>
@@ -101,10 +101,10 @@ namespace ResultFunctionalXUnit.Models.Results
 
             var resultValueConcat = resultValueInitial.ConcatErrors(errorToConcat);
 
-            Assert.True(resultValueConcat.HasErrors);
-            Assert.Equal(2, resultValueConcat.Errors.Count);
-            Assert.True(initialError.Equals(resultValueConcat.Errors.First()));
-            Assert.Null(resultValueConcat.Value);
+            Assert.True(resultValueConcat.Failure);
+            Assert.Equal(2, resultValueConcat.GetErrors().Count);
+            Assert.True(initialError.Equals(resultValueConcat.GetErrors().First()));
+            Assert.Null(resultValueConcat.GetValue());
         }
 
         /// <summary>
@@ -119,8 +119,8 @@ namespace ResultFunctionalXUnit.Models.Results
 
             var resultValueConcat = resultValueInitial.ConcatErrors(errorsToConcat);
 
-            Assert.True(resultValueConcat.OkStatus);
-            Assert.Equal(value, resultValueConcat.Value);
+            Assert.True(resultValueConcat.Success);
+            Assert.Equal(value, resultValueConcat.GetValue());
         }
     }
 }

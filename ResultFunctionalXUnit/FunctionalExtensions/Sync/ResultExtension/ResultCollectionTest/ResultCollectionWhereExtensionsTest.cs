@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
@@ -20,14 +20,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionContinue_Ok_ReturnNewValue()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = new ResultCollection<int>(initialCollection);
+            var resultCollection = initialCollection.ToRList();
 
             var resultAfterWhere = resultCollection.ResultCollectionContinue(_ => true,
                                                                              okFunc: CollectionToString,
                                                                              badFunc: _ => CreateErrorListTwoTest());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.True(CollectionToString(initialCollection).SequenceEqual(resultAfterWhere.Value));
+            Assert.True(resultAfterWhere.Success);
+            Assert.True(CollectionToString(initialCollection).SequenceEqual(resultAfterWhere.GetValue()));
         }
 
         /// <summary>
@@ -37,15 +37,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionContinue_Ok_ReturnNewError()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = new ResultCollection<int>(initialCollection);
+            var resultCollection = initialCollection.ToRList();
 
             var errorBad = CreateErrorListTwoTest();
             var resultAfterWhere = resultCollection.ResultCollectionContinue(_ => false,
-                                                                             okFunc: _ => String.Empty,
+                                                                             okFunc: CollectionToString,
                                                                              badFunc: _ => errorBad);
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Equal(errorBad.Count, resultAfterWhere.Errors.Count);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Equal(errorBad.Count, resultAfterWhere.GetErrors().Count);
         }
 
         /// <summary>
@@ -55,14 +55,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionContinue_Bad_ReturnNewValue()
         {
             var errorInitial = CreateErrorTest();
-            var resultCollection = new ResultCollection<int>(errorInitial);
+            var resultCollection = errorInitial.ToRList<int>();
 
             var resultAfterWhere = resultCollection.ResultCollectionContinue(_ => true,
-                                                                             okFunc: _ => String.Empty,
+                                                                             okFunc: CollectionToString,
                                                                              badFunc: _ => CreateErrorListTwoTest());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Single(resultAfterWhere.Errors);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Single(resultAfterWhere.GetErrors());
         }
 
         /// <summary>
@@ -72,14 +72,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionContinue_Bad_ReturnNewError()
         {
             var errorsInitial = CreateErrorTest();
-            var resultCollection = new ResultCollection<int>(errorsInitial);
+            var resultCollection = errorsInitial.ToRList<int>();
 
             var resultAfterWhere = resultCollection.ResultCollectionContinue(_ => false,
-                                                                             okFunc: _ => String.Empty,
+                                                                             okFunc: CollectionToString,
                                                                              badFunc: _ => CreateErrorListTwoTest());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Single(resultAfterWhere.Errors);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Single(resultAfterWhere.GetErrors());
         }
 
         /// <summary>
@@ -89,14 +89,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionWhere_Ok_ReturnNewValue()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = new ResultCollection<int>(initialCollection);
+            var resultCollection = initialCollection.ToRList();
 
             var resultAfterWhere = resultCollection.ResultCollectionWhere(_ => true,
                                                                           okFunc: CollectionToString,
                                                                           badFunc: _ => new List<string>());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.True(CollectionToString(initialCollection).SequenceEqual(resultAfterWhere.Value));
+            Assert.True(resultAfterWhere.Success);
+            Assert.True(CollectionToString(initialCollection).SequenceEqual(resultAfterWhere.GetValue()));
         }
 
         /// <summary>
@@ -106,15 +106,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionWhere_Ok_ReturnNewValueByErrors()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = new ResultCollection<int>(initialCollection);
+            var resultCollection = initialCollection.ToRList();
 
             var resultAfterWhere = resultCollection.ResultCollectionWhere(_ => false,
                                                                           okFunc: _ => new List<string>(),
                                                                           badFunc: numbers => new List<string> { numbers.Count.ToString() });
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Single(resultAfterWhere.Value);
-            Assert.Equal(initialCollection.Count.ToString(), resultAfterWhere.Value.First());
+            Assert.True(resultAfterWhere.Success);
+            Assert.Single(resultAfterWhere.GetValue());
+            Assert.Equal(initialCollection.Count.ToString(), resultAfterWhere.GetValue().First());
         }
 
         /// <summary>
@@ -124,14 +124,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionWhere_Ok_ReturnError()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultCollection = new ResultCollection<int>(errorsInitial);
+            var resultCollection = errorsInitial.ToRList<int>();
 
             var resultAfterWhere = resultCollection.ResultCollectionWhere(_ => true,
                 okFunc: _ => new List<string>(),
                 badFunc: errors => new List<string> { errors.Count.ToString() });
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Equal(errorsInitial.Count, resultAfterWhere.Errors.Count);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Equal(errorsInitial.Count, resultAfterWhere.GetErrors().Count);
         }
 
         /// <summary>
@@ -141,14 +141,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionWhere_Bad_ReturnError()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultCollection = new ResultCollection<int>(errorsInitial);
+            var resultCollection = errorsInitial.ToRList<int>();
 
             var resultAfterWhere = resultCollection.ResultCollectionWhere(_ => false,
                 okFunc: _ => new List<string>(),
                 badFunc: errors => new List<string> { errors.Count.ToString() });
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Equal(errorsInitial.Count, resultAfterWhere.Errors.Count);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Equal(errorsInitial.Count, resultAfterWhere.GetErrors().Count);
         }
 
         /// <summary>
@@ -158,13 +158,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionOkBad_Ok_ReturnNewValue()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = new ResultCollection<int>(initialCollection);
+            var resultCollection = initialCollection.ToRList();
 
             var resultAfterWhere = resultCollection.ResultCollectionOkBad(okFunc: CollectionToString,
                                                                           badFunc: _ => new List<string>());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.True(CollectionToString(initialCollection).SequenceEqual(resultAfterWhere.Value));
+            Assert.True(resultAfterWhere.Success);
+            Assert.True(CollectionToString(initialCollection).SequenceEqual(resultAfterWhere.GetValue()));
         }
 
         /// <summary>
@@ -174,15 +174,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionOkBad_Bad_ReturnNewValueByErrors()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultCollection = new ResultCollection<int>(errorsInitial);
+            var resultCollection = errorsInitial.ToRList<int>();
 
             var resultAfterWhere = resultCollection.ResultCollectionOkBad(
                 okFunc: _ => GetEmptyStringList(),
                 badFunc: errors => new List<string> { errors.Count.ToString() });
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Single(resultAfterWhere.Value);
-            Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere.Value.First());
+            Assert.True(resultAfterWhere.Success);
+            Assert.Single(resultAfterWhere.GetValue());
+            Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere.GetValue().First());
         }
 
         /// <summary>
@@ -192,12 +192,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionOk_Ok_ReturnNewValue()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = new ResultCollection<int>(initialCollection);
+            var resultCollection = initialCollection.ToRList();
 
             var resultAfterWhere = resultCollection.ResultCollectionOk(CollectionToString);
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.True(CollectionToString(initialCollection).SequenceEqual(resultAfterWhere.Value));
+            Assert.True(resultAfterWhere.Success);
+            Assert.True(CollectionToString(initialCollection).SequenceEqual(resultAfterWhere.GetValue()));
         }
 
         /// <summary>
@@ -207,12 +207,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionOk_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = new ResultCollection<int>(errorInitial);
+            var resultValue = errorInitial.ToRList<int>();
 
-            var resultAfterWhere = resultValue.ResultValueOk(CollectionToString);
+            var resultAfterWhere = resultValue.ResultCollectionOk(CollectionToString);
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.True(errorInitial.Equals(resultAfterWhere.Errors.Last()));
+            Assert.True(resultAfterWhere.Failure);
+            Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));
         }
 
         /// <summary>
@@ -222,12 +222,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionBad_Ok_ReturnInitial()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = new ResultCollection<int>(initialCollection);
+            var resultCollection = initialCollection.ToRList();
 
             var resultAfterWhere = resultCollection.ResultCollectionBad(GetListByErrorsCount);
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(initialCollection, resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(initialCollection, resultAfterWhere.GetValue());
         }
 
         /// <summary>
@@ -237,12 +237,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionBad_Bad_ReturnNewValueByError()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultValue = new ResultCollection<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRList<int>();
 
             var resultAfterWhere = resultValue.ResultCollectionBad(GetListByErrorsCount);
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(errorsInitial.Count, resultAfterWhere.Value.First());
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(errorsInitial.Count, resultAfterWhere.GetValue().First());
         }
 
         /// <summary>
@@ -252,13 +252,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionCheckErrorsOk_Ok_CheckNoError()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = new ResultCollection<int>(initialCollection);
+            var resultCollection = initialCollection.ToRList();
 
             var resultAfterWhere = resultCollection.ResultCollectionCheckErrorsOk(_ => true,
                                                                                   _ => CreateErrorListTwoTest());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.True(initialCollection.SequenceEqual(resultAfterWhere.Value));
+            Assert.True(resultAfterWhere.Success);
+            Assert.True(initialCollection.SequenceEqual(resultAfterWhere.GetValue()));
         }
 
         /// <summary>
@@ -268,14 +268,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionCheckErrorsOk_Ok_CheckError()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = new ResultCollection<int>(initialCollection);
+            var resultCollection = initialCollection.ToRList();
 
             var errorBad = CreateErrorListTwoTest();
             var resultAfterWhere = resultCollection.ResultCollectionCheckErrorsOk(_ => false,
                                                                                   _ => errorBad);
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Equal(errorBad.Count, resultAfterWhere.Errors.Count);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Equal(errorBad.Count, resultAfterWhere.GetErrors().Count);
         }
 
         /// <summary>
@@ -285,13 +285,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionCheckErrorsOk_Bad_CheckNoError()
         {
             var errorInitial = CreateErrorTest();
-            var resultCollection = new ResultCollection<int>(errorInitial);
+            var resultCollection = errorInitial.ToRList<int>();
 
             var resultAfterWhere = resultCollection.ResultCollectionCheckErrorsOk(_ => true,
                                                                              _ => CreateErrorListTwoTest());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Single(resultAfterWhere.Errors);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Single(resultAfterWhere.GetErrors());
         }
 
         /// <summary>
@@ -301,13 +301,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionCheckErrorsOk_Bad_CheckError()
         {
             var errorsInitial = CreateErrorTest();
-            var resultCollection = new ResultCollection<int>(errorsInitial);
+            var resultCollection = errorsInitial.ToRList<int>();
 
             var resultAfterWhere = resultCollection.ResultCollectionCheckErrorsOk(_ => false,
                                                                              _ => CreateErrorListTwoTest());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Single(resultAfterWhere.Errors);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Single(resultAfterWhere.GetErrors());
         }
     }
 }

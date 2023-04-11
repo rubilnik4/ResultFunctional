@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Values;
+using ResultFunctional.Models.Factories;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -13,12 +14,12 @@ public class ResultErrorWhereAsyncExtensionsTest
     [Fact]
     public async Task ResultErrorCheckErrorsOkAsync_Ok_CheckNoError()
     {
-        var resultError = new ResultError();
+        var resultError = RUnitFactory.Some(); 
 
         var resultAfterWhere = await resultError.ResultErrorCheckErrorsOkAsync(() => true,
                                                                                CreateErrorListTwoTestTask);
 
-        Assert.True(resultAfterWhere.OkStatus);
+        Assert.True(resultAfterWhere.Success);
     }
 
     /// <summary>
@@ -27,14 +28,14 @@ public class ResultErrorWhereAsyncExtensionsTest
     [Fact]
     public async Task ResultErrorCheckErrorsOkAsync_Ok_CheckHasError()
     {
-        var resultError = new ResultError();
+        var resultError = RUnitFactory.Some();
 
         var errorBad = CreateErrorListTwoTestTask();
         var resultAfterWhere = await resultError.ResultErrorCheckErrorsOkAsync(() => false,
                                                                                () => errorBad);
 
-        Assert.True(resultAfterWhere.HasErrors);
-        Assert.Equal(errorBad.Result.Count, resultAfterWhere.Errors.Count);
+        Assert.True(resultAfterWhere.Failure);
+        Assert.Equal(errorBad.Result.Count, resultAfterWhere.GetErrors().Count);
     }
 
     /// <summary>
@@ -44,13 +45,13 @@ public class ResultErrorWhereAsyncExtensionsTest
     public async Task ResultErrorCheckErrorsOkAsync_Bad_CheckNoError()
     {
         var errorInitial = CreateErrorTest();
-        var resultError = new ResultError(errorInitial);
+        var resultError = RUnitFactory.None(errorInitial);
 
         var resultAfterWhere = await resultError.ResultErrorCheckErrorsOkAsync(() => true,
                                                                                CreateErrorListTwoTestTask);
 
-        Assert.True(resultAfterWhere.HasErrors);
-        Assert.Single(resultAfterWhere.Errors);
+        Assert.True(resultAfterWhere.Failure);
+        Assert.Single(resultAfterWhere.GetErrors());
     }
 
     /// <summary>
@@ -60,12 +61,12 @@ public class ResultErrorWhereAsyncExtensionsTest
     public async Task ResultErrorCheckErrorsOkAsync_Bad_CheckHasError()
     {
         var errorsInitial = CreateErrorTest();
-        var resultError = new ResultError(errorsInitial);
+        var resultError = RUnitFactory.None(errorsInitial);
 
         var resultAfterWhere = await resultError.ResultErrorCheckErrorsOkAsync(() => false,
                                                                                CreateErrorListTwoTestTask);
 
-        Assert.True(resultAfterWhere.HasErrors);
-        Assert.Single(resultAfterWhere.Errors);
+        Assert.True(resultAfterWhere.Failure);
+        Assert.Single(resultAfterWhere.GetErrors());
     }
 }

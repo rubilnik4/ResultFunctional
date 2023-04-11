@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Factories;
-using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
@@ -27,8 +26,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultValue = await ResultValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
                                                             Exceptions.ExceptionError());
 
-            Assert.True(resultValue.OkStatus);
-            Assert.Equal(resultValue.Value, await AsyncFunctions.DivisionAsync(initialValue));
+            Assert.True(resultValue.Success);
+            Assert.Equal(resultValue.GetValue(), await AsyncFunctions.DivisionAsync(initialValue));
         }
 
         /// <summary>
@@ -42,8 +41,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultValue = await ResultValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
                                                             Exceptions.ExceptionError());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -57,8 +56,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultValue = await ResultValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
                                                             Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.OkStatus);
-            Assert.Equal(resultValue.Value, await AsyncFunctions.DivisionAsync(initialValue));
+            Assert.True(resultValue.Success);
+            Assert.Equal(resultValue.GetValue(), await AsyncFunctions.DivisionAsync(initialValue));
         }
 
         /// <summary>
@@ -72,8 +71,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultValue = await ResultValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
                                                             Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
     }
 }

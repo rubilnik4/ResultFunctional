@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctional.FunctionalExtensions.Async.RExtension.Lists.ResultCollectionTryAsyncExtensions;
@@ -22,12 +23,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionTryAsyncOk_OkResult_OkTry()
         {
             var initialNumbers = GetRangeNumber();
-            var numbersResult = new ResultCollection<int>(initialNumbers);
+            var numbersResult = initialNumbers.ToRList();
 
             var numbersAfterTry = await numbersResult.ResultCollectionTryOkAsync(DivisionByCollectionAsync, Exceptions.ExceptionError());
 
-            Assert.True(numbersAfterTry.OkStatus);
-            Assert.True((await DivisionByCollectionAsync(initialNumbers)).SequenceEqual(numbersAfterTry.Value));
+            Assert.True(numbersAfterTry.Success);
+            Assert.True((await DivisionByCollectionAsync(initialNumbers)).SequenceEqual(numbersAfterTry.GetValue()));
         }
 
         /// <summary>
@@ -37,12 +38,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionTryAsyncOk_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
-            var numbersResult = new ResultCollection<int>(initialError);
+            var numbersResult = initialError.ToRList<int>();
 
             var numbersAfterTry = await numbersResult.ResultCollectionTryOkAsync(DivisionByCollectionAsync, Exceptions.ExceptionError());
 
-            Assert.True(numbersAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numbersAfterTry.Errors.First()));
+            Assert.True(numbersAfterTry.Failure);
+            Assert.True(initialError.Equals(numbersAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -52,12 +53,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionTryAsyncOk_OkResult_ExceptionTry()
         {
             var initialNumbers = GetRangeNumber();
-            var numberResult =new ResultCollection<int>(initialNumbers);
+            var numberResult = initialNumbers.ToRList();
 
             var resultValue = await numberResult.ResultCollectionTryOkAsync(DivisionCollectionByZeroAsync, Exceptions.ExceptionError());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -67,12 +68,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionTryAsyncOk_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
-            var numbersResult = new ResultCollection<int>(initialError);
+            var numbersResult = initialError.ToRList<int>();
 
             var numberAfterTry = await numbersResult.ResultCollectionTryOkAsync(DivisionCollectionByZeroAsync, Exceptions.ExceptionError());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -82,12 +83,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionTryAsyncOkFunc_OkResult_OkTry()
         {
             var initialNumbers = GetRangeNumber();
-            var numbersResult = new ResultCollection<int>(initialNumbers);
+            var numbersResult = initialNumbers.ToRList();
 
             var numbersAfterTry = await numbersResult.ResultCollectionTryOkAsync(DivisionByCollectionAsync, Exceptions.ExceptionFunc());
 
-            Assert.True(numbersAfterTry.OkStatus);
-            Assert.True((await DivisionByCollectionAsync(initialNumbers)).SequenceEqual(numbersAfterTry.Value));
+            Assert.True(numbersAfterTry.Success);
+            Assert.True((await DivisionByCollectionAsync(initialNumbers)).SequenceEqual(numbersAfterTry.GetValue()));
         }
 
         /// <summary>
@@ -97,12 +98,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionTryAsyncOkFunc_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
-            var numbersResult = new ResultCollection<int>(initialError);
+            var numbersResult = initialError.ToRList<int>();
 
             var numbersAfterTry = await numbersResult.ResultCollectionTryOkAsync(DivisionByCollectionAsync, Exceptions.ExceptionFunc());
 
-            Assert.True(numbersAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numbersAfterTry.Errors.First()));
+            Assert.True(numbersAfterTry.Failure);
+            Assert.True(initialError.Equals(numbersAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -112,12 +113,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionTryAsyncOkFunc_OkResult_ExceptionTry()
         {
             var initialNumbers = GetRangeNumber();
-            var numberResult = new ResultCollection<int>(initialNumbers);
+            var numberResult = initialNumbers.ToRList();
 
             var resultValue = await numberResult.ResultCollectionTryOkAsync(DivisionCollectionByZeroAsync, Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -127,12 +128,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionTryAsyncOkFunc_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
-            var numbersResult = new ResultCollection<int>(initialError);
+            var numbersResult = initialError.ToRList<int>();
 
             var numberAfterTry = await numbersResult.ResultCollectionTryOkAsync(DivisionCollectionByZeroAsync, Exceptions.ExceptionFunc());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
     }
 }

@@ -26,8 +26,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var numbersAfterTry = await numbersResult.ResultCollectionTryOkTaskAsync(DivisionByCollection, Exceptions.ExceptionError());
 
-            Assert.True(numbersAfterTry.OkStatus);
-            Assert.True(DivisionByCollection(initialNumbers).SequenceEqual(numbersAfterTry.Value));
+            Assert.True(numbersAfterTry.Success);
+            Assert.True(DivisionByCollection(initialNumbers).SequenceEqual(numbersAfterTry.GetValue()));
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var numbersAfterTry = await numbersResult.ResultCollectionTryOkTaskAsync(DivisionByCollection, Exceptions.ExceptionError());
 
-            Assert.True(numbersAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numbersAfterTry.Errors.First()));
+            Assert.True(numbersAfterTry.Failure);
+            Assert.True(initialError.Equals(numbersAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -56,8 +56,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var resultCollection = await numberResult.ResultCollectionTryOkTaskAsync(DivisionCollectionByZero, Exceptions.ExceptionError());
 
-            Assert.True(resultCollection.HasErrors);
-            Assert.NotNull(resultCollection.Errors.First().Exception);
+            Assert.True(resultCollection.Failure);
+            Assert.NotNull(resultCollection.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -71,8 +71,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var numberAfterTry = await numbersResult.ResultCollectionTryOkTaskAsync(DivisionCollectionByZero, Exceptions.ExceptionError());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -86,8 +86,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var numbersAfterTry = await numbersResult.ResultCollectionTryOkTaskAsync(DivisionByCollection, Exceptions.ExceptionFunc());
 
-            Assert.True(numbersAfterTry.OkStatus);
-            Assert.True(DivisionByCollection(initialNumbers).SequenceEqual(numbersAfterTry.Value));
+            Assert.True(numbersAfterTry.Success);
+            Assert.True(DivisionByCollection(initialNumbers).SequenceEqual(numbersAfterTry.GetValue()));
         }
 
         /// <summary>
@@ -101,8 +101,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var numbersAfterTry = await numbersResult.ResultCollectionTryOkTaskAsync(DivisionByCollection, Exceptions.ExceptionFunc());
 
-            Assert.True(numbersAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numbersAfterTry.Errors.First()));
+            Assert.True(numbersAfterTry.Failure);
+            Assert.True(initialError.Equals(numbersAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var resultCollection = await numberResult.ResultCollectionTryOkTaskAsync(DivisionCollectionByZero, Exceptions.ExceptionFunc());
 
-            Assert.True(resultCollection.HasErrors);
-            Assert.NotNull(resultCollection.Errors.First().Exception);
+            Assert.True(resultCollection.Failure);
+            Assert.NotNull(resultCollection.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -131,8 +131,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var numberAfterTry = await numbersResult.ResultCollectionTryOkTaskAsync(DivisionCollectionByZero, Exceptions.ExceptionFunc());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
     }
 }

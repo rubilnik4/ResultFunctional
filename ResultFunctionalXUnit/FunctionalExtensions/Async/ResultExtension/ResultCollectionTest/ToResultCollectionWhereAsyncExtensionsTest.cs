@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
-using ResultFunctional.Models.Implementations.ResultFactory;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
@@ -24,8 +23,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var result = await initialCollection.ToResultCollectionWhereAsync(_ => true,
                                                                                 _ => CreateErrorTestTask());
 
-            Assert.True(result.OkStatus);
-            Assert.True(initialCollection.SequenceEqual(result.Value));
+            Assert.True(result.Success);
+            Assert.True(initialCollection.SequenceEqual(result.GetValue()));
         }
 
         /// <summary>
@@ -40,8 +39,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var result = await initialCollection.ToResultCollectionWhereAsync(_ => false,
                                                                                _ => Task.FromResult(errorInitial));
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(errorInitial));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(errorInitial));
         }
     }
 }

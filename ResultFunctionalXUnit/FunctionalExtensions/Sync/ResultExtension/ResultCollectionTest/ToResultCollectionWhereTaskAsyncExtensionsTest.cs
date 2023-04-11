@@ -24,8 +24,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var result = initialCollection.ToRListWhere(_ => true,
                                                                    _ => CreateErrorTest());
 
-            Assert.True(result.OkStatus);
-            Assert.True(initialCollection.SequenceEqual(result.Value));
+            Assert.True(result.Success);
+            Assert.True(initialCollection.SequenceEqual(result.GetValue()));
         }
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var result = initialCollection.ToRListWhere(_ => false,
                                                                    _ => errorInitial);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(errorInitial));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(errorInitial));
         }
     }
 }

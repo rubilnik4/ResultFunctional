@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
+using ResultFunctional.Models.Factories;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -16,13 +17,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultErrorBindOkBad_Ok()
         {
-            var initialResult = new ResultError();
-            var addingResult = new ResultError();
+            var initialResult = RUnitFactory.Some();
+            var addingResult = RUnitFactory.Some();
 
             var result = initialResult.ResultErrorBindOkBad(() => addingResult,
-                                                            _ => new ResultError(CreateErrorTest()));
+                                                            _ => CreateErrorTest().ToRUnit());
 
-            Assert.True(result.OkStatus);
+            Assert.True(result.Success);
         }
 
         /// <summary>
@@ -31,15 +32,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultErrorBindOkBad_Error()
         {
-            var initialResult = new ResultError(CreateErrorListTwoTest());
-            var addingResult = new ResultError();
-            var addingResultBad = new ResultError(CreateErrorTest());
+            var initialResult = CreateErrorListTwoTest().ToRUnit();
+            var addingResult = RUnitFactory.Some();
+            var addingResultBad = CreateErrorTest().ToRUnit();
 
             var result = initialResult.ResultErrorBindOkBad(() => addingResult,
                                                             _ => addingResultBad);
 
-            Assert.True(result.HasErrors);
-            Assert.Equal(addingResultBad.Errors.Count, result.Errors.Count);
+            Assert.True(result.Failure);
+            Assert.Equal(addingResultBad.GetErrors().Count, result.GetErrors().Count);
         }
 
         /// <summary>
@@ -48,12 +49,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultErrorBindOk_Ok_NoError()
         {
-            var initialResult = new ResultError();
-            var addingResult = new ResultError();
+            var initialResult = RUnitFactory.Some();
+            var addingResult = RUnitFactory.Some();
 
             var result = initialResult.ResultErrorBindOk(() => addingResult);
 
-            Assert.True(result.OkStatus);
+            Assert.True(result.Success);
         }
 
         /// <summary>
@@ -63,13 +64,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultErrorBindOk_Ok_HasError()
         {
             var initialError = CreateErrorTest();
-            var initialResult = new ResultError();
-            var addingResult = new ResultError(initialError);
+            var initialResult = RUnitFactory.Some();
+            var addingResult = initialError.ToRUnit();
 
             var result = initialResult.ResultErrorBindOk(() => addingResult);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(initialError));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(initialError));
         }
 
         /// <summary>
@@ -79,12 +80,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultErrorBindOk_Bad_NoError()
         {
             var initialError = CreateErrorTest();
-            var initialResult = new ResultError(initialError);
-            var addingResult = new ResultError();
+            var initialResult = initialError.ToRUnit();
+            var addingResult = RUnitFactory.Some();
 
             var result = initialResult.ResultErrorBindOk(() => addingResult);
 
-            Assert.True(result.HasErrors);
+            Assert.True(result.Failure);
             Assert.True(result.Equals(initialResult));
         }
 
@@ -95,13 +96,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultErrorBindOk_Bad_HasError()
         {
             var initialError = CreateErrorTest();
-            var initialResult = new ResultError(initialError);
-            var addingResult = new ResultError(initialError);
+            var initialResult = initialError.ToRUnit();
+            var addingResult = initialError.ToRUnit();
 
             var result = initialResult.ResultErrorBindOk(() => addingResult);
 
-            Assert.True(result.HasErrors);
-            Assert.Single(result.Errors);
+            Assert.True(result.Failure);
+            Assert.Single(result.GetErrors());
             Assert.True(result.Equals(initialResult));
         }
     }

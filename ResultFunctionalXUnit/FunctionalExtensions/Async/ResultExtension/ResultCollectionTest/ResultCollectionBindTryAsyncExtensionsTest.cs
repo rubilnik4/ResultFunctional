@@ -23,7 +23,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 () => RListFactory.SomeTask(DivisionCollection(1)), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Success);
-            Assert.Equal(DivisionCollection(1), resultValue.Value);
+            Assert.Equal(DivisionCollection(1), resultValue.GetValue());
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 () => RListFactory.SomeTask(DivisionCollection(1)), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Success);
-            Assert.Equal(DivisionCollection(1), resultValue.Value);
+            Assert.Equal(DivisionCollection(1), resultValue.GetValue());
         }
 
         /// <summary>

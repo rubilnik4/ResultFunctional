@@ -1,5 +1,5 @@
-﻿using ResultFunctional.Models.Implementations.Results;
-using ResultFunctionalXUnit.Data;
+﻿using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
+using ResultFunctional.Models.Factories;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -13,12 +13,12 @@ public class ResultErrorWhereASyncExtensionsTest
     [Fact]
     public void ResultErrorCheckErrorsOk_Ok_CheckNoError()
     {
-        var resultError = new ResultError();
+        var resultError = RUnitFactory.Some(); ;
 
         var resultAfterWhere = resultError.ResultErrorCheckErrorsOk(() => true,
                                                                     CreateErrorListTwoTest);
 
-        Assert.True(resultAfterWhere.OkStatus);
+        Assert.True(resultAfterWhere.Success);
     }
 
     /// <summary>
@@ -27,14 +27,14 @@ public class ResultErrorWhereASyncExtensionsTest
     [Fact]
     public void ResultErrorCheckErrorsOk_Ok_CheckHasError()
     {
-        var resultError = new ResultError();
+        var resultError = RUnitFactory.Some();
 
         var errorBad = CreateErrorListTwoTest();
         var resultAfterWhere = resultError.ResultErrorCheckErrorsOk(() => false,
                                                                     () => errorBad);
 
-        Assert.True(resultAfterWhere.HasErrors);
-        Assert.Equal(errorBad.Count, resultAfterWhere.Errors.Count);
+        Assert.True(resultAfterWhere.Failure);
+        Assert.Equal(errorBad.Count, resultAfterWhere.GetErrors().Count);
     }
 
     /// <summary>
@@ -44,13 +44,13 @@ public class ResultErrorWhereASyncExtensionsTest
     public void ResultErrorCheckErrorsOk_Bad_CheckNoError()
     {
         var errorInitial = CreateErrorTest();
-        var resultError = new ResultError(errorInitial);
+        var resultError = errorInitial.ToRUnit();
 
         var resultAfterWhere = resultError.ResultErrorCheckErrorsOk(() => true,
                                                                     CreateErrorListTwoTest);
 
-        Assert.True(resultAfterWhere.HasErrors);
-        Assert.Single(resultAfterWhere.Errors);
+        Assert.True(resultAfterWhere.Failure);
+        Assert.Single(resultAfterWhere.GetErrors());
     }
 
     /// <summary>
@@ -60,12 +60,12 @@ public class ResultErrorWhereASyncExtensionsTest
     public void ResultErrorCheckErrorsOk_Bad_CheckHasError()
     {
         var errorsInitial = CreateErrorTest();
-        var resultError = new ResultError(errorsInitial);
+        var resultError = errorsInitial.ToRUnit();
 
         var resultAfterWhere = resultError.ResultErrorCheckErrorsOk(() => false,
                                                                     CreateErrorListTwoTest);
 
-        Assert.True(resultAfterWhere.HasErrors);
-        Assert.Single(resultAfterWhere.Errors);
+        Assert.True(resultAfterWhere.Failure);
+        Assert.Single(resultAfterWhere.GetErrors());
     }
 }

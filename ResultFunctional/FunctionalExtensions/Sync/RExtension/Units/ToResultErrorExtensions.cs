@@ -2,6 +2,7 @@
 using System.Linq;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Factories;
+using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Units
@@ -17,6 +18,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Units
         /// <param name="this">Result error collection</param>
         /// <returns>Result error</returns>
         public static IRUnit ToRUnit(this IEnumerable<IRUnit> @this) =>
+            @this.SelectMany(result => result.GetErrors()).ToRUnit();
+
+        /// <summary>
+        /// Merge result errors collection
+        /// </summary>
+        /// <param name="this">Result error collection</param>
+        /// <returns>Result error</returns>
+        public static IRUnit ToRUnit(this IEnumerable<IROption> @this) =>
             @this.SelectMany(result => result.GetErrors()).ToRUnit();
 
         /// <summary>

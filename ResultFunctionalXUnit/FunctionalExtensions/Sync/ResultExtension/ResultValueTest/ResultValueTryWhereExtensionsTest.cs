@@ -2,7 +2,7 @@
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Values.ResultValueTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtension.GetValue()s.ResultValueTryExtensions;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
 
@@ -24,8 +24,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionError());
 
-            Assert.True(numberAfterTry.OkStatus);
-            Assert.Equal(Division(initialValue), numberAfterTry.Value);
+            Assert.True(numberAfterTry.Success);
+            Assert.Equal(Division(initialValue), numberAfterTry.GetValue());
         }
 
         /// <summary>
@@ -39,8 +39,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionError());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -54,8 +54,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultValue = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionError());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -69,8 +69,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionError());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -84,8 +84,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionFunc());
 
-            Assert.True(numberAfterTry.OkStatus);
-            Assert.Equal(Division(initialValue), numberAfterTry.Value);
+            Assert.True(numberAfterTry.Success);
+            Assert.Equal(Division(initialValue), numberAfterTry.GetValue());
         }
 
         /// <summary>
@@ -99,8 +99,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionFunc());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -114,8 +114,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultValue = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -129,8 +129,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionFunc());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
     }
 }

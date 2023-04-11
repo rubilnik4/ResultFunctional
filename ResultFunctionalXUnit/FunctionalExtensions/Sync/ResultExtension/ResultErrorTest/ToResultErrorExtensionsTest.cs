@@ -2,8 +2,7 @@
 using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Results;
+using ResultFunctional.Models.Options;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -20,15 +19,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ToResultError_Ok()
         {
-            var results = new List<IResultError>
+            var results = new List<IROption>
             {
-                new ResultError(CreateErrorListTwoTest()), 
-                new ResultError(CreateErrorTest())
+                CreateErrorListTwoTest().ToRUnit(), 
+                CreateErrorTest().ToRUnit()
             };
 
-            var result = results.ToResultError();
+            var result = results.ToRUnit();
 
-            Assert.True(result.Errors.SequenceEqual(results.SelectMany(resultError => resultError.Errors)));
+            Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(resultError => resultError.GetErrors())));
         }
 
         /// <summary>
@@ -39,13 +38,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             var results = new List<IRError>
             {
-                 CreateErrorTest(),
+                CreateErrorTest(),
                 CreateErrorTest()
             };
 
             var result = results.ToRUnit();
 
-            Assert.True(result.Errors.SequenceEqual(results));
+            Assert.True(result.GetErrors().SequenceEqual(results));
         }
     }
 }

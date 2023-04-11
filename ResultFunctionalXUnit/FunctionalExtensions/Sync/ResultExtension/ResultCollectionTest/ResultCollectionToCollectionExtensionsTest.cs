@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 
@@ -18,7 +18,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionToCollection_Ok_ReturnNewValue()
         {
             var initialCollection = Collections.GetRangeNumber();
-            var resultCollection = new ResultCollection<int>(initialCollection);
+            var resultCollection = initialCollection.ToRList();
 
             var resultAfterWhere = resultCollection.ResultCollectionToCollectionOkBad(
                 okFunc: Collections.CollectionToString,
@@ -34,7 +34,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionToCollection_Bad_ReturnNewValue()
         {
             var errorsInitial = ErrorData.CreateErrorListTwoTest();
-            var resultCollection = new ResultCollection<int>(errorsInitial);
+            var resultCollection = errorsInitial.ToRList<int>();
 
             var resultAfterWhere = resultCollection.ResultCollectionToCollectionOkBad(
                 okFunc: Collections.CollectionToString,

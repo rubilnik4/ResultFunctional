@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.GetValue()s;
 using ResultFunctional.Models.Implementations.Results;
 using ResultFunctional.Models.Interfaces.Results;
 using ResultFunctionalXUnit.Data;
@@ -25,8 +25,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultCollection = resultNoError.ToResultCollection();
 
-            Assert.True(resultCollection.OkStatus);
-            Assert.True(collection.SequenceEqual(resultCollection.Value));
+            Assert.True(resultCollection.Success);
+            Assert.True(collection.SequenceEqual(resultCollection.GetValue()));
         }
 
         /// <summary>
@@ -40,9 +40,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultCollection = resultHasError.ToResultCollection();
 
-            Assert.True(resultCollection.HasErrors);
-            Assert.Single(resultCollection.Errors);
-            Assert.True(error.Equals(resultCollection.Errors.Last()));
+            Assert.True(resultCollection.Failure);
+            Assert.Single(resultCollection.GetErrors());
+            Assert.True(error.Equals(resultCollection.GetErrors().Last()));
         }
 
         /// <summary>
@@ -56,8 +56,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultCollection = resultValues.ToResultCollection();
 
-            Assert.True(resultCollection.OkStatus);
-            Assert.True(collection.SequenceEqual(resultCollection.Value));
+            Assert.True(resultCollection.Success);
+            Assert.True(collection.SequenceEqual(resultCollection.GetValue()));
         }
 
         /// <summary>
@@ -73,9 +73,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultCollection = resultValues.ToResultCollection();
 
-            Assert.True(resultCollection.HasErrors);
-            Assert.Single(resultCollection.Errors);
-            Assert.True(error.Equals(resultCollection.Errors.Last()));
+            Assert.True(resultCollection.Failure);
+            Assert.Single(resultCollection.GetErrors());
+            Assert.True(error.Equals(resultCollection.GetErrors().Last()));
         }
 
         /// <summary>
@@ -88,8 +88,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultString = initialString.ToRValue();
 
-            Assert.True(resultString.OkStatus);
-            Assert.Equal(initialString, resultString.Value);
+            Assert.True(resultString.Success);
+            Assert.Equal(initialString, resultString.GetValue());
         }
 
         /// <summary>
@@ -102,8 +102,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultString = initialString.ToRValueNullValueCheck(CreateErrorTest());
 
-            Assert.True(resultString.OkStatus);
-            Assert.Equal(initialString, resultString.Value);
+            Assert.True(resultString.Success);
+            Assert.Equal(initialString, resultString.GetValue());
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var initialError = CreateErrorTest();
             var resultString = initialString!.ToRValueNullValueCheck(initialError);
 
-            Assert.True(resultString.HasErrors);
-            Assert.True(resultString.Errors.First().Equals(initialError));
+            Assert.True(resultString.Failure);
+            Assert.True(resultString.GetErrors().First().Equals(initialError));
         }
 
         /// <summary>
@@ -130,8 +130,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var result = initialString.ToRValueNullCheck(CreateErrorTest());
 
-            Assert.True(result.OkStatus);
-            Assert.Equal(initialString, result.Value);
+            Assert.True(result.Success);
+            Assert.Equal(initialString, result.GetValue());
         }
 
         /// <summary>
@@ -144,8 +144,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var initialError = CreateErrorTest();
             var result = initialString.ToRValueNullCheck(initialError);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(initialError));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(initialError));
         }
 
         /// <summary>
@@ -158,8 +158,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var result = initialInt.ToRValueNullCheck(CreateErrorTest());
 
-            Assert.True(result.OkStatus);
-            Assert.Equal(initialInt, result.Value);
+            Assert.True(result.Success);
+            Assert.Equal(initialInt, result.GetValue());
         }
 
         /// <summary>
@@ -172,8 +172,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var initialError = CreateErrorTest();
             var result = initialInt.ToRValueNullCheck(initialError);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(initialError));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(initialError));
         }
 
 
@@ -189,8 +189,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultValueAfter = resultNoError.ToResultBindValue(resultValue);
 
-            Assert.True(resultValueAfter.OkStatus);
-            Assert.Equal(value, resultValueAfter.Value);
+            Assert.True(resultValueAfter.Success);
+            Assert.Equal(value, resultValueAfter.GetValue());
         }
 
         /// <summary>
@@ -206,9 +206,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultValueAfter = resultHasError.ToResultBindValue(resultValue);
 
-            Assert.True(resultValueAfter.HasErrors);
-            Assert.Single(resultValueAfter.Errors);
-            Assert.True(error.Equals(resultValueAfter.Errors.Last()));
+            Assert.True(resultValueAfter.Failure);
+            Assert.Single(resultValueAfter.GetErrors());
+            Assert.True(error.Equals(resultValueAfter.GetErrors().Last()));
         }
 
         /// <summary>
@@ -222,8 +222,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultValue = resultNoError.ToResultValue(value);
 
-            Assert.True(resultValue.OkStatus);
-            Assert.Equal(value, resultValue.Value);
+            Assert.True(resultValue.Success);
+            Assert.Equal(value, resultValue.GetValue());
         }
 
         /// <summary>
@@ -238,9 +238,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultValue = resultHasError.ToResultValue(value);
 
-            Assert.True(resultValue.HasErrors);
-            Assert.Single(resultValue.Errors);
-            Assert.True(error.Equals(resultValue.Errors.Last()));
+            Assert.True(resultValue.Failure);
+            Assert.Single(resultValue.GetErrors());
+            Assert.True(error.Equals(resultValue.GetErrors().Last()));
         }
 
         /// <summary>
@@ -255,9 +255,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultValueAfter = resultNoError.ToResultBindValue(resultValue);
 
-            Assert.True(resultValueAfter.HasErrors);
-            Assert.Single(resultValueAfter.Errors);
-            Assert.True(error.Equals(resultValueAfter.Errors.Last()));
+            Assert.True(resultValueAfter.Failure);
+            Assert.Single(resultValueAfter.GetErrors());
+            Assert.True(error.Equals(resultValueAfter.GetErrors().Last()));
         }
 
         /// <summary>
@@ -273,9 +273,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultValueAfter = resultHasError.ToResultBindValue(resultValue);
 
-            Assert.True(resultValueAfter.HasErrors);
-            Assert.Single(resultValueAfter.Errors);
-            Assert.True(error.Equals(resultValueAfter.Errors.Last()));
+            Assert.True(resultValueAfter.Failure);
+            Assert.Single(resultValueAfter.GetErrors());
+            Assert.True(error.Equals(resultValueAfter.GetErrors().Last()));
         }
     }
 }

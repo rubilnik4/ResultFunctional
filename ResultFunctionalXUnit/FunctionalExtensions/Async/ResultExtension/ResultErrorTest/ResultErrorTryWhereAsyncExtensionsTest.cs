@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Values;
+using ResultFunctional.Models.Factories;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
@@ -20,12 +21,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultErrorTryWhereAsync_Ok()
         {
             int initialValue = Numbers.Number;
-            var numberResult = new ResultError();
+            var numberResult = RUnitFactory.Some();
 
             var resultError = await numberResult.ResultErrorTryOkAsync(() => AsyncFunctions.DivisionAsync(initialValue), 
                                                                        Exceptions.ExceptionError());
 
-            Assert.True(resultError.OkStatus);
+            Assert.True(resultError.Success);
         }
 
         /// <summary>
@@ -35,13 +36,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultErrorTryWhereAsync_Exception()
         {
             const int initialValue = 0;
-            var numberResult = new ResultError();
+            var numberResult = RUnitFactory.Some();
 
             var resultError = await numberResult.ResultErrorTryOkAsync(() => AsyncFunctions.DivisionAsync(initialValue),
                                                                        Exceptions.ExceptionError());
 
-            Assert.True(resultError.HasErrors);
-            Assert.NotNull(resultError.Errors.First().Exception);
+            Assert.True(resultError.Failure);
+            Assert.NotNull(resultError.GetErrors().First().Exception);
         }
     }
 }

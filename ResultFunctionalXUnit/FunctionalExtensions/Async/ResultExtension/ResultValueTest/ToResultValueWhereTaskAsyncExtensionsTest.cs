@@ -23,8 +23,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var result = await Task.FromResult(number).ToResultValueWhereTaskAsync(_ => true,
                                                                               _ => CreateErrorTest());
 
-            Assert.True(result.OkStatus);
-            Assert.Equal(number, result.Value);
+            Assert.True(result.Success);
+            Assert.Equal(number, result.GetValue());
         }
 
         /// <summary>
@@ -39,8 +39,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var result = await Task.FromResult(number).ToResultValueWhereTaskAsync(_ => false,
                                                                               _ => errorInitial);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(errorInitial));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(errorInitial));
         }
 
 
@@ -55,8 +55,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var result = await testString.ToResultValueWhereNullTaskAsync(_ => true,
                                                            _ => errorInitial);
 
-            Assert.True(result.OkStatus);
-            Assert.Equal(testString.Result, result.Value);
+            Assert.True(result.Success);
+            Assert.Equal(testString.Result, result.GetValue());
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var result = await testString.ToResultValueWhereNullTaskAsync(_ => false,
                                                            _ => errorInitial);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(errorInitial));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(errorInitial));
         }
 
         /// <summary>
@@ -85,8 +85,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var result = await testString.ToResultValueWhereNullTaskAsync(_ => true,
                                                            _ => errorInitial);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(errorInitial));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(errorInitial));
         }
 
         /// <summary>
@@ -100,8 +100,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var result = await testInt.ToResultValueWhereNullTaskAsync(_ => true,
                                                         _ => errorInitial);
 
-            Assert.True(result.OkStatus);
-            Assert.Equal(testInt.Result, result.Value);
+            Assert.True(result.Success);
+            Assert.Equal(testInt.Result, result.GetValue());
         }
 
         /// <summary>
@@ -115,8 +115,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var result = await testInt.ToResultValueWhereNullTaskAsync(_ => false,
                                                         _ => errorInitial);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(errorInitial));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(errorInitial));
         }
 
         /// <summary>
@@ -130,8 +130,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var result = await testInt.ToResultValueWhereNullTaskAsync(_ => true,
                                                         _ => errorInitial);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(errorInitial));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(errorInitial));
         }
 
         /// <summary>
@@ -146,8 +146,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                                                             test => test,
                                                             _ => CreateErrorTest());
 
-            Assert.True(result.OkStatus);
-            Assert.Equal(testString.Result, result.Value);
+            Assert.True(result.Success);
+            Assert.Equal(testString.Result, result.GetValue());
         }
 
         /// <summary>
@@ -163,8 +163,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(errorInitial));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(errorInitial));
         }
 
         /// <summary>
@@ -180,8 +180,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(errorInitial));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(errorInitial));
         }
 
         /// <summary>
@@ -196,8 +196,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                                                             test => test,
                                                             _ => CreateErrorTest());
 
-            Assert.True(result.OkStatus);
-            Assert.Equal(testInt.Result, result.Value);
+            Assert.True(result.Success);
+            Assert.Equal(testInt.Result, result.GetValue());
         }
 
         /// <summary>
@@ -213,8 +213,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(errorInitial));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(errorInitial));
         }
 
         /// <summary>
@@ -230,8 +230,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
-            Assert.True(result.HasErrors);
-            Assert.True(result.Errors.First().Equals(errorInitial));
+            Assert.True(result.Failure);
+            Assert.True(result.GetErrors().First().Equals(errorInitial));
         }
     }
 }

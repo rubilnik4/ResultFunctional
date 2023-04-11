@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Extensions.TaskExtensions;
 using Xunit;
@@ -20,7 +21,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionToCollectionAsync_Ok_ReturnNewValue()
         {
             var initialCollection = Collections.GetRangeNumber();
-            var resultCollection = new ResultCollection<int>(initialCollection);
+            var resultCollection = initialCollection.ToRList();
 
             var resultAfterWhere = await resultCollection.ResultCollectionToCollectionOkBadAsync(
                 okFunc: Collections.CollectionToStringAsync,
@@ -36,7 +37,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultCollectionToCollectionAsync_Bad_ReturnNewValue()
         {
             var errorsInitial = ErrorData.CreateErrorListTwoTest();
-            var resultCollection = new ResultCollection<int>(errorsInitial);
+            var resultCollection = errorsInitial.ToRList<int>();
 
             var resultAfterWhere = await resultCollection.ResultCollectionToCollectionOkBadAsync(
                 okFunc: Collections.CollectionToStringAsync,

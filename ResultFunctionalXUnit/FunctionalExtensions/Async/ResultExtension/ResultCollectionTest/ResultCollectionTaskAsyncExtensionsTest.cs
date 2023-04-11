@@ -29,10 +29,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                                      Map(Task.FromResult);
 
             var resultCollection = await results.ConcatResultCollectionTaskAsync();
-            var numberRange = resultCollectionFirst.Value.Concat(resultCollectionSecond.Value).ToList();
+            var numberRange = resultCollectionFirst.GetValue().Concat(resultCollectionSecond.GetValue()).ToList();
 
-            Assert.True(resultCollection.OkStatus);
-            Assert.True(numberRange.SequenceEqual(resultCollection.Value));
+            Assert.True(resultCollection.Success);
+            Assert.True(numberRange.SequenceEqual(resultCollection.GetValue()));
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var resultCollection = await results.ConcatResultCollectionTaskAsync();
 
-            Assert.True(resultCollection.HasErrors);
-            Assert.Equal(2, resultCollection.Errors.Count);
+            Assert.True(resultCollection.Failure);
+            Assert.Equal(2, resultCollection.GetErrors().Count);
         }
     }
 }

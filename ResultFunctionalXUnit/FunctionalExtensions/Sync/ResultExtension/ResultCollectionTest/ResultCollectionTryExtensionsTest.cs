@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists.ResultCollectionTryExtensions;
@@ -22,8 +21,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultCollection = ResultCollectionTry(() => DivisionCollection(initialValue), Exceptions.ExceptionError());
 
-            Assert.True(resultCollection.OkStatus);
-            Assert.True(DivisionCollection(initialValue).SequenceEqual( resultCollection.Value));
+            Assert.True(resultCollection.Success);
+            Assert.True(DivisionCollection(initialValue).SequenceEqual( resultCollection.GetValue()));
         }
 
         /// <summary>
@@ -36,8 +35,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultCollection = ResultCollectionTry(() => DivisionCollection(initialValue), Exceptions.ExceptionError());
 
-            Assert.True(resultCollection.HasErrors);
-            Assert.NotNull(resultCollection.Errors.First().Exception);
+            Assert.True(resultCollection.Failure);
+            Assert.NotNull(resultCollection.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -50,8 +49,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultCollection = ResultCollectionTry(() => DivisionCollection(initialValue), Exceptions.ExceptionFunc());
 
-            Assert.True(resultCollection.OkStatus);
-            Assert.True(DivisionCollection(initialValue).SequenceEqual(resultCollection.Value));
+            Assert.True(resultCollection.Success);
+            Assert.True(DivisionCollection(initialValue).SequenceEqual(resultCollection.GetValue()));
         }
 
         /// <summary>
@@ -64,8 +63,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultCollection = ResultCollectionTry(() => DivisionCollection(initialValue), Exceptions.ExceptionFunc());
 
-            Assert.True(resultCollection.HasErrors);
-            Assert.NotNull(resultCollection.Errors.First().Exception);
+            Assert.True(resultCollection.Failure);
+            Assert.NotNull(resultCollection.GetErrors().First().Exception);
         }
     }
 }

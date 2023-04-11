@@ -20,10 +20,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             int initialValue = Numbers.Number;
             var resultValue = new ResultValue<int>(initialValue);
 
-            var resultAfterWhere = resultValue.ResultValueRawOk(result => new ResultValue<string>(result.Value.ToString()));
+            var resultAfterWhere = resultValue.ResultValueRawOk(result => new ResultValue<string>(result.GetValue().ToString()));
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(initialValue.ToString(), resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(initialValue.ToString(), resultAfterWhere.GetValue());
         }
 
         /// <summary>
@@ -35,10 +35,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var errorInitial = CreateErrorTest();
             var resultValue = new ResultValue<int>(errorInitial);
 
-            var resultAfterWhere = resultValue.ResultValueRawOk(result => new ResultValue<string>(result.Value.ToString()));
+            var resultAfterWhere = resultValue.ResultValueRawOk(result => new ResultValue<string>(result.GetValue().ToString()));
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.True(errorInitial.Equals(resultAfterWhere.Errors.Last()));
+            Assert.True(resultAfterWhere.Failure);
+            Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));
         }
 
         /// <summary>
@@ -50,10 +50,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             int initialValue = Numbers.Number;
             var resultValue = new ResultValue<int>(initialValue);
 
-            var resultAfterWhere = resultValue.ResultValueRawBad(result => new ResultValue<int>(result.Value * 2));
+            var resultAfterWhere = resultValue.ResultValueRawBad(result => new ResultValue<int>(result.GetValue() * 2));
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(initialValue, resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(initialValue, resultAfterWhere.GetValue());
         }
 
         /// <summary>
@@ -65,10 +65,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var errorsInitial = CreateErrorListTwoTest();
             var resultValue = new ResultValue<int>(errorsInitial);
 
-            var resultAfterWhere = resultValue.ResultValueRawBad(result => new ResultValue<int>(result.Errors.Count * 2));
+            var resultAfterWhere = resultValue.ResultValueRawBad(result => new ResultValue<int>(result.GetErrors().Count * 2));
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(errorsInitial.Count * 2, resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(errorsInitial.Count * 2, resultAfterWhere.GetValue());
         }
     }
 }

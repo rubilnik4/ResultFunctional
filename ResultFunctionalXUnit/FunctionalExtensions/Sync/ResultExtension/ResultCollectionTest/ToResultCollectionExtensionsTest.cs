@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.Models.Factories;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
@@ -19,13 +19,13 @@ public class ToResultCollectionExtensionsTest
     [Fact]
     public void ToResultCollection_OkStatus()
     {
-        var resultNoError = new ResultError();
+        var resultNoError = RUnitFactory.Some();
         var collection = new List<string> { "OkStatus" };
 
-        var resultValue = resultNoError.ToResultCollection(collection);
+        var resultValue = resultNoError.ToRList(collection);
 
-        Assert.True(resultValue.OkStatus);
-        Assert.True(collection.SequenceEqual(resultValue.Value));
+        Assert.True(resultValue.Success);
+        Assert.True(collection.SequenceEqual(resultValue.GetValue()));
     }
 
     /// <summary>
@@ -35,14 +35,14 @@ public class ToResultCollectionExtensionsTest
     public void ToResultCollection_HasErrors()
     {
         var error = CreateErrorTest();
-        var resultHasError = new ResultError(error);
+        var resultHasError = RUnitFactory.None(error);
         var collection = new List<string> { "BadStatus" };
 
-        var resultValue = resultHasError.ToResultCollection(collection);
+        var resultValue = resultHasError.ToRList(collection);
 
-        Assert.True(resultValue.HasErrors);
-        Assert.Single(resultValue.Errors);
-        Assert.True(error.Equals(resultValue.Errors.Last()));
+        Assert.True(resultValue.Failure);
+        Assert.Single(resultValue.GetErrors());
+        Assert.True(error.Equals(resultValue.GetErrors().Last()));
     }
 
     /// <summary>
@@ -55,8 +55,8 @@ public class ToResultCollectionExtensionsTest
 
         var resultString = collection.ToRListNullCheck(CreateErrorTest());
 
-        Assert.True(resultString.OkStatus);
-        Assert.True(collection.SequenceEqual(resultString.Value));
+        Assert.True(resultString.Success);
+        Assert.True(collection.SequenceEqual(resultString.GetValue()));
     }
 
     /// <summary>
@@ -70,8 +70,8 @@ public class ToResultCollectionExtensionsTest
 
         var resultString = collection.ToRListNullCheck(initialError);
 
-        Assert.True(resultString.HasErrors);
-        Assert.True(resultString.Errors.First().Equals(initialError));
+        Assert.True(resultString.Failure);
+        Assert.True(resultString.GetErrors().First().Equals(initialError));
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ public class ToResultCollectionExtensionsTest
 
         var resultString = collection.ToRListNullCheck(initialError);
 
-        Assert.True(resultString.HasErrors);
-        Assert.True(resultString.Errors.First().Equals(initialError));
+        Assert.True(resultString.Failure);
+        Assert.True(resultString.GetErrors().First().Equals(initialError));
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
+using ResultFunctional.Models.Factories;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
@@ -19,11 +20,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultErrorTryWhere_Ok()
         {
             int initialValue = Numbers.Number;
-            var numberResult = new ResultError();
+            var numberResult = RUnitFactory.Some();
 
             var resultError = numberResult.ResultErrorTryOk(() => SyncFunctions.Division(initialValue), Exceptions.ExceptionError());
 
-            Assert.True(resultError.OkStatus);
+            Assert.True(resultError.Success);
         }
 
         /// <summary>
@@ -33,12 +34,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultErrorTryWhere_Exception()
         {
             const int initialValue = 0;
-            var numberResult = new ResultError();
+            var numberResult = RUnitFactory.Some();
 
             var resultError = numberResult.ResultErrorTryOk(() => SyncFunctions.Division(initialValue), Exceptions.ExceptionError());
 
-            Assert.True(resultError.HasErrors);
-            Assert.NotNull(resultError.Errors.First().Exception);
+            Assert.True(resultError.Failure);
+            Assert.NotNull(resultError.GetErrors().First().Exception);
         }
     }
 }

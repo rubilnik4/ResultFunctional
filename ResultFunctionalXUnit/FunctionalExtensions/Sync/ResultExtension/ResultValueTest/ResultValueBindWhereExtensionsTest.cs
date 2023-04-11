@@ -4,8 +4,9 @@ using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Interfaces;
 using Moq;
 using ResultFunctional.FunctionalExtensions.Sync;
-using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.Models.Factories;
+using ResultFunctional.Models.Options;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -23,14 +24,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindContinue_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = resultValue.ResultValueBindContinue(_ => true,
-                okFunc: number => new ResultValue<string>(number.ToString()),
+                okFunc: number => number.ToString().ToRValue(),
                 badFunc: _ => CreateErrorListTwoTest());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(initialValue.ToString(), resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(initialValue.ToString(), resultAfterWhere.GetValue());
         }
 
         /// <summary>
@@ -40,15 +41,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindContinue_Ok_ReturnNewError()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var errorBad = CreateErrorListTwoTest();
             var resultAfterWhere = resultValue.ResultValueBindContinue(_ => false,
-                okFunc: number => new ResultValue<string>(number.ToString()),
+                okFunc: number => number.ToString().ToRValue(),
                 badFunc: _ => errorBad);
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Equal(errorBad.Count, resultAfterWhere.Errors.Count);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Equal(errorBad.Count, resultAfterWhere.GetErrors().Count);
         }
 
         /// <summary>
@@ -58,14 +59,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindContinue_Bad_ReturnNewValue()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorInitial);
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueBindContinue(_ => true,
-                okFunc: number => new ResultValue<string>(number.ToString()),
+                okFunc: number => number.ToString().ToRValue(),
                 badFunc: _ => CreateErrorListTwoTest());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Single(resultAfterWhere.Errors);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Single(resultAfterWhere.GetErrors());
         }
 
         /// <summary>
@@ -75,14 +76,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindContinue_Bad_ReturnNewError()
         {
             var errorsInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueBindContinue(_ => false,
-                okFunc: number => new ResultValue<string>(number.ToString()),
+                okFunc: number => number.ToString().ToRValue(),
                 badFunc: _ => CreateErrorListTwoTest());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Single(resultAfterWhere.Errors);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Single(resultAfterWhere.GetErrors());
         }
 
         /// <summary>
@@ -92,14 +93,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindWhere_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = resultValue.ResultValueBindWhere(_ => true,
-                okFunc: number => new ResultValue<string>(number.ToString()),
-                badFunc: _ => new ResultValue<string>(CreateErrorListTwoTest()));
+                okFunc: number => number.ToString().ToRValue(),
+                badFunc: _ => CreateErrorListTwoTest().ToRValue<string>());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(initialValue.ToString(), resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(initialValue.ToString(), resultAfterWhere.GetValue());
         }
 
         /// <summary>
@@ -109,15 +110,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindWhere_Ok_ReturnNewError()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var errorBad = CreateErrorListTwoTest();
             var resultAfterWhere = resultValue.ResultValueBindWhere(_ => false,
-                okFunc: number => new ResultValue<string>(number.ToString()),
-                badFunc: _ => new ResultValue<string>(errorBad));
+                okFunc: number => number.ToString().ToRValue(),
+                badFunc: _ => errorBad.ToRValue<string>());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Equal(errorBad.Count, resultAfterWhere.Errors.Count);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Equal(errorBad.Count, resultAfterWhere.GetErrors().Count);
         }
 
         /// <summary>
@@ -127,14 +128,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindWhere_Bad_ReturnNewValue()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorInitial);
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueBindWhere(_ => true,
-                okFunc: number => new ResultValue<string>(number.ToString()),
-                badFunc: _ => new ResultValue<string>(CreateErrorListTwoTest()));
+                okFunc: number => number.ToString().ToRValue(),
+                badFunc: _ => CreateErrorListTwoTest().ToRValue<string>());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Single(resultAfterWhere.Errors);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Single(resultAfterWhere.GetErrors());
         }
 
         /// <summary>
@@ -144,14 +145,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindWhere_Bad_ReturnNewError()
         {
             var errorsInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueBindWhere(_ => false,
-                okFunc: number => new ResultValue<string>(number.ToString()),
-                badFunc: _ => new ResultValue<string>(CreateErrorListTwoTest()));
+                okFunc: number => number.ToString().ToRValue(),
+                badFunc: _ => CreateErrorListTwoTest().ToRValue<string>());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Single(resultAfterWhere.Errors);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Single(resultAfterWhere.GetErrors());
         }
 
         /// <summary>
@@ -161,13 +162,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindOkBad_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = resultValue.ResultValueBindOkBad(number => new ResultValue<string>(number.ToString()),
-                                                                    _ => new ResultValue<string>(String.Empty));
+            var resultAfterWhere = resultValue.ResultValueBindOkBad(number => number.ToString().ToRValue(),
+                                                                    _ => String.Empty.ToRValue());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(initialValue.ToString(), resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(initialValue.ToString(), resultAfterWhere.GetValue());
         }
 
         /// <summary>
@@ -177,15 +178,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindOkBad_Bad_ReturnNewValueByErrors()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueBindOkBad(okFunc: _ => new ResultValue<string>(String.Empty),
-                                                                    badFunc: errors => new ResultValue<string>(errors.Count.ToString()));
+            var resultAfterWhere = resultValue.ResultValueBindOkBad(okFunc: _ => String.Empty.ToRValue(),
+                                                                    badFunc: errors => errors.Count.ToString().ToRValue());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere.GetValue());
         }
-        
+
         /// <summary>
         /// Выполнение положительного условия результирующего ответа со связыванием в результирующем ответе без ошибки
         /// </summary>   
@@ -193,12 +194,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindOk_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = resultValue.ResultValueBindOk(number => new ResultValue<string>(number.ToString()));
+            var resultAfterWhere = resultValue.ResultValueBindOk(number => number.ToString().ToRValue());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(initialValue.ToString(), resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(initialValue.ToString(), resultAfterWhere.GetValue());
         }
 
         /// <summary>
@@ -208,12 +209,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindOk_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorInitial);
+            var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueBindOk(number => new ResultValue<string>(number.ToString()));
+            var resultAfterWhere = resultValue.ResultValueBindOk(number => number.ToString().ToRValue());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.True(errorInitial.Equals(resultAfterWhere.Errors.Last()));
+            Assert.True(resultAfterWhere.Failure);
+            Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));
         }
 
         /// <summary>
@@ -223,12 +224,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindBad_Ok_ReturnInitial()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = resultValue.ResultValueBindBad(errors => new ResultValue<int>(errors.Count));
+            var resultAfterWhere = resultValue.ResultValueBindBad(errors => errors.Count.ToRValue());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(resultValue.Value, resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(resultValue.GetValue(), resultAfterWhere.GetValue());
         }
 
         /// <summary>
@@ -238,12 +239,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindBad_Bad_ReturnNewValue()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueBindBad(errors => new ResultValue<int>(errors.Count));
+            var resultAfterWhere = resultValue.ResultValueBindBad(errors => errors.Count.ToRValue());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(errorsInitial.Count, resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(errorsInitial.Count, resultAfterWhere.GetValue());
         }
 
         /// <summary>
@@ -253,14 +254,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindErrorsOk_NoError()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
-            var resultError = new ResultError();
+            var resultValue = initialValue.ToRValue();
+            var resultError = RUnitFactory.Some();
             var resultFunctionsMock = GetNumberToError(resultError);
 
             var resultAfterWhere = resultValue.ResultValueBindErrorsOk(number => resultFunctionsMock.Object.NumberToResult(number));
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(initialValue, resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(initialValue, resultAfterWhere.GetValue());
             resultFunctionsMock.Verify(resultFunctions => resultFunctions.NumberToResult(initialValue), Times.Once);
         }
 
@@ -272,14 +273,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             int initialValue = Numbers.Number;
             var initialError = CreateErrorTest();
-            var resultValue = new ResultValue<int>(initialValue);
-            var resultError = new ResultError(initialError);
+            var resultValue = initialValue.ToRValue();
+            var resultError = initialError.ToRUnit();
             var resultFunctionsMock = GetNumberToError(resultError);
 
             var resultAfterWhere = resultValue.ResultValueBindErrorsOk(number => resultFunctionsMock.Object.NumberToResult(number));
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.True(initialError.Equals(resultAfterWhere.Errors.First()));
+            Assert.True(resultAfterWhere.Failure);
+            Assert.True(initialError.Equals(resultAfterWhere.GetErrors().First()));
             resultFunctionsMock.Verify(resultFunctions => resultFunctions.NumberToResult(initialValue), Times.Once);
         }
 
@@ -290,14 +291,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBindErrorsBad_NoError()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
-            var resultError = new ResultError();
+            var resultValue = errorsInitial.ToRValue<int>();
+            var resultError = RUnitFactory.Some();
             var resultFunctionsMock = GetNumberToError(resultError);
 
             var resultAfterWhere = resultValue.ResultValueBindErrorsOk(number => resultFunctionsMock.Object.NumberToResult(number));
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.True(errorsInitial.SequenceEqual(resultAfterWhere.Errors));
+            Assert.True(resultAfterWhere.Failure);
+            Assert.True(errorsInitial.SequenceEqual(resultAfterWhere.GetErrors()));
             resultFunctionsMock.Verify(resultFunctions => resultFunctions.NumberToResult(It.IsAny<int>()), Times.Never);
         }
 
@@ -309,21 +310,21 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             var errorsInitial = CreateErrorListTwoTest();
             var initialError = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
-            var resultError = new ResultError(initialError);
+            var resultValue = errorsInitial.ToRValue<int>();
+            var resultError = initialError.ToRValue();
             var resultFunctionsMock = GetNumberToError(resultError);
 
             var resultAfterWhere = resultValue.ResultValueBindErrorsOk(number => resultFunctionsMock.Object.NumberToResult(number));
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.True(errorsInitial.SequenceEqual(resultAfterWhere.Errors));
+            Assert.True(resultAfterWhere.Failure);
+            Assert.True(errorsInitial.SequenceEqual(resultAfterWhere.GetErrors()));
             resultFunctionsMock.Verify(resultFunctions => resultFunctions.NumberToResult(It.IsAny<int>()), Times.Never);
         }
 
         /// <summary>
         /// Получить функцию с результирующим ответом
         /// </summary>
-        private static Mock<IResultFunctions> GetNumberToError(IResultError resultError) =>
+        private static Mock<IResultFunctions> GetNumberToError(IROption resultError) =>
             new Mock<IResultFunctions>().
             Void(mock => mock.Setup(resultFunctions => resultFunctions.NumberToResult(It.IsAny<int>())).
                               Returns(resultError));

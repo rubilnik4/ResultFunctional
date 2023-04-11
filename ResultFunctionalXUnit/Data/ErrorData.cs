@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Factories;
 
 namespace ResultFunctionalXUnit.Data
 {
@@ -14,7 +15,7 @@ namespace ResultFunctionalXUnit.Data
         /// Создать тестовый экземпляр ошибки
         /// </summary>
         public static IRError CreateErrorTest() =>
-            ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Test error");
+            RErrorFactory.Common(CommonErrorType.Unknown, "Test error");
 
         /// <summary>
         /// Создать тестовый экземпляр списка ошибок

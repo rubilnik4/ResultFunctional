@@ -29,7 +29,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultOkTask.Result));
-            Assert.True(initialCollection.SequenceEqual(resultAfterVoid.Value));
+            Assert.True(initialCollection.SequenceEqual(resultAfterVoid.GetValue()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
 
@@ -47,7 +47,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
-            Assert.True(resultAfterVoid.Errors.Last().Equals(initialError));
+            Assert.True(resultAfterVoid.GetErrors().Last().Equals(initialError));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Never);
         }
 
@@ -65,7 +65,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 errors => voidObjectMock.Object.TestNumbersVoid(GetListByErrorsCount(errors)));
 
             Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
-            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.Errors));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
 
@@ -83,7 +83,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 errors => voidObjectMock.Object.TestNumbersVoid(GetListByErrorsCount(errors)));
 
             Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
-            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.Errors));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
 
@@ -101,7 +101,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                                                                      _ => voidObjectMock.Object.TestVoid());
 
             Assert.True(resultAfterVoid.Equals(resultOk.Result));
-            Assert.Equal(initialCollection, resultAfterVoid.Value);
+            Assert.Equal(initialCollection, resultAfterVoid.GetValue());
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(initialCollection), Times.Once);
         }
 
@@ -120,7 +120,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 errors => voidObjectMock.Object.TestNumbersVoid(new List<int> { errors.Count }));
 
             Assert.True(resultAfterVoid.Equals(resultError.Result));
-            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.Errors));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
 
@@ -138,7 +138,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultOkTask.Result));
-            Assert.True(initialCollection.SequenceEqual(resultAfterVoid.Value));
+            Assert.True(initialCollection.SequenceEqual(resultAfterVoid.GetValue()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
 
@@ -156,7 +156,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultOkTask.Result));
-            Assert.True(initialCollection.SequenceEqual(resultAfterVoid.Value));
+            Assert.True(initialCollection.SequenceEqual(resultAfterVoid.GetValue()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Never);
         }
 
@@ -174,7 +174,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
-            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.Errors));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Never);
         }
 
@@ -193,7 +193,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
-            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.Errors));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Never);
         }
     }

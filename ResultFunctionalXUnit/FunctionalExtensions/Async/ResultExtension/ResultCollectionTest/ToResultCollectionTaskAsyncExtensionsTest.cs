@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.GetValue()s;
 using ResultFunctional.Models.Interfaces.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
@@ -28,8 +28,8 @@ public class ToResultCollectionTaskAsyncExtensionsTest
 
         var resultValue = await resultNoError.ToResultCollectionTaskAsync();
 
-        Assert.True(resultValue.OkStatus);
-        Assert.True(collection.SequenceEqual(resultValue.Value));
+        Assert.True(resultValue.Success);
+        Assert.True(collection.SequenceEqual(resultValue.GetValue()));
     }
 
     /// <summary>
@@ -43,9 +43,9 @@ public class ToResultCollectionTaskAsyncExtensionsTest
 
         var resultValue = await resultHasError.ToResultCollectionTaskAsync();
 
-        Assert.True(resultValue.HasErrors);
-        Assert.Single(resultValue.Errors);
-        Assert.True(error.Equals(resultValue.Errors.Last()));
+        Assert.True(resultValue.Failure);
+        Assert.Single(resultValue.GetErrors());
+        Assert.True(error.Equals(resultValue.GetErrors().Last()));
     }
 
     /// <summary>
@@ -59,8 +59,8 @@ public class ToResultCollectionTaskAsyncExtensionsTest
 
         var resultValue = await resultNoError.ToResultCollectionTaskAsync();
 
-        Assert.True(resultValue.OkStatus);
-        Assert.True(collection.SequenceEqual(resultValue.Value));
+        Assert.True(resultValue.Success);
+        Assert.True(collection.SequenceEqual(resultValue.GetValue()));
     }
 
     /// <summary>
@@ -74,9 +74,9 @@ public class ToResultCollectionTaskAsyncExtensionsTest
 
         var resultValue = await resultHasError.ToResultCollectionTaskAsync();
 
-        Assert.True(resultValue.HasErrors);
-        Assert.Single(resultValue.Errors);
-        Assert.True(error.Equals(resultValue.Errors.Last()));
+        Assert.True(resultValue.Failure);
+        Assert.Single(resultValue.GetErrors());
+        Assert.True(error.Equals(resultValue.GetErrors().Last()));
     }
 
     /// <summary>
@@ -90,8 +90,8 @@ public class ToResultCollectionTaskAsyncExtensionsTest
 
         var resultValue = await resultNoError.ToResultCollectionTaskAsync();
 
-        Assert.True(resultValue.OkStatus);
-        Assert.True(collection.SequenceEqual(resultValue.Value));
+        Assert.True(resultValue.Success);
+        Assert.True(collection.SequenceEqual(resultValue.GetValue()));
     }
 
     /// <summary>
@@ -105,9 +105,9 @@ public class ToResultCollectionTaskAsyncExtensionsTest
 
         var resultValue = await resultHasError.ToResultCollectionTaskAsync();
 
-        Assert.True(resultValue.HasErrors);
-        Assert.Single(resultValue.Errors);
-        Assert.True(error.Equals(resultValue.Errors.Last()));
+        Assert.True(resultValue.Failure);
+        Assert.Single(resultValue.GetErrors());
+        Assert.True(error.Equals(resultValue.GetErrors().Last()));
     }
 
 
@@ -122,8 +122,8 @@ public class ToResultCollectionTaskAsyncExtensionsTest
 
         var resultValue = await resultNoError.ToResultCollectionTaskAsync();
 
-        Assert.True(resultValue.OkStatus);
-        Assert.True(collection.SequenceEqual(resultValue.Value));
+        Assert.True(resultValue.Success);
+        Assert.True(collection.SequenceEqual(resultValue.GetValue()));
     }
 
     /// <summary>
@@ -137,9 +137,9 @@ public class ToResultCollectionTaskAsyncExtensionsTest
 
         var resultValue = await resultHasError.ToResultCollectionTaskAsync();
 
-        Assert.True(resultValue.HasErrors);
-        Assert.Single(resultValue.Errors);
-        Assert.True(error.Equals(resultValue.Errors.Last()));
+        Assert.True(resultValue.Failure);
+        Assert.Single(resultValue.GetErrors());
+        Assert.True(error.Equals(resultValue.GetErrors().Last()));
     }
 
     /// <summary>
@@ -165,8 +165,8 @@ public class ToResultCollectionTaskAsyncExtensionsTest
         var rangeTasks = Enumerable.Range(1, 10).Select(GetTaskNumber);
         var resultCollection = await rangeTasks.ToResultCollectionTaskAsync();
 
-        Assert.True(resultCollection.OkStatus);
-        Assert.True(resultCollection.Value.SequenceEqual(Enumerable.Range(1, 10)));
+        Assert.True(resultCollection.Success);
+        Assert.True(resultCollection.GetValue().SequenceEqual(Enumerable.Range(1, 10)));
     }
 
     private static async Task<IResultValue<int>> GetTaskNumber(int number)

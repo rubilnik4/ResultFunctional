@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Values;
 using ResultFunctional.Models.Factories;
-using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
@@ -26,7 +26,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultError = await numberResult.ResultErrorTryOkBindAsync(() => AsyncFunctions.DivisionAsync(initialValue), 
                                                                        Exceptions.ExceptionError());
 
-            Assert.True(resultError.OkStatus);
+            Assert.True(resultError.Success);
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultError = await numberResult.ResultErrorTryOkBindAsync(() => AsyncFunctions.DivisionAsync(initialValue),
                                                                        Exceptions.ExceptionError());
 
-            Assert.True(resultError.HasErrors);
-            Assert.NotNull(resultError.Errors.First().Exception);
+            Assert.True(resultError.Failure);
+            Assert.NotNull(resultError.GetErrors().First().Exception);
         }
     }
 }

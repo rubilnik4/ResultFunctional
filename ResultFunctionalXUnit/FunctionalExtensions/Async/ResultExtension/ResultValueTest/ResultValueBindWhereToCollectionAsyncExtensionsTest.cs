@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctional.Models.Factories;
-using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -21,13 +22,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindOkToCollectionAsync_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = await resultValue.ResultValueBindOkToCollectionAsync(
-                number => RListFactory.GetRListAsync(NumberToCollection(number)));
+                number => RListFactory.SomeTask(NumberToCollection(number)));
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.True(NumberToCollection(initialValue).SequenceEqual(resultAfterWhere.Value));
+            Assert.True(resultAfterWhere.Success);
+            Assert.True(NumberToCollection(initialValue).SequenceEqual(resultAfterWhere.GetValue()));
         }
 
         /// <summary>
@@ -37,13 +38,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindOkToCollectionAsync_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorInitial);
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere = await resultValue.ResultValueBindOkToCollectionAsync(
-                number => RListFactory.GetRListAsync(NumberToCollection(number)));
+                number => RListFactory.SomeTask(NumberToCollection(number)));
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.True(errorInitial.Equals(resultAfterWhere.Errors.Last()));
+            Assert.True(resultAfterWhere.Failure);
+            Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));
         }
     }
 }

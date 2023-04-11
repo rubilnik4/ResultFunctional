@@ -2,12 +2,12 @@
 using System.Net.Http;
 
 using ResultFunctional.Models.Enums;
-using ResultFunctional.Models.Errors.CommonErrors;
-using ResultFunctional.Models.Errors.ConversionErrors;
-using ResultFunctional.Models.Errors.DatabaseErrors;
+using ResultFunctional.Models.GetErrors().CommonErrors;
+using ResultFunctional.Models.GetErrors().ConversionErrors;
+using ResultFunctional.Models.GetErrors().DatabaseErrors;
 using Xunit;
 
-namespace ResultFunctionalXUnit.Models.Errors
+namespace ResultFunctionalXUnit.Models.GetErrors()
 {
     /// <summary>
     /// Фабрика создания типов ошибок. Тесты
@@ -56,7 +56,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void ValueNotFoundError()
         {
-            var errorResult = ErrorResultFactory.ValueNotFoundError<string>(String.Empty);
+            var errorResult = ErrorResultFactory.GetValue()NotFoundError<string>(String.Empty);
 
             Assert.IsAssignableFrom<IRValueNotFoundError>(errorResult);
             Assert.IsAssignableFrom<IRValueNotFoundError>(errorResult.AppendException(new Exception()));
@@ -68,7 +68,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void ValueNotValidError()
         {
-            var errorResult = ErrorResultFactory.ValueNotValidError(String.Empty, "Ошибка");
+            var errorResult = ErrorResultFactory.GetValue()NotValidError(String.Empty, "Ошибка");
 
             Assert.IsAssignableFrom<IRValueNotValidError>(errorResult);
             Assert.IsAssignableFrom<IRValueNotValidError>(errorResult.AppendException(new Exception()));
@@ -80,7 +80,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void ValueDuplicatedError()
         {
-            var errorResult = ErrorResultFactory.ValueDuplicateError(String.Empty, "Ошибка");
+            var errorResult = ErrorResultFactory.GetValue()DuplicateError(String.Empty, "Ошибка");
 
             Assert.IsAssignableFrom<IRValueDuplicateError>(errorResult);
             Assert.IsAssignableFrom<IRValueDuplicateError>(errorResult.AppendException(new Exception()));

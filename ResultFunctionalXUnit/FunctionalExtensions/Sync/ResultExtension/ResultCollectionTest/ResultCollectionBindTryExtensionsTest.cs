@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.Collections;
@@ -21,11 +21,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionBindTry_Ok()
         {
             int initialValue = Numbers.Number;
-            var resultCollection = ResultCollectionBindTry(() => new ResultCollection<int>(DivisionCollection(initialValue)),
+            var resultCollection = ResultCollectionBindTry(() => DivisionCollection(initialValue).ToRList(),
                                                            Exceptions.ExceptionError());
 
-            Assert.True(resultCollection.OkStatus);
-            Assert.True(DivisionCollection(initialValue).SequenceEqual(resultCollection.Value));
+            Assert.True(resultCollection.Success);
+            Assert.True(DivisionCollection(initialValue).SequenceEqual(resultCollection.GetValue()));
         }
 
         /// <summary>
@@ -36,10 +36,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             const int initialValue = 0;
             var resultValue = ResultCollectionBindTry(
-                () => new ResultCollection<int>(DivisionCollection(initialValue)), Exceptions.ExceptionError());
+                () => DivisionCollection(initialValue).ToRList(), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -49,11 +49,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionBindTryFunc_Ok()
         {
             int initialValue = Numbers.Number;
-            var resultCollection = ResultCollectionBindTry(() => new ResultCollection<int>(DivisionCollection(initialValue)),
+            var resultCollection = ResultCollectionBindTry(() => DivisionCollection(initialValue).ToRList(),
                                                            Exceptions.ExceptionFunc());
 
-            Assert.True(resultCollection.OkStatus);
-            Assert.True(DivisionCollection(initialValue).SequenceEqual(resultCollection.Value));
+            Assert.True(resultCollection.Success);
+            Assert.True(DivisionCollection(initialValue).SequenceEqual(resultCollection.GetValue()));
         }
 
         /// <summary>
@@ -64,10 +64,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             const int initialValue = 0;
             var resultValue = ResultCollectionBindTry(
-                () => new ResultCollection<int>(DivisionCollection(initialValue)), Exceptions.ExceptionFunc());
+                () => DivisionCollection(initialValue).ToRList(), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
     }
 }

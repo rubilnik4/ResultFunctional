@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
@@ -18,7 +19,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueToValueOkBadAsync_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = await resultValue.ResultValueToValueOkBadAsync(
                 okFunc: AsyncFunctions.IntToStringAsync,
@@ -34,7 +35,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueToValueOkBadAsync_Bad_ReturnNewValue()
         {
             var errorsInitial = ErrorData.CreateErrorListTwoTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
 
             var resultAfterWhere = await resultValue.ResultValueToValueOkBadAsync(
                 okFunc: AsyncFunctions.IntToStringAsync,

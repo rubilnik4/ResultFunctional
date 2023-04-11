@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -26,8 +25,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.OkStatus);
-            Assert.Equal(CurryFunctions.IntCollectionToString(initialValue), resultOut.Value.Invoke());
+            Assert.True(resultOut.Success);
+            Assert.Equal(CurryFunctions.IntCollectionToString(initialValue), resultOut.GetValue().Invoke());
         }
 
         /// <summary>
@@ -43,9 +42,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -61,9 +60,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorFunc.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -80,10 +79,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Equal(2, resultOut.Errors.Count);
-            Assert.True(errorFunc.Equals(resultOut.Errors.First()));
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Equal(2, resultOut.GetErrors().Count);
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().First()));
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -99,8 +98,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.OkStatus);
-            Assert.Equal(CurryFunctions.AggregateCollectionTwoToString(initialValue, 2), resultOut.Value.Invoke(2));
+            Assert.True(resultOut.Success);
+            Assert.Equal(CurryFunctions.AggregateCollectionTwoToString(initialValue, 2), resultOut.GetValue().Invoke(2));
         }
 
         /// <summary>
@@ -116,9 +115,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -135,9 +134,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorFunc.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -154,10 +153,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Equal(2, resultOut.Errors.Count);
-            Assert.True(errorFunc.Equals(resultOut.Errors.First()));
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Equal(2, resultOut.GetErrors().Count);
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().First()));
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -173,8 +172,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.OkStatus);
-            Assert.Equal(CurryFunctions.AggregateCollectionThreeToString(initialValue, 3, 3), resultOut.Value.Invoke(3, 3));
+            Assert.True(resultOut.Success);
+            Assert.Equal(CurryFunctions.AggregateCollectionThreeToString(initialValue, 3, 3), resultOut.GetValue().Invoke(3, 3));
         }
 
         /// <summary>
@@ -190,9 +189,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -209,9 +208,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorFunc.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -228,10 +227,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Equal(2, resultOut.Errors.Count);
-            Assert.True(errorFunc.Equals(resultOut.Errors.First()));
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Equal(2, resultOut.GetErrors().Count);
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().First()));
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -247,8 +246,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.OkStatus);
-            Assert.Equal(CurryFunctions.AggregateCollectionFourToString(initialValue, 4, 4, 4), resultOut.Value.Invoke(4, 4, 4));
+            Assert.True(resultOut.Success);
+            Assert.Equal(CurryFunctions.AggregateCollectionFourToString(initialValue, 4, 4, 4), resultOut.GetValue().Invoke(4, 4, 4));
         }
 
         /// <summary>
@@ -264,9 +263,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -283,9 +282,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorFunc.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -302,10 +301,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Equal(2, resultOut.Errors.Count);
-            Assert.True(errorFunc.Equals(resultOut.Errors.First()));
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Equal(2, resultOut.GetErrors().Count);
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().First()));
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -321,8 +320,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.OkStatus);
-            Assert.Equal(CurryFunctions.AggregateCollectionFiveToString(initialValue, 5, 5, 5, 5), resultOut.Value.Invoke(5, 5, 5, 5));
+            Assert.True(resultOut.Success);
+            Assert.Equal(CurryFunctions.AggregateCollectionFiveToString(initialValue, 5, 5, 5, 5), resultOut.GetValue().Invoke(5, 5, 5, 5));
         }
 
         /// <summary>
@@ -338,9 +337,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -357,9 +356,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorFunc.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -376,10 +375,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Equal(2, resultOut.Errors.Count);
-            Assert.True(errorFunc.Equals(resultOut.Errors.First()));
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Equal(2, resultOut.GetErrors().Count);
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().First()));
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
     }
 }

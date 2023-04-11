@@ -3,9 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async.RExtension.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Implementations.ResultFactory;
-using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Results;
+using ResultFunctional.Models.Factories;
+using ResultFunctional.Models.Units;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 
@@ -22,16 +21,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ToResultErrorTaskAsync_FromResult_Ok()
         {
-            var results = new List<IResultError>
+            var results = new List<IRUnit>
             {
-                new ResultError(ErrorData.CreateErrorListTwoTest()),
-                new ResultError(ErrorData.CreateErrorTest())
+                RUnitFactory.None(ErrorData.CreateErrorListTwoTest()),
+                RUnitFactory.None(ErrorData.CreateErrorTest())
             };
-            var taskResults = Task.FromResult((IEnumerable<IResultError>)results);
+            var taskResults = Task.FromResult((IEnumerable<IRUnit>)results);
 
-            var result =  await taskResults.ToResultErrorTaskAsync();
+            var result =  await taskResults.ToRUnitTaskAsync();
 
-            Assert.True(result.Errors.SequenceEqual(results.SelectMany(resultError => resultError.Errors)));
+            Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(resultError => resultError.GetErrors())));
         }
 
         /// <summary>
@@ -40,16 +39,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ToResultErrorTaskAsync_FromErrors_Ok()
         {
-            var results = new List<IResultError>
+            var results = new List<IRUnit>
             {
-                new ResultError(ErrorData.CreateErrorListTwoTest()),
-                new ResultError(ErrorData.CreateErrorTest())
+                RUnitFactory.None(ErrorData.CreateErrorListTwoTest()),
+                RUnitFactory.None(ErrorData.CreateErrorTest())
             };
             var taskResults = results.Select(Task.FromResult);
 
             var result = await taskResults.ToRUnitTaskAsync();
 
-            Assert.True(result.Errors.SequenceEqual(results.SelectMany(resultError => resultError.Errors)));
+            Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(resultError => resultError.GetErrors())));
         }
 
         /// <summary>
@@ -67,7 +66,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var result = await resultsTask.ToRUnitTaskAsync();
 
-            Assert.True(result.Errors.SequenceEqual(results));
+            Assert.True(result.GetErrors().SequenceEqual(results));
         }
     }
 }

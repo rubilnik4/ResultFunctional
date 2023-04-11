@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctional.Models.Factories;
-using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -22,13 +23,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkAsync_OkStatus_AddOkStatus()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = new ResultValue<Func<int, Task<string>>>(CurryFunctions.IntToStringAsync);
+            var resultValueFunc = CurryFunctions.IntToStringAsync.ToRValue();
             var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.OkStatus);
-            Assert.Equal(initialValue.ToString(), await resultOut.Value.Invoke());
+            Assert.True(resultOut.Success);
+            Assert.Equal(initialValue.ToString(), await resultOut.GetValue().Invoke());
         }
 
         /// <summary>
@@ -38,15 +39,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkAsync_OkStatus_AddBadStatus()
         {
-            var resultValueFunc = new ResultValue<Func<int, Task<string>>>(CurryFunctions.IntToStringAsync);
+            var resultValueFunc = CurryFunctions.IntToStringAsync.ToRValue();
             var errorArgument = CreateErrorTest();
             var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -58,14 +59,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.None<Func<int, Task<string>>>(errorFunc);
             var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorFunc.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -76,16 +77,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkAsync_BadStatus_AddBadStatus()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.None<Func<int, Task<string>>>(errorFunc);
             var errorArgument = CreateErrorTest();
             var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Equal(2, resultOut.Errors.Count);
-            Assert.True(errorFunc.Equals(resultOut.Errors.First()));
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Equal(2, resultOut.GetErrors().Count);
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().First()));
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -96,13 +97,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkAsync_OkStatus_AddOkStatus_TwoArguments()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = new ResultValue<Func<int, int, Task<string>>>(CurryFunctions.AggregateTwoToStringAsync);
+            var resultValueFunc = CurryFunctions.AggregateTwoToStringAsync.ToRValue();
             var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.OkStatus);
-            Assert.Equal((initialValue + initialValue).ToString(), await resultOut.Value.Invoke(initialValue));
+            Assert.True(resultOut.Success);
+            Assert.Equal((initialValue + initialValue).ToString(), await resultOut.GetValue().Invoke(initialValue));
         }
 
         /// <summary>
@@ -112,15 +113,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkAsync_OkStatus_AddBadStatus_TwoArguments()
         {
-            var resultValueFunc = new ResultValue<Func<int, int, Task<string>>>(CurryFunctions.AggregateTwoToStringAsync);
+            var resultValueFunc = CurryFunctions.AggregateTwoToStringAsync.ToRValue();
             var errorArgument = CreateErrorTest();
             var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -132,14 +133,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.None<Func<int, int, Task<string>>>(errorFunc);
             var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorFunc.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -150,16 +151,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkAsync_BadStatus_AddBadStatus_TwoArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.None<Func<int, int, Task<string>>>(errorFunc);
             var errorArgument = CreateErrorTest();
             var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Equal(2, resultOut.Errors.Count);
-            Assert.True(errorFunc.Equals(resultOut.Errors.First()));
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Equal(2, resultOut.GetErrors().Count);
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().First()));
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -170,13 +171,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkAsync_OkStatus_AddOkStatus_ThreeArguments()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = new ResultValue<Func<int, int, int, Task<string>>>(CurryFunctions.AggregateThreeToStringAsync);
+            var resultValueFunc = CurryFunctions.AggregateThreeToStringAsync.ToRValue();
             var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.OkStatus);
-            Assert.Equal((initialValue * 3).ToString(), await resultOut.Value.Invoke(initialValue, initialValue));
+            Assert.True(resultOut.Success);
+            Assert.Equal((initialValue * 3).ToString(), await resultOut.GetValue().Invoke(initialValue, initialValue));
         }
 
         /// <summary>
@@ -186,15 +187,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkAsync_OkStatus_AddBadStatus_ThreeArguments()
         {
-            var resultValueFunc = new ResultValue<Func<int, int, int, Task<string>>>(CurryFunctions.AggregateThreeToStringAsync);
+            var resultValueFunc = CurryFunctions.AggregateThreeToStringAsync.ToRValue();
             var errorArgument = CreateErrorTest();
             var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -206,14 +207,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.None<Func<int, int, int, Task<string>>>(errorFunc);
             var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorFunc.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -224,16 +225,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkAsync_BadStatus_AddBadStatus_ThreeArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.None<Func<int, int, int, Task<string>>>(errorFunc);
             var errorArgument = CreateErrorTest();
             var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Equal(2, resultOut.Errors.Count);
-            Assert.True(errorFunc.Equals(resultOut.Errors.First()));
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Equal(2, resultOut.GetErrors().Count);
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().First()));
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -244,13 +245,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkAsync_OkStatus_AddOkStatus_FourArguments()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, Task<string>>>(CurryFunctions.AggregateFourToStringAsync);
+            var resultValueFunc = CurryFunctions.AggregateFourToStringAsync.ToRValue();
             var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.OkStatus);
-            Assert.Equal((initialValue * 4).ToString(), await resultOut.Value.Invoke(initialValue, initialValue, initialValue));
+            Assert.True(resultOut.Success);
+            Assert.Equal((initialValue * 4).ToString(), await resultOut.GetValue().Invoke(initialValue, initialValue, initialValue));
         }
 
         /// <summary>
@@ -260,15 +261,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkAsync_OkStatus_AddBadStatus_FourArguments()
         {
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, Task<string>>>(CurryFunctions.AggregateFourToStringAsync);
+            var resultValueFunc = CurryFunctions.AggregateFourToStringAsync.ToRValue();
             var errorArgument = CreateErrorTest();
             var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -280,14 +281,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.None<Func<int, int, int, int, Task<string>>>(errorFunc);
             var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorFunc.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -298,16 +299,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkAsync_BadStatus_AddBadStatus_FourArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.None<Func<int, int, int, int, Task<string>>>(errorFunc);
             var errorArgument = CreateErrorTest();
             var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Equal(2, resultOut.Errors.Count);
-            Assert.True(errorFunc.Equals(resultOut.Errors.First()));
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Equal(2, resultOut.GetErrors().Count);
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().First()));
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -318,13 +319,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkAsync_OkStatus_AddOkStatus_FiveArguments()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, int, Task<string>>>(CurryFunctions.AggregateFiveToStringAsync);
+            var resultValueFunc = CurryFunctions.AggregateFiveToStringAsync.ToRValue();
             var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.OkStatus);
-            Assert.Equal((initialValue * 5).ToString(), await resultOut.Value.Invoke(initialValue, initialValue, initialValue, initialValue));
+            Assert.True(resultOut.Success);
+            Assert.Equal((initialValue * 5).ToString(), await resultOut.GetValue().Invoke(initialValue, initialValue, initialValue, initialValue));
         }
 
         /// <summary>
@@ -334,15 +335,15 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         [Fact]
         public async Task ResultValueCurryOkAsync_OkStatus_AddBadStatus_FiveArguments()
         {
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, int, Task<string>>>(CurryFunctions.AggregateFiveToStringAsync);
+            var resultValueFunc = CurryFunctions.AggregateFiveToStringAsync.ToRValue();
             var errorArgument = CreateErrorTest();
             var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -354,14 +355,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.None<Func<int, int, int, int, int, Task<string>>>(errorFunc);
             var resultArgument = RValueFactory.SomeTask(initialValue);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Single(resultOut.Errors);
-            Assert.True(errorFunc.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Single(resultOut.GetErrors());
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().Last()));
         }
 
         /// <summary>
@@ -372,16 +373,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueCurryOkAsync_BadStatus_AddBadStatus_FiveArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, int, Task<string>>>(errorFunc);
+            var resultValueFunc = RValueFactory.None<Func<int, int, int, int, int, Task<string>>>(errorFunc);
             var errorArgument = CreateErrorTest();
             var resultArgument = RValueFactory.NoneTask<int>(errorArgument);
 
             var resultOut = await resultValueFunc.ResultValueCurryOkAsync(resultArgument);
 
-            Assert.True(resultOut.HasErrors);
-            Assert.Equal(2, resultOut.Errors.Count);
-            Assert.True(errorFunc.Equals(resultOut.Errors.First()));
-            Assert.True(errorArgument.Equals(resultOut.Errors.Last()));
+            Assert.True(resultOut.Failure);
+            Assert.Equal(2, resultOut.GetErrors().Count);
+            Assert.True(errorFunc.Equals(resultOut.GetErrors().First()));
+            Assert.True(errorArgument.Equals(resultOut.GetErrors().Last()));
         }
     }
 }

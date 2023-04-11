@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.Collections;
@@ -21,13 +21,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionBindTryOk_OkResult_OkTry()
         {
             var initialNumbers = GetRangeNumber();
-            var numbersResult = new ResultCollection<int>(initialNumbers);
+            var numbersResult = initialNumbers.ToRList();
 
             var numberAfterTry = numbersResult.ResultCollectionBindTryOk(
-                numbers => new ResultCollection<int>(DivisionByCollection(numbers)), Exceptions.ExceptionError());
+                numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionError());
 
-            Assert.True(numberAfterTry.OkStatus);
-            Assert.True(DivisionByCollection(initialNumbers).SequenceEqual(numberAfterTry.Value));
+            Assert.True(numberAfterTry.Success);
+            Assert.True(DivisionByCollection(initialNumbers).SequenceEqual(numberAfterTry.GetValue()));
         }
 
         /// <summary>
@@ -37,13 +37,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionBindTryOk_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
-            var numbersResult = new ResultCollection<int>(initialError);
+            var numbersResult = initialError.ToRList<int>();
 
             var numberAfterTry = numbersResult.ResultCollectionBindTryOk(
-                numbers => new ResultCollection<int>(DivisionByCollection(numbers)), Exceptions.ExceptionError());
+                numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionError());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -53,13 +53,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionBindTryOk_OkResult_ExceptionTry()
         {
             var initialNumbers = GetRangeNumberWithZero();
-            var numberResult = new ResultCollection<int>(initialNumbers);
+            var numberResult = initialNumbers.ToRList();
 
             var resultValue = numberResult.ResultCollectionBindTryOk(
-                numbers => new ResultCollection<int>(DivisionByCollection(numbers)), Exceptions.ExceptionError());
+                numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -69,13 +69,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionBindTryOk_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = new ResultCollection<int>(initialError);
+            var numberResult = initialError.ToRList<int>();
 
             var numberAfterTry = numberResult.ResultCollectionBindTryOk(
-                numbers => new ResultCollection<int>(DivisionByCollection(numbers)), Exceptions.ExceptionError());
+                numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionError());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -85,13 +85,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionBindTryOkFunc_OkResult_OkTry()
         {
             var initialNumbers = GetRangeNumber();
-            var numbersResult = new ResultCollection<int>(initialNumbers);
+            var numbersResult = initialNumbers.ToRList();
 
             var numberAfterTry = numbersResult.ResultCollectionBindTryOk(
-                numbers => new ResultCollection<int>(DivisionByCollection(numbers)), Exceptions.ExceptionFunc());
+                numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionFunc());
 
-            Assert.True(numberAfterTry.OkStatus);
-            Assert.True(DivisionByCollection(initialNumbers).SequenceEqual(numberAfterTry.Value));
+            Assert.True(numberAfterTry.Success);
+            Assert.True(DivisionByCollection(initialNumbers).SequenceEqual(numberAfterTry.GetValue()));
         }
 
         /// <summary>
@@ -101,13 +101,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionBindTryOkFunc_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
-            var numbersResult = new ResultCollection<int>(initialError);
+            var numbersResult = initialError.ToRList<int>();
 
             var numberAfterTry = numbersResult.ResultCollectionBindTryOk(
-                numbers => new ResultCollection<int>(DivisionByCollection(numbers)), Exceptions.ExceptionFunc());
+                numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionFunc());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
 
         /// <summary>
@@ -117,13 +117,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionBindTryOkFunc_OkResult_ExceptionTry()
         {
             var initialNumbers = GetRangeNumberWithZero();
-            var numberResult = new ResultCollection<int>(initialNumbers);
+            var numberResult = initialNumbers.ToRList();
 
             var resultValue = numberResult.ResultCollectionBindTryOk(
-                numbers => new ResultCollection<int>(DivisionByCollection(numbers)), Exceptions.ExceptionFunc());
+                numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.HasErrors);
-            Assert.NotNull(resultValue.Errors.First().Exception);
+            Assert.True(resultValue.Failure);
+            Assert.NotNull(resultValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -133,13 +133,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultCollectionBindTryOkFunc_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = new ResultCollection<int>(initialError);
+            var numberResult = initialError.ToRList<int>();
 
             var numberAfterTry = numberResult.ResultCollectionBindTryOk(
-                numbers => new ResultCollection<int>(DivisionByCollection(numbers)), Exceptions.ExceptionFunc());
+                numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionFunc());
 
-            Assert.True(numberAfterTry.HasErrors);
-            Assert.True(initialError.Equals(numberAfterTry.Errors.First()));
+            Assert.True(numberAfterTry.Failure);
+            Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
         }
     }
 }

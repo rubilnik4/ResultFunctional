@@ -25,8 +25,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultAfterWhere = await resultValue.ResultValueBindOkToCollectionBindAsync(
                 number => RListFactory.GetRListAsync(NumberToCollection(number)));
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.True(NumberToCollection(initialValue).SequenceEqual(resultAfterWhere.Value));
+            Assert.True(resultAfterWhere.Success);
+            Assert.True(NumberToCollection(initialValue).SequenceEqual(resultAfterWhere.GetValue()));
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultAfterWhere = await resultValue.ResultValueBindOkToCollectionBindAsync(
                 number => RListFactory.GetRListAsync(NumberToCollection(number)));
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.True(errorInitial.Equals(resultAfterWhere.Errors.Last()));
+            Assert.True(resultAfterWhere.Failure);
+            Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));
         }
     }
 }

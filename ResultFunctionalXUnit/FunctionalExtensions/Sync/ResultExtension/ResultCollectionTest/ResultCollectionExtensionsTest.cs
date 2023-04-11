@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
-using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Results;
+using ResultFunctional.Models.Lists;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
@@ -22,13 +21,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             var resultCollectionFirst = GetRangeNumber().ToRList();
             var resultCollectionSecond = GetRangeNumber().ToRList();
-            var results = Enumerable.Empty<IResultCollection<int>>().Append(resultCollectionFirst).Append(resultCollectionSecond);
+            var results = Enumerable.Empty<IRList<int>>().Append(resultCollectionFirst).Append(resultCollectionSecond);
 
             var resultCollection = results.ConcatResultCollection();
-            var numberRange = resultCollectionFirst.Value.Concat(resultCollectionSecond.Value).ToList();
+            var numberRange = resultCollectionFirst.GetValue().Concat(resultCollectionSecond.GetValue()).ToList();
 
-            Assert.True(resultCollection.OkStatus);
-            Assert.True(numberRange.SequenceEqual(resultCollection.Value));
+            Assert.True(resultCollection.Success);
+            Assert.True(numberRange.SequenceEqual(resultCollection.GetValue()));
         }
 
         /// <summary>
@@ -40,12 +39,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var resultCollectionFirst = GetRangeNumber().ToRList();
             var resultCollectionErrorFirst = CreateErrorTest().ToRList<int>();
             var resultCollectionErrorSecond = CreateErrorTest().ToRList<int>();
-            var results = Enumerable.Empty<IResultCollection<int>>().Append(resultCollectionFirst).Append(resultCollectionErrorFirst).Append(resultCollectionErrorSecond);
+            var results = Enumerable.Empty<IRList<int>>().Append(resultCollectionFirst).Append(resultCollectionErrorFirst).Append(resultCollectionErrorSecond);
 
             var resultCollection = results.ConcatResultCollection();
 
-            Assert.True(resultCollection.HasErrors);
-            Assert.Equal(2, resultCollection.Errors.Count);
+            Assert.True(resultCollection.Failure);
+            Assert.Equal(2, resultCollection.GetErrors().Count);
         }
     }
 }

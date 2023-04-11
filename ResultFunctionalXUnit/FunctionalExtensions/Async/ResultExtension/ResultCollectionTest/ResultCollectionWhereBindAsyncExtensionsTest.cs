@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
@@ -29,8 +29,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 okFunc: CollectionToStringAsync,
                 badFunc: _ => CreateErrorListTwoTestTask());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.Value));
+            Assert.True(resultAfterWhere.Success);
+            Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.GetValue()));
         }
 
         /// <summary>
@@ -47,8 +47,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 okFunc: _ => ToTaskCollection(GetEmptyStringList()),
                 badFunc: _ => ToTaskCollection(errorsBad));
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Equal(errorsBad.Count, resultAfterWhere.Errors.Count);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Equal(errorsBad.Count, resultAfterWhere.GetErrors().Count);
         }
 
         /// <summary>
@@ -64,8 +64,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 okFunc: _ => ToTaskCollection(GetEmptyStringList()),
                 badFunc: _ => CreateErrorListTwoTestTask());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Single(resultAfterWhere.Errors);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Single(resultAfterWhere.GetErrors());
         }
 
         /// <summary>
@@ -81,8 +81,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 okFunc: _ => ToTaskCollection(GetEmptyStringList()),
                 badFunc: _ => CreateErrorListTwoTestTask());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Single(resultAfterWhere.Errors);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Single(resultAfterWhere.GetErrors());
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 okFunc: CollectionToStringAsync,
                 badFunc: _ => ToTaskCollection(GetEmptyStringList()));
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.Value));
+            Assert.True(resultAfterWhere.Success);
+            Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.GetValue()));
         }
 
         /// <summary>
@@ -115,9 +115,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 okFunc: _ => ToTaskCollection(GetEmptyStringList()),
                 badFunc: numbers => ToTaskCollection(new List<string> { numbers.Count.ToString() }));
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Single(resultAfterWhere.Value);
-            Assert.Equal(initialCollection.Count.ToString(), resultAfterWhere.Value.First());
+            Assert.True(resultAfterWhere.Success);
+            Assert.Single(resultAfterWhere.GetValue());
+            Assert.Equal(initialCollection.Count.ToString(), resultAfterWhere.GetValue().First());
         }
 
         /// <summary>
@@ -133,8 +133,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 okFunc: _ => ToTaskCollection(GetEmptyStringList()),
                 badFunc: errors => ToTaskCollection(new List<string> { errors.Count.ToString() }));
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Equal(errorsInitial.Count, resultAfterWhere.Errors.Count);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Equal(errorsInitial.Count, resultAfterWhere.GetErrors().Count);
         }
 
         /// <summary>
@@ -150,8 +150,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 okFunc: _ => ToTaskCollection(GetEmptyStringList()),
                 badFunc: errors => ToTaskCollection(new List<string> { errors.Count.ToString() }));
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Equal(errorsInitial.Count, resultAfterWhere.Errors.Count);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Equal(errorsInitial.Count, resultAfterWhere.GetErrors().Count);
         }
 
         /// <summary>
@@ -167,8 +167,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 okFunc: CollectionToStringAsync,
                 badFunc: _ => ToTaskCollection(GetEmptyStringList()));
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.Value));
+            Assert.True(resultAfterWhere.Success);
+            Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.GetValue()));
         }
 
         /// <summary>
@@ -184,9 +184,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 okFunc: _ => ToTaskCollection(GetEmptyStringList()),
                 badFunc: errors => ToTaskCollection(new List<string> { errors.Count.ToString() }));
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Single(resultAfterWhere.Value);
-            Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere.Value.First());
+            Assert.True(resultAfterWhere.Success);
+            Assert.Single(resultAfterWhere.GetValue());
+            Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere.GetValue().First());
         }
 
         /// <summary>
@@ -200,8 +200,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var resultAfterWhere = await resultCollection.ResultCollectionOkBindAsync(CollectionToStringAsync);
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.Value));
+            Assert.True(resultAfterWhere.Success);
+            Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.GetValue()));
         }
 
         /// <summary>
@@ -215,8 +215,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var resultAfterWhere = await resultCollection.ResultCollectionOkBindAsync(CollectionToStringAsync);
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.True(errorInitial.Equals(resultAfterWhere.Errors.Last()));
+            Assert.True(resultAfterWhere.Failure);
+            Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));
         }
 
         /// <summary>
@@ -231,8 +231,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultAfterWhere = await resultCollection.ResultCollectionBadBindAsync(
                 errors => ToTaskCollection(GetListByErrorsCount(errors)));
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(initialCollection, resultAfterWhere.Value);
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(initialCollection, resultAfterWhere.GetValue());
         }
 
         /// <summary>
@@ -247,8 +247,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultAfterWhere = await resultCollection.ResultCollectionBadBindAsync(
                 errors => ToTaskCollection(GetListByErrorsCount(errors)));
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.Equal(errorsInitial.Count, resultAfterWhere.Value.First());
+            Assert.True(resultAfterWhere.Success);
+            Assert.Equal(errorsInitial.Count, resultAfterWhere.GetValue().First());
         }
 
         /// <summary>
@@ -263,8 +263,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkBindAsync(_ => true,
                 badFunc: _ => CreateErrorListTwoTestTask());
 
-            Assert.True(resultAfterWhere.OkStatus);
-            Assert.True(initialCollection.SequenceEqual(resultAfterWhere.Value));
+            Assert.True(resultAfterWhere.Success);
+            Assert.True(initialCollection.SequenceEqual(resultAfterWhere.GetValue()));
         }
 
         /// <summary>
@@ -280,8 +280,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkBindAsync(_ => false,
                 badFunc: _ => ToTaskCollection(errorsBad));
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Equal(errorsBad.Count, resultAfterWhere.Errors.Count);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Equal(errorsBad.Count, resultAfterWhere.GetErrors().Count);
         }
 
         /// <summary>
@@ -296,8 +296,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkBindAsync(_ => true,
                 badFunc: _ => CreateErrorListTwoTestTask());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Single(resultAfterWhere.Errors);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Single(resultAfterWhere.GetErrors());
         }
 
         /// <summary>
@@ -312,8 +312,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultAfterWhere = await resultCollection.ResultCollectionCheckErrorsOkBindAsync(_ => false,
                 badFunc: _ => CreateErrorListTwoTestTask());
 
-            Assert.True(resultAfterWhere.HasErrors);
-            Assert.Single(resultAfterWhere.Errors);
+            Assert.True(resultAfterWhere.Failure);
+            Assert.Single(resultAfterWhere.GetErrors());
         }
     }
 }

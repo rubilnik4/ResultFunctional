@@ -24,7 +24,7 @@ namespace ResultFunctionalXUnit.Models.ResultFactory
             var resultValue = await RValueFactory.SomeTask(initialValue);
 
             Assert.True(resultValue.Success);
-            Assert.Equal(initialValue, resultValue.Value);
+            Assert.Equal(initialValue, resultValue.GetValue());
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace ResultFunctionalXUnit.Models.ResultFactory
             var resultValue = await RValueFactory.SomeTask(initialValue);
 
             Assert.True(resultValue.Success);
-            Assert.Equal(initialValue, resultValue.Value);
+            Assert.Equal(initialValue, resultValue.GetValue());
         }
 
         /// <summary>
