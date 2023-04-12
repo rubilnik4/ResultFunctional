@@ -2,7 +2,7 @@
 using System.Linq;
 using Moq;
 using ResultFunctional.FunctionalExtensions.Sync;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Lists;

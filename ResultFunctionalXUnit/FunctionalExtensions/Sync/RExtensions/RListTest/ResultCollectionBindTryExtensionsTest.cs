@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists.ResultCollectionBindTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists.ResultCollectionBindTryExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
 {

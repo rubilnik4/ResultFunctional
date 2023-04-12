@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
 {
     /// <summary>
     /// Extension methods for value function converting to value

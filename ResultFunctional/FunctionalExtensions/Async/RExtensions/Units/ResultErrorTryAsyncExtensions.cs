@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Units;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Units
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
 {
     /// <summary>
     /// Exception handling result error async extension methods

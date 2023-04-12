@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using ResultFunctional.Models.Lists;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
 {
     /// <summary>
     /// Extension methods for task result value async monad function converting to result collection

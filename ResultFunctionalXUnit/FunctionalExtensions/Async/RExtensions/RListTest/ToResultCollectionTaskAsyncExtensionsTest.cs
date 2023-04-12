@@ -2,8 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Values;
 using ResultFunctionalXUnit.Data;

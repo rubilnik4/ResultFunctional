@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.Models.Lists;
-using ResultFunctional.Models.Units;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
 {
     /// <summary>
     /// Result collections extension methods

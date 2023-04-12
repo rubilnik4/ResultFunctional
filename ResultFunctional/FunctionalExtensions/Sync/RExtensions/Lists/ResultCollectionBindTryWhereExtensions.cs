@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists.ResultCollectionBindTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists.ResultCollectionBindTryExtensions;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
 {
     /// <summary>
     /// Extension methods for result collection monad function with conditions and exception handling

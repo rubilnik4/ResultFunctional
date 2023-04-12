@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
 {
     /// <summary>
     /// Result collection action extension methods

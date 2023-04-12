@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Units;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Units
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
 {
     /// <summary>
     /// Task result error action extension methods

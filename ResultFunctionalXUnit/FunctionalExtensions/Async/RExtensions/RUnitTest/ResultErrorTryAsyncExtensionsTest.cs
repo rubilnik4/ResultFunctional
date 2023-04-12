@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Async.RExtension.Units.ResultErrorTryAsyncExtensions;
+using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Units.ResultErrorTryAsyncExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
 {

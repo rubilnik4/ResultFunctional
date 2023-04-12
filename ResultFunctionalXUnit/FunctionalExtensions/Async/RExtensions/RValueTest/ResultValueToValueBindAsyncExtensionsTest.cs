@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.RExtension.Values;
+using ResultFunctional.FunctionalExtensions.Async.RExtensions.Values;
 using ResultFunctional.Models.Factories;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;

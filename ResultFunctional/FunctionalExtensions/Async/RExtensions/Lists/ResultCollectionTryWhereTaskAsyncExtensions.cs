@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists.ResultCollectionTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists.ResultCollectionTryExtensions;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
 {
     /// <summary>
     /// Exception handling task result collection with conditions extension methods

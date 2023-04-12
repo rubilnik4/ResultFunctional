@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
 {
     /// <summary>
     /// Result collections task async extension methods with condition

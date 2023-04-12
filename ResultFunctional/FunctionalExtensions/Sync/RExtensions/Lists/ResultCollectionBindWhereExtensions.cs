@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Lists;
 using ResultFunctional.Models.Options;
-using ResultFunctional.Models.Units;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
 {
     /// <summary>
     /// Extension methods for result collection monad function with conditions

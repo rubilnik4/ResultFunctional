@@ -1,9 +1,9 @@
 ﻿using System;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists;
 using ResultFunctional.Models.Lists;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
 {
     /// <summary>
     /// Extension methods for result value monad function converting to result collection

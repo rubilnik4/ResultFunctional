@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Units
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
 {
     /// <summary>
     /// Result error task extension methods

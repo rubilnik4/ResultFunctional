@@ -1,13 +1,12 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
- using ResultFunctional.Models.Options;
- using ResultFunctional.Models.Units;
+using ResultFunctional.Models.Options;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
 {
     /// <summary>
     /// Extension methods for result collection monad task function with conditions

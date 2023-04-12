@@ -4,7 +4,7 @@ using ResultFunctional.Models.Factories;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Async.RExtension.Values.ResultValueBindTryAsyncExtensions;
+using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Values.ResultValueBindTryAsyncExtensions;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTest

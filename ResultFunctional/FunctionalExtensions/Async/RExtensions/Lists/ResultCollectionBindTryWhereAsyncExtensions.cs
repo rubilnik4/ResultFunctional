@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
-using static ResultFunctional.FunctionalExtensions.Async.RExtension.Lists.ResultCollectionBindTryTaskAsyncExtensions;
+using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists.ResultCollectionBindTryTaskAsyncExtensions;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
 {
     /// <summary>
     /// Extension methods for result collection monad async function with conditions and exception handling

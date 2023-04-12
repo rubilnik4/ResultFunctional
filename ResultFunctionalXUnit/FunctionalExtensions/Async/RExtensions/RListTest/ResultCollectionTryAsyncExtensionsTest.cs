@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ResultFunctionalXUnit.Data;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Async.RExtension.Lists.ResultCollectionTryAsyncExtensions;
+using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists.ResultCollectionTryAsyncExtensions;
 using static ResultFunctionalXUnit.Mocks.Implementation.AsyncFunctions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest

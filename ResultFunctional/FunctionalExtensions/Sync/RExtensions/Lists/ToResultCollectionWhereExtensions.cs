@@ -4,7 +4,7 @@ using System.Linq;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
 {
     /// <summary>
     /// Result collections extension methods with condition

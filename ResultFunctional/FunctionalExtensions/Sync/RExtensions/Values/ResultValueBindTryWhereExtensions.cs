@@ -1,9 +1,9 @@
 ﻿using System;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Values;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Values.ResultValueBindTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values.ResultValueBindTryExtensions;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
 {
     /// <summary>
     /// Extension methods for result value monad function with conditions and exception handling

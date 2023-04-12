@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Moq;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units;
 using ResultFunctional.Models.Factories;
 using ResultFunctionalXUnit.Mocks.Interfaces;
 using Xunit;

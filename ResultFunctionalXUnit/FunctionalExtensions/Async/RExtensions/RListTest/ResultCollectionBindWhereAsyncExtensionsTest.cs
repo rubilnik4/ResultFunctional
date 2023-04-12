@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
-using ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
+using ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists;
 using ResultFunctional.FunctionalExtensions.Sync;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Options;
 using ResultFunctionalXUnit.Mocks.Interfaces;

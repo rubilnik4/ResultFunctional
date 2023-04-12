@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Values.ResultValueBindTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values.ResultValueBindTryExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
 {

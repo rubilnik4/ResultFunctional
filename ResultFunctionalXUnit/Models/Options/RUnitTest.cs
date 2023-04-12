@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Errors.DatabaseErrors;

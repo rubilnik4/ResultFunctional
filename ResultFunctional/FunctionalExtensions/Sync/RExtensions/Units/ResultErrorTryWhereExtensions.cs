@@ -1,9 +1,9 @@
 ﻿using System;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Units;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Units.ResultErrorTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units.ResultErrorTryExtensions;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Units
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
 {
     /// <summary>
     /// Exception handling result error with conditions extension methods

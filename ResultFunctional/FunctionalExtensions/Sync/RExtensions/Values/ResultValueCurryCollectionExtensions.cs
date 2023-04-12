@@ -4,7 +4,7 @@ using System.Linq;
 using ResultFunctional.Models.Lists;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
 {
     /// <summary>
     /// Extension methods for result value higher order collection functions

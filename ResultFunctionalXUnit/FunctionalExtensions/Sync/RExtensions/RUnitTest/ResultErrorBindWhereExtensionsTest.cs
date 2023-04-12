@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units;
 using ResultFunctional.Models.Factories;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;

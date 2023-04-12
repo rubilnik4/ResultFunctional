@@ -4,9 +4,8 @@ using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
 using ResultFunctional.Models.Options;
-using ResultFunctional.Models.Units;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
 {
     /// <summary>
     /// Extension methods for result collection monad async task function with conditions

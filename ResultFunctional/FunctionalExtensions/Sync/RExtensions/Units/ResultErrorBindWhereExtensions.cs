@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Units;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Units
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
 {
     /// <summary>
     /// Result error extension methods for merging errors

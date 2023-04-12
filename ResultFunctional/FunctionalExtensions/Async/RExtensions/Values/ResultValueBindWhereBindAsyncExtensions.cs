@@ -5,7 +5,7 @@ using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
 {
     /// <summary>
     /// Extension methods for task result value async monad function with conditions

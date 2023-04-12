@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.RExtension.Units;
+using ResultFunctional.FunctionalExtensions.Async.RExtensions.Units;
 using ResultFunctional.Models.Factories;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;

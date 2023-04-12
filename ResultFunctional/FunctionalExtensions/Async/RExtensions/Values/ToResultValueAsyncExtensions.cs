@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
 {
     /// <summary>
     /// Result value async extension methods

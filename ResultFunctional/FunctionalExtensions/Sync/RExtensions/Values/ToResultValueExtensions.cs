@@ -1,11 +1,11 @@
-﻿using ResultFunctional.Models.Errors.BaseErrors;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
 {
     /// <summary>
     /// Result value extension methods

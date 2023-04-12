@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
 {
     /// <summary>
     /// Extension methods for task result value functions converting to result collection

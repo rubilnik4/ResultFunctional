@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Values;
-using static ResultFunctional.FunctionalExtensions.Async.RExtension.Values.ResultValueTryAsyncExtensions;
+using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Values.ResultValueTryAsyncExtensions;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
 {
     /// <summary>
     /// Async exception handling task result value with conditions extension methods

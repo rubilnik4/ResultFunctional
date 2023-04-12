@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;

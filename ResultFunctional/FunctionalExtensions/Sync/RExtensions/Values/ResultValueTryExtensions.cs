@@ -2,7 +2,7 @@
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
 {
     /// <summary>
     /// Exception handling result value extension methods

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.RExtension.Values;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.FunctionalExtensions.Async.RExtensions.Values;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctional.Models.Factories;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;

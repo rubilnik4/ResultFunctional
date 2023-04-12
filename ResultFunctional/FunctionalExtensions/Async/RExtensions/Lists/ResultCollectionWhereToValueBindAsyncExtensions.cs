@@ -5,7 +5,7 @@ using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
 {
     /// <summary>
     /// Extension methods for task result collection async functions converting to result value

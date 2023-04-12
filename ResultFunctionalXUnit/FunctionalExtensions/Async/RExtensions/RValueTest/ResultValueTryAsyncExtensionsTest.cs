@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Async.RExtension.Values.ResultValueTryAsyncExtensions;
+using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Values.ResultValueTryAsyncExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTest
 {

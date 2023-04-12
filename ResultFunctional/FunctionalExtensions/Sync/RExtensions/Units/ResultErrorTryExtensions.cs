@@ -3,7 +3,7 @@ using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Units;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Units
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
 {
     /// <summary>
     /// Exception handling result error extension methods

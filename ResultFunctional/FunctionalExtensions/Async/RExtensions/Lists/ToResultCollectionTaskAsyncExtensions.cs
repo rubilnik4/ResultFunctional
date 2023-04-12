@@ -1,18 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Lists;
 using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists;
 
 /// <summary>
 /// Task result collections extension methods

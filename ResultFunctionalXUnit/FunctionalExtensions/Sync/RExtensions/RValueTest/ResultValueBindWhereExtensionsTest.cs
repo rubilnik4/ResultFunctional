@@ -2,7 +2,7 @@
 using System.Linq;
 using Moq;
 using ResultFunctional.FunctionalExtensions.Sync;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Options;
 using ResultFunctionalXUnit.Data;

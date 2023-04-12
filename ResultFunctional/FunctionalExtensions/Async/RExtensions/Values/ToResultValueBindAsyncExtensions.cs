@@ -4,7 +4,7 @@ using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Async.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
 {
     /// <summary>
     /// Task result value async extension methods

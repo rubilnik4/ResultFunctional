@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Moq;
-using ResultFunctional.FunctionalExtensions.Async.RExtension.Units;
+using ResultFunctional.FunctionalExtensions.Async.RExtensions.Units;
 using ResultFunctional.Models.Factories;
 using ResultFunctionalXUnit.Mocks.Interfaces;
 using Xunit;
