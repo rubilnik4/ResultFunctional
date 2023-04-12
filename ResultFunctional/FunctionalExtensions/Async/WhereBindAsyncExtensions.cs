@@ -15,15 +15,15 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <typeparam name="TResult">Result type</typeparam>
         /// <param name="this">Source</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Converting function result</returns>      
         public static async Task<TResult> WhereContinueBindAsync<TSource, TResult>(this Task<TSource> @this,
                                                                                    Func<TSource, bool> predicate,
-                                                                                   Func<TSource, Task<TResult>> okFunc,
-                                                                                   Func<TSource, Task<TResult>> badFunc) =>
+                                                                                   Func<TSource, Task<TResult>> someFunc,
+                                                                                   Func<TSource, Task<TResult>> noneFunc) =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.WhereContinueAsync(predicate, okFunc, badFunc));
+            MapBindAsync(thisAwaited => thisAwaited.WhereContinueAsync(predicate, someFunc, noneFunc));
 
         /// <summary>
         /// Execute converting async task function if predicate condition <see langword="true"/>
@@ -31,13 +31,13 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <typeparam name="TSource">Source type</typeparam>
         /// <param name="this">Source</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <returns>Converting function result</returns>         
         public static async Task<TSource> WhereOkBindAsync<TSource>(this Task<TSource> @this,
                                                                   Func<TSource, bool> predicate,
-                                                                  Func<TSource, Task<TSource>> okFunc) =>
+                                                                  Func<TSource, Task<TSource>> someFunc) =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.WhereOkAsync(predicate, okFunc));
+            MapBindAsync(thisAwaited => thisAwaited.WhereOkAsync(predicate, someFunc));
 
         /// <summary>
         /// Execute converting async task function if predicate condition <see langword="false"/>
@@ -45,12 +45,12 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <typeparam name="TSource">Source type</typeparam>
         /// <param name="this">Source</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Converting function result</returns>     
         public static async Task<TSource> WhereBadBindAsync<TSource>(this Task<TSource> @this,
                                                                      Func<TSource, bool> predicate,
-                                                                     Func<TSource, Task<TSource>> badFunc) =>
+                                                                     Func<TSource, Task<TSource>> noneFunc) =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.WhereBadAsync(predicate, badFunc));
+            MapBindAsync(thisAwaited => thisAwaited.WhereBadAsync(predicate, noneFunc));
     }
 }

@@ -19,7 +19,7 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Преобразовать коллекцию чисел в строку
         /// </summary>
-        public static Func<IEnumerable<int>, string> IntCollectionToString =>
+        public static Func<IReadOnlyCollection<int>, string> IntCollectionToString =>
             numbers => numbers.Aggregate(String.Empty, (first, second) => first + second);
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Сложить коллекцию чисел и преобразовать в строку
         /// </summary>
-        public static Func<IEnumerable<int>, int, string> AggregateCollectionTwoToString =>
+        public static Func<IReadOnlyCollection<int>, int, string> AggregateCollectionTwoToString =>
             (first, second) => (first.Sum() + second).ToString();
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Сложить коллекцию чисел и преобразовать в строку
         /// </summary>
-        public static Func<IEnumerable<int>, int, int, string> AggregateCollectionThreeToString =>
+        public static Func<IReadOnlyCollection<int>, int, int, string> AggregateCollectionThreeToString =>
                 (first, second, third) => (first.Sum() + second + third).ToString();
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Сложить коллекцию чисел и преобразовать в строку
         /// </summary>
-        public static Func<IEnumerable<int>, int, int, int, string> AggregateCollectionFourToString =>
+        public static Func<IReadOnlyCollection<int>, int, int, int, string> AggregateCollectionFourToString =>
             (first, second, third, fourth) => (first.Sum() + second + third + fourth).ToString();
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Сложить пять чисел и преобразовать в строку
         /// </summary>
-        public static Func<IEnumerable<int>, int, int, int, int, string> AggregateCollectionFiveToString =>
+        public static Func<IReadOnlyCollection<int>, int, int, int, int, string> AggregateCollectionFiveToString =>
             (first, second, third, fourth, fifth) => (first.Sum() + second + third + fourth + fifth).ToString();
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Преобразовать число в строку асинхронно
         /// </summary>
-        public static Func<IEnumerable<int>, Task<string>> IntCollectionToStringAsync =>
+        public static Func<IReadOnlyCollection<int>, Task<string>> IntCollectionToStringAsync =>
             number => Task.FromResult(IntCollectionToString(number));
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Сложить два числа и преобразовать в строку
         /// </summary>
-        public static Func<IEnumerable<int>, int, Task<string>> AggregateCollectionTwoToStringAsync =>
+        public static Func<IReadOnlyCollection<int>, int, Task<string>> AggregateCollectionTwoToStringAsync =>
             (first, second) => Task.FromResult(AggregateCollectionTwoToString(first, second));
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Сложить три числа и преобразовать в строку
         /// </summary>
-        public static Func<IEnumerable<int>, int, int, Task<string>> AggregateCollectionThreeToStringAsync =>
+        public static Func<IReadOnlyCollection<int>, int, int, Task<string>> AggregateCollectionThreeToStringAsync =>
             (first, second, third) => Task.FromResult(AggregateCollectionThreeToString(first, second, third));
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Сложить четыре числа и преобразовать в строку
         /// </summary>
-        public static Func<IEnumerable<int>, int, int, int, Task<string>> AggregateCollectionFourToStringAsync =>
+        public static Func<IReadOnlyCollection<int>, int, int, int, Task<string>> AggregateCollectionFourToStringAsync =>
             (first, second, third, fourth) => Task.FromResult(AggregateCollectionFourToString(first, second, third, fourth));
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Сложить пять чисел и преобразовать в строку
         /// </summary>
-        public static Func<IEnumerable<int>, int, int, int, int, Task<string>> AggregateCollectionFiveToStringAsync =>
+        public static Func<IReadOnlyCollection<int>, int, int, int, int, Task<string>> AggregateCollectionFiveToStringAsync =>
             (first, second, third, fourth, fifth) => Task.FromResult(AggregateCollectionFiveToString(first, second, third, fourth, fifth));
     }
 }

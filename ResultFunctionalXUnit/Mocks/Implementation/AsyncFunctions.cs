@@ -49,13 +49,13 @@ namespace ResultFunctionalXUnit.Mocks.Implementation
         /// <summary>
         /// Функция деления на коллекцию чисел асинхронно
         /// </summary>
-        public static async Task<IEnumerable<int>> DivisionByCollectionAsync(IEnumerable<int> dividers) =>
-            await Task.FromResult(dividers.Select(divider => 10 / divider));
+        public static async Task<IReadOnlyCollection<int>> DivisionByCollectionAsync(IEnumerable<int> dividers) =>
+            await Task.FromResult(dividers.Select(divider => 10 / divider).ToList());
 
         /// <summary>
         /// Функция деления на коллекцию чисел
         /// </summary>
-        public static Task<IEnumerable<int>> DivisionCollectionByZeroAsync(IEnumerable<int> dividers) =>
+        public static Task<IReadOnlyCollection<int>> DivisionCollectionByZeroAsync(IEnumerable<int> dividers) =>
             throw new DivideByZeroException(dividers.ToString());
 
         /// <summary>

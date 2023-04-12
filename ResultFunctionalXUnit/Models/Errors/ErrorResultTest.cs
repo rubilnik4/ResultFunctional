@@ -53,7 +53,7 @@ namespace ResultFunctionalXUnit.Models.Errors
 
             Assert.False(hasType);
         }
-        
+
         /// <summary>
         /// Наличие типа ошибки
         /// </summary>
@@ -208,6 +208,19 @@ namespace ResultFunctionalXUnit.Models.Errors
 
             Assert.False(databaseTableError.IsError<IRDatabaseAccessError>());
             Assert.True(databaseTableError.IsError<RDatabaseAccessError>());
+        }
+
+        /// <summary>
+        /// Параметры ошибки
+        /// </summary>
+        [Fact]
+        public void ErrorDescription()
+        {
+            const string description = "Неизвестная ошибка";
+            var errorResult = (IRError)RErrorFactory.Simple(description);
+
+            Assert.Equal(errorResult.Description, description);
+            Assert.Equal(errorResult.Id, errorResult.GetType().Name);
         }
     }
 }

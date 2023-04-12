@@ -38,12 +38,12 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <typeparam name="TValue">Action type</typeparam>
         /// <param name="this">Source</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="actionOk">Action if predicate <see langword="true"/></param>
-        /// <param name="actionBad">Action if predicate <see langword="false"/></param>
+        /// <param name="actionSome">Action if predicate <see langword="true"/></param>
+        /// <param name="actionNone">Action if predicate <see langword="false"/></param>
         /// <returns>Unchanged source</returns>
         public static async Task<TValue> VoidWhereBindAsync<TValue>(this Task<TValue> @this, Func<TValue, bool> predicate,
-                                                                 Func<TValue, Task> actionOk, Func<TValue, Task> actionBad) =>
+                                                                 Func<TValue, Task> actionSome, Func<TValue, Task> actionNone) =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.VoidWhereAsync(predicate, actionOk, actionBad));
+            MapBindAsync(awaitedThis => awaitedThis.VoidWhereAsync(predicate, actionSome, actionNone));
     }
 }
