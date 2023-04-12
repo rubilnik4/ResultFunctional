@@ -8,7 +8,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
     /// <summary>
     /// Result error extension methods for merging errors
     /// </summary>
-    public static class ResultErrorBindWhereExtensions
+    public static class RUnitBindOptionExtensions
     {
         /// <summary>
         /// Merge result error function depending on incoming result error
@@ -17,7 +17,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="someFunc">Function if result error hasn't errors</param>
         /// <param name="noneFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result error</returns>
-        public static IRUnit ResultErrorBindOkBad(this IRUnit @this, Func<IRUnit> someFunc,
+        public static IRUnit RUnitBindMatch(this IRUnit @this, Func<IRUnit> someFunc,
                                                   Func<IReadOnlyCollection<IRError>, IRUnit> noneFunc) =>
             @this.Success
                 ? someFunc.Invoke()
@@ -29,7 +29,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="this">Incoming result error</param>
         /// <param name="someFunc">Function if result error hasn't errors</param>
         /// <returns>Outgoing result error</returns>
-        public static IRUnit ResultErrorBindOk(this IRUnit @this, Func<IRUnit> someFunc) =>
+        public static IRUnit RUnitBindSome(this IRUnit @this, Func<IRUnit> someFunc) =>
             @this.Success
                 ? someFunc.Invoke()
                 : @this;

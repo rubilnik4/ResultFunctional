@@ -21,7 +21,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RUnitTest
             int initialValue = Numbers.Number;
             var numberResult = RUnitFactory.Some();
 
-            var resultError = numberResult.ResultErrorTryOk(() => SyncFunctions.Division(initialValue), Exceptions.ExceptionError());
+            var resultError = numberResult.RUnitTrySome(() => SyncFunctions.Division(initialValue), Exceptions.ExceptionError());
 
             Assert.True(resultError.Success);
         }
@@ -35,7 +35,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RUnitTest
             const int initialValue = 0;
             var numberResult = RUnitFactory.Some();
 
-            var resultError = numberResult.ResultErrorTryOk(() => SyncFunctions.Division(initialValue), Exceptions.ExceptionError());
+            var resultError = numberResult.RUnitTrySome(() => SyncFunctions.Division(initialValue), Exceptions.ExceptionError());
 
             Assert.True(resultError.Failure);
             Assert.NotNull(resultError.GetErrors().First().Exception);

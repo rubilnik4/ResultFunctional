@@ -8,7 +8,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
     /// <summary>
     /// Result error action extension methods
     /// </summary>
-    public static class ResultErrorVoidExtensions
+    public static class RUnitVoidExtensions
     {
         /// <summary>
         /// Execute action if result hasn't errors
@@ -16,7 +16,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="this">Incoming result error</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns>
-        public static IRUnit ResultErrorVoidOk(this IRUnit @this, Action action) =>
+        public static IRUnit RUnitVoidSome(this IRUnit @this, Action action) =>
             @this.
             VoidSome(_ => @this.Success,
                    _ => action.Invoke());
@@ -27,7 +27,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="this">Incoming result error</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns>
-        public static IRUnit ResultErrorVoidBad(this IRUnit @this,
+        public static IRUnit RUnitVoidNone(this IRUnit @this,
                                                       Action<IReadOnlyCollection<IRError>> action) =>
             @this.
             VoidSome(_ => @this.Failure,
@@ -40,7 +40,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="actionSome">Action if result hasn't errors</param>
         /// <param name="actionNone">Action if result has errors</param>
         /// <returns>Unchanged result error</returns>
-        public static IRUnit ResultErrorVoidOkBad(this IRUnit @this,
+        public static IRUnit RUnitVoidMatch(this IRUnit @this,
                                                         Action actionSome,
                                                         Action<IReadOnlyCollection<IRError>> actionNone) =>
             @this.
@@ -55,7 +55,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result error</returns>
-        public static IRUnit ResultErrorVoidOkWhere(this IRUnit @this,
+        public static IRUnit RUNitVoidWhere(this IRUnit @this,
                                                           Func<bool> predicate,
                                                           Action action) =>
             @this.

@@ -8,7 +8,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
     /// <summary>
     /// Exception handling result error extension methods
     /// </summary>
-    public static class ResultErrorTryExtensions
+    public static class RUnitTryExtensions
     {
         /// <summary>
         /// Execute action and handle exception with result error converting
@@ -16,7 +16,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="action">Action</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result error</returns>
-        public static IRUnit ResultErrorTry(Action action, Func<Exception, IRError> exceptionFunc)
+        public static IRUnit RUnitTry(Action action, Func<Exception, IRError> exceptionFunc)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="action">Action</param>
         /// <param name="error">Error</param>
         /// <returns>Result error</returns>
-        public static IRUnit ResultErrorTry(Action action, IRError error) =>
-            ResultErrorTry(action, error.AppendException);
+        public static IRUnit RUnitTry(Action action, IRError error) =>
+            RUnitTry(action, error.AppendException);
     }
 }

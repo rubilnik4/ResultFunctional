@@ -22,5 +22,5 @@ public static class ResultErrorWhereBindAsyncExtensions
     public static async Task<IRUnit> ResultErrorCheckErrorsOkTaskAsync(this Task<IRUnit> @this, Func<bool> predicate,
                                                                          Func<IReadOnlyCollection<IRError>> noneFunc) =>
         await @this.
-        MapTaskAsync(awaitedThis => awaitedThis.ResultErrorCheckErrorsOk(predicate, noneFunc));
+        MapTaskAsync(awaitedThis => awaitedThis.RUnitEnsure(predicate, noneFunc));
 }

@@ -15,7 +15,7 @@ public class ResultErrorWhereASyncExtensionsTest
     {
         var resultError = RUnitFactory.Some(); ;
 
-        var resultAfterWhere = resultError.ResultErrorCheckErrorsOk(() => true,
+        var resultAfterWhere = resultError.RUnitEnsure(() => true,
                                                                     CreateErrorListTwoTest);
 
         Assert.True(resultAfterWhere.Success);
@@ -30,7 +30,7 @@ public class ResultErrorWhereASyncExtensionsTest
         var resultError = RUnitFactory.Some();
 
         var errorBad = CreateErrorListTwoTest();
-        var resultAfterWhere = resultError.ResultErrorCheckErrorsOk(() => false,
+        var resultAfterWhere = resultError.RUnitEnsure(() => false,
                                                                     () => errorBad);
 
         Assert.True(resultAfterWhere.Failure);
@@ -46,7 +46,7 @@ public class ResultErrorWhereASyncExtensionsTest
         var errorInitial = CreateErrorTest();
         var resultError = errorInitial.ToRUnit();
 
-        var resultAfterWhere = resultError.ResultErrorCheckErrorsOk(() => true,
+        var resultAfterWhere = resultError.RUnitEnsure(() => true,
                                                                     CreateErrorListTwoTest);
 
         Assert.True(resultAfterWhere.Failure);
@@ -62,7 +62,7 @@ public class ResultErrorWhereASyncExtensionsTest
         var errorsInitial = CreateErrorTest();
         var resultError = errorsInitial.ToRUnit();
 
-        var resultAfterWhere = resultError.ResultErrorCheckErrorsOk(() => false,
+        var resultAfterWhere = resultError.RUnitEnsure(() => false,
                                                                     CreateErrorListTwoTest);
 
         Assert.True(resultAfterWhere.Failure);

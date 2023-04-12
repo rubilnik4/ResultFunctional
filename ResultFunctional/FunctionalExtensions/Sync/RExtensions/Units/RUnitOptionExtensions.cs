@@ -9,7 +9,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units;
 /// <summary>
 /// Result error extension methods for errors
 /// </summary>
-public static class ResultErrorWhereExtensions
+public static class RUnitOptionExtensions
 {
     /// <summary>
     /// Check errors by predicate to result error if ones hasn't errors
@@ -18,7 +18,7 @@ public static class ResultErrorWhereExtensions
     /// <param name="predicate">Predicate function</param>
     /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
-    public static IRUnit ResultErrorCheckErrorsOk(this IRUnit @this,
+    public static IRUnit RUnitEnsure(this IRUnit @this,
                                                   Func<bool> predicate,
                                                   Func<IEnumerable<IRError>> noneFunc) =>
         @this.Success

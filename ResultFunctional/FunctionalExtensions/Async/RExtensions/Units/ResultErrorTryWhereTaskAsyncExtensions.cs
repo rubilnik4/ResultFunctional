@@ -21,7 +21,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         public static async Task<IRUnit> ResultErrorTryOkTaskAsync(this Task<IRUnit> @this, Action action,
                                                                      Func<Exception, IRError> exceptionFunc) =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.ResultErrorTryOk(action, exceptionFunc));
+            MapTaskAsync(awaitedThis => awaitedThis.RUnitTrySome(action, exceptionFunc));
 
         /// <summary>
         /// Execute async function and handle exception with task result error concat

@@ -10,7 +10,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
     /// <summary>
     /// Result error extension methods
     /// </summary>  
-    public static class ToResultErrorExtensions
+    public static class ToRUnitExtensions
     {
         /// <summary>
         /// Merge result errors collection
