@@ -1,4 +1,4 @@
-﻿using ResultFunctional.Models.Implementations.Results;
+﻿using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 
@@ -16,7 +16,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueToValueOkBad_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = resultValue.ResultValueToValueOkBad(
                 okFunc: number => number.ToString(),
@@ -32,7 +32,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueToValueOkBad_Bad_ReturnNewValue()
         {
             var errorsInitial = ErrorData.CreateErrorListTwoTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
       
             var resultAfterWhere = resultValue.ResultValueToValueOkBad(
                 okFunc: number => number.ToString(),

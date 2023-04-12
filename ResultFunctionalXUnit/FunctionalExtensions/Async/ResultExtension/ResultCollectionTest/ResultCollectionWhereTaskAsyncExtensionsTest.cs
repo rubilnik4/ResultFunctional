@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;

@@ -1,10 +1,9 @@
 ﻿using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
 using ResultFunctionalXUnit.Data;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtension.GetValue()s.ResultValueTryExtensions;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Values.ResultValueTryExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.ResultValueTest
 {

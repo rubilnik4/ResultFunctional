@@ -104,7 +104,7 @@ using ResultFunctional.Models.Errors.BaseErrors;
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-                MapBindAsync(awaitedThis => awaitedThis.ResultCollectionOkAsync(okFunc));
+                MapBindAsync(awaitedThis => awaitedThis.ResultCollectionOkBadAsync(okFunc, badFunc));
 
         /// <summary>
         /// Execute task result collection async function if incoming result collection hasn't errors

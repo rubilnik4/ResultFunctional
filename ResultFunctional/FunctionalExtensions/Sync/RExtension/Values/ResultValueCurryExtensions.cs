@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
             where TOut : notnull =>
             @this.Success && arg1.Success
                 ? @this.GetValue().Curry(arg1.GetValue()).ToRValue()
-                : @this.GetErrors().Concat(arg1.GetErrors()).ToRValue<Func<TOut>>();
+                : @this.GetErrorsOrEmpty().Concat(arg1.GetErrorsOrEmpty()).ToRValue<Func<TOut>>();
 
         /// <summary>
         /// Get one argument result value higher order function
@@ -41,7 +41,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
             where TOut : notnull =>
             @this.Success && arg1.Success
                 ? @this.GetValue().Curry(arg1.GetValue()).ToRValue()
-                : @this.GetErrors().Concat(arg1.GetErrors()).ToRValue<Func<TIn2, TOut>>();
+                : @this.GetErrorsOrEmpty().Concat(arg1.GetErrorsOrEmpty()).ToRValue<Func<TIn2, TOut>>();
 
         /// <summary>
         /// Get two arguments result value higher order function
@@ -61,7 +61,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
             where TOut : notnull =>
             @this.Success && arg1.Success
                 ? @this.GetValue().Curry(arg1.GetValue()).ToRValue()
-                : @this.GetErrors().Concat(arg1.GetErrors()).ToRValue<Func<TIn2, TIn3, TOut>>();
+                : @this.GetErrorsOrEmpty().Concat(arg1.GetErrorsOrEmpty()).ToRValue<Func<TIn2, TIn3, TOut>>();
 
         /// <summary>
         /// Get three arguments result value higher order function
@@ -83,7 +83,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
             where TOut : notnull =>
              @this.Success && arg1.Success
                  ? @this.GetValue().Curry(arg1.GetValue()).ToRValue()
-                : @this.GetErrors().Concat(arg1.GetErrors()).ToRValue<Func<TIn2, TIn3, TIn4, TOut>>();
+                : @this.GetErrorsOrEmpty().Concat(arg1.GetErrorsOrEmpty()).ToRValue<Func<TIn2, TIn3, TIn4, TOut>>();
 
         /// <summary>
         /// Get four arguments result value higher order function
@@ -107,6 +107,6 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
             where TOut : notnull =>
             @this.Success && arg1.Success
                 ? @this.GetValue().Curry(arg1.GetValue()).ToRValue()
-                : @this.GetErrors().Concat(arg1.GetErrors()).ToRValue<Func<TIn2, TIn3, TIn4, TIn5, TOut>>();
+                : @this.GetErrorsOrEmpty().Concat(arg1.GetErrorsOrEmpty()).ToRValue<Func<TIn2, TIn3, TIn4, TIn5, TOut>>();
     }
 }

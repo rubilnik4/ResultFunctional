@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
-using ResultFunctional.Models.Interfaces.Results;
-using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Data.Collections;
@@ -22,7 +20,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var initialCollection = GetRangeNumber();
 
             var result = initialCollection.ToRListWhere(_ => true,
-                                                                   _ => CreateErrorTest());
+                                                        _ => CreateErrorTest());
 
             Assert.True(result.Success);
             Assert.True(initialCollection.SequenceEqual(result.GetValue()));

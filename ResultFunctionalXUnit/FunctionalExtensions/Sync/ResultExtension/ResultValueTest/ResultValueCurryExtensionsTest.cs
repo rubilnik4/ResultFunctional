@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -20,8 +20,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOk_OkStatus_AddOkStatus()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = new ResultValue<Func<int, string>>(CurryFunctions.IntToString);
-            var resultArgument = new ResultValue<int>(initialValue);
+            var resultValueFunc = CurryFunctions.IntToString.ToRValue();
+            var resultArgument = initialValue.ToRValue();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -36,9 +36,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultValueCurryOk_OkStatus_AddBadStatus()
         {
-            var resultValueFunc = new ResultValue<Func<int, string>>(CurryFunctions.IntToString);
+            var resultValueFunc = CurryFunctions.IntToString.ToRValue();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultValue<int>(errorArgument);
+            var resultArgument = errorArgument.ToRValue<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -55,8 +55,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOk_BadStatus_AddOkStatus()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, string>>(errorFunc);
-            var resultArgument = new ResultValue<int>(2);
+            var resultValueFunc = errorFunc.ToRValue<Func<int, string>>();
+            var resultArgument = 2.ToRValue();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -73,9 +73,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOk_BadStatus_AddBadStatus()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, string>>(errorFunc);
+            var resultValueFunc = errorFunc.ToRValue<Func<int, string>>();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultValue<int>(errorArgument);
+            var resultArgument = errorArgument.ToRValue<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -93,8 +93,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOk_OkStatus_AddOkStatus_TwoArguments()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = new ResultValue<Func<int, int, string>>(CurryFunctions.AggregateTwoToString);
-            var resultArgument = new ResultValue<int>(initialValue);
+            var resultValueFunc = CurryFunctions.AggregateTwoToString.ToRValue();
+            var resultArgument = initialValue.ToRValue();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -109,9 +109,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultValueCurryOk_OkStatus_AddBadStatus_TwoArguments()
         {
-            var resultValueFunc = new ResultValue<Func<int, int, string>>(CurryFunctions.AggregateTwoToString);
+            var resultValueFunc = CurryFunctions.AggregateTwoToString.ToRValue();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultValue<int>(errorArgument);
+            var resultArgument = errorArgument.ToRValue<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -129,8 +129,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, string>>(errorFunc);
-            var resultArgument = new ResultValue<int>(initialValue);
+            var resultValueFunc = errorFunc.ToRValue<Func<int,int, string>>();
+            var resultArgument = initialValue.ToRValue();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -147,9 +147,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOk_BadStatus_AddBadStatus_TwoArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, string>>(errorFunc);
+            var resultValueFunc = errorFunc.ToRValue<Func<int, int, string>>();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultValue<int>(errorArgument);
+            var resultArgument = errorArgument.ToRValue<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -167,8 +167,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOk_OkStatus_AddOkStatus_ThreeArguments()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = new ResultValue<Func<int, int, int, string>>(CurryFunctions.AggregateThreeToString);
-            var resultArgument = new ResultValue<int>(initialValue);
+            var resultValueFunc = CurryFunctions.AggregateThreeToString.ToRValue();
+            var resultArgument = initialValue.ToRValue();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -183,9 +183,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultValueCurryOk_OkStatus_AddBadStatus_ThreeArguments()
         {
-            var resultValueFunc = new ResultValue<Func<int, int, int, string>>(CurryFunctions.AggregateThreeToString);
+            var resultValueFunc = CurryFunctions.AggregateThreeToString.ToRValue();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultValue<int>(errorArgument);
+            var resultArgument = errorArgument.ToRValue<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -203,8 +203,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, int, string>>(errorFunc);
-            var resultArgument = new ResultValue<int>(initialValue);
+            var resultValueFunc = errorFunc.ToRValue<Func<int, int, int, string>>();
+            var resultArgument = initialValue.ToRValue();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -221,9 +221,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOk_BadStatus_AddBadStatus_ThreeArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, int, string>>(errorFunc);
+            var resultValueFunc = errorFunc.ToRValue<Func<int, int, int, string>>();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultValue<int>(errorArgument);
+            var resultArgument = errorArgument.ToRValue<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -241,8 +241,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOk_OkStatus_AddOkStatus_FourArguments()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, string>>(CurryFunctions.AggregateFourToString);
-            var resultArgument = new ResultValue<int>(initialValue);
+            var resultValueFunc = CurryFunctions.AggregateFourToString.ToRValue();
+            var resultArgument = initialValue.ToRValue();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -257,9 +257,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultValueCurryOk_OkStatus_AddBadStatus_FourArguments()
         {
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, string>>(CurryFunctions.AggregateFourToString);
+            var resultValueFunc = CurryFunctions.AggregateFourToString.ToRValue();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultValue<int>(errorArgument);
+            var resultArgument = errorArgument.ToRValue<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -277,8 +277,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, string>>(errorFunc);
-            var resultArgument = new ResultValue<int>(initialValue);
+            var resultValueFunc = errorFunc.ToRValue<Func<int, int, int, int, string>>();
+            var resultArgument = initialValue.ToRValue();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -295,9 +295,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOk_BadStatus_AddBadStatus_FourArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, string>>(errorFunc);
+            var resultValueFunc = errorFunc.ToRValue<Func<int, int, int, int, string>>();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultValue<int>(errorArgument);
+            var resultArgument = errorArgument.ToRValue<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -315,8 +315,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOk_OkStatus_AddOkStatus_FiveArguments()
         {
             int initialValue = Numbers.Number;
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, int, string>>(CurryFunctions.AggregateFiveToString);
-            var resultArgument = new ResultValue<int>(initialValue);
+            var resultValueFunc = CurryFunctions.AggregateFiveToString.ToRValue();
+            var resultArgument = initialValue.ToRValue();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -332,9 +332,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultValueCurryOk_OkStatus_AddBadStatus_FiveArguments()
         {
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, int, string>>(CurryFunctions.AggregateFiveToString);
+            var resultValueFunc = CurryFunctions.AggregateFiveToString.ToRValue();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultValue<int>(errorArgument);
+            var resultArgument = errorArgument.ToRValue<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -352,8 +352,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             int initialValue = Numbers.Number;
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, int, string>>(errorFunc);
-            var resultArgument = new ResultValue<int>(initialValue);
+            var resultValueFunc = errorFunc.ToRValue<Func<int, int, int, int, int, string>>();
+            var resultArgument = initialValue.ToRValue();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 
@@ -370,9 +370,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOk_BadStatus_AddBadStatus_FiveArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<int, int, int, int, int, string>>(errorFunc);
+            var resultValueFunc = errorFunc.ToRValue<Func<int, int, int, int, int, string>>();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultValue<int>(errorArgument);
+            var resultArgument = errorArgument.ToRValue<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
 

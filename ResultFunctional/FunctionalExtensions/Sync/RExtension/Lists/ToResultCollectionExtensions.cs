@@ -83,5 +83,5 @@ public static class ToResultCollectionExtensions
          @this.ToList().
          WhereContinue(collection => collection.All(result => result.Success),
                        collection => collection.Select(result => result.GetValue()).ToRList(),
-                       collection => collection.SelectMany(result => result.GetErrors()).ToRList<TValue>());
+                       collection => collection.SelectMany(result => result.GetErrorsOrEmpty()).ToRList<TValue>());
 }

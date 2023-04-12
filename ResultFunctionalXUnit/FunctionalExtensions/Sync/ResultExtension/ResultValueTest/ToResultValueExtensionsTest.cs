@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.GetValue()s;
-using ResultFunctional.Models.Implementations.Results;
-using ResultFunctional.Models.Interfaces.Results;
-using ResultFunctionalXUnit.Data;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
+using ResultFunctional.Models.Factories;
+using ResultFunctional.Models.Values;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -20,10 +20,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ToResultCollection_OkStatus()
         {
-            var collection = Enumerable.Range(0, 3).ToList().AsReadOnly();
-            var resultNoError = new ResultValue<IEnumerable<int>>(collection);
+            var collection = Enumerable.Range(0, 3).ToList();
+            var resultNoError = collection.ToRValue();
 
-            var resultCollection = resultNoError.ToResultCollection();
+            var resultCollection = resultNoError.ToRList();
 
             Assert.True(resultCollection.Success);
             Assert.True(collection.SequenceEqual(resultCollection.GetValue()));
@@ -36,9 +36,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ToResultValue_HasErrors()
         {
             var error = CreateErrorTest();
-            var resultHasError = new ResultValue<IEnumerable<int>>(error);
+            var resultHasError = error.ToRValue<IEnumerable<int>>();
 
-            var resultCollection = resultHasError.ToResultCollection();
+            var resultCollection = resultHasError.ToRList();
 
             Assert.True(resultCollection.Failure);
             Assert.Single(resultCollection.GetErrors());
@@ -51,10 +51,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ToResultCollection_Enumerable_OkStatus()
         {
-            var collection = Enumerable.Range(0, 3).ToList().AsReadOnly();
+            var collection = Enumerable.Range(0, 3).ToList();
             var resultValues = collection.Select(value => value.ToRValue());
 
-            var resultCollection = resultValues.ToResultCollection();
+            var resultCollection = resultValues.ToRList();
 
             Assert.True(resultCollection.Success);
             Assert.True(collection.SequenceEqual(resultCollection.GetValue()));
@@ -69,9 +69,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
             var error = CreateErrorTest();
             var collection = Enumerable.Range(0, 3).ToList().AsReadOnly();
             var resultValues = collection.Select(value => value.ToRValue()).
-                                          Append(new ResultValue<int>(error));
+                                          Append(error.ToRValue<int>());
 
-            var resultCollection = resultValues.ToResultCollection();
+            var resultCollection = resultValues.ToRList();
 
             Assert.True(resultCollection.Failure);
             Assert.Single(resultCollection.GetErrors());
@@ -181,13 +181,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         /// Вернуть результирующий ответ со значением без ошибок
         /// </summary>      
         [Fact]
-        public void ToResultValueBind_OkStatus()
+        public void ToResultValueBind_OkStatus()    
         {
-            var resultNoError = new ResultError();
+            var resultNoError = RUnitFactory.Some();
             const string value = "OkStatus";
-            var resultValue = new ResultValue<string>(value);
+            var resultValue = value.ToRValue();
 
-            var resultValueAfter = resultNoError.ToResultBindValue(resultValue);
+            var resultValueAfter = resultNoError.ToRValueBind(resultValue);
 
             Assert.True(resultValueAfter.Success);
             Assert.Equal(value, resultValueAfter.GetValue());
@@ -200,11 +200,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ToResultValueBind_HasErrors()
         {
             var error = CreateErrorTest();
-            var resultHasError = new ResultError(error);
+            var resultHasError = error.ToRUnit();
             const string value = "BadStatus";
-            var resultValue = new ResultValue<string>(value);
+            var resultValue = value.ToRValue();
 
-            var resultValueAfter = resultHasError.ToResultBindValue(resultValue);
+            var resultValueAfter = resultHasError.ToRValueBind(resultValue);
 
             Assert.True(resultValueAfter.Failure);
             Assert.Single(resultValueAfter.GetErrors());
@@ -217,10 +217,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ToResultValueFromResultError_OkStatus()
         {
-            var resultNoError = new ResultError();
+            var resultNoError = RUnitFactory.Some();
             const string value = "OkStatus";
 
-            var resultValue = resultNoError.ToResultValue(value);
+            var resultValue = resultNoError.ToRValue(value);
 
             Assert.True(resultValue.Success);
             Assert.Equal(value, resultValue.GetValue());
@@ -233,10 +233,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ToResultValueFromResultError_HasErrors()
         {
             var error = CreateErrorTest();
-            var resultHasError = new ResultError(error);
+            var resultHasError = error.ToRUnit();
             const string value = "BadStatus";
 
-            var resultValue = resultHasError.ToResultValue(value);
+            var resultValue = resultHasError.ToRValue(value);
 
             Assert.True(resultValue.Failure);
             Assert.Single(resultValue.GetErrors());
@@ -249,11 +249,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ToResultValueBind_HasErrorsBind()
         {
-            var resultNoError = new ResultError();
+            var resultNoError = RUnitFactory.Some();
             var error = CreateErrorTest();
-            var resultValue = new ResultValue<string>(error);
+            var resultValue = error.ToRValue<string>();
 
-            var resultValueAfter = resultNoError.ToResultBindValue(resultValue);
+            var resultValueAfter = resultNoError.ToRValueBind(resultValue);
 
             Assert.True(resultValueAfter.Failure);
             Assert.Single(resultValueAfter.GetErrors());
@@ -267,11 +267,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ToResultValueBind_HasErrorsBindInitial()
         {
             var error = CreateErrorTest();
-            var resultHasError = new ResultError(error);
+            var resultHasError = error.ToRUnit();
             var errors = CreateErrorListTwoTest();
-            var resultValue = new ResultValue<string>(errors);
+            var resultValue = errors.ToRValue<string>();
 
-            var resultValueAfter = resultHasError.ToResultBindValue(resultValue);
+            var resultValueAfter = resultHasError.ToRValueBind(resultValue);
 
             Assert.True(resultValueAfter.Failure);
             Assert.Single(resultValueAfter.GetErrors());

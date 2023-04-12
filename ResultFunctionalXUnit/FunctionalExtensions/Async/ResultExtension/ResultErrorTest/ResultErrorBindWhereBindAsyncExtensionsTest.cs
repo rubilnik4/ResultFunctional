@@ -74,7 +74,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var result = await initialResult.ResultErrorBindOkBindAsync(() => addingResult);
 
-            Assert.True(result.Success);
+            Assert.True(result.Failure);
             Assert.True(result.GetErrors().First().Equals(initialError));
         }
 
@@ -90,7 +90,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var result = await initialResult.ResultErrorBindOkBindAsync(() => addingResult);
 
-            Assert.True(result.Success);
+            Assert.True(result.Failure);
             Assert.True(result.Equals(initialResult.Result));
         }
 
@@ -106,7 +106,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
 
             var result = await initialResult.ResultErrorBindOkBindAsync(() => addingResult);
 
-            Assert.True(result.Success);
+            Assert.True(result.Failure);
             Assert.Single(result.GetErrors());
             Assert.True(result.Equals(initialResult.Result));
         }

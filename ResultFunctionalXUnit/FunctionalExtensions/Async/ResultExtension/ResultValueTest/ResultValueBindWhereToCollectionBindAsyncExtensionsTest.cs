@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.ResultValues;
 using ResultFunctional.Models.Factories;
 using ResultFunctionalXUnit.Data;
 using Xunit;
@@ -23,7 +24,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultValue = RValueFactory.SomeTask(initialValue);
 
             var resultAfterWhere = await resultValue.ResultValueBindOkToCollectionBindAsync(
-                number => RListFactory.GetRListAsync(NumberToCollection(number)));
+                number => RListFactory.SomeTask(NumberToCollection(number)));
 
             Assert.True(resultAfterWhere.Success);
             Assert.True(NumberToCollection(initialValue).SequenceEqual(resultAfterWhere.GetValue()));
@@ -39,7 +40,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
             var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
             var resultAfterWhere = await resultValue.ResultValueBindOkToCollectionBindAsync(
-                number => RListFactory.GetRListAsync(NumberToCollection(number)));
+                number => RListFactory.SomeTask(NumberToCollection(number)));
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));

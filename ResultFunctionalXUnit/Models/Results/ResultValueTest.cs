@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ResultFunctional.Models.GetErrors().BaseErrors;
-using ResultFunctional.Models.Implementations.Results;
+﻿using System.Linq;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
+using ResultFunctional.Models.Errors.BaseErrors;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -18,7 +17,7 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void Initialize_OneError()
         {
-            var resultValue = new ResultValue<string>(CreateErrorTest());
+            var resultValue = CreateErrorTest().ToRValue<string>();
 
             Assert.False(resultValue.Success);
             Assert.True(resultValue.Failure);
@@ -32,7 +31,7 @@ namespace ResultFunctionalXUnit.Models.Results
         public void Initialize_Errors()
         {
             var errors = CreateErrorListTwoTest();
-            var resultValue = new ResultValue<string>(errors);
+            var resultValue = errors.ToRValue<string>();
 
             Assert.False(resultValue.Success);
             Assert.True(resultValue.Failure);
@@ -45,11 +44,11 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void Initialize_HasValue()
         {
-            var resultValue = new ResultValue<string>("OK");
+            var resultValue = "OK".ToRValue();
 
             Assert.True(resultValue.Success);
             Assert.False(resultValue.Failure);
-            Assert.Empty(resultValue.GetErrors());
+            Assert.Empty(resultValue.GetErrorsOrEmpty());
             Assert.True(resultValue.GetValue() != null);
         }
 
@@ -60,7 +59,7 @@ namespace ResultFunctionalXUnit.Models.Results
         public void AppendError()
         {
             const string value = "OK";
-            var resultValueInitial = new ResultValue<string>(value);
+            var resultValueInitial = value.ToRValue();
             var errorToConcat = CreateErrorTest();
 
             var resultValueConcat = resultValueInitial.AppendError(errorToConcat);
@@ -68,7 +67,7 @@ namespace ResultFunctionalXUnit.Models.Results
             Assert.True(resultValueConcat.Failure);
             Assert.Single(resultValueConcat.GetErrors());
             Assert.True(errorToConcat.Equals(resultValueConcat.GetErrors().Last()));
-            Assert.Null(resultValueConcat.GetValue());
+            Assert.Null(resultValueConcat.Value);
         }
 
         /// <summary>
@@ -78,7 +77,7 @@ namespace ResultFunctionalXUnit.Models.Results
         public void ConcatErrors_TotalOne()
         {
             const string value = "OK";
-            var resultValueInitial = new ResultValue<string>(value);
+            var resultValueInitial = value.ToRValue();
             var errorToConcat = CreateErrorTest();
 
             var resultValueConcat = resultValueInitial.ConcatErrors(errorToConcat);
@@ -86,7 +85,7 @@ namespace ResultFunctionalXUnit.Models.Results
             Assert.True(resultValueConcat.Failure);
             Assert.Single(resultValueConcat.GetErrors());
             Assert.True(errorToConcat.Equals(resultValueConcat.GetErrors().Last()));
-            Assert.Null(resultValueConcat.GetValue());
+            Assert.Null(resultValueConcat.Value);
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace ResultFunctionalXUnit.Models.Results
         public void ConcatErrors_TotalTwo()
         {
             var initialError = CreateErrorTest();
-            var resultValueInitial = new ResultValue<string>(initialError);
+            var resultValueInitial = initialError.ToRValue<string>();
             var errorToConcat = CreateErrorTest();
 
             var resultValueConcat = resultValueInitial.ConcatErrors(errorToConcat);
@@ -104,7 +103,7 @@ namespace ResultFunctionalXUnit.Models.Results
             Assert.True(resultValueConcat.Failure);
             Assert.Equal(2, resultValueConcat.GetErrors().Count);
             Assert.True(initialError.Equals(resultValueConcat.GetErrors().First()));
-            Assert.Null(resultValueConcat.GetValue());
+            Assert.Null(resultValueConcat.Value);
         }
 
         /// <summary>
@@ -114,7 +113,7 @@ namespace ResultFunctionalXUnit.Models.Results
         public void ConcatErrors_OkStatus_EmptyList()
         {
             const string value = "OK";
-            var resultValueInitial = new ResultValue<string>(value);
+            var resultValueInitial = value.ToRValue();
             var errorsToConcat = Enumerable.Empty<IRError>();
 
             var resultValueConcat = resultValueInitial.ConcatErrors(errorsToConcat);

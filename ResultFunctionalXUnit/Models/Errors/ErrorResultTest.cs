@@ -1,14 +1,14 @@
 ﻿using System;
 using ResultFunctional.Models.Enums;
-using ResultFunctional.Models.GetErrors().BaseErrors;
-using ResultFunctional.Models.GetErrors().CommonErrors;
-using ResultFunctional.Models.GetErrors().DatabaseErrors;
+using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Errors.CommonErrors;
+using ResultFunctional.Models.Errors.DatabaseErrors;
 using ResultFunctional.Models.Factories;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
-namespace ResultFunctionalXUnit.Models.GetErrors()
+namespace ResultFunctionalXUnit.Models.Errors
 {
     /// <summary>
     /// Ошибка результирующего ответа. Тесты
@@ -76,7 +76,7 @@ namespace ResultFunctionalXUnit.Models.GetErrors()
         {
             var errorResult = (IRError)RErrorFactory.Common(CommonErrorType.Unknown, "Неизвестная ошибка");
 
-            bool hasType = errorResult.IsErrorType(CommonErrorType.GetValue()Duplicated);
+            bool hasType = errorResult.IsErrorType(CommonErrorType.ValueDuplicated);
 
             Assert.False(hasType);
         }

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ResultFunctionalXUnit.Mocks.Interfaces;
 using Moq;
+using ResultFunctional.FunctionalExtensions.Async.RExtension.Values;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using ResultFunctional.Models.Factories;
@@ -35,7 +36,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultErrorVoidOkBindAsync_Bad_NotCallVoid()
         {
             var initialError = CreateErrorTest();
-            var resultError = RUnitFactory.SomeTask(initialError);
+            var resultError = RUnitFactory.NoneTask(initialError);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultErrorVoidOkBindAsync(() => voidObjectMock.Object.TestVoidAsync());
@@ -52,7 +53,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultErrorVoidBadBindAsync_Ok_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = RUnitFactory.SomeTask(errorsInitial);
+            var resultError = RUnitFactory.NoneTask(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultErrorVoidBadBindAsync(errors => voidObjectMock.Object.TestNumberVoidAsync(errors.Count));
@@ -69,7 +70,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultErrorVoidBadBindAsync_Bad_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = RUnitFactory.SomeTask(errorsInitial);
+            var resultError = RUnitFactory.NoneTask(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultErrorVoidBadBindAsync(errors => voidObjectMock.Object.TestNumberVoidAsync(errors.Count));
@@ -102,7 +103,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultErrorVoidOkBadBindAsync_Bad()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = RUnitFactory.SomeTask(errorsInitial);
+            var resultError = RUnitFactory.NoneTask(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultErrorVoidOkBadBindAsync(() => voidObjectMock.Object.TestVoidAsync(),
@@ -152,7 +153,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultErrorVoidOkWhereBindAsync_Bad_OkPredicate_NotCallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = RUnitFactory.SomeTask(errorsInitial);
+            var resultError = RUnitFactory.NoneTask(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultErrorVoidOkWhereBindAsync(() => true,
@@ -171,7 +172,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultErrorVoidOkWhereBindAsync_Bad_BadPredicate_NotCallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = RUnitFactory.SomeTask(errorsInitial);
+            var resultError = RUnitFactory.NoneTask(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.ResultErrorVoidOkWhereBindAsync(() => false,

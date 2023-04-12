@@ -120,7 +120,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ToResultBindValueBindAsync_HasErrors()
         {
             var error = ErrorData.CreateErrorTest();
-            var resultHasError = RUnitFactory.SomeTask(error);
+            var resultHasError = RUnitFactory.NoneTask(error);
             const string value = "BadStatus";
             var resultValue = RValueFactory.SomeTask(value);
 
@@ -154,7 +154,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ToResultValueBindBindAsync_HasErrorsBindInitial()
         {
             var error = ErrorData.CreateErrorTest();
-            var resultHasError = RUnitFactory.SomeTask(error);
+            var resultHasError = RUnitFactory.NoneTask(error);
             var errors = ErrorData.CreateErrorListTwoTest();
             var resultValue = RValueFactory.NoneTask<string>(errors);
 

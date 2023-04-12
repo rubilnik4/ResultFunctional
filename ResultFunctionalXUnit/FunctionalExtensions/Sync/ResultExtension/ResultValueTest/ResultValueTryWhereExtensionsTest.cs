@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctionalXUnit.Data;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtension.GetValue()s.ResultValueTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtension.Values.ResultValueTryExtensions;
 using static ResultFunctionalXUnit.Data.ErrorData;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
 
@@ -20,7 +20,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueTryOk_OkResult_OkTry()
         {
             int initialValue = Numbers.Number;
-            var numberResult = new ResultValue<int>(initialValue);
+            var numberResult = initialValue.ToRValue();
 
             var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionError());
 
@@ -35,7 +35,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueTryOk_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = new ResultValue<int>(initialError);
+            var numberResult = initialError.ToRValue<int>();
 
             var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionError());
 
@@ -50,7 +50,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueTryOk_OkResult_ExceptionTry()
         {
             const int initialValue = 0;
-            var numberResult = new ResultValue<int>(initialValue);
+            var numberResult = initialValue.ToRValue();
 
             var resultValue = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionError());
 
@@ -65,7 +65,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueTryOk_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = new ResultValue<int>(initialError);
+            var numberResult = initialError.ToRValue<int>();
 
             var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionError());
 
@@ -80,7 +80,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueTryOkFunc_OkResult_OkTry()
         {
             int initialValue = Numbers.Number;
-            var numberResult = new ResultValue<int>(initialValue);
+            var numberResult = initialValue.ToRValue();
 
             var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionFunc());
 
@@ -95,7 +95,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueTryOkFunc_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = new ResultValue<int>(initialError);
+            var numberResult = initialError.ToRValue<int>();
 
             var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionFunc());
 
@@ -110,7 +110,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueTryOkFunc_OkResult_ExceptionTry()
         {
             const int initialValue = 0;
-            var numberResult = new ResultValue<int>(initialValue);
+            var numberResult = initialValue.ToRValue();
 
             var resultValue = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionFunc());
 
@@ -125,7 +125,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueTryOkFunc_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
-            var numberResult = new ResultValue<int>(initialError);
+            var numberResult = initialError.ToRValue<int>();
 
             var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionFunc());
 

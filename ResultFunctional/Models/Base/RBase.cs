@@ -35,6 +35,13 @@ internal abstract class RBase<TValue, TOption> : ROption, IRBase<TValue, TOption
     public TValue? Value { get; }
 
     /// <summary>
+    /// Initialize result by value
+    /// </summary>
+    /// <param name="value">Value</param>
+    /// <returns>Result option</returns>
+    protected abstract TOption Initialize(TValue value);
+
+    /// <summary>
     /// Initialize result by errors
     /// </summary>
     /// <param name="errors">Errors</param>
@@ -65,5 +72,7 @@ internal abstract class RBase<TValue, TOption> : ROption, IRBase<TValue, TOption
     /// <returns>Result option with errors</returns>  
     public TOption ConcatErrors(IEnumerable<IRError> errors) =>
         GetErrorsOrEmpty().Concat(errors).ToList()
-            .Map(Initialize);
+            .WhereContinue(errorList => errorList.Count > 0,
+                           Initialize,
+                           _ => Initialize(GetValue()));
 }

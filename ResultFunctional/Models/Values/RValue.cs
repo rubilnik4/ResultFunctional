@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Base;
 using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Lists;
 using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.Models.Values;
@@ -25,6 +26,14 @@ internal class RValue<TValue> : RBase<TValue, IRValue<TValue>>, IRValue<TValue>
     protected RValue(IReadOnlyCollection<IRError> errors)
         : base(errors)
     { }
+
+    /// <summary>
+    /// Initialize result by value
+    /// </summary>
+    /// <param name="value">Value</param>
+    /// <returns>Result option</returns>
+    protected override IRValue<TValue> Initialize(TValue value) =>
+        new RValue<TValue>(value);
 
     /// <summary>
     /// Initialize result by errors

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Units;
 using ResultFunctional.Models.Enums;
-using ResultFunctional.Models.GetErrors().BaseErrors;
-using ResultFunctional.Models.GetErrors().DatabaseErrors;
+using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Errors.DatabaseErrors;
 using ResultFunctional.Models.Factories;
-using ResultFunctional.Models.Implementations.Results;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -21,11 +21,11 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void Initialize_Base_OkStatus()
         {
-            var resultError = new ResultError();
+            var resultError = RUnitFactory.Some();
 
             Assert.True(resultError.Success);
             Assert.False(resultError.Failure);
-            Assert.Empty(resultError.GetErrors());
+            Assert.Empty(resultError.GetErrorsOrEmpty());
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void Initialize_Error_HasOne()
         {
-            var resultError = new ResultError(CreateErrorTest());
+            var resultError = CreateErrorTest().ToRUnit();
 
             Assert.False(resultError.Success);
             Assert.True(resultError.Failure);
@@ -47,7 +47,7 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void AppendError()
         {
-            var resultErrorInitial = new ResultError();
+            var resultErrorInitial = RUnitFactory.Some();
             var errorToConcat = CreateErrorTest();
 
             var resultErrorConcat = resultErrorInitial.AppendError(errorToConcat);
@@ -63,7 +63,7 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void ConcatErrors_TotalOne()
         {
-            var resultErrorInitial = new ResultError();
+            var resultErrorInitial = RUnitFactory.Some();
             var errorToConcat = CreateErrorTest();
 
             var resultErrorConcat = resultErrorInitial.ConcatErrors(errorToConcat);
@@ -80,7 +80,7 @@ namespace ResultFunctionalXUnit.Models.Results
         public void ConcatErrors_TotalTwo()
         {
             var errorToConcat = CreateErrorTest();
-            var resultErrorInitial = new ResultError(errorToConcat);
+            var resultErrorInitial = errorToConcat.ToRUnit();
 
             var resultErrorConcat = resultErrorInitial.ConcatErrors(errorToConcat);
 
@@ -121,12 +121,12 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void GetErrorTypes()
         {
-            var valueNotFoundError = RErrorFactory.GetValue()NotFound<string>("value");
+            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
             var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
-            var result = new ResultError(errors);
+            var result = errors.ToRUnit();
 
-            var errorTypes = result.GetErrorByTypes();
+            var errorTypes = result.GetErrorTypes();
 
             Assert.True(errorTypes.SequenceEqual(errors.Select(error => error.GetType())));
         }
@@ -137,10 +137,10 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void HasErrorType()
         {
-            var valueNotFoundError = RErrorFactory.GetValue()NotFound<string>("value");
+            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
             var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
-            var result = new ResultError(errors);
+            var result = errors.ToRUnit();
 
             Assert.True(result.HasErrorType<DatabaseErrorType>());
         }
@@ -151,13 +151,13 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void HasErrorTypeByType()
         {
-            var valueNotFoundError = RErrorFactory.GetValue()NotFound<string>("value");
+            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
             var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
-            var result = new ResultError(errors);
+            var result = errors.ToRUnit();
 
-            Assert.True(result.HasErrorType(CommonErrorType.GetValue()NotFound));
-            Assert.False(result.HasErrorType(CommonErrorType.GetValue()NotValid));
+            Assert.True(result.HasErrorType(CommonErrorType.ValueNotFound));
+            Assert.False(result.HasErrorType(CommonErrorType.ValueNotValid));
         }
 
         /// <summary>
@@ -166,10 +166,10 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void GetErrorType()
         {
-            var valueNotFoundError = RErrorFactory.GetValue()NotFound<string>("value");
+            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
             var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
-            var result = new ResultError(errors);
+            var result = errors.ToRUnit();
 
             var errorType = result.GetErrorByType<DatabaseErrorType>();
             Assert.NotNull(errorType);
@@ -182,10 +182,10 @@ namespace ResultFunctionalXUnit.Models.Results
         [Fact]
         public void GetErrorTypesT()
         {
-            var valueNotFoundError = RErrorFactory.GetValue()NotFound<string>("value");
+            var valueNotFoundError = RErrorFactory.ValueNotFound<string>("value");
             var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
-            var result = new ResultError(errors);
+            var result = errors.ToRUnit();
 
             var errorTypes = result.GetErrorsByTypes<DatabaseErrorType>();
             Assert.Equal(1, errorTypes.Count);

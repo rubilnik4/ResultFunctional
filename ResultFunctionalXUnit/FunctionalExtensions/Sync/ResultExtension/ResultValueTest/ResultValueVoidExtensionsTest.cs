@@ -2,7 +2,7 @@
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Interfaces;
 using Moq;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
@@ -20,7 +20,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueVoidOk_Ok_CallVoid()
         {
             int initialValue = Numbers.Number;
-            var resultOk = new ResultValue<int>(initialValue);
+            var resultOk = initialValue.ToRValue();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultOk.ResultValueVoidOk(number => voidObjectMock.Object.TestNumberVoid(number));
@@ -37,7 +37,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueVoidOk_Bad_NotCallVoid()
         {
             var initialError = CreateErrorTest();
-            var resultError = new ResultValue<int>(initialError);
+            var resultError = initialError.ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultError.ResultValueVoidOk(number => voidObjectMock.Object.TestNumberVoid(number));
@@ -54,7 +54,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueVoidBad_Ok_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = new ResultValue<int>(errorsInitial);
+            var resultError = errorsInitial.ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultError.ResultValueVoidBad(errors => voidObjectMock.Object.TestNumberVoid(errors.Count));
@@ -71,7 +71,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueVoidBad_Bad_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = new ResultValue<int>(errorsInitial);
+            var resultError = errorsInitial.ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultError.ResultValueVoidBad(errors => voidObjectMock.Object.TestNumberVoid(errors.Count));
@@ -88,7 +88,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueVoidOkBad_Ok()
         {
             int initialValue = Numbers.Number;
-            var resultOk = new ResultValue<int>(initialValue);
+            var resultOk = initialValue.ToRValue();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultOk.ResultValueVoidOkBad(number => voidObjectMock.Object.TestNumberVoid(number),
@@ -106,7 +106,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueVoidOkBad_Bad()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = new ResultValue<int>(errorsInitial);
+            var resultError = errorsInitial.ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultError.ResultValueVoidOkBad(_ => voidObjectMock.Object.TestVoid(),
@@ -124,7 +124,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueVoidOkWhere_Ok_OkPredicate_CallVoid()
         {
             int initialValue = Numbers.Number;
-            var resultOk = new ResultValue<int>(initialValue);
+            var resultOk = initialValue.ToRValue();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultOk.ResultValueVoidOkWhere(_ => true, 
@@ -142,7 +142,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueVoidOkWhere_Ok_BadPredicate_NotCallVoid()
         {
             int initialValue = Numbers.Number;
-            var resultOk = new ResultValue<int>(initialValue);
+            var resultOk = initialValue.ToRValue();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultOk.ResultValueVoidOkWhere(_ => false,
@@ -160,7 +160,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueVoidOkWhere_Bad_OkPredicate_NotCallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = new ResultValue<int>(errorsInitial);
+            var resultError = errorsInitial.ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultError.ResultValueVoidOkWhere(_ => true,
@@ -179,7 +179,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueVoidOkWhere_Bad_BadPredicate_NotCallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = new ResultValue<int>(errorsInitial);
+            var resultError = errorsInitial.ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultError.ResultValueVoidOkWhere(_ => false,

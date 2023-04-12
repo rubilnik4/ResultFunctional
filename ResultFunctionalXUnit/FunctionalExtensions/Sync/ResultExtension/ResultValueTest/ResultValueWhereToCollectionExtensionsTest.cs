@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -20,7 +20,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueContinueToCollection_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere =
                 resultValue.ResultValueContinueToCollection(_ => true,
@@ -38,7 +38,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueContinueToCollection_Ok_ReturnNewError()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
             var errorBad = CreateErrorListTwoTest();
 
             var resultAfterWhere =
@@ -57,7 +57,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueContinueToCollection_Bad_ReturnNewValue()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorInitial);
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere =
                 resultValue.ResultValueContinueToCollection(_ => true,
@@ -75,7 +75,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueContinueToCollection_Bad_ReturnNewError()
         {
             var errorsInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
 
             var resultAfterWhere =
                 resultValue.ResultValueContinueToCollection(_ => false,
@@ -93,7 +93,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueOkBadToCollection_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere =
                 resultValue.ResultValueOkBadToCollection(
@@ -111,7 +111,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueOkBadToCollection_Bad_ReturnNewValueByErrors()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
 
             var resultAfterWhere =
                 resultValue.ResultValueOkBadToCollection(
@@ -129,7 +129,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueOkToCollection_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = resultValue.ResultValueOkToCollection(NumberToCollection);
 
@@ -144,7 +144,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueOkToCollection_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorInitial);
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueOkToCollection(NumberToCollection);
 

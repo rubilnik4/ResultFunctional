@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -20,8 +22,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOkCollection_OkStatus_AddOkStatus()
         {
             var initialValue = Collections.GetRangeNumber();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, string>>(CurryFunctions.IntCollectionToString);
-            var resultArgument = new ResultCollection<int>(initialValue);
+            var resultValueFunc = CurryFunctions.IntCollectionToString.ToRValue();
+            var resultArgument = initialValue.ToRList();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -36,9 +38,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultValueCurryOkCollection_OkStatus_AddBadStatus()
         {
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, string>>(CurryFunctions.IntCollectionToString);
+            var resultValueFunc = CurryFunctions.IntCollectionToString.ToRValue();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultCollection<int>(errorArgument);
+            var resultArgument = errorArgument.ToRList<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -55,8 +57,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOkCollection_BadStatus_AddOkStatus()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, string>>(errorFunc);
-            var resultArgument = new ResultCollection<int>(Collections.GetRangeNumber());
+            var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, string>>();
+            var resultArgument = Collections.GetRangeNumber().ToRList();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -73,9 +75,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOkCollection_BadStatus_AddBadStatus()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, string>>(errorFunc);
+            var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, string>>();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultCollection<int>(errorArgument);
+            var resultArgument = errorArgument.ToRList<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -93,8 +95,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOkCollection_OkStatus_AddOkStatus_TwoArguments()
         {
             var initialValue = Collections.GetRangeNumber();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, string>>(CurryFunctions.AggregateCollectionTwoToString);
-            var resultArgument = new ResultCollection<int>(initialValue);
+            var resultValueFunc = CurryFunctions.AggregateCollectionTwoToString.ToRValue();
+            var resultArgument = initialValue.ToRList();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -109,9 +111,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultValueCurryOkCollection_OkStatus_AddBadStatus_TwoArguments()
         {
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, string>>(CurryFunctions.AggregateCollectionTwoToString);
+            var resultValueFunc = CurryFunctions.AggregateCollectionTwoToString.ToRValue();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultCollection<int>(errorArgument);
+            var resultArgument = errorArgument.ToRList<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -129,8 +131,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             var initialValue = Collections.GetRangeNumber();
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, string>>(errorFunc);
-            var resultArgument = new ResultCollection<int>(initialValue);
+            var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, int, string>>();
+            var resultArgument = initialValue.ToRList();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -147,9 +149,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOkCollection_BadStatus_AddBadStatus_TwoArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, string>>(errorFunc);
+            var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, int, string>>();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultCollection<int>(errorArgument);
+            var resultArgument = errorArgument.ToRList<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -167,8 +169,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOkCollection_OkStatus_AddOkStatus_ThreeArguments()
         {
             var initialValue = Collections.GetRangeNumber();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, string>>(CurryFunctions.AggregateCollectionThreeToString);
-            var resultArgument = new ResultCollection<int>(initialValue);
+            var resultValueFunc = CurryFunctions.AggregateCollectionThreeToString.ToRValue();
+            var resultArgument = initialValue.ToRList();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -183,9 +185,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultValueCurryOkCollection_OkStatus_AddBadStatus_ThreeArguments()
         {
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, string>>(CurryFunctions.AggregateCollectionThreeToString);
+            var resultValueFunc = CurryFunctions.AggregateCollectionThreeToString.ToRValue();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultCollection<int>(errorArgument);
+            var resultArgument = errorArgument.ToRList<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -203,8 +205,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             var initialValue = Collections.GetRangeNumber();
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, string>>(errorFunc);
-            var resultArgument = new ResultCollection<int>(initialValue);
+            var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, int, int, string>>();
+            var resultArgument = initialValue.ToRList();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -221,9 +223,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOkCollection_BadStatus_AddBadStatus_ThreeArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, string>>(errorFunc);
+            var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, int, int, string>>();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultCollection<int>(errorArgument);
+            var resultArgument = errorArgument.ToRList<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -241,8 +243,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOkCollection_OkStatus_AddOkStatus_FourArguments()
         {
             var initialValue = Collections.GetRangeNumber();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, string>>(CurryFunctions.AggregateCollectionFourToString);
-            var resultArgument = new ResultCollection<int>(initialValue);
+            var resultValueFunc = CurryFunctions.AggregateCollectionFourToString.ToRValue();
+            var resultArgument = initialValue.ToRList();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -257,9 +259,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultValueCurryOkCollection_OkStatus_AddBadStatus_FourArguments()
         {
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, string>>(CurryFunctions.AggregateCollectionFourToString);
+            var resultValueFunc = CurryFunctions.AggregateCollectionFourToString.ToRValue();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultCollection<int>(errorArgument);
+            var resultArgument = errorArgument.ToRList<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -277,8 +279,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             var initialValue = Collections.GetRangeNumber();
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, string>>(errorFunc);
-            var resultArgument = new ResultCollection<int>(initialValue);
+            var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, int, int, int, string>>();
+            var resultArgument = initialValue.ToRList();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -295,9 +297,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOkCollection_BadStatus_AddBadStatus_FourArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, string>>(errorFunc);
+            var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, int, int, int, string>>();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultCollection<int>(errorArgument);
+            var resultArgument = errorArgument.ToRList<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -315,8 +317,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOkCollection_OkStatus_AddOkStatus_FiveArguments()
         {
             var initialValue = Collections.GetRangeNumber();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, int, string>>(CurryFunctions.AggregateCollectionFiveToString);
-            var resultArgument = new ResultCollection<int>(initialValue);
+            var resultValueFunc = CurryFunctions.AggregateCollectionFiveToString.ToRValue();
+            var resultArgument = initialValue.ToRList();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -331,9 +333,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         [Fact]
         public void ResultValueCurryOkCollection_OkStatus_AddBadStatus_FiveArguments()
         {
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, int, string>>(CurryFunctions.AggregateCollectionFiveToString);
+            var resultValueFunc = CurryFunctions.AggregateCollectionFiveToString.ToRValue();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultCollection<int>(errorArgument);
+            var resultArgument = errorArgument.ToRList<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -351,8 +353,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         {
             var initialValue = Collections.GetRangeNumber();
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, int, string>>(errorFunc);
-            var resultArgument = new ResultCollection<int>(initialValue);
+            var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, int, int, int, int, string>>();
+            var resultArgument = initialValue.ToRList();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 
@@ -369,9 +371,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCurryOkCollection_BadStatus_AddBadStatus_FiveArguments()
         {
             var errorFunc = CreateErrorTest();
-            var resultValueFunc = new ResultValue<Func<IEnumerable<int>, int, int, int, int, string>>(errorFunc);
+            var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, int, int, int, int, string>>();
             var errorArgument = CreateErrorTest();
-            var resultArgument = new ResultCollection<int>(errorArgument);
+            var resultArgument = errorArgument.ToRList<int>();
 
             var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
 

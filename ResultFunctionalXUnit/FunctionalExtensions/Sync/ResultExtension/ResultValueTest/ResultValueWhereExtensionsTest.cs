@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using ResultFunctional.Models.Implementations.Results;
+using ResultFunctional.FunctionalExtensions.Sync.RExtension.Values;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -19,7 +19,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueContinue_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = resultValue.ResultValueContinue(_ => true,
                                                                    okFunc: number => number.ToString(),
@@ -36,7 +36,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueContinue_Ok_ReturnNewError()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var errorBad = CreateErrorListTwoTest();
             var resultAfterWhere = resultValue.ResultValueContinue(_ => false,
@@ -54,7 +54,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueContinue_Bad_ReturnNewValue()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorInitial);
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueContinue(_ => true,
                                                                    okFunc: _ => String.Empty,
@@ -71,7 +71,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueContinue_Bad_ReturnNewError()
         {
             var errorsInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueContinue(_ => false,
                                                                    okFunc: _ => String.Empty,
@@ -88,7 +88,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueWhere_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = resultValue.ResultValueWhere(_ => true,
                 okFunc: number => number.ToString(),
@@ -105,7 +105,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueWhere_Ok_ReturnNewError()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var valueBad = CreateErrorListTwoTest().Count.ToString();
             var resultAfterWhere = resultValue.ResultValueWhere(_ => false,
@@ -123,7 +123,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueWhere_Bad_ReturnNewValue()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorInitial);
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueWhere(_ => true,
                 okFunc: number => number.ToString(),
@@ -140,7 +140,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueWhere_Bad_ReturnNewError()
         {
             var errorsInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueWhere(_ => false,
                 okFunc: number => number.ToString(),
@@ -157,7 +157,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueOkBad_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = resultValue.ResultValueOkBad(okFunc: number => number.ToString(),
                                                                 badFunc: _ => String.Empty);
@@ -173,7 +173,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueOkBad_Bad_ReturnNewValueByErrors()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueOkBad(okFunc: _ => String.Empty,
                                                                 badFunc: errors => errors.Count.ToString());
@@ -189,7 +189,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueOk_Ok_ReturnNewValue()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = resultValue.ResultValueOk(number => number.ToString());
 
@@ -204,7 +204,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueOk_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorInitial);
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueOk(number => number.ToString());
 
@@ -219,7 +219,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBad_Ok_ReturnInitial()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = resultValue.ResultValueBad(errors => errors.Count);
 
@@ -234,7 +234,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueBad_Bad_ReturnNewValueByError()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueBad(errors => errors.Count);
 
@@ -249,7 +249,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCheckErrorsOk_Ok_CheckNoError()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = resultValue.ResultValueCheckErrorsOk(_ => true,
                                                                         _ => CreateErrorListTwoTest());
@@ -265,7 +265,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCheckErrorsOk_Ok_CheckHasError()
         {
             int initialValue = Numbers.Number;
-            var resultValue = new ResultValue<int>(initialValue);
+            var resultValue = initialValue.ToRValue();
 
             var errorBad = CreateErrorListTwoTest();
             var resultAfterWhere = resultValue.ResultValueCheckErrorsOk(_ => false,
@@ -282,7 +282,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCheckErrorsOk_Bad_CheckNoError()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorInitial);
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueCheckErrorsOk(_ => true,
                                                                         _ => CreateErrorListTwoTest());
@@ -298,7 +298,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.ResultExtension.Result
         public void ResultValueCheckErrorsOk_Bad_CheckHasError()
         {
             var errorsInitial = CreateErrorTest();
-            var resultValue = new ResultValue<int>(errorsInitial);
+            var resultValue = errorsInitial.ToRValue<int>();
 
             var resultAfterWhere = resultValue.ResultValueCheckErrorsOk(_ => false,
                                                                         badFunc: _ => CreateErrorListTwoTest());

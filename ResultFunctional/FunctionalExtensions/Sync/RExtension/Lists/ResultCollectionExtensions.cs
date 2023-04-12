@@ -28,9 +28,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists
         /// <returns>Outgoing result collection</returns>
         public static IRList<TValue> ConcatResultCollection<TValue>(this IReadOnlyCollection<IRList<TValue>> @this)
             where TValue : notnull =>
-             @this.SelectMany(result => result.GetValue())
-                  .ToRList()
-                  .ConcatErrors(@this.SelectMany(result => result.GetErrors())).Map(tt => tt);
-
+             @this.All(collection => collection.Success)
+                ? @this.SelectMany(collection => collection.GetValue()).ToRList()
+                : @this.SelectMany(collection => collection.GetErrorsOrEmpty()).ToRList<TValue>();
     }
 }

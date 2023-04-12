@@ -78,7 +78,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindContinueAsync_Bad_ReturnNewError()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = errorInitial.ToRValue();
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere = await resultValue.ResultValueBindContinueAsync(_ => false,
                 okFunc: _ => RValueFactory.SomeTask(String.Empty),
@@ -130,7 +130,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindWhereAsync_Bad_ReturnNewValue()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = errorInitial.ToRValue();
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere = await resultValue.ResultValueBindWhereAsync(_ => true,
                 okFunc: _ => RValueFactory.SomeTask(String.Empty),
@@ -147,7 +147,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindWhereAsync_Bad_ReturnNewError()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = errorInitial.ToRValue();
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere = await resultValue.ResultValueBindWhereAsync(_ => false,
                 okFunc: _ => RValueFactory.SomeTask(String.Empty),
@@ -181,7 +181,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindOkBadAsync_Bad_ReturnNewValueByErrors()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultValue = errorsInitial.ToRValue();
+            var resultValue = errorsInitial.ToRValue<int>();
 
             var resultAfterWhere = await resultValue.ResultValueBindOkBadAsync(
                 okFunc: _ => RValueFactory.SomeTask(String.Empty),
@@ -214,7 +214,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
         public async Task ResultValueBindOkAsync_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
-            var resultValue = errorInitial.ToRValue();
+            var resultValue = errorInitial.ToRValue<int>();
 
             var resultAfterWhere = await resultValue.ResultValueBindOkAsync(RValueFactory.SomeTask);
 

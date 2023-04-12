@@ -155,7 +155,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.ResultExtension.Resul
                 badFunc: _ => RListFactory.NoneTask<string>(CreateErrorListTwoTest()));
 
             Assert.True(resultAfterWhere.Failure);
-            Assert.Single(resultAfterWhere.GetValue());
+            Assert.Single(resultAfterWhere.GetErrors());
         }
 
         /// <summary>
