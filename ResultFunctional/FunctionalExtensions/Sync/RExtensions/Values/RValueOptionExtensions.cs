@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Values;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
 {
     /// <summary>
     /// Extension methods for result value functor function with conditions
     /// </summary>
-    public static class ResultValueWhereExtensions
+    public static class RValueOptionExtensions
     {
         /// <summary>
         /// Execute result value function base on predicate condition
@@ -17,19 +17,19 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result value</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValueOut> ResultValueContinue<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+        public static IRValue<TValueOut> RValueOption<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
                                                                                   Func<TValueIn, bool> predicate,
-                                                                                  Func<TValueIn, TValueOut> okFunc,
-                                                                                  Func<TValueIn, IReadOnlyCollection<IRError>> badFunc)
+                                                                                  Func<TValueIn, TValueOut> someFunc,
+                                                                                  Func<TValueIn, IReadOnlyCollection<IRError>> noneFunc)
              where TValueIn : notnull
             where TValueOut : notnull =>
          @this.Success
              ? predicate(@this.GetValue())
-                 ? okFunc.Invoke(@this.GetValue()).ToRValue()
-                 : badFunc.Invoke(@this.GetValue()).ToRValue<TValueOut>()
+                 ? someFunc.Invoke(@this.GetValue()).ToRValue()
+                 : noneFunc.Invoke(@this.GetValue()).ToRValue<TValueOut>()
              : @this.GetErrors().ToRValue<TValueOut>();
 
         /// <summary>
@@ -39,19 +39,19 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result value</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValueOut> ResultValueWhere<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+        public static IRValue<TValueOut> RValueWhere<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
                                                                                        Func<TValueIn, bool> predicate,
-                                                                                       Func<TValueIn, TValueOut> okFunc,
-                                                                                       Func<TValueIn, TValueOut> badFunc)
+                                                                                       Func<TValueIn, TValueOut> someFunc,
+                                                                                       Func<TValueIn, TValueOut> noneFunc)
              where TValueIn : notnull
             where TValueOut : notnull =>
          @this.Success
              ? predicate(@this.GetValue())
-                 ? okFunc.Invoke(@this.GetValue()).ToRValue()
-                 : badFunc.Invoke(@this.GetValue()).ToRValue()
+                 ? someFunc.Invoke(@this.GetValue()).ToRValue()
+                 : noneFunc.Invoke(@this.GetValue()).ToRValue()
              : @this.GetErrors().ToRValue<TValueOut>();
 
         /// <summary>
@@ -60,17 +60,17 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result value</param>
-        /// <param name="okFunc">Function if result value hasn't errors</param>
-        /// <param name="badFunc">Function if result value has errors</param>
+        /// <param name="someFunc">Function if result value hasn't errors</param>
+        /// <param name="noneFunc">Function if result value has errors</param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValueOut> ResultValueOkBad<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                    Func<TValueIn, TValueOut> okFunc,
-                                                                                    Func<IReadOnlyCollection<IRError>, TValueOut> badFunc)
+        public static IRValue<TValueOut> RValueMatch<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+                                                                          Func<TValueIn, TValueOut> someFunc,
+                                                                          Func<IReadOnlyCollection<IRError>, TValueOut> noneFunc)
              where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
-                ? okFunc.Invoke(@this.GetValue()).ToRValue()
-                : badFunc.Invoke(@this.GetErrors()).ToRValue();
+                ? someFunc.Invoke(@this.GetValue()).ToRValue()
+                : noneFunc.Invoke(@this.GetErrors()).ToRValue();
 
         /// <summary>
         /// Execute result value function if incoming result value hasn't errors
@@ -78,14 +78,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result value</param>
-        /// <param name="okFunc">Function if result value hasn't errors</param>
+        /// <param name="someFunc">Function if result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValueOut> ResultValueOk<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                 Func<TValueIn, TValueOut> okFunc)
+        public static IRValue<TValueOut> RValueSome<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+                                                                         Func<TValueIn, TValueOut> someFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
-                ? okFunc.Invoke(@this.GetValue()).ToRValue()
+                ? someFunc.Invoke(@this.GetValue()).ToRValue()
                 : @this.GetErrors().ToRValue<TValueOut>();
 
         /// <summary>
@@ -93,15 +93,15 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
         /// </summary>
         /// <typeparam name="TValue">Incoming type</typeparam>
         /// <param name="this">Incoming result value</param>
-        /// <param name="badFunc">Function if result value has errors</param>
+        /// <param name="noneFunc">Function if result value has errors</param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValue> ResultValueBad<TValue>(this IRValue<TValue> @this,
-                                                                  Func<IReadOnlyCollection<IRError>, TValue> badFunc)
+        public static IRValue<TValue> RValueNone<TValue>(this IRValue<TValue> @this,
+                                                         Func<IReadOnlyCollection<IRError>, TValue> noneFunc)
             where TValue : notnull =>
 
             @this.Success
                 ? @this
-                : badFunc.Invoke(@this.GetErrors()).ToRValue();
+                : noneFunc.Invoke(@this.GetErrors()).ToRValue();
 
         /// <summary>
         /// Check errors by predicate to result value if ones hasn't errors
@@ -109,15 +109,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Values
         /// <typeparam name="TValue">Result type</typeparam>
         /// <param name="this">Result value</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Result value</returns>
-        public static IRValue<TValue> ResultValueCheckErrorsOk<TValue>(this IRValue<TValue> @this,
-                                                                           Func<TValue, bool> predicate,
-                                                                           Func<TValue, IReadOnlyCollection<IRError>> badFunc)
+        public static IRValue<TValue> RValueEnsure<TValue>(this IRValue<TValue> @this, Func<TValue, bool> predicate,
+                                                           Func<TValue, IReadOnlyCollection<IRError>> noneFunc)
             where TValue : notnull =>
             @this.
-            ResultValueContinue(predicate,
+            RValueOption(predicate,
                                 value => value,
-                                badFunc);
+                                noneFunc);
     }
 }

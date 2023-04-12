@@ -19,17 +19,17 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result collection</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>     
         public static async Task<IRValue<TValueOut>> ResultCollectionContinueToValueBindAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
                                                                                                                    Func<IReadOnlyCollection<TValueIn>, bool> predicate,
-                                                                                                                   Func<IReadOnlyCollection<TValueIn>, Task<TValueOut>> okFunc,
-                                                                                                                   Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<IRError>>> badFunc)
+                                                                                                                   Func<IReadOnlyCollection<TValueIn>, Task<TValueOut>> someFunc,
+                                                                                                                   Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<IRError>>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-                MapBindAsync(thisAwaited => thisAwaited.ResultCollectionContinueToValueAsync(predicate, okFunc, badFunc));
+                MapBindAsync(thisAwaited => thisAwaited.ResultCollectionContinueToValueAsync(predicate, someFunc, noneFunc));
 
         /// <summary>
         /// Execute result collection task async function converting to result value base on predicate condition
@@ -38,17 +38,17 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result collection</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>     
         public static async Task<IRValue<TValueOut>> ResultCollectionContinueToValueBindAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
-                                                                                                            Func<IReadOnlyCollection<TValueIn>, Task<TValueOut>> okFunc,
-                                                                                                            Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> badFunc)
+                                                                                                            Func<IReadOnlyCollection<TValueIn>, Task<TValueOut>> someFunc,
+                                                                                                            Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
-            await @this.ResultCollectionContinueToValueBindAsync(predicate, okFunc,
-                                                      values => badFunc(values).GetCollectionTaskAsync());
+            await @this.ResultCollectionContinueToValueBindAsync(predicate, someFunc,
+                                                      values => noneFunc(values).GetCollectionTaskAsync());
 
         /// <summary>
         /// Execute result collection task async function converting to result value depending on result collection errors
@@ -56,16 +56,16 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result collection</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>   
         public static async Task<IRValue<TValueOut>> ResultCollectionOkBadToValueBindAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
-                                                                                                         Func<IReadOnlyCollection<TValueIn>, Task<TValueOut>> okFunc,
-                                                                                                         Func<IReadOnlyCollection<IRError>, Task<TValueOut>> badFunc)
+                                                                                                         Func<IReadOnlyCollection<TValueIn>, Task<TValueOut>> someFunc,
+                                                                                                         Func<IReadOnlyCollection<IRError>, Task<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.ResultCollectionOkBadToValueAsync(okFunc, badFunc));
+            MapBindAsync(thisAwaited => thisAwaited.ResultCollectionOkBadToValueAsync(someFunc, noneFunc));
 
         /// <summary>
         /// Execute result collection task async function converting to result value if incoming result collection hasn't errors
@@ -73,13 +73,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result collection</param>
-        /// <param name="okFunc">Function if result collection hasn't errors</param>
+        /// <param name="someFunc">Function if result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns> 
         public static async Task<IRValue<TValueOut>> ResultCollectionOkToValueBindAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
-                                                                                                                  Func<IReadOnlyCollection<TValueIn>, Task<TValueOut>> okFunc)
+                                                                                                                  Func<IReadOnlyCollection<TValueIn>, Task<TValueOut>> someFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.ResultCollectionOkToValueAsync(okFunc));
+            MapBindAsync(thisAwaited => thisAwaited.ResultCollectionOkToValueAsync(someFunc));
     }
 }

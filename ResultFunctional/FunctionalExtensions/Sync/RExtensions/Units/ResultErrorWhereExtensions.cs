@@ -16,14 +16,14 @@ public static class ResultErrorWhereExtensions
     /// </summary>
     /// <param name="this">Result error</param>
     /// <param name="predicate">Predicate function</param>
-    /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+    /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
     public static IRUnit ResultErrorCheckErrorsOk(this IRUnit @this,
                                                   Func<bool> predicate,
-                                                  Func<IEnumerable<IRError>> badFunc) =>
+                                                  Func<IEnumerable<IRError>> noneFunc) =>
         @this.Success
              ? predicate()
                  ? RUnitFactory.Some()
-                 : badFunc.Invoke().ToRUnit()
+                 : noneFunc.Invoke().ToRUnit()
              : @this.GetErrors().ToRUnit();
 }

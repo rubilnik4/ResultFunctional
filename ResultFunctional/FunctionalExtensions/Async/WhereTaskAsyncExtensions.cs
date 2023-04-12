@@ -16,15 +16,15 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <typeparam name="TResult">Result type</typeparam>
         /// <param name="this">Source</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Converting function result</returns>   
         public static async Task<TResult> WhereContinueTaskAsync<TSource, TResult>(this Task<TSource> @this,
                                                                                    Func<TSource, bool> predicate,
-                                                                                   Func<TSource, TResult> okFunc,
-                                                                                   Func<TSource, TResult> badFunc) =>
+                                                                                   Func<TSource, TResult> someFunc,
+                                                                                   Func<TSource, TResult> noneFunc) =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.WhereContinue(predicate, okFunc, badFunc));
+            MapTaskAsync(thisAwaited => thisAwaited.Option(predicate, someFunc, noneFunc));
 
         /// <summary>
         /// Execute converting task function if predicate condition <see langword="true"/>
@@ -32,13 +32,13 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <typeparam name="TSource">Source type</typeparam>
         /// <param name="this">Source</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <returns>Converting function result</returns>     
         public static async Task<TSource> WhereOkTaskAsync<TSource>(this Task<TSource> @this,
                                                                   Func<TSource, bool> predicate,
-                                                                  Func<TSource, TSource> okFunc) =>
+                                                                  Func<TSource, TSource> someFunc) =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.WhereOk(predicate, okFunc));
+            MapTaskAsync(thisAwaited => thisAwaited.OptionSome(predicate, someFunc));
 
         /// <summary>
         /// Execute converting task function if predicate condition <see langword="false"/>
@@ -46,12 +46,12 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <typeparam name="TSource">Source type</typeparam>
         /// <param name="this">Source</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Converting function result</returns> 
         public static async Task<TSource> WhereBadTaskAsync<TSource>(this Task<TSource> @this,
                                                                      Func<TSource, bool> predicate,
-                                                                     Func<TSource, TSource> badFunc) =>
+                                                                     Func<TSource, TSource> noneFunc) =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.WhereBad(predicate, badFunc));
+            MapTaskAsync(thisAwaited => thisAwaited.OptionNone(predicate, noneFunc));
     }
 }

@@ -3,7 +3,7 @@ using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values.ResultValueBindTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values.RValueBindTryExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
 {
@@ -18,7 +18,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         [Fact]
         public void ResultValueBindTry_Ok()
         {
-            var resultValue = ResultValueBindTry(() => Division(1).ToRValue(), Exceptions.ExceptionError());
+            var resultValue = RValueBindTry(() => Division(1).ToRValue(), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Success);
             Assert.Equal(Division(1), resultValue.GetValue());
@@ -30,7 +30,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         [Fact]
         public void ResultValueBindTry_Exception()
         {
-            var resultValue = ResultValueBindTry(() => Division(0).ToRValue(), Exceptions.ExceptionError());
+            var resultValue = RValueBindTry(() => Division(0).ToRValue(), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Failure);
             Assert.NotNull(resultValue.GetErrors().First().Exception);
@@ -42,7 +42,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         [Fact]
         public void ResultValueBindTryFunc_Ok()
         {
-            var resultValue = ResultValueBindTry(() => Division(1).ToRValue(), Exceptions.ExceptionFunc());
+            var resultValue = RValueBindTry(() => Division(1).ToRValue(), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Success);
             Assert.Equal(Division(1), resultValue.GetValue());
@@ -54,7 +54,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         [Fact]
         public void ResultValueBindTryFunc_Exception()
         {
-            var resultValue = ResultValueBindTry(() => Division(0).ToRValue(), Exceptions.ExceptionFunc());
+            var resultValue = RValueBindTry(() => Division(0).ToRValue(), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Failure);
             Assert.NotNull(resultValue.GetErrors().First().Exception);

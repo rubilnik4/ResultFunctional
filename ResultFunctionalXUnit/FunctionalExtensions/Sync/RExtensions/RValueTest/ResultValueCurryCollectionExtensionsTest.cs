@@ -25,7 +25,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = CurryFunctions.IntCollectionToString.ToRValue();
             var resultArgument = initialValue.ToRList();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal(CurryFunctions.IntCollectionToString(initialValue), resultOut.GetValue().Invoke());
@@ -42,7 +42,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRList<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -60,7 +60,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, string>>();
             var resultArgument = Collections.GetRangeNumber().ToRList();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -79,7 +79,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRList<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);
@@ -98,7 +98,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = CurryFunctions.AggregateCollectionTwoToString.ToRValue();
             var resultArgument = initialValue.ToRList();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal(CurryFunctions.AggregateCollectionTwoToString(initialValue, 2), resultOut.GetValue().Invoke(2));
@@ -115,7 +115,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRList<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -134,7 +134,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, int, string>>();
             var resultArgument = initialValue.ToRList();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -153,7 +153,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRList<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);
@@ -172,7 +172,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = CurryFunctions.AggregateCollectionThreeToString.ToRValue();
             var resultArgument = initialValue.ToRList();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal(CurryFunctions.AggregateCollectionThreeToString(initialValue, 3, 3), resultOut.GetValue().Invoke(3, 3));
@@ -189,7 +189,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRList<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -208,7 +208,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, int, int, string>>();
             var resultArgument = initialValue.ToRList();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -227,7 +227,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRList<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);
@@ -246,7 +246,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = CurryFunctions.AggregateCollectionFourToString.ToRValue();
             var resultArgument = initialValue.ToRList();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal(CurryFunctions.AggregateCollectionFourToString(initialValue, 4, 4, 4), resultOut.GetValue().Invoke(4, 4, 4));
@@ -263,7 +263,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRList<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -282,7 +282,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, int, int, int, string>>();
             var resultArgument = initialValue.ToRList();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -301,7 +301,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRList<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);
@@ -320,7 +320,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = CurryFunctions.AggregateCollectionFiveToString.ToRValue();
             var resultArgument = initialValue.ToRList();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal(CurryFunctions.AggregateCollectionFiveToString(initialValue, 5, 5, 5, 5), resultOut.GetValue().Invoke(5, 5, 5, 5));
@@ -337,7 +337,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRList<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -356,7 +356,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = errorFunc.ToRValue<Func<IReadOnlyCollection<int>, int, int, int, int, string>>();
             var resultArgument = initialValue.ToRList();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -375,7 +375,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRList<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryCollectionOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurryListSome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);

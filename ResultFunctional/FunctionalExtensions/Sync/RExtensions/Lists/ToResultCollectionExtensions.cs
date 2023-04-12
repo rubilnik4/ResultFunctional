@@ -57,7 +57,7 @@ public static class ToResultCollectionExtensions
     public static IRList<TValue> ToRListNullCheck<TValue>(this IEnumerable<TValue?>? @this, IRError error)
         where TValue : class =>
         @this != null
-            ? @this.Select(value => value.ToRValueNullCheck(error)).ToRList()
+            ? @this.Select(value => value.ToRValueNullEnsure(error)).ToRList()
             : error.ToRList<TValue>();
 
     /// <summary>
@@ -81,7 +81,7 @@ public static class ToResultCollectionExtensions
     public static IRList<TValue> ToRList<TValue>(this IEnumerable<IRValue<TValue>> @this)
         where TValue : notnull =>
          @this.ToList().
-         WhereContinue(collection => collection.All(result => result.Success),
+         Option(collection => collection.All(result => result.Success),
                        collection => collection.Select(result => result.GetValue()).ToRList(),
                        collection => collection.SelectMany(result => result.GetErrorsOrEmpty()).ToRList<TValue>());
 }

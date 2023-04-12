@@ -17,10 +17,10 @@ public static class ResultErrorWhereBindAsyncExtensions
     /// </summary>
     /// <param name="this">Result error</param>
     /// <param name="predicate">Predicate function</param>
-    /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+    /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
     public static async Task<IRUnit> ResultErrorCheckErrorsOkTaskAsync(this Task<IRUnit> @this, Func<bool> predicate,
-                                                                         Func<IReadOnlyCollection<IRError>> badFunc) =>
+                                                                         Func<IReadOnlyCollection<IRError>> noneFunc) =>
         await @this.
-        MapTaskAsync(awaitedThis => awaitedThis.ResultErrorCheckErrorsOk(predicate, badFunc));
+        MapTaskAsync(awaitedThis => awaitedThis.ResultErrorCheckErrorsOk(predicate, noneFunc));
 }

@@ -19,17 +19,17 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result collection</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValueOut> ResultCollectionContinueToValue<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                                               Func<IReadOnlyCollection<TValueIn>, bool> predicate,
-                                                                                              Func<IReadOnlyCollection<TValueIn>, TValueOut> okFunc,
-                                                                                              Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> badFunc)
+                                                                                              Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc,
+                                                                                              Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
              @this.ToRValue().
-             ResultValueContinue(predicate, okFunc, badFunc);
+             RValueOption(predicate, someFunc, noneFunc);
 
         /// <summary>
         /// Execute result collection function converting to result value depending on result collection errors
@@ -37,16 +37,16 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result collection</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValueOut> ResultCollectionOkBadToValue<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                    Func<IReadOnlyCollection<TValueIn>, TValueOut> okFunc,
-                                                                                    Func<IReadOnlyCollection<IRError>, TValueOut> badFunc)
+                                                                                    Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc,
+                                                                                    Func<IReadOnlyCollection<IRError>, TValueOut> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.ToRValue().
-            ResultValueOkBad(okFunc, badFunc);
+            RValueMatch(someFunc, noneFunc);
 
         /// <summary>
         /// Execute result collection function converting to result value if incoming result collection hasn't errors
@@ -54,13 +54,13 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result collection</param>
-        /// <param name="okFunc">Function if result collection hasn't errors</param>
+        /// <param name="someFunc">Function if result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
         public static IRValue<TValueOut> ResultCollectionOkToValue<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                        Func<IReadOnlyCollection<TValueIn>, TValueOut> okFunc) 
+                                                                                        Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc) 
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.ToRValue().
-            ResultValueOk(okFunc);
+            RValueSome(someFunc);
     }
 }

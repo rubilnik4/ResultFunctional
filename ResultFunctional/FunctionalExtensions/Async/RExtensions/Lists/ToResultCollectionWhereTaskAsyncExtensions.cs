@@ -18,14 +18,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <typeparam name="TValue">Result type</typeparam>
         /// <param name="this">Incoming collection</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValue>> ToResultCollectionWhereTaskAsync<TValue>(this Task<IEnumerable<TValue>> @this,
                                                                                           Func<IEnumerable<TValue>, bool> predicate,
-                                                                                          Func<IEnumerable<TValue>, IRError> badFunc)
+                                                                                          Func<IEnumerable<TValue>, IRError> noneFunc)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.ToRListWhere(predicate, badFunc));
+            MapTaskAsync(awaitedThis => awaitedThis.ToRListWhere(predicate, noneFunc));
 
         /// <summary>
         /// Converting task collection to result collection base on predicate
@@ -33,14 +33,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <typeparam name="TValue">Result type</typeparam>
         /// <param name="this">Incoming collection</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValue>> ToResultCollectionWhereTaskAsync<TValue>(this Task<IReadOnlyCollection<TValue>> @this,
                                                                                             Func<IEnumerable<TValue>, bool> predicate,
-                                                                                            Func<IEnumerable<TValue>, IRError> badFunc)
+                                                                                            Func<IEnumerable<TValue>, IRError> noneFunc)
             where TValue : notnull =>
             await @this.
             MapTaskAsync(resultCollection => (IEnumerable<TValue>)resultCollection).
-            ToResultCollectionWhereTaskAsync(predicate, badFunc);
+            ToResultCollectionWhereTaskAsync(predicate, noneFunc);
     }
 }

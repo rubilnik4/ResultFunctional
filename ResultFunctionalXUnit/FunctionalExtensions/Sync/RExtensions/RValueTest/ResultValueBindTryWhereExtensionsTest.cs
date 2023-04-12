@@ -21,7 +21,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             const int initialNumber = 2;
             var numberResult = initialNumber.ToRValue();
 
-            var numberAfterTry = numberResult.ResultValueBindTryOk(number => Division(number).ToRValue(),
+            var numberAfterTry = numberResult.RValueBindTrySome(number => Division(number).ToRValue(),
                                                                    Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Success);
@@ -37,7 +37,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRValue<int>();
 
-            var numberAfterTry = numberResult.ResultValueBindTryOk(number => Division(number).ToRValue(),
+            var numberAfterTry = numberResult.RValueBindTrySome(number => Division(number).ToRValue(),
                                                                    Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Failure);
@@ -53,7 +53,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             const int initialNumber = 0;
             var numberResult = initialNumber.ToRValue();
 
-            var resultValue = numberResult.ResultValueBindTryOk(number => Division(number).ToRValue(),
+            var resultValue = numberResult.RValueBindTrySome(number => Division(number).ToRValue(),
                                                                    Exceptions.ExceptionError());
 
             Assert.True(resultValue.Failure);
@@ -69,7 +69,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRValue<int>();
 
-            var numberAfterTry = numberResult.ResultValueBindTryOk(number => Division(number).ToRValue(), 
+            var numberAfterTry = numberResult.RValueBindTrySome(number => Division(number).ToRValue(), 
                                                                    Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Failure);
@@ -85,7 +85,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             const int initialNumber = 2;
             var numberResult = initialNumber.ToRValue();
 
-            var numberAfterTry = numberResult.ResultValueBindTryOk(number => Division(number).ToRValue(),
+            var numberAfterTry = numberResult.RValueBindTrySome(number => Division(number).ToRValue(),
                                                                    Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Success);
@@ -101,7 +101,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRValue<int>();
 
-            var numberAfterTry = numberResult.ResultValueBindTryOk(number => Division(number).ToRValue(),
+            var numberAfterTry = numberResult.RValueBindTrySome(number => Division(number).ToRValue(),
                                                                    Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Failure);
@@ -117,7 +117,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             const int initialNumber = 0;
             var numberResult = initialNumber.ToRValue();
 
-            var resultValue = numberResult.ResultValueBindTryOk(number => Division(number).ToRValue(),
+            var resultValue = numberResult.RValueBindTrySome(number => Division(number).ToRValue(),
                                                                    Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Failure);
@@ -133,7 +133,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRValue<int>();
 
-            var numberAfterTry = numberResult.ResultValueBindTryOk(number => Division(number).ToRValue(),
+            var numberAfterTry = numberResult.RValueBindTrySome(number => Division(number).ToRValue(),
                                                                    Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Failure);

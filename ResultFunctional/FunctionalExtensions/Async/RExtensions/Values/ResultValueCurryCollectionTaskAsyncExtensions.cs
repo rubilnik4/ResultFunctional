@@ -25,7 +25,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn1 : notnull
             where TOut : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.ResultValueCurryCollectionOk(arg1));
+            MapTaskAsync(thisAwaited => thisAwaited.RValueCurryListSome(arg1));
         
         /// <summary>
         /// Get one argument task result value higher order collection function
@@ -42,7 +42,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn2 : notnull
             where TOut : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.ResultValueCurryCollectionOk(arg1));
+            MapTaskAsync(thisAwaited => thisAwaited.RValueCurryListSome(arg1));
 
         /// <summary>
         /// Get two arguments task result value higher order collection function
@@ -61,7 +61,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn3 : notnull
             where TOut : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.ResultValueCurryCollectionOk(arg1));
+            MapTaskAsync(thisAwaited => thisAwaited.RValueCurryListSome(arg1));
 
         /// <summary>
         /// Get three arguments task result value higher order collection function
@@ -82,7 +82,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn4 : notnull
             where TOut : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.ResultValueCurryCollectionOk(arg1));
+            MapTaskAsync(thisAwaited => thisAwaited.RValueCurryListSome(arg1));
 
         /// <summary>
         /// Get four arguments task result value higher order collection function
@@ -105,6 +105,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn5 : notnull
             where TOut : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.ResultValueCurryCollectionOk(arg1));
+            MapTaskAsync(thisAwaited => thisAwaited.RValueCurryListSome(arg1));
     }
 }

@@ -19,7 +19,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         {
             const int number = 1;
 
-            var result = number.ToRValueWhere(_ => true,
+            var result = number.ToRValueOption(_ => true,
                                                    _ => CreateErrorTest());
 
             Assert.True(result.Success);
@@ -34,7 +34,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         {
             const int number = 1;
             var errorInitial = CreateErrorTest();
-            var result = number.ToRValueWhere(_ => false,
+            var result = number.ToRValueOption(_ => false,
                                                    _ => errorInitial);
 
             Assert.True(result.Failure);
@@ -49,7 +49,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         {
             const string testString = "Test";
             var errorInitial = CreateErrorTest();
-            var result = testString.ToRValueWhereNull(_ => true,
+            var result = testString.ToRValueEnsureOption(_ => true,
                                                            _ => errorInitial);
 
             Assert.True(result.Success);
@@ -64,7 +64,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         {
             string testString = String.Empty;
             var errorInitial = CreateErrorTest();
-            var result = testString.ToRValueWhereNull(_ => false ,
+            var result = testString.ToRValueEnsureOption(_ => false ,
                                                            _ => errorInitial);
 
             Assert.True(result.Failure);
@@ -79,7 +79,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         {
             string? testString = null;
             var errorInitial = CreateErrorTest();
-            var result = testString.ToRValueWhereNull(_ => true,
+            var result = testString.ToRValueEnsureOption(_ => true,
                                                            _ => errorInitial);
 
             Assert.True(result.Failure);
@@ -94,7 +94,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         {
             int? testInt = 1;
             var errorInitial = CreateErrorTest();
-            var result = testInt.ToRValueWhereNull(_ => true,
+            var result = testInt.ToRValueEnsureOption(_ => true,
                                                         _ => errorInitial);
 
             Assert.True(result.Success);
@@ -109,7 +109,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         {
             int? testInt = 0;
             var errorInitial = CreateErrorTest();
-            var result = testInt.ToRValueWhereNull(_ => false,
+            var result = testInt.ToRValueEnsureOption(_ => false,
                                                         _ => errorInitial);
 
             Assert.True(result.Failure);
@@ -124,7 +124,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         {
             int? testInt = null;
             var errorInitial = CreateErrorTest();
-            var result = testInt.ToRValueWhereNull(_ => true,
+            var result = testInt.ToRValueEnsureOption(_ => true,
                                                         _ => errorInitial);
 
             Assert.True(result.Failure);
@@ -139,7 +139,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         {
             const string testString = "Test";
 
-            var result = testString.ToRValueWhereNullOkBad(_ => true,
+            var result = testString.ToRValueEnsureWhere(_ => true,
                                                             test => test,
                                                             _ => CreateErrorTest());
 
@@ -156,7 +156,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             string testString = String.Empty;
             var errorInitial = CreateErrorTest();
 
-            var result = testString.ToRValueWhereNullOkBad(_ => false,
+            var result = testString.ToRValueEnsureWhere(_ => false,
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
@@ -173,7 +173,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             string? testString = null;
             var errorInitial = CreateErrorTest();
 
-            var result = testString.ToRValueWhereNullOkBad(_ => true,
+            var result = testString.ToRValueEnsureWhere(_ => true,
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
@@ -189,7 +189,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         {
             int? testInt = 1;
 
-            var result = testInt.ToRValueWhereNullOkBad(_ => true,
+            var result = testInt.ToRValueEnsureWhere(_ => true,
                                                             test => test,
                                                             _ => CreateErrorTest());
 
@@ -206,7 +206,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int? testInt = 0;
             var errorInitial = CreateErrorTest();
 
-            var result = testInt.ToRValueWhereNullOkBad(_ => false,
+            var result = testInt.ToRValueEnsureWhere(_ => false,
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
@@ -223,7 +223,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int? testInt = null;
             var errorInitial = CreateErrorTest();
 
-            var result = testInt.ToRValueWhereNullOkBad(_ => true,
+            var result = testInt.ToRValueEnsureWhere(_ => true,
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 

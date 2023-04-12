@@ -31,7 +31,7 @@ namespace ResultFunctional.FunctionalExtensions.Async
         public static async Task<TValue> VoidOkTaskAsync<TValue>(this Task<TValue> @this, Func<TValue, bool> predicate,
                                                                  Action<TValue> action) =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.VoidOk(predicate, action));
+            MapTaskAsync(awaitedThis => awaitedThis.VoidSome(predicate, action));
 
         /// <summary>
         /// Execute task action base on predicate condition
@@ -39,12 +39,12 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <typeparam name="TValue">Action type</typeparam>
         /// <param name="this">Source</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="actionOk">Action if predicate <see langword="true"/></param>
-        /// <param name="actionBad">Action if predicate <see langword="false"/></param>
+        /// <param name="actionSome">Action if predicate <see langword="true"/></param>
+        /// <param name="actionNone">Action if predicate <see langword="false"/></param>
         /// <returns>Unchanged source</returns>
         public static async Task<TValue> VoidWhereTaskAsync<TValue>(this Task<TValue> @this, Func<TValue, bool> predicate,
-                                                                    Action<TValue> actionOk, Action<TValue> actionBad) =>
+                                                                    Action<TValue> actionSome, Action<TValue> actionNone) =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.VoidWhere(predicate, actionOk, actionBad));
+            MapTaskAsync(awaitedThis => awaitedThis.VoidMatch(predicate, actionSome, actionNone));
     }
 }

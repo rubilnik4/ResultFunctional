@@ -17,16 +17,16 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result value</param>
-        /// <param name="okFunc">Function if incoming result value hasn't errors</param>
-        /// <param name="badFunc">Function if incoming result value has errors</param>
+        /// <param name="someFunc">Function if incoming result value hasn't errors</param>
+        /// <param name="noneFunc">Function if incoming result value has errors</param>
         /// <returns>Outgoing value</returns>
         public static async Task<TValueOut> ResultValueToValueOkBadAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                    Func<TValueIn, Task<TValueOut>> okFunc,
-                                                                                    Func<IReadOnlyCollection<IRError>, Task<TValueOut>> badFunc) 
+                                                                                    Func<TValueIn, Task<TValueOut>> someFunc,
+                                                                                    Func<IReadOnlyCollection<IRError>, Task<TValueOut>> noneFunc) 
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
-                ? await okFunc.Invoke(@this.GetValue())
-                : await badFunc.Invoke(@this.GetErrors());
+                ? await someFunc.Invoke(@this.GetValue())
+                : await noneFunc.Invoke(@this.GetErrors());
     }
 }

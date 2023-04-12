@@ -23,7 +23,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = CurryFunctions.IntToString.ToRValue();
             var resultArgument = initialValue.ToRValue();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal(initialValue.ToString(), resultOut.GetValue().Invoke());
@@ -40,7 +40,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRValue<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -58,7 +58,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = errorFunc.ToRValue<Func<int, string>>();
             var resultArgument = 2.ToRValue();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -77,7 +77,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRValue<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);
@@ -96,7 +96,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = CurryFunctions.AggregateTwoToString.ToRValue();
             var resultArgument = initialValue.ToRValue();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal((initialValue + initialValue).ToString(), resultOut.GetValue().Invoke(2));
@@ -113,7 +113,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRValue<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -132,7 +132,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = errorFunc.ToRValue<Func<int,int, string>>();
             var resultArgument = initialValue.ToRValue();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -151,7 +151,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRValue<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);
@@ -170,7 +170,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = CurryFunctions.AggregateThreeToString.ToRValue();
             var resultArgument = initialValue.ToRValue();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal((initialValue * 3).ToString(), resultOut.GetValue().Invoke(initialValue, initialValue));
@@ -187,7 +187,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRValue<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -206,7 +206,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = errorFunc.ToRValue<Func<int, int, int, string>>();
             var resultArgument = initialValue.ToRValue();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -225,7 +225,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRValue<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);
@@ -244,7 +244,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = CurryFunctions.AggregateFourToString.ToRValue();
             var resultArgument = initialValue.ToRValue();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal((initialValue * 4).ToString(), resultOut.GetValue().Invoke(initialValue, initialValue, initialValue));
@@ -261,7 +261,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRValue<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -280,7 +280,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = errorFunc.ToRValue<Func<int, int, int, int, string>>();
             var resultArgument = initialValue.ToRValue();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -299,7 +299,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRValue<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);
@@ -318,7 +318,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = CurryFunctions.AggregateFiveToString.ToRValue();
             var resultArgument = initialValue.ToRValue();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal((initialValue * 5).ToString(), resultOut.GetValue().Invoke(initialValue, initialValue,
@@ -336,7 +336,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRValue<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -355,7 +355,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValueFunc = errorFunc.ToRValue<Func<int, int, int, int, int, string>>();
             var resultArgument = initialValue.ToRValue();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -374,7 +374,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorArgument = CreateErrorTest();
             var resultArgument = errorArgument.ToRValue<int>();
 
-            var resultOut = resultValueFunc.ResultValueCurryOk(resultArgument);
+            var resultOut = resultValueFunc.RValueCurrySome(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);

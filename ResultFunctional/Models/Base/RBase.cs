@@ -72,7 +72,7 @@ internal abstract class RBase<TValue, TOption> : ROption, IRBase<TValue, TOption
     /// <returns>Result option with errors</returns>  
     public TOption ConcatErrors(IEnumerable<IRError> errors) =>
         GetErrorsOrEmpty().Concat(errors).ToList()
-            .WhereContinue(errorList => errorList.Count > 0,
+            .Option(errorList => errorList.Count > 0,
                            Initialize,
                            _ => Initialize(GetValue()));
 }

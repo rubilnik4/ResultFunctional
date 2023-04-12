@@ -18,14 +18,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <typeparam name="TValue">Result type</typeparam>
         /// <param name="this">Incoming collection</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValue>> ToResultCollectionWhereAsync<TValue>(this IEnumerable<TValue> @this,
                                                                                       Func<IEnumerable<TValue>, bool> predicate,
-                                                                                      Func<IEnumerable<TValue>, Task<IRError>> badFunc)
+                                                                                      Func<IEnumerable<TValue>, Task<IRError>> noneFunc)
             where TValue : notnull =>
             await @this.WhereContinueAsync(predicate,
                                            value => value.ToRList().ToTask(),
-                                           value => badFunc(value).ToRListTaskAsync<TValue>());
+                                           value => noneFunc(value).ToRListTaskAsync<TValue>());
     }
 }

@@ -44,17 +44,17 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// </summary>
         /// <typeparam name="TValue">Incoming type</typeparam>
         /// <param name="this">Incoming result value</param>
-        /// <param name="actionOk">Action if result value hasn't errors</param>
-        /// <param name="actionBad">Action if result value has errors</param>
+        /// <param name="actionSome">Action if result value hasn't errors</param>
+        /// <param name="actionNone">Action if result value has errors</param>
         /// <returns>Unchanged result value</returns>
         public static async Task<IRValue<TValue>> ResultValueVoidOkBadAsync<TValue>(this IRValue<TValue> @this,
-                                                                                         Func<TValue, Task> actionOk,
-                                                                                         Func<IReadOnlyCollection<IRError>, Task> actionBad)
+                                                                                         Func<TValue, Task> actionSome,
+                                                                                         Func<IReadOnlyCollection<IRError>, Task> actionNone)
             where TValue : notnull =>
             await @this.
             VoidWhereAsync(_ => @this.Success,
-                actionOk: _ => actionOk.Invoke(@this.GetValue()),
-                actionBad: _ => actionBad.Invoke(@this.GetErrors()));
+                actionSome: _ => actionSome.Invoke(@this.GetValue()),
+                actionNone: _ => actionNone.Invoke(@this.GetErrors()));
 
         /// <summary>
         /// Execute async action depending on result value errors and predicate

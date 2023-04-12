@@ -17,16 +17,16 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result collection</param>
-        /// <param name="okFunc">Function if incoming result collection hasn't errors</param>
-        /// <param name="badFunc">Function if incoming result collection has errors</param>
+        /// <param name="someFunc">Function if incoming result collection hasn't errors</param>
+        /// <param name="noneFunc">Function if incoming result collection has errors</param>
         /// <returns>Outgoing collection</returns>
         public static async Task<IReadOnlyCollection<TValueOut>> ResultCollectionToCollectionOkBadAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                                                            Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> okFunc,
-                                                                                                                            Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValueOut>>> badFunc)
+                                                                                                                            Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> someFunc,
+                                                                                                                            Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValueOut>>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
-                ? await okFunc.Invoke(@this.GetValue())
-                : await badFunc.Invoke(@this.GetErrors());
+                ? await someFunc.Invoke(@this.GetValue())
+                : await noneFunc.Invoke(@this.GetErrors());
     }
 }

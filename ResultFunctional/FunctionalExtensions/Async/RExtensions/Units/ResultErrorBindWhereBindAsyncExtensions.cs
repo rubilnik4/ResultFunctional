@@ -15,23 +15,23 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// Merge task result error async function depending on incoming result error
         /// </summary>
         /// <param name="this">Incoming result error</param>
-        /// <param name="okFunc">Function if result error hasn't errors</param>
-        /// <param name="badFunc">Function if result collection has errors</param>
+        /// <param name="someFunc">Function if result error hasn't errors</param>
+        /// <param name="noneFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result error</returns>
         public static async Task<IRUnit> ResultErrorBindOkBadBindAsync(this Task<IRUnit> @this,
-                                                             Func<Task<IRUnit>> okFunc,
-                                                             Func<IReadOnlyCollection<IRError>, Task<IRUnit>> badFunc) =>
+                                                             Func<Task<IRUnit>> someFunc,
+                                                             Func<IReadOnlyCollection<IRError>, Task<IRUnit>> noneFunc) =>
            await @this.
-           MapBindAsync(awaitedThis => awaitedThis.ResultErrorBindOkBadAsync(okFunc, badFunc));
+           MapBindAsync(awaitedThis => awaitedThis.ResultErrorBindOkBadAsync(someFunc, noneFunc));
 
         /// <summary>
         /// Merge task result error async function if incoming result collection hasn't errors
         /// </summary>
         /// <param name="this">Incoming result error</param>
-        /// <param name="okFunc">Function if result error hasn't errors</param>
+        /// <param name="someFunc">Function if result error hasn't errors</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IRUnit> ResultErrorBindOkBindAsync(this Task<IRUnit> @this, Func<Task<IRUnit>> okFunc) =>
+        public static async Task<IRUnit> ResultErrorBindOkBindAsync(this Task<IRUnit> @this, Func<Task<IRUnit>> someFunc) =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultErrorBindOkAsync(okFunc));
+            MapBindAsync(awaitedThis => awaitedThis.ResultErrorBindOkAsync(someFunc));
     }
 }

@@ -8,7 +8,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
     /// <summary>
     /// Extension methods for result value monad function converting to result collection
     /// </summary>
-    public static class ResultValueBindWhereToCollectionExtensions
+    public static class RValueBindListOptionExtensions
     {
         /// <summary>
         /// Execute monad result value function converting to result collection if incoming result value hasn't errors
@@ -16,14 +16,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result value</param>
-        /// <param name="okFunc">Function if incoming result value hasn't errors</param>
+        /// <param name="someFunc">Function if incoming result value hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
-        public static IRList<TValueOut> ResultValueBindOkToCollection<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                           Func<TValueIn, IRList<TValueOut>> okFunc) 
+        public static IRList<TValueOut> RValueBindListSome<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+                                                                                Func<TValueIn, IRList<TValueOut>> someFunc) 
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.
-            ResultValueBindOk(value => okFunc(value).ToRValue()).
+            RValueBindSome(value => someFunc(value).ToRValue()).
             ToRList();
     }
 }

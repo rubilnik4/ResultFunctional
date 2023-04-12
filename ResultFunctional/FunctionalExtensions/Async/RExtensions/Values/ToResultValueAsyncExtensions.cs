@@ -22,7 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         public static async Task<IRValue<TValue>> ToResultValueNullValueCheckAsync<TValue>(this TValue @this,
                                                                                            Task<IRError> error)
             where TValue : notnull =>
-            @this.ToRValueNullValueCheck(await error);
+            @this.ToRValueEnsure(await error);
 
         /// <summary>
         /// Converting value to result value async with null checking
@@ -34,7 +34,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         public static async Task<IRValue<TValue>> ToResultValueNullCheckAsync<TValue>(this TValue? @this,
                                                                                            Task<IRError> error)
             where TValue : class =>
-            @this.ToRValueNullCheck(await error);
+            @this.ToRValueNullEnsure(await error);
 
         /// <summary>
         /// Converting value to result value async with null checking
@@ -46,7 +46,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         public static async Task<IRValue<TValue>> ToResultValueNullCheckAsync<TValue>(this TValue? @this,
                                                                                            Task<IRError> error)
             where TValue : struct =>
-            @this.ToRValueNullCheck(await error);
+            @this.ToRValueNullEnsure(await error);
 
         /// <summary>
         /// Async converting result unit to result value

@@ -19,17 +19,17 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result value</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns> 
         public static async Task<IRList<TValueOut>> ResultValueContinueToCollectionTaskAsync<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
                                                                                                                   Func<TValueIn, bool> predicate,
-                                                                                                                  Func<TValueIn, IReadOnlyCollection<TValueOut>> okFunc,
-                                                                                                                  Func<TValueIn, IReadOnlyCollection<IRError>> badFunc)
+                                                                                                                  Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc,
+                                                                                                                  Func<TValueIn, IReadOnlyCollection<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            ResultValueContinueTaskAsync(predicate, okFunc, badFunc).
+            ResultValueContinueTaskAsync(predicate, someFunc, noneFunc).
             ToRListTaskAsync();
 
         /// <summary>
@@ -38,16 +38,16 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result value</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>   
         public static async Task<IRList<TValueOut>> ResultValueOkBadToCollectionTaskAsync<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                    Func<TValueIn, IReadOnlyCollection<TValueOut>> okFunc,
-                                                                                    Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValueOut>> badFunc)
+                                                                                    Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc,
+                                                                                    Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            ResultValueOkBadTaskAsync(okFunc, badFunc).
+            ResultValueOkBadTaskAsync(someFunc, noneFunc).
             ToRListTaskAsync();
 
         /// <summary>
@@ -56,14 +56,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result value</param>
-        /// <param name="okFunc">Function if result value hasn't errors</param>
+        /// <param name="someFunc">Function if result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IRList<TValueOut>> ResultValueOkToCollectionTaskAsync<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                             Func<TValueIn, IReadOnlyCollection<TValueOut>> okFunc)
+                                                                                             Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            ResultValueOkTaskAsync(okFunc).
+            ResultValueOkTaskAsync(someFunc).
             ToRListTaskAsync();
     }
 }

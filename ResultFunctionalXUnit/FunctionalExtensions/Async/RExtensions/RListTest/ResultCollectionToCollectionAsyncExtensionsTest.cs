@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Async;
-using ResultFunctional.FunctionalExtensions.Async.RExtension.Lists;
-using ResultFunctional.FunctionalExtensions.Sync.RExtension.Lists;
+using ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Extensions.TaskExtensions;
 using Xunit;

@@ -17,14 +17,14 @@ public static class ResultErrorWhereAsyncExtensions
     /// </summary>
     /// <param name="this">Result error</param>
     /// <param name="predicate">Predicate function</param>
-    /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+    /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
     public static async Task<IRUnit> ResultErrorCheckErrorsOkAsync(this IRUnit @this,
                                                                          Func<bool> predicate,
-                                                                         Func<Task<IReadOnlyCollection<IRError>>> badFunc) =>
+                                                                         Func<Task<IReadOnlyCollection<IRError>>> noneFunc) =>
          @this.Success
              ? predicate()
                  ? RUnit.Some()
-                 : await badFunc.Invoke().ToRUnitTaskAsync()
+                 : await noneFunc.Invoke().ToRUnitTaskAsync()
              : @this.GetErrors().ToRUnit();
 }

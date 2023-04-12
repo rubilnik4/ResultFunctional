@@ -5,7 +5,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync
     /// <summary>
     /// Extension methods for condition functions
     /// </summary>
-    public static class WhereTaskExtensions
+    public static class OptionExtensions
     {
         /// <summary>
         /// Execute converting function base on predicate condition
@@ -14,14 +14,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync
         /// <typeparam name="TResult">Result type</typeparam>
         /// <param name="this">Source</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Converting function result</returns>
-        public static TResult WhereContinue<TSource, TResult>(this TSource @this, Func<TSource, bool> predicate,
-                                                              Func<TSource, TResult> okFunc, Func<TSource, TResult> badFunc) =>
+        public static TResult Option<TSource, TResult>(this TSource @this, Func<TSource, bool> predicate,
+                                                       Func<TSource, TResult> someFunc, Func<TSource, TResult> noneFunc) =>
             predicate(@this)
-                ? okFunc.Invoke(@this)
-                : badFunc.Invoke(@this);
+                ? someFunc.Invoke(@this)
+                : noneFunc.Invoke(@this);
 
         /// <summary>
         /// Execute converting function if predicate condition <see langword="true"/>
@@ -29,10 +29,10 @@ namespace ResultFunctional.FunctionalExtensions.Sync
         /// <typeparam name="TSource">Source type</typeparam>
         /// <param name="this">Source</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <returns>Converting function result</returns>
-        public static TSource WhereOk<TSource>(this TSource @this, Func<TSource, bool> predicate, Func<TSource, TSource> okFunc) =>
-            @this.WhereContinue(predicate, okFunc, _ => @this);
+        public static TSource OptionSome<TSource>(this TSource @this, Func<TSource, bool> predicate, Func<TSource, TSource> someFunc) =>
+            @this.Option(predicate, someFunc, _ => @this);
 
         /// <summary>
         /// Execute converting function if predicate condition <see langword="false"/>
@@ -40,9 +40,9 @@ namespace ResultFunctional.FunctionalExtensions.Sync
         /// <typeparam name="TSource">Source type</typeparam>
         /// <param name="this">Source</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="badFunc">Function if predicate <see langword="false"/></param>
+        /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Converting function result</returns>
-        public static TSource WhereBad<TSource>(this TSource @this, Func<TSource, bool> predicate, Func<TSource, TSource> badFunc) =>
-            @this.WhereContinue(predicate, _ => @this, badFunc);
+        public static TSource OptionNone<TSource>(this TSource @this, Func<TSource, bool> predicate, Func<TSource, TSource> noneFunc) =>
+            @this.Option(predicate, _ => @this, noneFunc);
     }
 }

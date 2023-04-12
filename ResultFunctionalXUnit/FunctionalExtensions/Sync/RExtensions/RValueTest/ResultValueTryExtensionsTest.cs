@@ -2,7 +2,7 @@
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values.ResultValueTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values.RValueTryExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
 {
@@ -18,7 +18,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         public void ResultValueTry_Ok()
         {
             int initialValue = Numbers.Number;
-            var resultValue = ResultValueTry(() => Division(initialValue), Exceptions.ExceptionError());
+            var resultValue = RValueTry(() => Division(initialValue), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Success);
             Assert.Equal(Division(initialValue), resultValue.GetValue());
@@ -31,7 +31,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         public void ResultValueTry_Exception()
         {
             const int initialValue = 0;
-            var resultValue = ResultValueTry(() => Division(initialValue), Exceptions.ExceptionError());
+            var resultValue = RValueTry(() => Division(initialValue), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Failure);
             Assert.NotNull(resultValue.GetErrors().First().Exception);
@@ -44,7 +44,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         public void ResultValueTryFunc_Ok()
         {
             int initialValue = Numbers.Number;
-            var resultValue = ResultValueTry(() => Division(initialValue), Exceptions.ExceptionFunc());
+            var resultValue = RValueTry(() => Division(initialValue), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Success);
             Assert.Equal(Division(initialValue), resultValue.GetValue());
@@ -57,7 +57,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         public void ResultValueTryFunc_Exception()
         {
             const int initialValue = 0;
-            var resultValue = ResultValueTry(() => Division(initialValue), Exceptions.ExceptionFunc());
+            var resultValue = RValueTry(() => Division(initialValue), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Failure);
             Assert.NotNull(resultValue.GetErrors().First().Exception);

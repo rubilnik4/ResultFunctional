@@ -15,14 +15,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <typeparam name="TValue">Result type</typeparam>
         /// <param name="this">Incoming value</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValue> ToRValueWhere<TValue>(this TValue @this, Func<TValue, bool> predicate,
-                                                                 Func<TValue, IRError> badFunc)
+                                                                 Func<TValue, IRError> noneFunc)
             where TValue : notnull =>
-            @this.WhereContinue(predicate,
+            @this.Option(predicate,
                                 value => value.ToRValue(),
-                                value => badFunc(value).ToRValue<TValue>());
+                                value => noneFunc(value).ToRValue<TValue>());
 
         /// <summary>
         /// Converting value to result value base on predicate
@@ -30,13 +30,13 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <typeparam name="TValue">Result type</typeparam>
         /// <param name="this">Incoming value</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValue> ToRValueWhereNull<TValue>(this TValue? @this, Func<TValue, bool> predicate,
-                                                                          Func<TValue?, IRError> badFunc)
+                                                                          Func<TValue?, IRError> noneFunc)
             where TValue : class =>
-            @this.ToRValueNullCheck(badFunc(@this)).
-            ResultValueBindOk(value => value.ToRValueWhere(predicate, badFunc));
+            @this.ToRValueNullCheck(noneFunc(@this)).
+            RValueBindSome(value => value.ToRValueWhere(predicate, noneFunc));
 
         /// <summary>
         /// Converting value to result value base on predicate
@@ -44,14 +44,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <typeparam name="TValue">Result type</typeparam>
         /// <param name="this">Incoming value</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValue> ToRValueWhereNull<TValue>(this TValue? @this, Func<TValue, bool> predicate,
-                                                                          Func<TValue?, IRError> badFunc)
+                                                                          Func<TValue?, IRError> noneFunc)
             where TValue : struct =>
-            @this.ToRValueNullCheck(badFunc(@this)).
-            ResultValueBindOk(value => value.ToRValueWhere(predicate,
-                                                                valueWhere => badFunc(valueWhere)));
+            @this.ToRValueNullCheck(noneFunc(@this)).
+            RValueBindSome(value => value.ToRValueWhere(predicate,
+                                                                valueWhere => noneFunc(valueWhere)));
 
         /// <summary>
         /// Converting value to result value base on predicate base with functor function
@@ -60,19 +60,19 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming value</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Functor function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Functor function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValueOut> ToRValueWhereNullOkBad<TValueIn, TValueOut>(this TValueIn? @this,
                                                                                       Func<TValueIn, bool> predicate,
-                                                                                      Func<TValueIn, TValueOut> okFunc,
-                                                                                      Func<TValueIn?, IRError> badFunc)
+                                                                                      Func<TValueIn, TValueOut> someFunc,
+                                                                                      Func<TValueIn?, IRError> noneFunc)
             where TValueIn : class
             where TValueOut : notnull =>
-            @this.ToRValueNullCheck(badFunc(@this)).
-            ResultValueBindWhere(predicate,
-                                 value => okFunc(value).ToRValue(),
-                                 value => badFunc(value).ToRValue<TValueOut>());
+            @this.ToRValueNullCheck(noneFunc(@this)).
+            RValueBindWhere(predicate,
+                                 value => someFunc(value).ToRValue(),
+                                 value => noneFunc(value).ToRValue<TValueOut>());
 
         /// <summary>
         /// Converting value to result value base on predicate base with functor function
@@ -81,18 +81,18 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming value</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="okFunc">Functor function if predicate <see langword="true"/></param>
-        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <param name="someFunc">Functor function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValueOut> ToRValueWhereNullOkBad<TValueIn, TValueOut>(this TValueIn? @this,
                                                                                       Func<TValueIn, bool> predicate,
-                                                                                      Func<TValueIn, TValueOut> okFunc,
-                                                                                      Func<TValueIn?, IRError> badFunc)
+                                                                                      Func<TValueIn, TValueOut> someFunc,
+                                                                                      Func<TValueIn?, IRError> noneFunc)
             where TValueIn : struct
             where TValueOut : notnull =>
-            @this.ToRValueNullCheck(badFunc(@this)).
-            ResultValueBindWhere(predicate,
-                                 value => okFunc(value).ToRValue(),
-                                 value => badFunc(value).ToRValue<TValueOut>());
+            @this.ToRValueNullCheck(noneFunc(@this)).
+            RValueBindWhere(predicate,
+                                 value => someFunc(value).ToRValue(),
+                                 value => noneFunc(value).ToRValue<TValueOut>());
     }
 }

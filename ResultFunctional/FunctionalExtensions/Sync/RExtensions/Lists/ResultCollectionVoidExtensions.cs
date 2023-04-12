@@ -21,7 +21,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
                                                                     Action<IReadOnlyCollection<TValue>> action) 
             where TValue : notnull =>
             @this.
-            VoidOk(_ => @this.Success,
+            VoidSome(_ => @this.Success,
                    _ => action.Invoke(@this.GetValue()));
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
                                                                                 Action<IReadOnlyCollection<IRError>> action)
             where TValue : notnull =>
             @this.
-            VoidOk(_ => @this.Failure,
+            VoidSome(_ => @this.Failure,
                    _ => action.Invoke(@this.GetErrors()));
 
         /// <summary>
@@ -43,17 +43,17 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// </summary>
         /// <typeparam name="TValue">Incoming type</typeparam>
         /// <param name="this">Incoming result collection</param>
-        /// <param name="actionOk">Action if result collection hasn't errors</param>
-        /// <param name="actionBad">Action if result collection has errors</param>
+        /// <param name="actionSome">Action if result collection hasn't errors</param>
+        /// <param name="actionNone">Action if result collection has errors</param>
         /// <returns>Unchanged result collection</returns>
         public static IRList<TValue> ResultCollectionVoidOkBad<TValue>(this IRList<TValue> @this,
-                                                                                  Action<IReadOnlyCollection<TValue>> actionOk,
-                                                                                  Action<IReadOnlyCollection<IRError>> actionBad)
+                                                                                  Action<IReadOnlyCollection<TValue>> actionSome,
+                                                                                  Action<IReadOnlyCollection<IRError>> actionNone)
             where TValue : notnull =>
             @this.
-            VoidWhere(_ => @this.Success,
-                      _ => actionOk.Invoke(@this.GetValue()),
-                      _ => actionBad.Invoke(@this.GetErrors()));
+            VoidMatch(_ => @this.Success,
+                      _ => actionSome.Invoke(@this.GetValue()),
+                      _ => actionNone.Invoke(@this.GetErrors()));
 
         /// <summary>
         /// Execute action depending on result collection errors and predicate
@@ -68,7 +68,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
                                                                                     Action<IReadOnlyCollection<TValue>> action)
             where TValue : notnull =>
             @this.
-            VoidOk(_ => @this.Success && predicate(@this.GetValue()),
+            VoidSome(_ => @this.Success && predicate(@this.GetValue()),
                    _ => action.Invoke(@this.GetValue()));
     }
 }

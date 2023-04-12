@@ -7,7 +7,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
     /// <summary>
     /// Exception handling result value extension methods
     /// </summary>
-    public static class ResultValueTryExtensions
+    public static class RValueTryExtensions
     {
         /// <summary>
         /// Execute function and handle exception with result value converting
@@ -16,7 +16,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="func">Value function</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result value</returns>
-        public static IRValue<TValue> ResultValueTry<TValue>(Func<TValue> func, Func<Exception, IRError> exceptionFunc)
+        public static IRValue<TValue> RValueTry<TValue>(Func<TValue> func, Func<Exception, IRError> exceptionFunc)
             where TValue : notnull
         {
             try
@@ -36,8 +36,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="func">Value function</param>
         /// <param name="error">Error</param>
         /// <returns>Result value</returns>
-        public static IRValue<TValue> ResultValueTry<TValue>(Func<TValue> func, IRError error)
+        public static IRValue<TValue> RValueTry<TValue>(Func<TValue> func, IRError error)
             where TValue : notnull =>
-            ResultValueTry(func, error.AppendException);
+            RValueTry(func, error.AppendException);
     }
 }

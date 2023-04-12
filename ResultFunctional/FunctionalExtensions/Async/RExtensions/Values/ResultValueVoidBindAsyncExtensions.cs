@@ -42,15 +42,15 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// </summary>
         /// <typeparam name="TValue">Incoming type</typeparam>
         /// <param name="this">Incoming result value</param>
-        /// <param name="actionOk">Action if result value hasn't errors</param>
-        /// <param name="actionBad">Action if result value has errors</param>
+        /// <param name="actionSome">Action if result value hasn't errors</param>
+        /// <param name="actionNone">Action if result value has errors</param>
         /// <returns>Unchanged result value</returns>  
         public static async Task<IRValue<TValue>> ResultValueVoidOkBadBindAsync<TValue>(this Task<IRValue<TValue>> @this,
-                                                                                             Func<TValue, Task> actionOk,
-                                                                                             Func<IReadOnlyCollection<IRError>, Task> actionBad)
+                                                                                             Func<TValue, Task> actionSome,
+                                                                                             Func<IReadOnlyCollection<IRError>, Task> actionNone)
             where TValue : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultValueVoidOkBadAsync(actionOk, actionBad));
+            MapBindAsync(awaitedThis => awaitedThis.ResultValueVoidOkBadAsync(actionSome, actionNone));
 
         /// <summary>
         /// Execute async action depending on task result value errors and predicate

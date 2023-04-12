@@ -10,7 +10,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
     /// <summary>
     /// Result value extension methods
     /// </summary>
-    public static class ToResultValueExtensions
+    public static class ToRValueExtensions
     {
         /// <summary>
         /// Converting value to result value
@@ -39,7 +39,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Incoming value</param>
         /// <param name="error">Null error</param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValue> ToRValueNullValueCheck<TValue>(this TValue? @this, IRError error) 
+        public static IRValue<TValue> ToRValueEnsure<TValue>(this TValue? @this, IRError error) 
             where TValue : notnull =>
             @this != null
                 ? @this.ToRValue()
@@ -52,7 +52,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Incoming value</param>
         /// <param name="error">Null error</param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValue> ToRValueNullCheck<TValue>(this TValue? @this, IRError error)
+        public static IRValue<TValue> ToRValueNullEnsure<TValue>(this TValue? @this, IRError error)
             where TValue : class =>
             @this != null
                 ? @this.ToRValue()
@@ -65,7 +65,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Incoming value</param>
         /// <param name="error">Null error</param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValue> ToRValueNullCheck<TValue>(this TValue? @this, IRError error)
+        public static IRValue<TValue> ToRValueNullEnsure<TValue>(this TValue? @this, IRError error)
             where TValue : struct =>
             @this != null
                 ? @this.Value.ToRValue()

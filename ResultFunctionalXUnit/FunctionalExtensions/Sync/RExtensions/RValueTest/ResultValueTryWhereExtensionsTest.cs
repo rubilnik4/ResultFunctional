@@ -21,7 +21,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int initialValue = Numbers.Number;
             var numberResult = initialValue.ToRValue();
 
-            var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionError());
+            var numberAfterTry = numberResult.RValueTrySome(Division, Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Success);
             Assert.Equal(Division(initialValue), numberAfterTry.GetValue());
@@ -36,7 +36,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRValue<int>();
 
-            var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionError());
+            var numberAfterTry = numberResult.RValueTrySome(Division, Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Failure);
             Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
@@ -51,7 +51,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             const int initialValue = 0;
             var numberResult = initialValue.ToRValue();
 
-            var resultValue = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionError());
+            var resultValue = numberResult.RValueTrySome(Division, Exceptions.ExceptionError());
 
             Assert.True(resultValue.Failure);
             Assert.NotNull(resultValue.GetErrors().First().Exception);
@@ -66,7 +66,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRValue<int>();
 
-            var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionError());
+            var numberAfterTry = numberResult.RValueTrySome(Division, Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Failure);
             Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
@@ -81,7 +81,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int initialValue = Numbers.Number;
             var numberResult = initialValue.ToRValue();
 
-            var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionFunc());
+            var numberAfterTry = numberResult.RValueTrySome(Division, Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Success);
             Assert.Equal(Division(initialValue), numberAfterTry.GetValue());
@@ -96,7 +96,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRValue<int>();
 
-            var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionFunc());
+            var numberAfterTry = numberResult.RValueTrySome(Division, Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Failure);
             Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
@@ -111,7 +111,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             const int initialValue = 0;
             var numberResult = initialValue.ToRValue();
 
-            var resultValue = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionFunc());
+            var resultValue = numberResult.RValueTrySome(Division, Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Failure);
             Assert.NotNull(resultValue.GetErrors().First().Exception);
@@ -126,7 +126,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRValue<int>();
 
-            var numberAfterTry = numberResult.ResultValueTryOk(Division, Exceptions.ExceptionFunc());
+            var numberAfterTry = numberResult.RValueTrySome(Division, Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Failure);
             Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));

@@ -17,13 +17,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
         /// <param name="this">Incoming result value</param>
-        /// <param name="okFunc">Function if incoming result value hasn't errors</param>
+        /// <param name="someFunc">Function if incoming result value hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValueOut>> ResultValueBindOkToCollectionTaskAsync<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                                                Func<TValueIn, IRList<TValueOut>> okFunc) 
+                                                                                                                Func<TValueIn, IRList<TValueOut>> someFunc) 
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.ResultValueBindOkToCollection(okFunc));
+            MapTaskAsync(thisAwaited => thisAwaited.RValueBindListSome(someFunc));
     }
 }

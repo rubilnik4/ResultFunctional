@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Values;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values.ResultValueTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values.RValueTryExtensions;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
 {
@@ -26,7 +26,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            ResultValueBindOkTaskAsync(value => ResultValueTry(() => func.Invoke(value), exceptionFunc));
+            ResultValueBindOkTaskAsync(value => RValueTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
         /// Execute function and handle exception with task result value concat
@@ -43,6 +43,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            ResultValueBindOkTaskAsync(value => ResultValueTry(() => func.Invoke(value), error));
+            ResultValueBindOkTaskAsync(value => RValueTry(() => func.Invoke(value), error));
     }
 }

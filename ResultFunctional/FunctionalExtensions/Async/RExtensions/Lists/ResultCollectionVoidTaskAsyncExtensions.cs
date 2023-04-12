@@ -43,15 +43,15 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// </summary>
         /// <typeparam name="TValue">Incoming type</typeparam>
         /// <param name="this">Incoming result collection</param>
-        /// <param name="actionOk">Action if result collection hasn't errors</param>
-        /// <param name="actionBad">Action if result collection has errors</param>
+        /// <param name="actionSome">Action if result collection hasn't errors</param>
+        /// <param name="actionNone">Action if result collection has errors</param>
         /// <returns>Unchanged result collection</returns>      
         public static async Task<IRList<TValue>> ResultCollectionVoidOkBadTaskAsync<TValue>(this Task<IRList<TValue>> @this,
-                                                                                                     Action<IReadOnlyCollection<TValue>> actionOk,
-                                                                                                     Action<IReadOnlyCollection<IRError>> actionBad)
+                                                                                                     Action<IReadOnlyCollection<TValue>> actionSome,
+                                                                                                     Action<IReadOnlyCollection<IRError>> actionNone)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionVoidOkBad(actionOk, actionBad));
+            MapTaskAsync(awaitedThis => awaitedThis.ResultCollectionVoidOkBad(actionSome, actionNone));
 
         /// <summary>
         /// Execute action depending on task result collection errors and predicate

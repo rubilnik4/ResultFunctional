@@ -21,7 +21,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = resultValue.ResultValueContinue(_ => true,
+            var resultAfterWhere = resultValue.RValueOption(_ => true,
                                                                    okFunc: number => number.ToString(),
                                                                    badFunc: _ => CreateErrorListTwoTest());
 
@@ -39,7 +39,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValue = initialValue.ToRValue();
 
             var errorBad = CreateErrorListTwoTest();
-            var resultAfterWhere = resultValue.ResultValueContinue(_ => false,
+            var resultAfterWhere = resultValue.RValueOption(_ => false,
                                                                    okFunc: _ => String.Empty,
                                                                    badFunc: _ => errorBad);
 
@@ -56,7 +56,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueContinue(_ => true,
+            var resultAfterWhere = resultValue.RValueOption(_ => true,
                                                                    okFunc: _ => String.Empty,
                                                                    badFunc: _ => CreateErrorListTwoTest());
 
@@ -73,7 +73,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorsInitial = CreateErrorTest();
             var resultValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueContinue(_ => false,
+            var resultAfterWhere = resultValue.RValueOption(_ => false,
                                                                    okFunc: _ => String.Empty,
                                                                    badFunc: _ => CreateErrorListTwoTest());
 
@@ -90,7 +90,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = resultValue.ResultValueWhere(_ => true,
+            var resultAfterWhere = resultValue.RValueWhere(_ => true,
                 okFunc: number => number.ToString(),
                 badFunc: _ => CreateErrorListTwoTest().Count.ToString());
 
@@ -108,7 +108,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValue = initialValue.ToRValue();
 
             var valueBad = CreateErrorListTwoTest().Count.ToString();
-            var resultAfterWhere = resultValue.ResultValueWhere(_ => false,
+            var resultAfterWhere = resultValue.RValueWhere(_ => false,
                 okFunc: number => number.ToString(),
                 badFunc: _ => valueBad);
 
@@ -125,7 +125,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueWhere(_ => true,
+            var resultAfterWhere = resultValue.RValueWhere(_ => true,
                 okFunc: number => number.ToString(),
                 badFunc: _ => CreateErrorListTwoTest().Count.ToString());
 
@@ -142,7 +142,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorsInitial = CreateErrorTest();
             var resultValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueWhere(_ => false,
+            var resultAfterWhere = resultValue.RValueWhere(_ => false,
                 okFunc: number => number.ToString(),
                 badFunc: _ => CreateErrorListTwoTest().Count.ToString());
 
@@ -159,7 +159,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = resultValue.ResultValueOkBad(okFunc: number => number.ToString(),
+            var resultAfterWhere = resultValue.RValueMatch(okFunc: number => number.ToString(),
                                                                 badFunc: _ => String.Empty);
 
             Assert.True(resultAfterWhere.Success);
@@ -175,7 +175,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorsInitial = CreateErrorListTwoTest();
             var resultValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueOkBad(okFunc: _ => String.Empty,
+            var resultAfterWhere = resultValue.RValueMatch(okFunc: _ => String.Empty,
                                                                 badFunc: errors => errors.Count.ToString());
 
             Assert.True(resultAfterWhere.Success);
@@ -191,7 +191,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = resultValue.ResultValueOk(number => number.ToString());
+            var resultAfterWhere = resultValue.RValueSome(number => number.ToString());
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(initialValue.ToString(), resultAfterWhere.GetValue());
@@ -206,7 +206,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueOk(number => number.ToString());
+            var resultAfterWhere = resultValue.RValueSome(number => number.ToString());
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));
@@ -221,7 +221,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = resultValue.ResultValueBad(errors => errors.Count);
+            var resultAfterWhere = resultValue.RValueNone(errors => errors.Count);
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(resultValue.GetValue(), resultAfterWhere.GetValue());
@@ -236,7 +236,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorsInitial = CreateErrorListTwoTest();
             var resultValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueBad(errors => errors.Count);
+            var resultAfterWhere = resultValue.RValueNone(errors => errors.Count);
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.GetValue());
@@ -251,7 +251,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = resultValue.ResultValueCheckErrorsOk(_ => true,
+            var resultAfterWhere = resultValue.RValueEnsure(_ => true,
                                                                         _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.Success);
@@ -268,7 +268,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValue = initialValue.ToRValue();
 
             var errorBad = CreateErrorListTwoTest();
-            var resultAfterWhere = resultValue.ResultValueCheckErrorsOk(_ => false,
+            var resultAfterWhere = resultValue.RValueEnsure(_ => false,
                                                                         _ => errorBad);
 
             Assert.True(resultAfterWhere.Failure);
@@ -284,7 +284,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueCheckErrorsOk(_ => true,
+            var resultAfterWhere = resultValue.RValueEnsure(_ => true,
                                                                         _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.Failure);
@@ -300,7 +300,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorsInitial = CreateErrorTest();
             var resultValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueCheckErrorsOk(_ => false,
+            var resultAfterWhere = resultValue.RValueEnsure(_ => false,
                                                                         badFunc: _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.Failure);

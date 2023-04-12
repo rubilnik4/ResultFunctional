@@ -17,15 +17,15 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <typeparam name="TValue">Result type</typeparam>
         /// <param name="this">Incoming collection</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="badFunc">Error function if predicate <see langword="false"/></param>
+        /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
         public static IRList<TValue> ToRListWhere<TValue>(this IEnumerable<TValue> @this,
                                                           Func<IReadOnlyCollection<TValue>, bool> predicate,
-                                                          Func<IReadOnlyCollection<TValue>, IRError> badFunc)
+                                                          Func<IReadOnlyCollection<TValue>, IRError> noneFunc)
             where TValue : notnull =>
             @this.ToList()
-                 .WhereContinue(predicate,
+                 .Option(predicate,
                                 values => values.ToRList(),
-                                values => badFunc(values).ToRList<TValue>());
+                                values => noneFunc(values).ToRList<TValue>());
     }
 }

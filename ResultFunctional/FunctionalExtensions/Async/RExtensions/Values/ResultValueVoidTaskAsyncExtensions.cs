@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                      Action<TValue> action)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.ResultValueVoidOk(action));
+            MapTaskAsync(awaitedThis => awaitedThis.RValueVoidSome(action));
 
         /// <summary>
         /// Execute action if task result value has errors
@@ -36,22 +36,22 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                       Action<IReadOnlyCollection<IRError>> action)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.ResultValueVoidBad(action));
+            MapTaskAsync(awaitedThis => awaitedThis.RValueVoidNone(action));
 
         /// <summary>
         /// Execute action depending on task result value errors
         /// </summary>
         /// <typeparam name="TValue">Incoming type</typeparam>
         /// <param name="this">Incoming result value</param>
-        /// <param name="actionOk">Action if result value hasn't errors</param>
-        /// <param name="actionBad">Action if result value has errors</param>
+        /// <param name="actionSome">Action if result value hasn't errors</param>
+        /// <param name="actionNone">Action if result value has errors</param>
         /// <returns>Unchanged result value</returns>  
         public static async Task<IRValue<TValue>> ResultValueVoidOkBadTaskAsync<TValue>(this Task<IRValue<TValue>> @this,
-                                                                                           Action<TValue> actionOk,
-                                                                                           Action<IReadOnlyCollection<IRError>> actionBad)
+                                                                                           Action<TValue> actionSome,
+                                                                                           Action<IReadOnlyCollection<IRError>> actionNone)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.ResultValueVoidOkBad(actionOk, actionBad));
+            MapTaskAsync(awaitedThis => awaitedThis.RValueVoidMatch(actionSome, actionNone));
 
         /// <summary>
         /// Execute action depending on task result value errors and predicate
@@ -66,6 +66,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                           Action<TValue> action)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.ResultValueVoidOkWhere(predicate, action));
+            MapTaskAsync(awaitedThis => awaitedThis.RValueVoidWhere(predicate, action));
     }
 }

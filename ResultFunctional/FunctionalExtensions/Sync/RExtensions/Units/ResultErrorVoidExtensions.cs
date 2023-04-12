@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Units;
 
-namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Units
+namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
 {
     /// <summary>
     /// Result error action extension methods
@@ -18,7 +18,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Units
         /// <returns>Unchanged result error</returns>
         public static IRUnit ResultErrorVoidOk(this IRUnit @this, Action action) =>
             @this.
-            VoidOk(_ => @this.Success,
+            VoidSome(_ => @this.Success,
                    _ => action.Invoke());
 
         /// <summary>
@@ -30,23 +30,23 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Units
         public static IRUnit ResultErrorVoidBad(this IRUnit @this,
                                                       Action<IReadOnlyCollection<IRError>> action) =>
             @this.
-            VoidOk(_ => @this.Failure,
+            VoidSome(_ => @this.Failure,
                    _ => action.Invoke(@this.GetErrors()));
 
         /// <summary>
         /// Execute action depending on result errors
         /// </summary>
         /// <param name="this">Incoming result error</param>
-        /// <param name="actionOk">Action if result hasn't errors</param>
-        /// <param name="actionBad">Action if result has errors</param>
+        /// <param name="actionSome">Action if result hasn't errors</param>
+        /// <param name="actionNone">Action if result has errors</param>
         /// <returns>Unchanged result error</returns>
         public static IRUnit ResultErrorVoidOkBad(this IRUnit @this,
-                                                        Action actionOk,
-                                                        Action<IReadOnlyCollection<IRError>> actionBad) =>
+                                                        Action actionSome,
+                                                        Action<IReadOnlyCollection<IRError>> actionNone) =>
             @this.
-            VoidWhere(_ => @this.Success,
-                      _ => actionOk.Invoke(),
-                      _ => actionBad.Invoke(@this.GetErrors()));
+            VoidMatch(_ => @this.Success,
+                      _ => actionSome.Invoke(),
+                      _ => actionNone.Invoke(@this.GetErrors()));
 
         /// <summary>
         /// Execute action depending on result errors and predicate
@@ -59,7 +59,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtension.Units
                                                           Func<bool> predicate,
                                                           Action action) =>
             @this.
-            VoidOk(_ => @this.Success && predicate(),
+            VoidSome(_ => @this.Success && predicate(),
                    _ => action.Invoke());
     }
 }

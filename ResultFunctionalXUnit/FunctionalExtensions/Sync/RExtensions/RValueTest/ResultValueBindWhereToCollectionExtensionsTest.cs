@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = resultValue.ResultValueBindOkToCollection(
+            var resultAfterWhere = resultValue.RValueBindListSome(
                 number => NumberToCollection(number).ToRList());
 
             Assert.True(resultAfterWhere.Success);
@@ -38,7 +38,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = resultValue.ResultValueBindOkToCollection(
+            var resultAfterWhere = resultValue.RValueBindListSome(
                 number => NumberToCollection(number).ToRList());
 
             Assert.True(resultAfterWhere.Failure);

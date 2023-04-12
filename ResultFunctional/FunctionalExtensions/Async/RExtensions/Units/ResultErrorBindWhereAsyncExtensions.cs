@@ -15,24 +15,24 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// Merge result error async function depending on incoming result error
         /// </summary>
         /// <param name="this">Incoming result error</param>
-        /// <param name="okFunc">Function if result error hasn't errors</param>
-        /// <param name="badFunc">Function if result collection has errors</param>
+        /// <param name="someFunc">Function if result error hasn't errors</param>
+        /// <param name="noneFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IRUnit> ResultErrorBindOkBadAsync(this IRUnit @this, Func<Task<IRUnit>> okFunc,
-                                                                   Func<IReadOnlyCollection<IRError>, Task<IRUnit>> badFunc) =>
+        public static async Task<IRUnit> ResultErrorBindOkBadAsync(this IRUnit @this, Func<Task<IRUnit>> someFunc,
+                                                                   Func<IReadOnlyCollection<IRError>, Task<IRUnit>> noneFunc) =>
             @this.Success
-                ? await okFunc.Invoke()
-                : await badFunc.Invoke(@this.GetErrors());
+                ? await someFunc.Invoke()
+                : await noneFunc.Invoke(@this.GetErrors());
 
         /// <summary>
         /// Merge result error async function if incoming result collection hasn't errors
         /// </summary>
         /// <param name="this">Incoming result error</param>
-        /// <param name="okFunc">Function if result error hasn't errors</param>
+        /// <param name="someFunc">Function if result error hasn't errors</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IRUnit> ResultErrorBindOkAsync(this IRUnit @this, Func<Task<IRUnit>> okFunc) =>
+        public static async Task<IRUnit> ResultErrorBindOkAsync(this IRUnit @this, Func<Task<IRUnit>> someFunc) =>
             @this.Success
-                ? await okFunc.Invoke()
+                ? await someFunc.Invoke()
                 : @this;
     }
 }

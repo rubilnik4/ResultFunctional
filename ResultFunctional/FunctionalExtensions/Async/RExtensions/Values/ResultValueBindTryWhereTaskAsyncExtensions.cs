@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Values;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values.ResultValueBindTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values.RValueBindTryExtensions;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
 {
@@ -26,7 +26,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            ResultValueBindOkTaskAsync(value => ResultValueBindTry(() => func.Invoke(value), exceptionFunc));
+            ResultValueBindOkTaskAsync(value => RValueBindTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
         /// Execute task result value function in no error case; else catch exception
@@ -43,6 +43,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            ResultValueBindOkTaskAsync(value => ResultValueBindTry(() => func.Invoke(value), error));
+            ResultValueBindOkTaskAsync(value => RValueBindTry(() => func.Invoke(value), error));
     }
 }

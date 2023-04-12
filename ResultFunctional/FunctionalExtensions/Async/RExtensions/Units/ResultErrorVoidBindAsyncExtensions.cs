@@ -38,16 +38,16 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// Execute async action depending on task result errors
         /// </summary>
         /// <param name="this">Incoming result error</param>
-        /// <param name="actionOk">Action if result hasn't errors</param>
-        /// <param name="actionBad">Action if result has errors</param>
+        /// <param name="actionSome">Action if result hasn't errors</param>
+        /// <param name="actionNone">Action if result has errors</param>
         /// <returns>Unchanged result error</returns>  
         public static async Task<IRUnit> ResultErrorVoidOkBadBindAsync(this Task<IRUnit> @this,
-                                                                         Func<Task> actionOk,
-                                                                         Func<IReadOnlyCollection<IRError>, Task> actionBad) =>
+                                                                         Func<Task> actionSome,
+                                                                         Func<IReadOnlyCollection<IRError>, Task> actionNone) =>
             await @this.
             VoidWhereBindAsync(awaitedThis => awaitedThis.Success,
-                               _ => actionOk.Invoke(),
-                               awaitedThis => actionBad.Invoke(awaitedThis.GetErrors()));
+                               _ => actionSome.Invoke(),
+                               awaitedThis => actionNone.Invoke(awaitedThis.GetErrors()));
 
         /// <summary>
         /// Execute async action depending on task result errors and predicate
