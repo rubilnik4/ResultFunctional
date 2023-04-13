@@ -8,7 +8,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
     /// <summary>
     /// Exception handling result collection extension methods
     /// </summary>
-    public static class ResultCollectionTryExtensions
+    public static class RListTryExtensions
     {
         /// <summary>
         /// Execute function and handle exception with result collection converting
@@ -17,8 +17,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="func">Collection function</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result collection</returns>
-        public static IRList<TValue> ResultCollectionTry<TValue>(Func<IEnumerable<TValue>> func,
-                                                                 Func<Exception, IRError> exceptionFunc)
+        public static IRList<TValue> RListTry<TValue>(Func<IEnumerable<TValue>> func, Func<Exception, IRError> exceptionFunc)
             where TValue : notnull
         {
             try
@@ -38,8 +37,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="func">Collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
-        public static IRList<TValue> ResultCollectionTry<TValue>(Func<IEnumerable<TValue>> func, IRError error) 
+        public static IRList<TValue> RListTry<TValue>(Func<IEnumerable<TValue>> func, IRError error) 
             where TValue : notnull =>
-            ResultCollectionTry(func, error.AppendException);
+            RListTry(func, error.AppendException);
     }
 }

@@ -8,7 +8,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
     /// <summary>
     /// Extension methods for value function converting to value
     /// </summary>
-    public static class RValueUnWrapExtensions
+    public static class RValueLiftExtensions
     {
         /// <summary>
         /// Execute value function converting to another value if incoming result value hasn't errors
@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="someFunc">Function if incoming result value hasn't errors</param>
         /// <param name="noneFunc">Function if incoming result value has errors</param>
         /// <returns>Outgoing value</returns>
-        public static TValueOut RValueUnWrapMatch<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+        public static TValueOut RValueLiftMatch<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
                                                                              Func<TValueIn, TValueOut> someFunc,
                                                                              Func<IReadOnlyCollection<IRError>, TValueOut> noneFunc)
             where TValueIn : notnull

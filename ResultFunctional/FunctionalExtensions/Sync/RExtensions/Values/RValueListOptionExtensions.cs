@@ -10,7 +10,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
     /// <summary>
     /// Extension methods for result value functions converting to result value
     /// </summary>
-    public static class RValueOptionListExtensions
+    public static class RValueListOptionExtensions
     {
         /// <summary>
         /// Execute result value function converting to result value base on predicate condition

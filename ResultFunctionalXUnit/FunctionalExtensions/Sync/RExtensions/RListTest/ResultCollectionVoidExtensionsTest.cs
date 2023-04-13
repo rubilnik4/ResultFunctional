@@ -24,7 +24,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultOk = initialCollection.ToRList();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultOk.ResultCollectionVoidOk(numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
+            var resultAfterVoid = resultOk.RListVoidSome(numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultOk));
             Assert.True(initialCollection.SequenceEqual(resultAfterVoid.GetValue()));
@@ -41,7 +41,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultError = initialError.ToRList<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultError.ResultCollectionVoidOk(numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
+            var resultAfterVoid = resultError.RListVoidSome(numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultError));
             Assert.True(resultAfterVoid.GetErrors().Last().Equals(initialError));
@@ -58,7 +58,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultError = errorsInitial.ToRList<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultError.ResultCollectionVoidBad(
+            var resultAfterVoid = resultError.RListVoidNone(
                 errors => voidObjectMock.Object.TestNumbersVoid(new List<int> { errors.Count }));
 
             Assert.True(resultAfterVoid.Equals(resultError));
@@ -76,7 +76,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultError = errorsInitial.ToRList<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultError.ResultCollectionVoidBad(
+            var resultAfterVoid = resultError.RListVoidNone(
                 errors => voidObjectMock.Object.TestNumbersVoid(new List<int> { errors.Count }));
 
             Assert.True(resultAfterVoid.Equals(resultError));
@@ -94,7 +94,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultOk = initialCollection.ToRList();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultOk.ResultCollectionVoidOkBad(numbers => voidObjectMock.Object.TestNumbersVoid(numbers),
+            var resultAfterVoid = resultOk.RListVoidMatch(numbers => voidObjectMock.Object.TestNumbersVoid(numbers),
                                                                      _ => voidObjectMock.Object.TestVoid());
 
             Assert.True(resultAfterVoid.Equals(resultOk));
@@ -112,7 +112,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultError = errorsInitial.ToRList<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultError.ResultCollectionVoidOkBad(
+            var resultAfterVoid = resultError.RListVoidMatch(
                 _ => voidObjectMock.Object.TestVoid(),
                 errors => voidObjectMock.Object.TestNumbersVoid(new List<int> { errors.Count }));
 
@@ -131,7 +131,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultOk = initialCollection.ToRList();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultOk.ResultCollectionVoidOkWhere(_ => true,
+            var resultAfterVoid = resultOk.RListVoidOption(_ => true,
                 number => voidObjectMock.Object.TestNumbersVoid(number));
 
             Assert.True(resultAfterVoid.Equals(resultOk));
@@ -149,7 +149,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultOk = initialCollection.ToRList();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultOk.ResultCollectionVoidOkWhere(_ => false,
+            var resultAfterVoid = resultOk.RListVoidOption(_ => false,
                 number => voidObjectMock.Object.TestNumbersVoid(number));
 
             Assert.True(resultAfterVoid.Equals(resultOk));
@@ -167,7 +167,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultError = errorsInitial.ToRList<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultError.ResultCollectionVoidOkWhere(_ => true,
+            var resultAfterVoid = resultError.RListVoidOption(_ => true,
                 number => voidObjectMock.Object.TestNumbersVoid(number));
 
             Assert.True(resultAfterVoid.Equals(resultError));
@@ -186,7 +186,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultError = errorsInitial.ToRList<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultError.ResultCollectionVoidOkWhere(_ => false,
+            var resultAfterVoid = resultError.RListVoidOption(_ => false,
                 number => voidObjectMock.Object.TestNumbersVoid(number));
 
             Assert.True(resultAfterVoid.Equals(resultError));

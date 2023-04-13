@@ -18,7 +18,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result error</returns>
         public static IRUnit RUnitTrySome(this IRUnit @this, Action action,
-                                              Func<Exception, IRError> exceptionFunc) =>
+                                          Func<Exception, IRError> exceptionFunc) =>
             @this.RUnitBindSome(() => RUnitTry(action.Invoke, exceptionFunc));
 
         /// <summary>

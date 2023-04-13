@@ -66,6 +66,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                           Action<TValue> action)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.RValueVoidWhere(predicate, action));
+            MapTaskAsync(awaitedThis => awaitedThis.RValueVoidOption(predicate, action));
     }
 }

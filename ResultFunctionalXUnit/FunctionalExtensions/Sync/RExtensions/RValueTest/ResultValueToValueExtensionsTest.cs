@@ -18,7 +18,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = resultValue.RValueUnWrapMatch(
+            var resultAfterWhere = resultValue.RValueLiftMatch(
                 okFunc: number => number.ToString(),
                 badFunc: errors => errors.Count.ToString());
 
@@ -34,7 +34,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorsInitial = ErrorData.CreateErrorListTwoTest();
             var resultValue = errorsInitial.ToRValue<int>();
       
-            var resultAfterWhere = resultValue.RValueUnWrapMatch(
+            var resultAfterWhere = resultValue.RValueLiftMatch(
                 okFunc: number => number.ToString(),
                 badFunc: errors => errors.Count.ToString());
 

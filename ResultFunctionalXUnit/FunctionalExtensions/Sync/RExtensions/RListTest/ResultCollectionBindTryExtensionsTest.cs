@@ -3,7 +3,7 @@ using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists.ResultCollectionBindTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists.RListBindTryExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
 {
@@ -19,7 +19,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         public void ResultCollectionBindTry_Ok()
         {
             int initialValue = Numbers.Number;
-            var resultCollection = ResultCollectionBindTry(() => DivisionCollection(initialValue).ToRList(),
+            var resultCollection = RListBindTry(() => DivisionCollection(initialValue).ToRList(),
                                                            Exceptions.ExceptionError());
 
             Assert.True(resultCollection.Success);
@@ -33,7 +33,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         public void ResultCollectionBindTry_Exception()
         {
             const int initialValue = 0;
-            var resultValue = ResultCollectionBindTry(
+            var resultValue = RListBindTry(
                 () => DivisionCollection(initialValue).ToRList(), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Failure);
@@ -47,7 +47,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         public void ResultCollectionBindTryFunc_Ok()
         {
             int initialValue = Numbers.Number;
-            var resultCollection = ResultCollectionBindTry(() => DivisionCollection(initialValue).ToRList(),
+            var resultCollection = RListBindTry(() => DivisionCollection(initialValue).ToRList(),
                                                            Exceptions.ExceptionFunc());
 
             Assert.True(resultCollection.Success);
@@ -61,7 +61,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         public void ResultCollectionBindTryFunc_Exception()
         {
             const int initialValue = 0;
-            var resultValue = ResultCollectionBindTry(
+            var resultValue = RListBindTry(
                 () => DivisionCollection(initialValue).ToRList(), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Failure);

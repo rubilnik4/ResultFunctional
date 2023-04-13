@@ -8,7 +8,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
     /// <summary>
     /// Result collection action extension methods
     /// </summary>
-    public static class ResultCollectionVoidExtensions
+    public static class RListVoidExtensions
     {
         /// <summary>
         /// Execute action if result collection hasn't errors
@@ -17,8 +17,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result collection</returns>
-        public static IRList<TValue> ResultCollectionVoidOk<TValue>(this IRList<TValue> @this,
-                                                                    Action<IReadOnlyCollection<TValue>> action) 
+        public static IRList<TValue> RListVoidSome<TValue>(this IRList<TValue> @this, Action<IReadOnlyCollection<TValue>> action) 
             where TValue : notnull =>
             @this.
             VoidSome(_ => @this.Success,
@@ -31,8 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result collection</returns>
-        public static IRList<TValue> ResultCollectionVoidBad<TValue>(this IRList<TValue> @this,
-                                                                                Action<IReadOnlyCollection<IRError>> action)
+        public static IRList<TValue> RListVoidNone<TValue>(this IRList<TValue> @this, Action<IReadOnlyCollection<IRError>> action)
             where TValue : notnull =>
             @this.
             VoidSome(_ => @this.Failure,
@@ -46,9 +44,9 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="actionSome">Action if result collection hasn't errors</param>
         /// <param name="actionNone">Action if result collection has errors</param>
         /// <returns>Unchanged result collection</returns>
-        public static IRList<TValue> ResultCollectionVoidOkBad<TValue>(this IRList<TValue> @this,
-                                                                                  Action<IReadOnlyCollection<TValue>> actionSome,
-                                                                                  Action<IReadOnlyCollection<IRError>> actionNone)
+        public static IRList<TValue> RListVoidMatch<TValue>(this IRList<TValue> @this,
+                                                            Action<IReadOnlyCollection<TValue>> actionSome,
+                                                            Action<IReadOnlyCollection<IRError>> actionNone)
             where TValue : notnull =>
             @this.
             VoidMatch(_ => @this.Success,
@@ -63,9 +61,9 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result collection</returns>
-        public static IRList<TValue> ResultCollectionVoidOkWhere<TValue>(this IRList<TValue> @this,
-                                                                                    Func<IReadOnlyCollection<TValue>, bool> predicate,
-                                                                                    Action<IReadOnlyCollection<TValue>> action)
+        public static IRList<TValue> RListVoidOption<TValue>(this IRList<TValue> @this,
+                                                            Func<IReadOnlyCollection<TValue>, bool> predicate,
+                                                            Action<IReadOnlyCollection<TValue>> action)
             where TValue : notnull =>
             @this.
             VoidSome(_ => @this.Success && predicate(@this.GetValue()),

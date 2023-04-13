@@ -43,9 +43,9 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValueOut> RValueWhere<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                       Func<TValueIn, bool> predicate,
-                                                                                       Func<TValueIn, TValueOut> someFunc,
-                                                                                       Func<TValueIn, TValueOut> noneFunc)
+                                                                          Func<TValueIn, bool> predicate,
+                                                                          Func<TValueIn, TValueOut> someFunc,
+                                                                          Func<TValueIn, TValueOut> noneFunc)
              where TValueIn : notnull
             where TValueOut : notnull =>
          @this.Success

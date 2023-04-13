@@ -62,11 +62,11 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result value</returns>  
-        public static IRValue<TValue> RValueVoidWhere<TValue>(this IRValue<TValue> @this, Func<TValue, bool> predicate,
+        public static IRValue<TValue> RValueVoidOption<TValue>(this IRValue<TValue> @this, Func<TValue, bool> predicate,
                                                               Action<TValue> action)
              where TValue : notnull =>
             @this.
             VoidSome(_ => @this.Success && predicate(@this.GetValue()),
-                _ => action.Invoke(@this.GetValue()));
+                     _ => action.Invoke(@this.GetValue()));
     }
 }

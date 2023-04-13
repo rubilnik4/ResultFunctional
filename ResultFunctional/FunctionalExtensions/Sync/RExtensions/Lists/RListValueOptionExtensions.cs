@@ -10,7 +10,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
     /// <summary>
     /// Extension methods for result collection functions converting to result value
     /// </summary>
-    public static class ResultValueWhereToCollectionExtensions
+    public static class RListValueOptionExtensions
     {
         /// <summary>
         /// Execute result collection function converting to result value base on predicate condition
@@ -22,10 +22,10 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValueOut> ResultCollectionContinueToValue<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                              Func<IReadOnlyCollection<TValueIn>, bool> predicate,
-                                                                                              Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc,
-                                                                                              Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> noneFunc)
+        public static IRValue<TValueOut> RListValueOption<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+                                                                               Func<IReadOnlyCollection<TValueIn>, bool> predicate,
+                                                                               Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc,
+                                                                               Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
              @this.ToRValue().
@@ -40,9 +40,9 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValueOut> ResultCollectionOkBadToValue<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                    Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc,
-                                                                                    Func<IReadOnlyCollection<IRError>, TValueOut> noneFunc)
+        public static IRValue<TValueOut> RListValueMatch<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+                                                                              Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc,
+                                                                              Func<IReadOnlyCollection<IRError>, TValueOut> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.ToRValue().
@@ -56,8 +56,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="someFunc">Function if result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
-        public static IRValue<TValueOut> ResultCollectionOkToValue<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                        Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc) 
+        public static IRValue<TValueOut> RListValueSome<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+                                                                             Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc) 
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.ToRValue().

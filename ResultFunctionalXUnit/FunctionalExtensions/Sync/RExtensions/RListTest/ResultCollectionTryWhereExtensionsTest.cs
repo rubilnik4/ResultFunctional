@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialNumbers = GetRangeNumber();
             var numbersResult = initialNumbers.ToRList();
 
-            var numberAfterTry = numbersResult.ResultCollectionTryOk(DivisionByCollection, Exceptions.ExceptionError());
+            var numberAfterTry = numbersResult.RListTrySome(DivisionByCollection, Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Success);
             Assert.True(DivisionByCollection(initialNumbers).SequenceEqual(numberAfterTry.GetValue()));
@@ -37,7 +37,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialError = CreateErrorTest();
             var numbersResult = initialError.ToRList<int>();
 
-            var numberAfterTry = numbersResult.ResultCollectionTryOk(DivisionByCollection, Exceptions.ExceptionError());
+            var numberAfterTry = numbersResult.RListTrySome(DivisionByCollection, Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Failure);
             Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
@@ -52,7 +52,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialNumbers = GetRangeNumberWithZero();
             var numberResult = initialNumbers.ToRList();
 
-            var resultCollection = numberResult.ResultCollectionTryOk(DivisionCollectionByZero, Exceptions.ExceptionError());
+            var resultCollection = numberResult.RListTrySome(DivisionCollectionByZero, Exceptions.ExceptionError());
 
             Assert.True(resultCollection.Failure);
             Assert.NotNull(resultCollection.GetErrors().First().Exception);
@@ -67,7 +67,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRList<int>();
 
-            var numberAfterTry = numberResult.ResultCollectionTryOk(DivisionCollectionByZero, Exceptions.ExceptionError());
+            var numberAfterTry = numberResult.RListTrySome(DivisionCollectionByZero, Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Failure);
             Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
@@ -82,7 +82,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialNumbers = GetRangeNumber();
             var numbersResult = initialNumbers.ToRList();
 
-            var numberAfterTry = numbersResult.ResultCollectionTryOk(DivisionByCollection, Exceptions.ExceptionFunc());
+            var numberAfterTry = numbersResult.RListTrySome(DivisionByCollection, Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Success);
             Assert.True(DivisionByCollection(initialNumbers).SequenceEqual(numberAfterTry.GetValue()));
@@ -97,7 +97,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialError = CreateErrorTest();
             var numbersResult = initialError.ToRList<int>();
 
-            var numberAfterTry = numbersResult.ResultCollectionTryOk(DivisionByCollection, Exceptions.ExceptionFunc());
+            var numberAfterTry = numbersResult.RListTrySome(DivisionByCollection, Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Failure);
             Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
@@ -112,7 +112,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialNumbers = GetRangeNumberWithZero();
             var numberResult = initialNumbers.ToRList();
 
-            var resultCollection = numberResult.ResultCollectionTryOk(DivisionCollectionByZero, Exceptions.ExceptionFunc());
+            var resultCollection = numberResult.RListTrySome(DivisionCollectionByZero, Exceptions.ExceptionFunc());
 
             Assert.True(resultCollection.Failure);
             Assert.NotNull(resultCollection.GetErrors().First().Exception);
@@ -127,7 +127,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRList<int>();
 
-            var numberAfterTry = numberResult.ResultCollectionTryOk(DivisionCollectionByZero, Exceptions.ExceptionFunc());
+            var numberAfterTry = numberResult.RListTrySome(DivisionCollectionByZero, Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Failure);
             Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));

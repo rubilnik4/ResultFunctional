@@ -7,7 +7,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
     /// <summary>
     /// Extension methods for result collection monad function with exception handling
     /// </summary>
-    public static class ResultCollectionBindTryExtensions
+    public static class RListBindTryExtensions
     {
         /// <summary>
         /// Execute result collection monad function with exception handling
@@ -16,7 +16,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="func">Result collection function</param>
         /// <param name="exceptionFunc">Exception function</param>
         /// <returns>Result collection</returns>
-        public static IRList<TValue> ResultCollectionBindTry<TValue>(Func<IRList<TValue>> func,
+        public static IRList<TValue> RListBindTry<TValue>(Func<IRList<TValue>> func,
                                                                      Func<Exception, IRError> exceptionFunc)
             where TValue : notnull
         {
@@ -37,8 +37,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="func">Result collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
-        public static IRList<TValue> ResultCollectionBindTry<TValue>(Func<IRList<TValue>> func, IRError error)
+        public static IRList<TValue> RListBindTry<TValue>(Func<IRList<TValue>> func, IRError error)
             where TValue : notnull =>
-            ResultCollectionBindTry(func, error.AppendException);
+            RListBindTry(func, error.AppendException);
     }
 }

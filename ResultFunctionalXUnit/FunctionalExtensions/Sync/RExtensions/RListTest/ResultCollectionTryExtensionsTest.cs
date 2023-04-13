@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using ResultFunctionalXUnit.Data;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists.ResultCollectionTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists.RListTryExtensions;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
@@ -19,7 +19,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         {
             int initialValue = Numbers.Number;
 
-            var resultCollection = ResultCollectionTry(() => DivisionCollection(initialValue), Exceptions.ExceptionError());
+            var resultCollection = RListTry(() => DivisionCollection(initialValue), Exceptions.ExceptionError());
 
             Assert.True(resultCollection.Success);
             Assert.True(DivisionCollection(initialValue).SequenceEqual( resultCollection.GetValue()));
@@ -33,7 +33,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         {
             const int initialValue = 0;
 
-            var resultCollection = ResultCollectionTry(() => DivisionCollection(initialValue), Exceptions.ExceptionError());
+            var resultCollection = RListTry(() => DivisionCollection(initialValue), Exceptions.ExceptionError());
 
             Assert.True(resultCollection.Failure);
             Assert.NotNull(resultCollection.GetErrors().First().Exception);
@@ -47,7 +47,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         {
             int initialValue = Numbers.Number;
 
-            var resultCollection = ResultCollectionTry(() => DivisionCollection(initialValue), Exceptions.ExceptionFunc());
+            var resultCollection = RListTry(() => DivisionCollection(initialValue), Exceptions.ExceptionFunc());
 
             Assert.True(resultCollection.Success);
             Assert.True(DivisionCollection(initialValue).SequenceEqual(resultCollection.GetValue()));
@@ -61,7 +61,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         {
             const int initialValue = 0;
 
-            var resultCollection = ResultCollectionTry(() => DivisionCollection(initialValue), Exceptions.ExceptionFunc());
+            var resultCollection = RListTry(() => DivisionCollection(initialValue), Exceptions.ExceptionFunc());
 
             Assert.True(resultCollection.Failure);
             Assert.NotNull(resultCollection.GetErrors().First().Exception);

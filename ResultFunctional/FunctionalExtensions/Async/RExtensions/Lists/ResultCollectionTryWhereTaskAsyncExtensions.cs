@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists.ResultCollectionTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists.RListTryExtensions;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
 {
@@ -27,7 +27,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            ResultCollectionBindOkTaskAsync(value => ResultCollectionTry(() => func.Invoke(value), exceptionFunc));
+            ResultCollectionBindOkTaskAsync(value => RListTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
         /// Execute function and handle exception with task result collection concat
@@ -44,6 +44,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            ResultCollectionBindOkTaskAsync(value => ResultCollectionTry(() => func.Invoke(value), error));
+            ResultCollectionBindOkTaskAsync(value => RListTry(() => func.Invoke(value), error));
     }
 }

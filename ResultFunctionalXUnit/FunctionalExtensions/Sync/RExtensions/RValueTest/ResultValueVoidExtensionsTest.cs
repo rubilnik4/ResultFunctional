@@ -127,7 +127,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultOk = initialValue.ToRValue();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultOk.RValueVoidWhere(_ => true, 
+            var resultAfterVoid = resultOk.RValueVoidOption(_ => true, 
                                     action: number => voidObjectMock.Object.TestNumberVoid(number));
 
             Assert.True(resultAfterVoid.Equals(resultOk));
@@ -145,7 +145,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultOk = initialValue.ToRValue();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultOk.RValueVoidWhere(_ => false,
+            var resultAfterVoid = resultOk.RValueVoidOption(_ => false,
                                     action: number => voidObjectMock.Object.TestNumberVoid(number));
 
             Assert.True(resultAfterVoid.Equals(resultOk));
@@ -163,7 +163,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultError = errorsInitial.ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultError.RValueVoidWhere(_ => true,
+            var resultAfterVoid = resultError.RValueVoidOption(_ => true,
                                     action: number => voidObjectMock.Object.TestNumberVoid(number));
 
             Assert.True(resultAfterVoid.Equals(resultError));
@@ -182,7 +182,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultError = errorsInitial.ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = resultError.RValueVoidWhere(_ => false,
+            var resultAfterVoid = resultError.RValueVoidOption(_ => false,
                                     action: number => voidObjectMock.Object.TestNumberVoid(number));
 
             Assert.True(resultAfterVoid.Equals(resultError));

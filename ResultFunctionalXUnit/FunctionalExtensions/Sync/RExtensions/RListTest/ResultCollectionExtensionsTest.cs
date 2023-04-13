@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultCollectionSecond = GetRangeNumber().ToRList();
             var results = Enumerable.Empty<IRList<int>>().Append(resultCollectionFirst).Append(resultCollectionSecond);
 
-            var resultCollection = results.ConcatResultCollection();
+            var resultCollection = results.RListFold();
             var numberRange = resultCollectionFirst.GetValue().Concat(resultCollectionSecond.GetValue()).ToList();
 
             Assert.True(resultCollection.Success);
@@ -40,7 +40,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultCollectionErrorSecond = CreateErrorTest().ToRList<int>();
             var results = Enumerable.Empty<IRList<int>>().Append(resultCollectionFirst).Append(resultCollectionErrorFirst).Append(resultCollectionErrorSecond);
 
-            var resultCollection = results.ConcatResultCollection();
+            var resultCollection = results.RListFold();
 
             Assert.True(resultCollection.Failure);
             Assert.Equal(2, resultCollection.GetErrors().Count);

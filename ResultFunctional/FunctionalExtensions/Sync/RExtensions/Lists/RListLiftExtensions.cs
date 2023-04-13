@@ -9,7 +9,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
     /// <summary>
     /// Result collection reorder extension methods
     /// </summary>
-    public static class ResultCollectionToCollectionExtensions
+    public static class RListLiftExtensions
     {
         /// <summary>
         /// Converting result collection to ordinal collection
@@ -20,7 +20,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="someFunc">Function if incoming result collection hasn't errors</param>
         /// <param name="noneFunc">Function if incoming result collection has errors</param>
         /// <returns>Outgoing collection</returns>
-        public static IReadOnlyCollection<TValueOut> ResultCollectionToCollectionOkBad<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+        public static IReadOnlyCollection<TValueOut> RListLiftMatch<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                                     Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
                                                                                     Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValueOut>> noneFunc)
              where TValueIn : notnull

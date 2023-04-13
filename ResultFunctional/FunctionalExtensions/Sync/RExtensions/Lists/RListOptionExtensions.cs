@@ -8,7 +8,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
     /// <summary>
     /// Extension methods for result collection functor function with conditions
     /// </summary>
-    public static class ResultCollectionWhereExtensions
+    public static class RListOptionExtensions
     {
         /// <summary>
         /// Execute result collection function base on predicate condition
@@ -20,10 +20,10 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
-        public static IRList<TValueOut> ResultCollectionContinue<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                      Func<IReadOnlyCollection<TValueIn>, bool> predicate,
-                                                                                      Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
-                                                                                      Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> noneFunc)
+        public static IRList<TValueOut> RListOption<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+                                                                         Func<IReadOnlyCollection<TValueIn>, bool> predicate,
+                                                                         Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
+                                                                         Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
          @this.Success
@@ -42,10 +42,10 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
-        public static IRList<TValueOut> ResultCollectionWhere<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                                 Func<IReadOnlyCollection<TValueIn>, bool> predicate,
-                                                                                                 Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
-                                                                                                 Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> noneFunc)
+        public static IRList<TValueOut> RListWhere<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+                                                                        Func<IReadOnlyCollection<TValueIn>, bool> predicate,
+                                                                        Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
+                                                                        Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
          @this.Success
@@ -63,9 +63,9 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="someFunc">Function if result collection hasn't errors</param>
         /// <param name="noneFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result collection</returns>
-        public static IRList<TValueOut> ResultCollectionOkBad<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                   Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
-                                                                                   Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValueOut>> noneFunc)
+        public static IRList<TValueOut> RListMatch<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+                                                                        Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
+                                                                        Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
@@ -80,8 +80,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="someFunc">Function if result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
-        public static IRList<TValueOut> ResultCollectionOk<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc)
+        public static IRList<TValueOut> RListSome<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+                                                                       Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc)
              where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
@@ -95,8 +95,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="noneFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result collection</returns>
-        public static IRList<TValue> ResultCollectionBad<TValue>(this IRList<TValue> @this,
-                                                                 Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValue>> noneFunc)
+        public static IRList<TValue> RListNone<TValue>(this IRList<TValue> @this,
+                                                       Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValue>> noneFunc)
             where TValue : notnull =>
             @this.Success
                 ? @this
@@ -110,13 +110,13 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Result collection</returns>
-        public static IRList<TValue> ResultCollectionCheckErrorsOk<TValue>(this IRList<TValue> @this,
-                                                                           Func<IReadOnlyCollection<TValue>, bool> predicate,
-                                                                           Func<IReadOnlyCollection<TValue>, IReadOnlyCollection<IRError>> noneFunc)
+        public static IRList<TValue> RListEnsure<TValue>(this IRList<TValue> @this,
+                                                         Func<IReadOnlyCollection<TValue>, bool> predicate,
+                                                         Func<IReadOnlyCollection<TValue>, IReadOnlyCollection<IRError>> noneFunc)
             where TValue : notnull =>
             @this.
-            ResultCollectionContinue(predicate,
-                                     value => value,
-                                     noneFunc);
+            RListOption(predicate,
+                        value => value,
+                        noneFunc);
     }
 }

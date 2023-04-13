@@ -55,7 +55,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result error</returns>
-        public static IRUnit RUNitVoidWhere(this IRUnit @this,
+        public static IRUnit RUnitVoidOption(this IRUnit @this,
                                                           Func<bool> predicate,
                                                           Action action) =>
             @this.

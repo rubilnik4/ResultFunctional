@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists.ResultCollectionBindTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists.RListBindTryExtensions;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
 {
     /// <summary>
     /// Extension methods for result collection monad function with conditions and exception handling
     /// </summary>
-    public static class ResultCollectionBindTryWhereExtensions
+    public static class RListBindTryOptionExtensions
     {
         /// <summary>
         /// Execute result collection function in no error case; else catch exception
@@ -20,12 +20,12 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="func">Monad result collection function</param>
         /// <param name="exceptionFunc">Exception function</param>
         /// <returns>Outgoing result collection</returns>
-        public static IRList<TValueOut> ResultCollectionBindTryOk<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+        public static IRList<TValueOut> RListBindTrySome<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                                        Func<IReadOnlyCollection<TValueIn>, IRList<TValueOut>> func,
                                                                                        Func<Exception, IRError> exceptionFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
-            @this.ResultCollectionBindOk(value => ResultCollectionBindTry(() => func.Invoke(value), exceptionFunc));
+            @this.RListBindSome(value => RListBindTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
         /// Execute result collection function in no error case; else catch exception
@@ -36,11 +36,11 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="func">Monad result collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Outgoing result collection</returns>
-        public static IRList<TValueOut> ResultCollectionBindTryOk<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+        public static IRList<TValueOut> RListBindTrySome<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                                                   Func<IReadOnlyCollection<TValueIn>, IRList<TValueOut>> func,
                                                                                                   IRError error)
              where TValueIn : notnull
              where TValueOut : notnull =>
-            @this.ResultCollectionBindOk(value => ResultCollectionBindTry(() => func.Invoke(value), error));
+            @this.RListBindSome(value => RListBindTry(() => func.Invoke(value), error));
     }
 }

@@ -20,7 +20,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialCollection = Collections.GetRangeNumber();
             var resultCollection = initialCollection.ToRList();
 
-            var resultAfterWhere = resultCollection.ResultCollectionToCollectionOkBad(
+            var resultAfterWhere = resultCollection.RListLiftMatch(
                 okFunc: Collections.CollectionToString,
                 badFunc: _ => Collections.GetEmptyStringList());
 
@@ -36,7 +36,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var errorsInitial = ErrorData.CreateErrorListTwoTest();
             var resultCollection = errorsInitial.ToRList<int>();
 
-            var resultAfterWhere = resultCollection.ResultCollectionToCollectionOkBad(
+            var resultAfterWhere = resultCollection.RListLiftMatch(
                 okFunc: Collections.CollectionToString,
                 badFunc: errors => new List<string> { errors.Count.ToString() });
 

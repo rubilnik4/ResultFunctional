@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialNumbers = GetRangeNumber();
             var numbersResult = initialNumbers.ToRList();
 
-            var numberAfterTry = numbersResult.ResultCollectionBindTryOk(
+            var numberAfterTry = numbersResult.RListBindTrySome(
                 numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Success);
@@ -38,7 +38,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialError = CreateErrorTest();
             var numbersResult = initialError.ToRList<int>();
 
-            var numberAfterTry = numbersResult.ResultCollectionBindTryOk(
+            var numberAfterTry = numbersResult.RListBindTrySome(
                 numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Failure);
@@ -54,7 +54,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialNumbers = GetRangeNumberWithZero();
             var numberResult = initialNumbers.ToRList();
 
-            var resultValue = numberResult.ResultCollectionBindTryOk(
+            var resultValue = numberResult.RListBindTrySome(
                 numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Failure);
@@ -70,7 +70,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRList<int>();
 
-            var numberAfterTry = numberResult.ResultCollectionBindTryOk(
+            var numberAfterTry = numberResult.RListBindTrySome(
                 numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Failure);
@@ -86,7 +86,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialNumbers = GetRangeNumber();
             var numbersResult = initialNumbers.ToRList();
 
-            var numberAfterTry = numbersResult.ResultCollectionBindTryOk(
+            var numberAfterTry = numbersResult.RListBindTrySome(
                 numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Success);
@@ -102,7 +102,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialError = CreateErrorTest();
             var numbersResult = initialError.ToRList<int>();
 
-            var numberAfterTry = numbersResult.ResultCollectionBindTryOk(
+            var numberAfterTry = numbersResult.RListBindTrySome(
                 numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Failure);
@@ -118,7 +118,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialNumbers = GetRangeNumberWithZero();
             var numberResult = initialNumbers.ToRList();
 
-            var resultValue = numberResult.ResultCollectionBindTryOk(
+            var resultValue = numberResult.RListBindTrySome(
                 numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Failure);
@@ -134,7 +134,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRList<int>();
 
-            var numberAfterTry = numberResult.ResultCollectionBindTryOk(
+            var numberAfterTry = numberResult.RListBindTrySome(
                 numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Failure);

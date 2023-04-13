@@ -21,7 +21,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var resultCollection = initialCollection.ToRList();
 
-            var resultAfterWhere = resultCollection.ResultCollectionContinue(_ => true,
+            var resultAfterWhere = resultCollection.RListOption(_ => true,
                                                                              okFunc: CollectionToString,
                                                                              badFunc: _ => CreateErrorListTwoTest());
 
@@ -39,7 +39,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultCollection = initialCollection.ToRList();
 
             var errorBad = CreateErrorListTwoTest();
-            var resultAfterWhere = resultCollection.ResultCollectionContinue(_ => false,
+            var resultAfterWhere = resultCollection.RListOption(_ => false,
                                                                              okFunc: CollectionToString,
                                                                              badFunc: _ => errorBad);
 
@@ -56,7 +56,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var errorInitial = CreateErrorTest();
             var resultCollection = errorInitial.ToRList<int>();
 
-            var resultAfterWhere = resultCollection.ResultCollectionContinue(_ => true,
+            var resultAfterWhere = resultCollection.RListOption(_ => true,
                                                                              okFunc: CollectionToString,
                                                                              badFunc: _ => CreateErrorListTwoTest());
 
@@ -73,7 +73,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var errorsInitial = CreateErrorTest();
             var resultCollection = errorsInitial.ToRList<int>();
 
-            var resultAfterWhere = resultCollection.ResultCollectionContinue(_ => false,
+            var resultAfterWhere = resultCollection.RListOption(_ => false,
                                                                              okFunc: CollectionToString,
                                                                              badFunc: _ => CreateErrorListTwoTest());
 
@@ -90,7 +90,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var resultCollection = initialCollection.ToRList();
 
-            var resultAfterWhere = resultCollection.ResultCollectionWhere(_ => true,
+            var resultAfterWhere = resultCollection.RListWhere(_ => true,
                                                                           okFunc: CollectionToString,
                                                                           badFunc: _ => new List<string>());
 
@@ -107,7 +107,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var resultCollection = initialCollection.ToRList();
 
-            var resultAfterWhere = resultCollection.ResultCollectionWhere(_ => false,
+            var resultAfterWhere = resultCollection.RListWhere(_ => false,
                                                                           okFunc: _ => new List<string>(),
                                                                           badFunc: numbers => new List<string> { numbers.Count.ToString() });
 
@@ -125,7 +125,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var errorsInitial = CreateErrorListTwoTest();
             var resultCollection = errorsInitial.ToRList<int>();
 
-            var resultAfterWhere = resultCollection.ResultCollectionWhere(_ => true,
+            var resultAfterWhere = resultCollection.RListWhere(_ => true,
                 okFunc: _ => new List<string>(),
                 badFunc: errors => new List<string> { errors.Count.ToString() });
 
@@ -142,7 +142,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var errorsInitial = CreateErrorListTwoTest();
             var resultCollection = errorsInitial.ToRList<int>();
 
-            var resultAfterWhere = resultCollection.ResultCollectionWhere(_ => false,
+            var resultAfterWhere = resultCollection.RListWhere(_ => false,
                 okFunc: _ => new List<string>(),
                 badFunc: errors => new List<string> { errors.Count.ToString() });
 
@@ -159,7 +159,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var resultCollection = initialCollection.ToRList();
 
-            var resultAfterWhere = resultCollection.ResultCollectionOkBad(okFunc: CollectionToString,
+            var resultAfterWhere = resultCollection.RListMatch(okFunc: CollectionToString,
                                                                           badFunc: _ => new List<string>());
 
             Assert.True(resultAfterWhere.Success);
@@ -175,7 +175,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var errorsInitial = CreateErrorListTwoTest();
             var resultCollection = errorsInitial.ToRList<int>();
 
-            var resultAfterWhere = resultCollection.ResultCollectionOkBad(
+            var resultAfterWhere = resultCollection.RListMatch(
                 okFunc: _ => GetEmptyStringList(),
                 badFunc: errors => new List<string> { errors.Count.ToString() });
 
@@ -193,7 +193,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var resultCollection = initialCollection.ToRList();
 
-            var resultAfterWhere = resultCollection.ResultCollectionOk(CollectionToString);
+            var resultAfterWhere = resultCollection.RListSome(CollectionToString);
 
             Assert.True(resultAfterWhere.Success);
             Assert.True(CollectionToString(initialCollection).SequenceEqual(resultAfterWhere.GetValue()));
@@ -208,7 +208,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRList<int>();
 
-            var resultAfterWhere = resultValue.ResultCollectionOk(CollectionToString);
+            var resultAfterWhere = resultValue.RListSome(CollectionToString);
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));
@@ -223,7 +223,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var resultCollection = initialCollection.ToRList();
 
-            var resultAfterWhere = resultCollection.ResultCollectionBad(GetListByErrorsCount);
+            var resultAfterWhere = resultCollection.RListNone(GetListByErrorsCount);
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(initialCollection, resultAfterWhere.GetValue());
@@ -238,7 +238,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var errorsInitial = CreateErrorListTwoTest();
             var resultValue = errorsInitial.ToRList<int>();
 
-            var resultAfterWhere = resultValue.ResultCollectionBad(GetListByErrorsCount);
+            var resultAfterWhere = resultValue.RListNone(GetListByErrorsCount);
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.GetValue().First());
@@ -253,7 +253,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var resultCollection = initialCollection.ToRList();
 
-            var resultAfterWhere = resultCollection.ResultCollectionCheckErrorsOk(_ => true,
+            var resultAfterWhere = resultCollection.RListEnsure(_ => true,
                                                                                   _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.Success);
@@ -270,7 +270,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultCollection = initialCollection.ToRList();
 
             var errorBad = CreateErrorListTwoTest();
-            var resultAfterWhere = resultCollection.ResultCollectionCheckErrorsOk(_ => false,
+            var resultAfterWhere = resultCollection.RListEnsure(_ => false,
                                                                                   _ => errorBad);
 
             Assert.True(resultAfterWhere.Failure);
@@ -286,7 +286,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var errorInitial = CreateErrorTest();
             var resultCollection = errorInitial.ToRList<int>();
 
-            var resultAfterWhere = resultCollection.ResultCollectionCheckErrorsOk(_ => true,
+            var resultAfterWhere = resultCollection.RListEnsure(_ => true,
                                                                              _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.Failure);
@@ -302,7 +302,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var errorsInitial = CreateErrorTest();
             var resultCollection = errorsInitial.ToRList<int>();
 
-            var resultAfterWhere = resultCollection.ResultCollectionCheckErrorsOk(_ => false,
+            var resultAfterWhere = resultCollection.RListEnsure(_ => false,
                                                                              _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.Failure);
