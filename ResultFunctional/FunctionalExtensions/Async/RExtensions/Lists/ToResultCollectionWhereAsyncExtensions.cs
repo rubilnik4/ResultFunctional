@@ -24,7 +24,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
                                                                                       Func<IEnumerable<TValue>, bool> predicate,
                                                                                       Func<IEnumerable<TValue>, Task<IRError>> noneFunc)
             where TValue : notnull =>
-            await @this.WhereContinueAsync(predicate,
+            await @this.OptionAsync(predicate,
                                            value => value.ToRList().ToTask(),
                                            value => noneFunc(value).ToRListTaskAsync<TValue>());
     }

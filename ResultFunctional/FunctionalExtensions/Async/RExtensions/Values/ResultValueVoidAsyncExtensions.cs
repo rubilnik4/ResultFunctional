@@ -22,7 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                  Func<TValue, Task> action)
             where TValue : notnull =>
             await @this.
-            VoidOkAsync(_ => @this.Success,
+            VoidSomeAsync(_ => @this.Success,
                 action: _ => action.Invoke(@this.GetValue()));
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                        Func<IReadOnlyCollection<IRError>, Task> action)
             where TValue : notnull =>
             await @this.
-            VoidOkAsync(_ => @this.Failure,
+            VoidSomeAsync(_ => @this.Failure,
                 action: _ => action.Invoke(@this.GetErrors()));
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                          Func<IReadOnlyCollection<IRError>, Task> actionNone)
             where TValue : notnull =>
             await @this.
-            VoidWhereAsync(_ => @this.Success,
+            VoidOptionAsync(_ => @this.Success,
                 actionSome: _ => actionSome.Invoke(@this.GetValue()),
                 actionNone: _ => actionNone.Invoke(@this.GetErrors()));
 
@@ -69,7 +69,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                            Func<TValue, Task> action)
             where TValue : notnull =>
             await  @this.
-            VoidOkAsync(_ => @this.Success && predicate(@this.GetValue()),
+            VoidSomeAsync(_ => @this.Success && predicate(@this.GetValue()),
                 action: _ => action.Invoke(@this.GetValue()));
     }
 }

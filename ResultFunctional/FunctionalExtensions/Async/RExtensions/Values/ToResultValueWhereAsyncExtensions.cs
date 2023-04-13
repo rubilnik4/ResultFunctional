@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                   Func<TValue, bool> predicate,
                                                                                   Func<TValue, Task<IRError>> noneFunc)
             where TValue : notnull =>
-          await @this.WhereContinueAsync(predicate,
+          await @this.OptionAsync(predicate,
                               value => value.ToRValue().ToTask(),
                               value => noneFunc(value).ToRValueTaskAsync<TValue>());
 

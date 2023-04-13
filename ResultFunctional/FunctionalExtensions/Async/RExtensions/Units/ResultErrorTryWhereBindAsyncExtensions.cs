@@ -20,7 +20,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         public static async Task<IRUnit> ResultErrorTryOkBindAsync(this Task<IRUnit> @this, Func<Task> action,
                                                                      Func<Exception, IRError> exceptionFunc) =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultErrorTryOkAsync(action, exceptionFunc));
+            MapAwait(awaitedThis => awaitedThis.ResultErrorTryOkAsync(action, exceptionFunc));
 
         /// <summary>
         /// Execute async function and handle exception with task result error concat

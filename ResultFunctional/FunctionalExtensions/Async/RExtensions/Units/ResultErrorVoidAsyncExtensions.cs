@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <returns>Unchanged result error</returns>
         public static async Task<IRUnit> ResultErrorVoidOkAsync(this IRUnit @this, Func<Task> action) =>
             await @this.
-            VoidOkAsync(_ => @this.Success,
+            VoidSomeAsync(_ => @this.Success,
                         _ => action.Invoke());
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         public static async Task<IRUnit> ResultErrorVoidBadAsync(this IRUnit @this,
                                                                        Func<IReadOnlyCollection<IRError>, Task> action) =>
             await @this.
-            VoidOkAsync(_ => @this.Failure,
+            VoidSomeAsync(_ => @this.Failure,
                         _ => action.Invoke(@this.GetErrors()));
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
                                                                          Func<Task> actionSome,
                                                                          Func<IReadOnlyCollection<IRError>, Task> actionNone) =>
             await @this.
-            VoidWhereAsync(_ => @this.Success,
+            VoidOptionAsync(_ => @this.Success,
                            _ => actionSome.Invoke(),
                            _ => actionNone.Invoke(@this.GetErrors()));
 
@@ -60,7 +60,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
                                                                            Func<bool> predicate,
                                                                            Func<Task> action) =>
             await @this.
-            VoidOkAsync(_ => @this.Success && predicate(),
+            VoidSomeAsync(_ => @this.Success && predicate(),
                         _ => action.Invoke());
     }
 }

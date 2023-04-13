@@ -6,7 +6,7 @@ namespace ResultFunctional.FunctionalExtensions.Async
     /// <summary>
     /// Functor task functions
     /// </summary>
-    public static class MapTaskAsyncExtensions
+    public static class MapTaskExtensions
     {
         /// <summary>
         /// Converting source type to result type by functor task function
@@ -16,7 +16,7 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <param name="this">Source</param>
         /// <param name="func">Functor function</param>
         /// <returns>Result</returns>      
-        public static async Task<TResult> MapTaskAsync<TSource, TResult>(this Task<TSource> @this,
+        public static async Task<TResult> MapTask<TSource, TResult>(this Task<TSource> @this,
                                                                          Func<TSource, TResult> func) =>
             func(await @this);
 

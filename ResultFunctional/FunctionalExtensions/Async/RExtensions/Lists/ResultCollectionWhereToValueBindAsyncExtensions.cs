@@ -29,7 +29,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-                MapBindAsync(thisAwaited => thisAwaited.ResultCollectionContinueToValueAsync(predicate, someFunc, noneFunc));
+                MapAwait(thisAwaited => thisAwaited.ResultCollectionContinueToValueAsync(predicate, someFunc, noneFunc));
 
         /// <summary>
         /// Execute result collection task async function converting to result value base on predicate condition
@@ -48,7 +48,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.ResultCollectionContinueToValueBindAsync(predicate, someFunc,
-                                                      values => noneFunc(values).GetCollectionTaskAsync());
+                                                      values => noneFunc(values).ToCollectionTask());
 
         /// <summary>
         /// Execute result collection task async function converting to result value depending on result collection errors
@@ -65,7 +65,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.ResultCollectionOkBadToValueAsync(someFunc, noneFunc));
+            MapAwait(thisAwaited => thisAwaited.ResultCollectionOkBadToValueAsync(someFunc, noneFunc));
 
         /// <summary>
         /// Execute result collection task async function converting to result value if incoming result collection hasn't errors
@@ -80,6 +80,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.ResultCollectionOkToValueAsync(someFunc));
+            MapAwait(thisAwaited => thisAwaited.ResultCollectionOkToValueAsync(someFunc));
     }
 }

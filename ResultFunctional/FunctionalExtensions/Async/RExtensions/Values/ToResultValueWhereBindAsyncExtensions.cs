@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                       Func<TValue, Task<IRError>> noneFunc)
             where TValue : notnull =>
           await @this.
-          MapBindAsync(thisAwaited => thisAwaited.ToResultValueWhereAsync(predicate, noneFunc));
+          MapAwait(thisAwaited => thisAwaited.ToResultValueWhereAsync(predicate, noneFunc));
 
         /// <summary>
         /// Async converting task value to result value base on predicate
@@ -38,7 +38,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                       Func<TValue?, Task<IRError>> noneFunc)
             where TValue : class =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.ToResultValueWhereNullAsync(predicate, noneFunc));
+            MapAwait(thisAwaited => thisAwaited.ToResultValueWhereNullAsync(predicate, noneFunc));
 
         /// <summary>
         /// Async converting task value to result value base on predicate
@@ -53,7 +53,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                       Func<TValue?, Task<IRError>> noneFunc)
             where TValue : struct =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.ToResultValueWhereNullAsync(predicate, noneFunc));
+            MapAwait(thisAwaited => thisAwaited.ToResultValueWhereNullAsync(predicate, noneFunc));
 
         /// <summary>
         /// Async converting task value to result value base on predicate base with functor function
@@ -72,7 +72,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : class
             where TValueOut : notnull =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.ToResultValueWhereNullOkBadAsync(predicate, someFunc, noneFunc));
+            MapAwait(thisAwaited => thisAwaited.ToResultValueWhereNullOkBadAsync(predicate, someFunc, noneFunc));
 
         /// <summary>
         /// Async converting task value to result value base on predicate base with functor function
@@ -91,6 +91,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : struct
             where TValueOut : notnull =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.ToResultValueWhereNullOkBadAsync(predicate, someFunc, noneFunc));
+            MapAwait(thisAwaited => thisAwaited.ToResultValueWhereNullOkBadAsync(predicate, someFunc, noneFunc));
     }
 }

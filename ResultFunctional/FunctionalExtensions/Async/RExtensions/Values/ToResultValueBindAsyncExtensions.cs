@@ -22,7 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                                Task<IRError> error)
             where TValue : notnull =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.ToResultValueNullValueCheckAsync(error));
+            MapAwait(thisAwaited => thisAwaited.ToResultValueNullValueCheckAsync(error));
 
         /// <summary>
         /// Converting task value to result value async with null checking
@@ -35,7 +35,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                                Task<IRError> error)
             where TValue : class =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.ToResultValueNullCheckAsync(error));
+            MapAwait(thisAwaited => thisAwaited.ToResultValueNullCheckAsync(error));
 
         /// <summary>
         /// Converting task value to result value async with null checking
@@ -48,7 +48,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                                Task<IRError> error)
             where TValue : struct =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.ToResultValueNullCheckAsync(error));
+            MapAwait(thisAwaited => thisAwaited.ToResultValueNullCheckAsync(error));
 
         /// <summary>
         /// Converting task result unit to result value
@@ -60,7 +60,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         public static async Task<IRValue<TValue>> ToResultValueBindAsync<TValue>(this Task<IRUnit> @this, Task<TValue> value)
             where TValue : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ToResultValueAsync(value));
+            MapAwait(awaitedThis => awaitedThis.ToResultValueAsync(value));
 
 
 
@@ -74,7 +74,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         public static async Task<IRValue<TValue>> ToResultValueBindAsync<TValue>(this Task<IROption> @this, Task<TValue> value)
             where TValue : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ToResultValueAsync(value));
+            MapAwait(awaitedThis => awaitedThis.ToResultValueAsync(value));
 
         /// <summary>
         /// Async merge task result unit with result value
@@ -87,7 +87,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                           Task<IRValue<TValue>> resultValue)
             where TValue : notnull =>
             await @this.
-            MapBindAsync(result => result.ToResultBindValueAsync(resultValue));
+            MapAwait(result => result.ToResultBindValueAsync(resultValue));
 
         /// <summary>
         /// Async merge task result option with result value
@@ -100,6 +100,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                           Task<IRValue<TValue>> resultValue)
             where TValue : notnull =>
             await @this.
-            MapBindAsync(result => result.ToResultBindValueAsync(resultValue));
+            MapAwait(result => result.ToResultBindValueAsync(resultValue));
     }
 }

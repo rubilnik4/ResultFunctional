@@ -22,5 +22,5 @@ public static class ResultErrorWhereTaskAsyncExtensions
                                                                          Func<bool> predicate,
                                                                          Func<Task<IReadOnlyCollection<IRError>>> noneFunc) =>
          await @this.
-        MapBindAsync(awaitedThis => awaitedThis.ResultErrorCheckErrorsOkAsync(predicate, noneFunc));
+        MapAwait(awaitedThis => awaitedThis.ResultErrorCheckErrorsOkAsync(predicate, noneFunc));
 }

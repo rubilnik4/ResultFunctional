@@ -44,7 +44,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
                                                         Action actionSome,
                                                         Action<IReadOnlyCollection<IRError>> actionNone) =>
             @this.
-            VoidMatch(_ => @this.Success,
+            VoidOption(_ => @this.Success,
                       _ => actionSome.Invoke(),
                       _ => actionNone.Invoke(@this.GetErrors()));
 

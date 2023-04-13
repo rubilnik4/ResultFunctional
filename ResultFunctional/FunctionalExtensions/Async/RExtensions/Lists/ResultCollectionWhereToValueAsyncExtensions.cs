@@ -49,7 +49,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.ResultCollectionContinueToValueAsync(predicate, someFunc,
-                                                             values => noneFunc(values).GetCollectionTaskAsync());
+                                                             values => noneFunc(values).ToCollectionTask());
 
 
         /// <summary>

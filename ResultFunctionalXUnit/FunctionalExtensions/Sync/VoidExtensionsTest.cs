@@ -70,7 +70,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
             const int initialNumber = 1;
             var voidObjectMock = new Mock<IVoidObject>();
 
-            int numberAfterVoid = initialNumber.VoidMatch(_ => true,
+            int numberAfterVoid = initialNumber.VoidOption(_ => true,
                                                           number => voidObjectMock.Object.TestNumberVoid(number),
                                                           _ => voidObjectMock.Object.TestVoid());
 
@@ -87,7 +87,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
             const int initialNumber = 1;
             var voidObjectMock = new Mock<IVoidObject>();
 
-            int numberAfterVoid = initialNumber.VoidMatch(_ => false,
+            int numberAfterVoid = initialNumber.VoidOption(_ => false,
                                                           _ => voidObjectMock.Object.TestVoid(),
                                                           number => voidObjectMock.Object.TestNumberVoid(number));
 

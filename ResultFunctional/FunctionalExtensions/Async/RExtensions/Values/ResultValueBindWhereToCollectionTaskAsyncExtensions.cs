@@ -24,6 +24,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.RValueBindListSome(someFunc));
+            MapTask(thisAwaited => thisAwaited.RValueBindListSome(someFunc));
     }
 }

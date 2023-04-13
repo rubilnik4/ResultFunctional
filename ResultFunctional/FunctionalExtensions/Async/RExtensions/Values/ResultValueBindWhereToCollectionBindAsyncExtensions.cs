@@ -23,6 +23,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.ResultValueBindOkToCollectionAsync(someFunc));
+            MapAwait(thisAwaited => thisAwaited.ResultValueBindOkToCollectionAsync(someFunc));
     }
 }

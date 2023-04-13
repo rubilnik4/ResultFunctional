@@ -42,7 +42,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync
         /// <param name="actionSome">Action if predicate <see langword="true"/></param>
         /// <param name="actionNone">Action if predicate <see langword="false"/></param>
         /// <returns>Unchanged source</returns>
-        public static TValue VoidMatch<TValue>(this TValue @this, Func<TValue, bool> predicate,
+        public static TValue VoidOption<TValue>(this TValue @this, Func<TValue, bool> predicate,
                                                Action<TValue> actionSome, Action<TValue> actionNone) =>
             predicate(@this)
                 ? @this.Void(_ => actionSome.Invoke(@this))

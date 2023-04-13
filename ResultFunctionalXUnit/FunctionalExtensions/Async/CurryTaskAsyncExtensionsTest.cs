@@ -20,7 +20,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             Func<int, int> plusTwoFunc = number => number + 2;
             var taskFunc = Task.FromResult(plusTwoFunc);
 
-            var totalFunc = await taskFunc.CurryTaskAsync(3);
+            var totalFunc = await taskFunc.CurryTask(3);
 
             Assert.Equal(5, totalFunc.Invoke());
         }
@@ -34,7 +34,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             Func<int, int, int> plusTwoFunc = (numberFirst, numberSecond) => numberFirst + numberSecond;
             var taskFunc = Task.FromResult(plusTwoFunc);
 
-            var totalFunc = await taskFunc.CurryTaskAsync(3);
+            var totalFunc = await taskFunc.CurryTask(3);
 
             Assert.Equal(5, totalFunc.Invoke(2));
         }
@@ -49,7 +49,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
                 (numberFirst, numberSecond, thirdNumber) => numberFirst + numberSecond + thirdNumber;
             var taskFunc = Task.FromResult(plusThreeFunc);
 
-            var totalFunc = await taskFunc.CurryTaskAsync(3);
+            var totalFunc = await taskFunc.CurryTask(3);
 
             Assert.Equal(6, totalFunc.Invoke(2, 1));
         }
@@ -64,7 +64,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
                 (numberFirst, numberSecond, thirdNumber, fourthNumber) => numberFirst + numberSecond + thirdNumber + fourthNumber;
             var taskFunc = Task.FromResult(plusFourFunc);
 
-            var totalFunc = await taskFunc.CurryTaskAsync(4);
+            var totalFunc = await taskFunc.CurryTask(4);
 
             Assert.Equal(8, totalFunc.Invoke(2, 1, 1));
         }
@@ -80,7 +80,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
                     numberFirst + numberSecond + thirdNumber + fourthNumber + fiveNumber;
             var taskFunc = Task.FromResult(plusFiveFunc);
 
-            var totalFunc = await taskFunc.CurryTaskAsync(6);
+            var totalFunc = await taskFunc.CurryTask(6);
 
             Assert.Equal(12, totalFunc.Invoke(2, 2, 1, 1));
         }

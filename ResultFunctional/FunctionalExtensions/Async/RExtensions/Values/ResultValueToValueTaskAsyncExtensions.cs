@@ -27,6 +27,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.RValueLiftMatch(someFunc, noneFunc));
+            MapTask(awaitedThis => awaitedThis.RValueLiftMatch(someFunc, noneFunc));
     }
 }

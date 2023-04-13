@@ -6,7 +6,7 @@ namespace ResultFunctional.FunctionalExtensions.Async
     /// <summary>
     /// Async extension methods for task condition functions
     /// </summary>
-    public static class WhereBindAsyncExtensions
+    public static class OptionAwaitExtensions
     {
         /// <summary>
         /// Execute converting async task function base on predicate condition
@@ -18,12 +18,12 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Converting function result</returns>      
-        public static async Task<TResult> WhereContinueBindAsync<TSource, TResult>(this Task<TSource> @this,
+        public static async Task<TResult> OptionAwait<TSource, TResult>(this Task<TSource> @this,
                                                                                    Func<TSource, bool> predicate,
                                                                                    Func<TSource, Task<TResult>> someFunc,
                                                                                    Func<TSource, Task<TResult>> noneFunc) =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.WhereContinueAsync(predicate, someFunc, noneFunc));
+            MapAwait(thisAwaited => thisAwaited.OptionAsync(predicate, someFunc, noneFunc));
 
         /// <summary>
         /// Execute converting async task function if predicate condition <see langword="true"/>
@@ -33,11 +33,11 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <param name="predicate">Predicate function</param>
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <returns>Converting function result</returns>         
-        public static async Task<TSource> WhereOkBindAsync<TSource>(this Task<TSource> @this,
+        public static async Task<TSource> OptionSomeAwait<TSource>(this Task<TSource> @this,
                                                                   Func<TSource, bool> predicate,
                                                                   Func<TSource, Task<TSource>> someFunc) =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.WhereOkAsync(predicate, someFunc));
+            MapAwait(thisAwaited => thisAwaited.OptionSomeAsync(predicate, someFunc));
 
         /// <summary>
         /// Execute converting async task function if predicate condition <see langword="false"/>
@@ -47,10 +47,10 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <param name="predicate">Predicate function</param>
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Converting function result</returns>     
-        public static async Task<TSource> WhereBadBindAsync<TSource>(this Task<TSource> @this,
+        public static async Task<TSource> OptionNoneAwait<TSource>(this Task<TSource> @this,
                                                                      Func<TSource, bool> predicate,
                                                                      Func<TSource, Task<TSource>> noneFunc) =>
             await @this.
-            MapBindAsync(thisAwaited => thisAwaited.WhereBadAsync(predicate, noneFunc));
+            MapAwait(thisAwaited => thisAwaited.OptionNoneAsync(predicate, noneFunc));
     }
 }

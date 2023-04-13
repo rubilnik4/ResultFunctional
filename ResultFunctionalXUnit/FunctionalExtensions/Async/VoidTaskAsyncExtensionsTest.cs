@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             var voidObjectMock = new Mock<IVoidObject>();
 
             int numberAfterVoid = await numberTask.
-                                  VoidTaskAsync(number => voidObjectMock.Object.TestNumberVoid(number));
+                                  VoidTask(number => voidObjectMock.Object.TestNumberVoid(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
             voidObjectMock.Verify(voidObject => voidObject.TestNumberVoid(initialNumber), Times.Once);
@@ -40,7 +40,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             int numberAfterVoid =
                 await numberTask.
-                VoidOkTaskAsync(number => number > 0,
+                VoidSomeTask(number => number > 0,
                     action: number => voidObjectMock.Object.TestNumberVoid(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
@@ -59,7 +59,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             int numberAfterVoid =
                 await numberTask.
-                VoidOkTaskAsync(number => number < 0,
+                VoidSomeTask(number => number < 0,
                     action: number => voidObjectMock.Object.TestNumberVoid(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
@@ -76,7 +76,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             var numberTask = Task.FromResult(initialNumber);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            int numberAfterVoid = await numberTask.VoidWhereTaskAsync(_ => true,
+            int numberAfterVoid = await numberTask.VoidOptionTask(_ => true,
                                                           number => voidObjectMock.Object.TestNumberVoid(number),
                                                           _ => voidObjectMock.Object.TestVoid());
 
@@ -94,7 +94,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             var numberTask = Task.FromResult(initialNumber);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            int numberAfterVoid = await numberTask.VoidWhereTaskAsync(_ => false,
+            int numberAfterVoid = await numberTask.VoidOptionTask(_ => false,
                                                           _ => voidObjectMock.Object.TestVoid(),
                                                           number => voidObjectMock.Object.TestNumberVoid(number));
 

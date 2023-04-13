@@ -49,7 +49,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
                                                             Action<IReadOnlyCollection<IRError>> actionNone)
             where TValue : notnull =>
             @this.
-            VoidMatch(_ => @this.Success,
+            VoidOption(_ => @this.Success,
                       _ => actionSome.Invoke(@this.GetValue()),
                       _ => actionNone.Invoke(@this.GetErrors()));
 

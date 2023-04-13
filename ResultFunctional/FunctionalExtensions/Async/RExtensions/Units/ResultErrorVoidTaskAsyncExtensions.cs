@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <returns>Unchanged result error</returns> 
         public static async Task<IRUnit> ResultErrorVoidOkTaskAsync(this Task<IRUnit> @this, Action action) =>
             await @this.
-            VoidOkTaskAsync(awaitedThis => awaitedThis.Success,
+            VoidSomeTask(awaitedThis => awaitedThis.Success,
                 action: _ => action.Invoke());
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         public static async Task<IRUnit> ResultErrorVoidBadTaskAsync(this Task<IRUnit> @this,
                                                                        Action<IReadOnlyCollection<IRError>> action) =>
             await @this.
-            VoidOkTaskAsync(awaitedThis => awaitedThis.Failure,
+            VoidSomeTask(awaitedThis => awaitedThis.Failure,
                 action: awaitedThis => action.Invoke(awaitedThis.GetErrors()));
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         public static async Task<IRUnit> ResultErrorVoidOkBadTaskAsync(this Task<IRUnit> @this, Action actionSome,
                                                                              Action<IReadOnlyCollection<IRError>> actionNone) =>
             await @this.
-            VoidWhereTaskAsync(awaitedThis => awaitedThis.Success,
+            VoidOptionTask(awaitedThis => awaitedThis.Success,
                 actionSome: _ => actionSome.Invoke(),
                 actionNone: awaitedThis => actionNone.Invoke(awaitedThis.GetErrors()));
 
@@ -59,7 +59,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
                                                                            Func<bool> predicate,
                                                                            Action action) =>
             await @this.
-            VoidOkTaskAsync(awaitedThis=> awaitedThis.Success && predicate(),
+            VoidSomeTask(awaitedThis=> awaitedThis.Success && predicate(),
                 action: _ => action.Invoke());
     }
 }

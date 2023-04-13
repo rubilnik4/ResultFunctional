@@ -29,7 +29,7 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged source</returns>
-        public static async Task<TValue> VoidOkAsync<TValue>(this TValue @this, Func<TValue, bool> predicate,
+        public static async Task<TValue> VoidSomeAsync<TValue>(this TValue @this, Func<TValue, bool> predicate,
                                                              Func<TValue, Task> action) =>
             predicate(@this)
                 ? await @this.VoidAsync(_ => action.Invoke(@this))
@@ -44,7 +44,7 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <param name="actionSome">Action if predicate <see langword="true"/></param>
         /// <param name="actionNone">Action if predicate <see langword="false"/></param>
         /// <returns>Unchanged source</returns>
-        public static async Task<TValue> VoidWhereAsync<TValue>(this TValue @this, 
+        public static async Task<TValue> VoidOptionAsync<TValue>(this TValue @this, 
                                                                 Func<TValue, bool> predicate,
                                                                 Func<TValue, Task> actionSome,
                                                                 Func<TValue, Task> actionNone) =>

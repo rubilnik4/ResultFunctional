@@ -52,7 +52,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.ResultCollectionBindContinueAsync(predicate, someFunc,
-                                                          values => noneFunc(values).GetCollectionTaskAsync());
+                                                          values => noneFunc(values).ToCollectionTask());
 
         /// <summary>
         /// Execute monad result collection async function base on predicate condition

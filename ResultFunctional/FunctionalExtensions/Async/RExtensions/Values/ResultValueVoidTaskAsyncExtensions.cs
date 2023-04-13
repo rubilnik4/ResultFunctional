@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                      Action<TValue> action)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.RValueVoidSome(action));
+            MapTask(awaitedThis => awaitedThis.RValueVoidSome(action));
 
         /// <summary>
         /// Execute action if task result value has errors
@@ -36,7 +36,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                       Action<IReadOnlyCollection<IRError>> action)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.RValueVoidNone(action));
+            MapTask(awaitedThis => awaitedThis.RValueVoidNone(action));
 
         /// <summary>
         /// Execute action depending on task result value errors
@@ -51,7 +51,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                            Action<IReadOnlyCollection<IRError>> actionNone)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.RValueVoidMatch(actionSome, actionNone));
+            MapTask(awaitedThis => awaitedThis.RValueVoidMatch(actionSome, actionNone));
 
         /// <summary>
         /// Execute action depending on task result value errors and predicate
@@ -66,6 +66,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                           Action<TValue> action)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.RValueVoidOption(predicate, action));
+            MapTask(awaitedThis => awaitedThis.RValueVoidOption(predicate, action));
     }
 }

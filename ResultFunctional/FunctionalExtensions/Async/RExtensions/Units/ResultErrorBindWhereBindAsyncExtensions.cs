@@ -22,7 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
                                                              Func<Task<IRUnit>> someFunc,
                                                              Func<IReadOnlyCollection<IRError>, Task<IRUnit>> noneFunc) =>
            await @this.
-           MapBindAsync(awaitedThis => awaitedThis.ResultErrorBindOkBadAsync(someFunc, noneFunc));
+           MapAwait(awaitedThis => awaitedThis.ResultErrorBindOkBadAsync(someFunc, noneFunc));
 
         /// <summary>
         /// Merge task result error async function if incoming result collection hasn't errors
@@ -32,6 +32,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <returns>Outgoing result error</returns>
         public static async Task<IRUnit> ResultErrorBindOkBindAsync(this Task<IRUnit> @this, Func<Task<IRUnit>> someFunc) =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultErrorBindOkAsync(someFunc));
+            MapAwait(awaitedThis => awaitedThis.ResultErrorBindOkAsync(someFunc));
     }
 }

@@ -53,7 +53,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueOut : notnull =>
              await @this.ResultCollectionContinueAsync(predicate,
                                                        someFunc,
-                                                       values => noneFunc(values).GetCollectionTaskAsync());
+                                                       values => noneFunc(values).ToCollectionTask());
 
         /// <summary>
         /// Execute result collection async function base on predicate condition returning collection in any case
@@ -95,7 +95,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueOut : notnull =>
             await @this.ResultCollectionWhereAsync(predicate,
                                                       someFunc,
-                                                      values => noneFunc(values).GetCollectionTaskAsync());
+                                                      values => noneFunc(values).ToCollectionTask());
 
         /// <summary>
         /// Execute result collection async function depending on result collection errors
@@ -159,7 +159,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValue : notnull =>
             await @this.
                 ResultCollectionContinueAsync(predicate,
-                                              collection => collection.GetCollectionTaskAsync(),
+                                              collection => collection.ToCollectionTask(),
                                               noneFunc);
 
         /// <summary>
@@ -174,6 +174,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
                                                                            Func<IReadOnlyCollection<TValue>, bool> predicate,
                                                                            Func<IReadOnlyCollection<TValue>, IReadOnlyCollection<IRError>> noneFunc)
             where TValue : notnull =>
-            await @this.ResultCollectionCheckErrorsOkAsync(predicate, values => noneFunc(values).GetCollectionTaskAsync());
+            await @this.ResultCollectionCheckErrorsOkAsync(predicate, values => noneFunc(values).ToCollectionTask());
     }
 }

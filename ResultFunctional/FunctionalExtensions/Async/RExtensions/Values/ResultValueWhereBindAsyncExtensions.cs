@@ -28,7 +28,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultValueContinueAsync(predicate, someFunc, noneFunc));
+            MapAwait(awaitedThis => awaitedThis.ResultValueContinueAsync(predicate, someFunc, noneFunc));
 
         /// <summary>
         /// Execute task result value async function base on predicate condition
@@ -47,7 +47,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.ResultValueContinueBindAsync(predicate, someFunc,
-                                                     values => noneFunc(values).GetCollectionTaskAsync());
+                                                     values => noneFunc(values).ToCollectionTask());
 
         /// <summary>
         /// Execute task result value async function base on predicate condition returning value in any case
@@ -66,7 +66,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultValueWhereAsync(predicate, someFunc, noneFunc));
+            MapAwait(awaitedThis => awaitedThis.ResultValueWhereAsync(predicate, someFunc, noneFunc));
 
         /// <summary>
         /// Execute task result value async function depending on result value errors
@@ -83,7 +83,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultValueOkBadAsync(someFunc, noneFunc));
+            MapAwait(awaitedThis => awaitedThis.ResultValueOkBadAsync(someFunc, noneFunc));
 
         /// <summary>
         /// Execute task result value async function if incoming result value hasn't errors
@@ -98,7 +98,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultValueOkAsync(someFunc));
+            MapAwait(awaitedThis => awaitedThis.ResultValueOkAsync(someFunc));
 
         /// <summary>
         /// Execute task result value async function if incoming result value has errors
@@ -111,7 +111,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                        Func<IReadOnlyCollection<IRError>, Task<TValue>> noneFunc)
            where TValue : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultValueBadAsync(noneFunc));
+            MapAwait(awaitedThis => awaitedThis.ResultValueBadAsync(noneFunc));
 
         /// <summary>
         /// Check errors by predicate async to task result value if ones hasn't errors
@@ -126,6 +126,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                            Func<TValue, Task<IReadOnlyCollection<IRError>>> noneFunc)
             where TValue : notnull =>
               await @this.
-             MapBindAsync(awaitedThis => awaitedThis.ResultValueCheckErrorsOkAsync(predicate, noneFunc));
+             MapAwait(awaitedThis => awaitedThis.ResultValueCheckErrorsOkAsync(predicate, noneFunc));
     }
 }

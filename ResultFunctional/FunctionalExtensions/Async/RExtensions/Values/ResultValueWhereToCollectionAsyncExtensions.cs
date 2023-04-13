@@ -50,7 +50,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueOut : notnull =>
              await @this.ResultValueContinueToCollectionAsync(predicate,
                                                               someFunc,
-                                                              values => noneFunc(values).GetCollectionTaskAsync());
+                                                              values => noneFunc(values).ToCollectionTask());
 
         /// <summary>
         /// Execute result value async function converting to result value depending on result value errors
@@ -66,8 +66,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                     Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValueOut>>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
-             await @this.ResultValueOkBadToCollectionAsync(values => someFunc(values).GetEnumerableTaskAsync(),
-                                                           values => noneFunc(values).GetEnumerableTaskAsync());
+             await @this.ResultValueOkBadToCollectionAsync(values => someFunc(values).ToEnumerableTask(),
+                                                           values => noneFunc(values).ToEnumerableTask());
 
         /// <summary>
         /// Execute result value async function converting to result value depending on result value errors

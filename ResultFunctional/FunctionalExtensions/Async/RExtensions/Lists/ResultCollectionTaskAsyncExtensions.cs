@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         public static async Task<IRList<TValue>> ConcatResultCollectionTaskAsync<TValue>(this Task<IEnumerable<IRList<TValue>>> @this)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.RListFold());
+            MapTask(thisAwaited => thisAwaited.RListFold());
 
         /// <summary>
         /// Aggregate collection of task result collections
@@ -30,7 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         public static async Task<IRList<TValue>> ConcatResultCollectionTaskAsync<TValue>(this Task<IReadOnlyCollection<IRList<TValue>>> @this)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.RListFold());
+            MapTask(thisAwaited => thisAwaited.RListFold());
 
         /// <summary>
         /// Aggregate collection of task result collections
@@ -41,6 +41,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         public static async Task<IRList<TValue>> ConcatResultCollectionTaskAsync<TValue>(this Task<IRList<TValue>[]> @this)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.RListFold());
+            MapTask(thisAwaited => thisAwaited.RListFold());
     }
 }

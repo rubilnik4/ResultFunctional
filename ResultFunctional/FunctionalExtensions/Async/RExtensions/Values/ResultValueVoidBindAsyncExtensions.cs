@@ -22,7 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                      Func<TValue, Task> action)
             where TValue : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultValueVoidOkAsync(action));
+            MapAwait(awaitedThis => awaitedThis.ResultValueVoidOkAsync(action));
 
         /// <summary>
         /// Execute async action if task result value has errors
@@ -35,7 +35,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                       Func<IReadOnlyCollection<IRError>, Task> action)
             where TValue : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultValueVoidBadAsync(action));
+            MapAwait(awaitedThis => awaitedThis.ResultValueVoidBadAsync(action));
 
         /// <summary>
         /// Execute async action depending on task result value errors
@@ -50,7 +50,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                              Func<IReadOnlyCollection<IRError>, Task> actionNone)
             where TValue : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultValueVoidOkBadAsync(actionSome, actionNone));
+            MapAwait(awaitedThis => awaitedThis.ResultValueVoidOkBadAsync(actionSome, actionNone));
 
         /// <summary>
         /// Execute async action depending on task result value errors and predicate
@@ -65,6 +65,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                           Func<TValue, Task> action)
             where TValue : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ResultValueVoidOkWhereAsync(predicate, action));
+            MapAwait(awaitedThis => awaitedThis.ResultValueVoidOkWhereAsync(predicate, action));
     }
 }

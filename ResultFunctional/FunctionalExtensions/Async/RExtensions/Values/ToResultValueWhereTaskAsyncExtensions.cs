@@ -24,7 +24,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                       Func<TValue, IRError> noneFunc)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.ToRValueOption(predicate, noneFunc));
+            MapTask(thisAwaited => thisAwaited.ToRValueOption(predicate, noneFunc));
 
         /// <summary>
         /// Converting task value to result value base on predicate
@@ -39,7 +39,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                       Func<TValue?, IRError> noneFunc)
             where TValue : class =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.ToRValueEnsureOption(predicate, noneFunc));
+            MapTask(thisAwaited => thisAwaited.ToRValueEnsureOption(predicate, noneFunc));
 
         /// <summary>
         /// Converting task value to result value base on predicate
@@ -54,7 +54,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                       Func<TValue?, IRError> noneFunc)
             where TValue : struct =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.ToRValueEnsureOption(predicate, noneFunc));
+            MapTask(thisAwaited => thisAwaited.ToRValueEnsureOption(predicate, noneFunc));
 
         /// <summary>
         /// Converting task value to result value base on predicate base with functor function
@@ -73,7 +73,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : class
             where TValueOut : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.ToRValueEnsureWhere(predicate, someFunc, noneFunc));
+            MapTask(thisAwaited => thisAwaited.ToRValueEnsureWhere(predicate, someFunc, noneFunc));
 
         /// <summary>
         /// Converting task value to result value base on predicate base with functor function
@@ -92,6 +92,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : struct
             where TValueOut : notnull =>
             await @this.
-            MapTaskAsync(thisAwaited => thisAwaited.ToRValueEnsureWhere(predicate, someFunc, noneFunc));
+            MapTask(thisAwaited => thisAwaited.ToRValueEnsureWhere(predicate, someFunc, noneFunc));
     }
 }

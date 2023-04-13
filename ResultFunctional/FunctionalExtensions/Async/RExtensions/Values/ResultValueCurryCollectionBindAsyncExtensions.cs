@@ -24,7 +24,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn1 : notnull
             where TOut : notnull =>
             await arg1.
-            MapBindAsync(@this.ResultValueCurryCollectionOkTaskAsync);
+            MapAwait(@this.ResultValueCurryCollectionOkTaskAsync);
 
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn2 : notnull
             where TOut : notnull =>
             await arg1.
-            MapBindAsync(@this.ResultValueCurryCollectionOkTaskAsync);
+            MapAwait(@this.ResultValueCurryCollectionOkTaskAsync);
 
         /// <summary>
         /// Get two arguments task result value async higher order collection function
@@ -61,7 +61,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn3 : notnull
             where TOut : notnull =>
             await arg1.
-            MapBindAsync(@this.ResultValueCurryCollectionOkTaskAsync);
+            MapAwait(@this.ResultValueCurryCollectionOkTaskAsync);
 
         /// <summary>
         /// Get three arguments task result value async higher order collection function
@@ -82,7 +82,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn4 : notnull
             where TOut : notnull =>
             await arg1.
-            MapBindAsync(@this.ResultValueCurryCollectionOkTaskAsync);
+            MapAwait(@this.ResultValueCurryCollectionOkTaskAsync);
 
         /// <summary>
         /// Get four arguments task result value async higher order collection function
@@ -105,6 +105,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn5 : notnull
             where TOut : notnull =>
             await arg1.
-            MapBindAsync(@this.ResultValueCurryCollectionOkTaskAsync);
+            MapAwait(@this.ResultValueCurryCollectionOkTaskAsync);
     }
 }

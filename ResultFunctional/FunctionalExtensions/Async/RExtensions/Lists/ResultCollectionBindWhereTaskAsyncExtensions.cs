@@ -30,7 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.RListBindOption(predicate, someFunc, noneFunc));
+            MapTask(awaitedThis => awaitedThis.RListBindOption(predicate, someFunc, noneFunc));
 
        /// <summary>
         /// Execute monad result collection task function base on predicate condition
@@ -49,7 +49,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
            where TValueIn : notnull
            where TValueOut : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.RListBindWhere(predicate, someFunc, noneFunc));
+            MapTask(awaitedThis => awaitedThis.RListBindWhere(predicate, someFunc, noneFunc));
        
         /// <summary>
         /// Execute monad result collection task function depending on result collection errors
@@ -66,7 +66,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.RListBindMatch(someFunc, noneFunc));
+            MapTask(awaitedThis => awaitedThis.RListBindMatch(someFunc, noneFunc));
 
         /// <summary>
         /// Execute monad result collection task function if incoming result collection hasn't errors
@@ -81,7 +81,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.RListBindSome(someFunc));
+            MapTask(awaitedThis => awaitedThis.RListBindSome(someFunc));
 
         /// <summary>
         /// Execute monad result collection task function if incoming result collection has errors
@@ -94,7 +94,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
                                                                                        Func<IReadOnlyCollection<IRError>, IRList<TValue>> noneFunc)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.RListBindNone(noneFunc));
+            MapTask(awaitedThis => awaitedThis.RListBindNone(noneFunc));
 
         /// <summary>
         /// Adding errors to task result collection if ones hasn't errors
@@ -107,6 +107,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
                                                                                                Func<IReadOnlyCollection<TValue>, IROption> someFunc)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(awaitedThis => awaitedThis.RListBindEnsure(someFunc));
+            MapTask(awaitedThis => awaitedThis.RListBindEnsure(someFunc));
     }
 }

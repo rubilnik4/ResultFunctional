@@ -24,7 +24,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
                                                                                           Func<IEnumerable<TValue>, Task<IRError>> noneFunc)
             where TValue : notnull =>
             await @this.
-            MapBindAsync(awaitedThis => awaitedThis.ToResultCollectionWhereAsync(predicate, noneFunc));
+            MapAwait(awaitedThis => awaitedThis.ToResultCollectionWhereAsync(predicate, noneFunc));
 
         /// <summary>
         /// Async converting task collection to result collection base on predicate
@@ -39,7 +39,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
                                                                                             Func<IEnumerable<TValue>, Task<IRError>> noneFunc)
             where TValue : notnull =>
             await @this.
-            MapTaskAsync(resultCollection => (IEnumerable<TValue>)resultCollection).
+            MapTask(resultCollection => (IEnumerable<TValue>)resultCollection).
             ToResultCollectionWhereBindAsync(predicate, noneFunc);
     }
 }

@@ -8,7 +8,7 @@ namespace ResultFunctional.FunctionalExtensions.Async;
 /// <summary>
 /// Collection extensions for async method
 /// </summary>
-public static class CollectionAsyncExtensions
+public static class CollectionTaskExtensions
 {
     /// <summary>
     /// Converting collection to enumerable type
@@ -16,7 +16,7 @@ public static class CollectionAsyncExtensions
     /// <typeparam name="T">Collection type</typeparam>
     /// <param name="collection">Collection</param>
     /// <returns>Enumerable</returns>
-    public static Task<IEnumerable<T>> GetEnumerableTaskAsync<T>(this IEnumerable<T> collection) =>
+    public static Task<IEnumerable<T>> ToEnumerableTask<T>(this IEnumerable<T> collection) =>
         Task.FromResult(collection);
 
     /// <summary>
@@ -25,8 +25,8 @@ public static class CollectionAsyncExtensions
     /// <typeparam name="T">Collection type</typeparam>
     /// <param name="collection">Collection</param>
     /// <returns>Enumerable</returns>
-    public static Task<IEnumerable<T>> GetEnumerableTaskAsync<T>(this Task<IReadOnlyCollection<T>> collection) =>
-        collection.MapTaskAsync(values => (IEnumerable<T>)values);
+    public static Task<IEnumerable<T>> ToEnumerableTask<T>(this Task<IReadOnlyCollection<T>> collection) =>
+        collection.MapTask(values => (IEnumerable<T>)values);
 
     /// <summary>
     /// Converting enumerable to collection type
@@ -34,8 +34,8 @@ public static class CollectionAsyncExtensions
     /// <typeparam name="T">Collection type</typeparam>
     /// <param name="collection">Collection</param>
     /// <returns>Collection</returns>
-    public static Task<IReadOnlyCollection<T>> GetCollectionTaskAsync<T>(this Task<IEnumerable<T>> collection) =>
-        collection.MapTaskAsync(values => (IReadOnlyCollection<T>)values.ToList());
+    public static Task<IReadOnlyCollection<T>> ToCollectionTask<T>(this Task<IEnumerable<T>> collection) =>
+        collection.MapTask(values => (IReadOnlyCollection<T>)values.ToList());
 
     /// <summary>
     /// Converting collection to collection task type
@@ -43,7 +43,7 @@ public static class CollectionAsyncExtensions
     /// <typeparam name="T">Collection type</typeparam>
     /// <param name="collection">Collection</param>
     /// <returns>Collection</returns>
-    public static Task<IReadOnlyCollection<T>> GetCollectionTaskAsync<T>(this IReadOnlyCollection<T> collection) =>
+    public static Task<IReadOnlyCollection<T>> ToCollectionTask<T>(this IReadOnlyCollection<T> collection) =>
         Task.FromResult(collection);
 
     /// <summary>
@@ -52,9 +52,9 @@ public static class CollectionAsyncExtensions
     /// <typeparam name="T">Value type</typeparam>
     /// <param name="value">Value</param>
     /// <returns>Enumerable</returns>
-    public static Task<IReadOnlyCollection<T>> GetCollectionTaskAsync<T>(this Task<T> value)
+    public static Task<IReadOnlyCollection<T>> ToCollectionTask<T>(this Task<T> value)
         where T : IEnumerable<T> =>
-        value.MapTaskAsync(values => (IReadOnlyCollection<T>)values.ToList());
+        value.MapTask(values => (IReadOnlyCollection<T>)values.ToList());
 
     /// <summary>
     /// Converting to enumerable type
@@ -62,7 +62,7 @@ public static class CollectionAsyncExtensions
     /// <typeparam name="T">Value type</typeparam>
     /// <param name="value">Value</param>
     /// <returns>Enumerable</returns>
-    public static Task<IEnumerable<T>> GetEnumerableTaskAsync<T>(this Task<T> value)
+    public static Task<IEnumerable<T>> ToEnumerableTask<T>(this Task<T> value)
         where T : IEnumerable<T> =>
-        value.MapTaskAsync(values => (IEnumerable<T>)values);
+        value.MapTask(values => (IEnumerable<T>)values);
 }

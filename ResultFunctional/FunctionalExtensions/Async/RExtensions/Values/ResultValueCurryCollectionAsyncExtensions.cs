@@ -25,7 +25,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn1 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTaskAsync(@this.RValueCurryListSome);
+            MapTask(@this.RValueCurryListSome);
 
         /// <summary>
         /// Get one argument result value async higher order collection function
@@ -42,7 +42,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn2 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTaskAsync(@this.RValueCurryListSome);
+            MapTask(@this.RValueCurryListSome);
 
         /// <summary>
         /// Get two arguments result value async higher order collection function
@@ -61,7 +61,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn3 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTaskAsync(@this.RValueCurryListSome);
+            MapTask(@this.RValueCurryListSome);
 
         /// <summary>
         /// Get three arguments result value async higher order collection function
@@ -82,7 +82,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn4 : notnull
             where TOut : notnull =>
              await arg1.
-            MapTaskAsync(@this.RValueCurryListSome);
+            MapTask(@this.RValueCurryListSome);
 
         /// <summary>
         /// Get four arguments result value async higher order collection function
@@ -105,6 +105,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn5 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTaskAsync(@this.RValueCurryListSome);
+            MapTask(@this.RValueCurryListSome);
     }
 }
