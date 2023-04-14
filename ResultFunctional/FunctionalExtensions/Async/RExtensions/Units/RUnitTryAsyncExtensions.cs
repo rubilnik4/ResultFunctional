@@ -8,7 +8,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
     /// <summary>
     /// Exception handling result error async extension methods
     /// </summary>
-    public static class ResultErrorTryAsyncExtensions
+    public static class RUnitTryAsyncExtensions
     {
         /// <summary>
         /// Execute async action and handle exception with result error converting
@@ -16,7 +16,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="action">Action</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result error</returns>
-        public static async Task<IRUnit> ResultErrorTryAsync(Func<Task> action, Func<Exception, IRError> exceptionFunc)
+        public static async Task<IRUnit> RUnitTryAsync(Func<Task> action, Func<Exception, IRError> exceptionFunc)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="action">Action</param>
         /// <param name="error">Error</param>
         /// <returns>Result error</returns>
-        public static async Task<IRUnit> ResultErrorTryAsync(Func<Task> action, IRError error) =>
-            await ResultErrorTryAsync(action, error.AppendException);
+        public static async Task<IRUnit> RUnitTryAsync(Func<Task> action, IRError error) =>
+            await RUnitTryAsync(action, error.AppendException);
     }
 }

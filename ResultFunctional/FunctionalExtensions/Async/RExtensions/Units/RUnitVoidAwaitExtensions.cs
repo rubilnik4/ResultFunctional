@@ -9,7 +9,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
     /// <summary>
     /// Task result error async action extension methods
     /// </summary>
-    public static class ResultErrorVoidBindAsyncExtensions
+    public static class RUnitVoidAwaitExtensions
     {
         /// <summary>
         /// Execute async action if task result hasn't errors
@@ -17,7 +17,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="this">Incoming result error</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns>
-        public static async Task<IRUnit> ResultErrorVoidOkBindAsync(this Task<IRUnit> @this, Func<Task> action) =>
+        public static async Task<IRUnit> RUnitVoidSomeAwait(this Task<IRUnit> @this, Func<Task> action) =>
             await @this.
             VoidSomeAwait(awaitedThis => awaitedThis.Success,
                             _ => action.Invoke());
@@ -28,7 +28,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="this">Incoming result error</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns>
-        public static async Task<IRUnit> ResultErrorVoidBadBindAsync(this Task<IRUnit> @this,
+        public static async Task<IRUnit> RUnitVoidNoneAwait(this Task<IRUnit> @this,
                                                                        Func<IReadOnlyCollection<IRError>, Task> action) =>
             await @this.
             VoidSomeAwait(awaitedThis => awaitedThis.Failure,
@@ -41,7 +41,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="actionSome">Action if result hasn't errors</param>
         /// <param name="actionNone">Action if result has errors</param>
         /// <returns>Unchanged result error</returns>  
-        public static async Task<IRUnit> ResultErrorVoidOkBadBindAsync(this Task<IRUnit> @this,
+        public static async Task<IRUnit> RUnitVoidMatchAwait(this Task<IRUnit> @this,
                                                                          Func<Task> actionSome,
                                                                          Func<IReadOnlyCollection<IRError>, Task> actionNone) =>
             await @this.
@@ -56,7 +56,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result error</returns>  
-        public static async Task<IRUnit> ResultErrorVoidOkWhereBindAsync(this Task<IRUnit> @this,
+        public static async Task<IRUnit> RUnitVoidWhereAwait(this Task<IRUnit> @this,
                                                                            Func<bool> predicate,
                                                                            Func<Task> action) =>
             await @this.

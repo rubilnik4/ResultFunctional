@@ -28,7 +28,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             };
             var taskResults = Task.FromResult((IEnumerable<IRUnit>)results);
 
-            var result =  await taskResults.ToRUnitTaskAsync();
+            var result =  await taskResults.ToRUnitTask();
 
             Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(resultError => resultError.GetErrors())));
         }
@@ -46,7 +46,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             };
             var taskResults = results.Select(Task.FromResult);
 
-            var result = await taskResults.ToRUnitTaskAsync();
+            var result = await taskResults.ToRUnitTask();
 
             Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(resultError => resultError.GetErrors())));
         }
@@ -64,7 +64,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             };
             var resultsTask = Task.FromResult((IEnumerable<IRError>)results);
 
-            var result = await resultsTask.ToRUnitTaskAsync();
+            var result = await resultsTask.ToRUnitTask();
 
             Assert.True(result.GetErrors().SequenceEqual(results));
         }
