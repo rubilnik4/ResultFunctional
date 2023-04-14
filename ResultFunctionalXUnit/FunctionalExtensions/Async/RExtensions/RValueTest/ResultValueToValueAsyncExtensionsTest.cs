@@ -22,8 +22,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = await resultValue.RValueLiftMatchAsync(
-                okFunc: AsyncFunctions.IntToStringAsync,
-                badFunc: errors => AsyncFunctions.IntToStringAsync(errors.Count));
+                AsyncFunctions.IntToStringAsync,
+                errors => AsyncFunctions.IntToStringAsync(errors.Count));
 
             Assert.Equal(initialValue.ToString(), resultAfterWhere);
         }
@@ -38,8 +38,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValue = errorsInitial.ToRValue<int>();
 
             var resultAfterWhere = await resultValue.RValueLiftMatchAsync(
-                okFunc: AsyncFunctions.IntToStringAsync,
-                badFunc: errors => AsyncFunctions.IntToStringAsync(errors.Count));
+                AsyncFunctions.IntToStringAsync,
+                errors => AsyncFunctions.IntToStringAsync(errors.Count));
 
             Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere);
         }

@@ -21,8 +21,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultCollection = initialCollection.ToRList();
 
             var resultAfterWhere = resultCollection.RListLiftMatch(
-                okFunc: Collections.CollectionToString,
-                badFunc: _ => Collections.GetEmptyStringList());
+                Collections.CollectionToString,
+                _ => Collections.GetEmptyStringList());
 
             Assert.True(Collections.CollectionToString(initialCollection).SequenceEqual(resultAfterWhere));
         }
@@ -37,8 +37,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var resultCollection = errorsInitial.ToRList<int>();
 
             var resultAfterWhere = resultCollection.RListLiftMatch(
-                okFunc: Collections.CollectionToString,
-                badFunc: errors => new List<string> { errors.Count.ToString() });
+                Collections.CollectionToString,
+                errors => new List<string> { errors.Count.ToString() });
 
             Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere.First());
         }

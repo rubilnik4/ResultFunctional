@@ -24,9 +24,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = await resultValue.ResultValueContinueToCollectionAsync(_ => true,
-                okFunc: NumberToCollectionAsync,
-                badFunc: _ => CreateErrorListTwoTestTask());
+            var resultAfterWhere = await resultValue.RValueListOptionAsync(_ => true,
+                NumberToCollectionAsync,
+                _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Success);
             Assert.True((await NumberToCollectionAsync(initialValue)).SequenceEqual(resultAfterWhere.GetValue()));
@@ -42,9 +42,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValue = initialValue.ToRValue();
 
             var errorsBad = CreateErrorListTwoTestTask();
-            var resultAfterWhere = await resultValue.ResultValueContinueToCollectionAsync(_ => false,
-                okFunc: NumberToCollectionAsync,
-                badFunc: _ => errorsBad);
+            var resultAfterWhere = await resultValue.RValueListOptionAsync(_ => false,
+                NumberToCollectionAsync,
+                _ => errorsBad);
 
             Assert.True(resultAfterWhere.Failure);
             Assert.Equal(errorsBad.Result.Count, resultAfterWhere.GetErrors().Count);
@@ -59,9 +59,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = await resultValue.ResultValueContinueToCollectionAsync(_ => true,
-                okFunc: NumberToCollectionAsync,
-                badFunc: _ => CreateErrorListTwoTestTask());
+            var resultAfterWhere = await resultValue.RValueListOptionAsync(_ => true,
+                NumberToCollectionAsync,
+                _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Failure);
             Assert.Single(resultAfterWhere.GetErrors());
@@ -76,9 +76,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorsInitial = CreateErrorTest();
             var resultValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = await resultValue.ResultValueContinueToCollectionAsync(_ => false,
-                okFunc: NumberToCollectionAsync,
-                badFunc: _ => CreateErrorListTwoTestTask());
+            var resultAfterWhere = await resultValue.RValueListOptionAsync(_ => false,
+                NumberToCollectionAsync,
+                _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Failure);
             Assert.Single(resultAfterWhere.GetErrors());
@@ -93,9 +93,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = await resultValue.ResultValueOkBadToCollectionAsync(
-                okFunc: NumberToCollectionAsync,
-                badFunc: _ => Task.FromResult((IReadOnlyCollection<int>)new List<int>()));
+            var resultAfterWhere = await resultValue.RValueListMatchAsync(
+                NumberToCollectionAsync,
+                _ => Task.FromResult((IReadOnlyCollection<int>)new List<int>()));
 
             Assert.True(resultAfterWhere.Success);
             Assert.True((await NumberToCollectionAsync(initialValue)).SequenceEqual(resultAfterWhere.GetValue()));
@@ -110,9 +110,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorsInitial = CreateErrorListTwoTest();
             var resultValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = await resultValue.ResultValueOkBadToCollectionAsync(
-                okFunc: NumberToCollectionAsync,
-                badFunc: errors => Task.FromResult((IReadOnlyCollection<int>)new List<int> { errors.Count }));
+            var resultAfterWhere = await resultValue.RValueListMatchAsync(
+                NumberToCollectionAsync,
+                errors => Task.FromResult((IReadOnlyCollection<int>)new List<int> { errors.Count }));
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.GetValue().First());

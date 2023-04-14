@@ -24,8 +24,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
 
             var resultAfterWhere =
                 resultValue.RValueListOption(_ => true,
-                                                okFunc: NumberToCollection,
-                                                badFunc: _ => CreateErrorListTwoTest());
+                                                NumberToCollection,
+                                                _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.Success);
             Assert.True(NumberToCollection(initialValue).SequenceEqual(resultAfterWhere.GetValue()));
@@ -43,8 +43,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
 
             var resultAfterWhere =
                 resultValue.RValueListOption(_ => false,
-                                                okFunc: NumberToCollection,
-                                                badFunc: _ => errorBad);
+                                                NumberToCollection,
+                                                _ => errorBad);
 
             Assert.True(resultAfterWhere.Failure);
             Assert.Equal(errorBad.Count, resultAfterWhere.GetErrors().Count);
@@ -61,8 +61,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
 
             var resultAfterWhere =
                 resultValue.RValueListOption(_ => true,
-                                                okFunc: NumberToCollection,
-                                                badFunc: _ => CreateErrorListTwoTest());
+                                                NumberToCollection,
+                                                _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.Failure);
             Assert.Single(resultAfterWhere.GetErrors());
@@ -79,8 +79,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
 
             var resultAfterWhere =
                 resultValue.RValueListOption(_ => false,
-                                                okFunc: NumberToCollection,
-                                                badFunc: _ => CreateErrorListTwoTest());
+                                                NumberToCollection,
+                                                _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.Failure);
             Assert.Single(resultAfterWhere.GetErrors());
@@ -97,8 +97,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
 
             var resultAfterWhere =
                 resultValue.RValueListMatch(
-                    okFunc: NumberToCollection,
-                    badFunc: _ => new List<int>());
+                    NumberToCollection,
+                    _ => new List<int>());
 
             Assert.True(resultAfterWhere.Success);
             Assert.True(NumberToCollection(initialValue).SequenceEqual(resultAfterWhere.GetValue()));
@@ -115,8 +115,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
 
             var resultAfterWhere =
                 resultValue.RValueListMatch(
-                    okFunc: NumberToCollection,
-                    badFunc: errors => new List<int> { errors.Count });
+                    NumberToCollection,
+                    errors => new List<int> { errors.Count });
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.GetValue().First());

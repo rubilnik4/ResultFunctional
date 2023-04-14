@@ -39,7 +39,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             int numberAfterVoid =
                 await initialNumber.
                 VoidSomeAsync(number => number > 0,
-                    action: number => voidObjectMock.Object.TestNumberVoidAsync(number));
+                    number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
             voidObjectMock.Verify(voidObject => voidObject.TestNumberVoidAsync(initialNumber), Times.Once);
@@ -57,7 +57,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             int numberAfterVoid =
                 await initialNumber.
                 VoidSomeAsync(number => number < 0,
-                    action: number => voidObjectMock.Object.TestNumberVoidAsync(number));
+                    number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
             voidObjectMock.Verify(voidObject => voidObject.TestNumberVoid(initialNumber), Times.Never);

@@ -24,8 +24,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultCollection = RListFactory.SomeTask(initialCollection);
 
             var resultAfterWhere = await resultCollection.RListLiftMatchAwait(
-                okFunc: Collections.CollectionToStringAsync,
-                badFunc: _ => TaskEnumerableExtensions.ToTaskCollection(Collections.GetEmptyStringList()));
+                Collections.CollectionToStringAsync,
+                _ => TaskEnumerableExtensions.ToTaskCollection(Collections.GetEmptyStringList()));
 
             Assert.True(Collections.CollectionToString(initialCollection).SequenceEqual(resultAfterWhere));
         }
@@ -40,8 +40,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
 
             var resultAfterWhere = await resultCollection.RListLiftMatchAwait(
-                okFunc: Collections.CollectionToStringAsync,
-                badFunc: errors => TaskEnumerableExtensions.ToTaskCollection(new List<string> { errors.Count.ToString() }));
+                Collections.CollectionToStringAsync,
+                errors => TaskEnumerableExtensions.ToTaskCollection(new List<string> { errors.Count.ToString() }));
 
             Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere.First());
         }

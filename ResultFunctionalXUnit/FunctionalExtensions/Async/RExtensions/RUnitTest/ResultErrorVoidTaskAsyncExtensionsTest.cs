@@ -124,7 +124,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOk.RUnitVoidWhereTask(() => true,
-                action: () => voidObjectMock.Object.TestVoidAsync());
+                () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultOk.Result));
             voidObjectMock.Verify(voidObject => voidObject.TestVoidAsync(), Times.Once);
@@ -140,7 +140,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultOk.RUnitVoidWhereTask(() => false,
-                action: () => voidObjectMock.Object.TestVoidAsync());
+                () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultOk.Result));
             voidObjectMock.Verify(voidObject => voidObject.TestVoidAsync(), Times.Never);
@@ -157,7 +157,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.RUnitVoidWhereTask(() => true,
-                action: () => voidObjectMock.Object.TestVoidAsync());
+                () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultError.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
@@ -176,7 +176,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = await resultError.RUnitVoidWhereTask(() => false,
-                action: () => voidObjectMock.Object.TestVoidAsync());
+                () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultError.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));

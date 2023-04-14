@@ -20,8 +20,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             string testAfterWhere =
                await Task.FromResult(test).OptionTask(testWhere => !String.IsNullOrWhiteSpace(testWhere),
-                okFunc: testWhere => testWhere.ToLowerInvariant(),
-                badFunc: testWhere => testWhere);
+                testWhere => testWhere.ToLowerInvariant(),
+                testWhere => testWhere);
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }
@@ -37,8 +37,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             int numberAfterTest =
                await Task.FromResult(testParseNumber).OptionTask(
                  numberToParse => Int32.TryParse(numberToParse, out _),
-                okFunc: Int32.Parse,
-                badFunc: numberToParse => 0);
+                Int32.Parse,
+                numberToParse => 0);
 
             Assert.Equal(44, numberAfterTest);
         }
@@ -53,8 +53,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             string testAfterWhere =
                 await Task.FromResult(test).OptionTask(testWhere => testWhere.Length == 0,
-                okFunc: testWhere => testWhere,
-                badFunc: testWhere => testWhere.ToLower());
+                testWhere => testWhere,
+                testWhere => testWhere.ToLower());
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }
@@ -70,8 +70,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             int numberAfterTest =
                 await Task.FromResult(testParseNumber).OptionTask(
                 numberToParse => Int32.TryParse(numberToParse, out _),
-                okFunc: numberToParse => 0,
-                badFunc: numberToParse => numberToParse.Length);
+                numberToParse => 0,
+                numberToParse => numberToParse.Length);
 
             Assert.Equal(testParseNumber.Length, numberAfterTest);
         }
@@ -87,7 +87,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             string testAfterWhere =
                 await Task.FromResult(test).OptionSomeTask(testWhere => !String.IsNullOrWhiteSpace(testWhere),
-                okFunc: testWhere => testWhere.ToLowerInvariant());
+                testWhere => testWhere.ToLowerInvariant());
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }
@@ -102,7 +102,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             string testAfterWhere =
                 await Task.FromResult(test).OptionNoneTask(testWhere => testWhere.Length == 0,
-                    badFunc: testWhere => testWhere.ToLower());
+                    testWhere => testWhere.ToLower());
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }

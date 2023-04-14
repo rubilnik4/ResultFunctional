@@ -19,8 +19,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
 
             string testAfterWhere = 
                 test.Option(testWhere => !String.IsNullOrWhiteSpace(testWhere),
-                someFunc: testWhere => testWhere.ToLowerInvariant(),
-                noneFunc: testWhere => testWhere);
+                testWhere => testWhere.ToLowerInvariant(),
+                testWhere => testWhere);
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }
@@ -35,8 +35,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
 
             int numberAfterTest =
                 testParseNumber.Option(numberToParse => Int32.TryParse(numberToParse, out _),
-                someFunc: Int32.Parse,
-                noneFunc: _ => 0);
+                Int32.Parse,
+                _ => 0);
 
             Assert.Equal(44, numberAfterTest);
         }
@@ -51,8 +51,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
 
             string testAfterWhere =
                 test.Option(testWhere => testWhere.Length == 0,
-                someFunc: testWhere => testWhere,
-                noneFunc: testWhere => testWhere.ToLower());
+                testWhere => testWhere,
+                testWhere => testWhere.ToLower());
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }
@@ -67,8 +67,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
 
             int numberAfterTest =
                 testParseNumber.Option(numberToParse => Int32.TryParse(numberToParse, out _),
-                someFunc: _ => 0,
-                noneFunc: numberToParse => numberToParse.Length);
+                _ => 0,
+                numberToParse => numberToParse.Length);
 
             Assert.Equal(testParseNumber.Length, numberAfterTest);
         }
@@ -84,7 +84,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
 
             string testAfterWhere =
                 test.OptionSome(testWhere => !String.IsNullOrWhiteSpace(testWhere),
-                someFunc: testWhere => testWhere.ToLowerInvariant());
+                testWhere => testWhere.ToLowerInvariant());
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }
@@ -99,7 +99,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
 
             string testAfterWhere =
                 test.OptionNone(testWhere => testWhere.Length == 0,
-                    noneFunc: testWhere => testWhere.ToLower());
+                    testWhere => testWhere.ToLower());
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }

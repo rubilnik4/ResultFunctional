@@ -19,8 +19,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValue = initialValue.ToRValue();
 
             var resultAfterWhere = resultValue.RValueLiftMatch(
-                okFunc: number => number.ToString(),
-                badFunc: errors => errors.Count.ToString());
+                number => number.ToString(),
+                errors => errors.Count.ToString());
 
             Assert.Equal(initialValue.ToString(), resultAfterWhere);
         }
@@ -35,8 +35,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultValue = errorsInitial.ToRValue<int>();
       
             var resultAfterWhere = resultValue.RValueLiftMatch(
-                okFunc: number => number.ToString(),
-                badFunc: errors => errors.Count.ToString());
+                number => number.ToString(),
+                errors => errors.Count.ToString());
 
             Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere);
         }

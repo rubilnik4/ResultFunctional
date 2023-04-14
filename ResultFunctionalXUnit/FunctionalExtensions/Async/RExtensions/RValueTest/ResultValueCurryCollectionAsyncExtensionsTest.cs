@@ -27,7 +27,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValueFunc = CurryFunctions.IntCollectionToString.ToRValue();
             var resultArgument = RListFactory.SomeTask(initialValue);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal(CurryFunctions.IntCollectionToString(initialValue), resultOut.GetValue().Invoke());
@@ -44,7 +44,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorArgument = CreateErrorTest();
             var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -62,7 +62,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValueFunc = RValueFactory.None<Func<IReadOnlyCollection<int>, string>>(errorFunc);
             var resultArgument = RListFactory.SomeTask(Collections.GetRangeNumber());
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -81,7 +81,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorArgument = CreateErrorTest();
             var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);
@@ -100,7 +100,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValueFunc = CurryFunctions.AggregateCollectionTwoToString.ToRValue();
             var resultArgument = RListFactory.SomeTask(initialValue);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal(CurryFunctions.AggregateCollectionTwoToString(initialValue, 2), resultOut.GetValue().Invoke(2));
@@ -117,7 +117,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorArgument = CreateErrorTest();
             var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -136,7 +136,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValueFunc = RValueFactory.None<Func<IReadOnlyCollection<int>, int, string>>(errorFunc);
             var resultArgument = RListFactory.SomeTask(initialValue);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -155,7 +155,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorArgument = CreateErrorTest();
             var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);
@@ -174,7 +174,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValueFunc = CurryFunctions.AggregateCollectionThreeToString.ToRValue();
             var resultArgument = RListFactory.SomeTask(initialValue);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal(CurryFunctions.AggregateCollectionThreeToString(initialValue, 3, 3), resultOut.GetValue().Invoke(3, 3));
@@ -191,7 +191,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorArgument = CreateErrorTest();
             var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -210,7 +210,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValueFunc = RValueFactory.None<Func<IReadOnlyCollection<int>, int, int, string>>(errorFunc);
             var resultArgument = RListFactory.SomeTask(initialValue);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -229,7 +229,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorArgument = CreateErrorTest();
             var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);
@@ -248,7 +248,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValueFunc = CurryFunctions.AggregateCollectionFourToString.ToRValue();
             var resultArgument = RListFactory.SomeTask(initialValue);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal(CurryFunctions.AggregateCollectionFourToString(initialValue, 4, 4, 4), resultOut.GetValue().Invoke(4, 4, 4));
@@ -265,7 +265,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorArgument = CreateErrorTest();
             var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -284,7 +284,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValueFunc = RValueFactory.None<Func<IReadOnlyCollection<int>, int, int, int, string>>(errorFunc);
             var resultArgument = RListFactory.SomeTask(initialValue);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -303,7 +303,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorArgument = CreateErrorTest();
             var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);
@@ -322,7 +322,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValueFunc = CurryFunctions.AggregateCollectionFiveToString.ToRValue();
             var resultArgument = RListFactory.SomeTask(initialValue);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Success);
             Assert.Equal(CurryFunctions.AggregateCollectionFiveToString(initialValue, 5, 5, 5, 5), resultOut.GetValue().Invoke(5, 5, 5, 5));
@@ -339,7 +339,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorArgument = CreateErrorTest();
             var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -358,7 +358,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValueFunc = RValueFactory.None<Func<IReadOnlyCollection<int>, int, int, int, int, string>>(errorFunc);
             var resultArgument = RListFactory.SomeTask(initialValue);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Single(resultOut.GetErrors());
@@ -377,7 +377,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorArgument = CreateErrorTest();
             var resultArgument = RListFactory.NoneTask<int>(errorArgument);
 
-            var resultOut = await resultValueFunc.RValueCurryListSome(resultArgument);
+            var resultOut = await resultValueFunc.RValueCurryListAsync(resultArgument);
 
             Assert.True(resultOut.Failure);
             Assert.Equal(2, resultOut.GetErrors().Count);

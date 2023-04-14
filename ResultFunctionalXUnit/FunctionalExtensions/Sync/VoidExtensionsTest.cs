@@ -37,7 +37,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
             int numberAfterVoid =
                 initialNumber.
                 VoidSome(number => number > 0,
-                    action: number => voidObjectMock.Object.TestNumberVoid(number));
+                    number => voidObjectMock.Object.TestNumberVoid(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
             voidObjectMock.Verify(voidObject => voidObject.TestNumberVoid(initialNumber), Times.Once);
@@ -55,7 +55,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
             int numberAfterVoid =
                 initialNumber.
                 VoidSome(number => number < 0,
-                    action: number => voidObjectMock.Object.TestNumberVoid(number));
+                    number => voidObjectMock.Object.TestNumberVoid(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
             voidObjectMock.Verify(voidObject => voidObject.TestNumberVoid(initialNumber), Times.Never);

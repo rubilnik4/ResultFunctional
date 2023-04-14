@@ -123,7 +123,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RUnitTest
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultOk.RUnitVoidOption(() => true,
-                action: () => voidObjectMock.Object.TestVoid());
+                () => voidObjectMock.Object.TestVoid());
 
             Assert.True(resultAfterVoid.Equals(resultOk));
             voidObjectMock.Verify(voidObject => voidObject.TestVoid(), Times.Once);
@@ -139,7 +139,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RUnitTest
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultOk.RUnitVoidOption(() => false,
-                action: () => voidObjectMock.Object.TestVoid());
+                () => voidObjectMock.Object.TestVoid());
 
             Assert.True(resultAfterVoid.Equals(resultOk));
             voidObjectMock.Verify(voidObject => voidObject.TestVoid(), Times.Never);
@@ -156,7 +156,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RUnitTest
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultError.RUnitVoidOption(() => true,
-                action: () => voidObjectMock.Object.TestVoid());
+                () => voidObjectMock.Object.TestVoid());
 
             Assert.True(resultAfterVoid.Equals(resultError));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
@@ -175,7 +175,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RUnitTest
             var voidObjectMock = new Mock<IVoidObject>();
 
             var resultAfterVoid = resultError.RUnitVoidOption(() => false,
-                action: () => voidObjectMock.Object.TestVoid());
+                () => voidObjectMock.Object.TestVoid());
 
             Assert.True(resultAfterVoid.Equals(resultError));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));

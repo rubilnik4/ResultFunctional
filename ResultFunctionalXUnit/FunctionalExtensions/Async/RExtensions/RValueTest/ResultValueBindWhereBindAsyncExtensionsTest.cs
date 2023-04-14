@@ -27,9 +27,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = RValueFactory.SomeTask(initialValue);
 
-            var resultAfterWhere = await resultValue.ResultValueBindContinueBindAsync(_ => true,
-                okFunc: number => RValueFactory.SomeTask(number.ToString()),
-                badFunc: _ => CreateErrorListTwoTestTask());
+            var resultAfterWhere = await resultValue.RValueBindOptionAwait(_ => true,
+                number => RValueFactory.SomeTask(number.ToString()),
+                _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(initialValue.ToString(), resultAfterWhere.GetValue());
@@ -45,9 +45,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValue = RValueFactory.SomeTask(initialValue);
 
             var errorsBad = CreateErrorEnumerableTwoTest();
-            var resultAfterWhere = await resultValue.ResultValueBindContinueBindAsync(_ => false,
-                okFunc: _ => RValueFactory.SomeTask(String.Empty),
-                badFunc: _ => Task.FromResult(errorsBad));
+            var resultAfterWhere = await resultValue.RValueBindOptionAwait(_ => false,
+                _ => RValueFactory.SomeTask(String.Empty),
+                _ => Task.FromResult(errorsBad));
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorsBad.SequenceEqual(resultAfterWhere.GetErrors()));
@@ -62,9 +62,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultValue.ResultValueBindContinueBindAsync(_ => true,
-                okFunc: _ => RValueFactory.SomeTask(String.Empty),
-                badFunc: _ => CreateErrorListTwoTestTask());
+            var resultAfterWhere = await resultValue.RValueBindOptionAwait(_ => true,
+                _ => RValueFactory.SomeTask(String.Empty),
+                _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Failure);
             Assert.Single(resultAfterWhere.GetErrors());
@@ -79,9 +79,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultValue.ResultValueBindContinueBindAsync(_ => false,
-                okFunc: _ => RValueFactory.SomeTask(String.Empty),
-                badFunc: _ => CreateErrorListTwoTestTask());
+            var resultAfterWhere = await resultValue.RValueBindOptionAwait(_ => false,
+                _ => RValueFactory.SomeTask(String.Empty),
+                _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Failure);
             Assert.Single(resultAfterWhere.GetErrors());
@@ -97,8 +97,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValue = RValueFactory.SomeTask(initialValue);
 
             var resultAfterWhere = await resultValue.RValueBindWhereAwait(_ => true,
-                okFunc: number => RValueFactory.SomeTask(number.ToString()),
-                badFunc: _ => RValueFactory.NoneTask<string>(CreateErrorListTwoTest()));
+                number => RValueFactory.SomeTask(number.ToString()),
+                _ => RValueFactory.NoneTask<string>(CreateErrorListTwoTest()));
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(initialValue.ToString(), resultAfterWhere.GetValue());
@@ -115,8 +115,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
 
             var errorsBad = CreateErrorEnumerableTwoTest();
             var resultAfterWhere = await resultValue.RValueBindWhereAwait(_ => false,
-                okFunc: _ => RValueFactory.SomeTask(String.Empty),
-                badFunc: _ => RValueFactory.NoneTask<string>(errorsBad));
+                _ => RValueFactory.SomeTask(String.Empty),
+                _ => RValueFactory.NoneTask<string>(errorsBad));
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorsBad.SequenceEqual(resultAfterWhere.GetErrors()));
@@ -132,8 +132,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
             var resultAfterWhere = await resultValue.RValueBindWhereAwait(_ => true,
-                okFunc: _ => RValueFactory.SomeTask(String.Empty),
-                badFunc: _ => RValueFactory.NoneTask<string>(CreateErrorListTwoTest()));
+                _ => RValueFactory.SomeTask(String.Empty),
+                _ => RValueFactory.NoneTask<string>(CreateErrorListTwoTest()));
 
             Assert.True(resultAfterWhere.Failure);
             Assert.Single(resultAfterWhere.GetErrors());
@@ -149,8 +149,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
             var resultAfterWhere = await resultValue.RValueBindWhereAwait(_ => false,
-                okFunc: _ => RValueFactory.SomeTask(String.Empty),
-                badFunc: _ => RValueFactory.NoneTask<string>(CreateErrorListTwoTest()));
+                _ => RValueFactory.SomeTask(String.Empty),
+                _ => RValueFactory.NoneTask<string>(CreateErrorListTwoTest()));
 
             Assert.True(resultAfterWhere.Failure);
             Assert.Single(resultAfterWhere.GetErrors());
@@ -166,8 +166,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValue = RValueFactory.SomeTask(initialValue);
 
             var resultAfterWhere = await resultValue.RValueBindMatchAwait(
-                okFunc: number => RValueFactory.SomeTask(number.ToString()),
-                badFunc: _ => RValueFactory.SomeTask(String.Empty));
+                number => RValueFactory.SomeTask(number.ToString()),
+                _ => RValueFactory.SomeTask(String.Empty));
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(initialValue.ToString(), resultAfterWhere.GetValue());
@@ -183,8 +183,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValue = RValueFactory.NoneTask<int>(errorsInitial);
 
             var resultAfterWhere = await resultValue.RValueBindMatchAwait(
-                okFunc: _ => RValueFactory.SomeTask(String.Empty),
-                badFunc: errors => RValueFactory.SomeTask(errors.Count.ToString()));
+                _ => RValueFactory.SomeTask(String.Empty),
+                errors => RValueFactory.SomeTask(errors.Count.ToString()));
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere.GetValue());
