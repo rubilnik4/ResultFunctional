@@ -21,7 +21,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var taskCollection = Task.FromResult(GetRangeNumber());
 
-            var result = await taskCollection.ToResultCollectionWhereBindAsync(_ => true,
+            var result = await taskCollection.ToRListOptionAwait(_ => true,
                                                                                 _ => CreateErrorTestTask());
 
             Assert.True(result.Success);
@@ -38,7 +38,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var taskCollection = Task.FromResult(initialCollection);
             var errorInitial = CreateErrorTest();
 
-            var result = await taskCollection.ToResultCollectionWhereBindAsync(_ => false,
+            var result = await taskCollection.ToRListOptionAwait(_ => false,
                                                                                _ => Task.FromResult(errorInitial));
 
             Assert.True(result.Failure);

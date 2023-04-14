@@ -26,7 +26,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultOkTask = RListFactory.SomeTask(initialCollection);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOkTask.ResultCollectionVoidOkTaskAsync(
+            var resultAfterVoid = await resultOkTask.RListVoidSomeTask(
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultOkTask.Result));
@@ -44,7 +44,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultErrorTask = RListFactory.NoneTask<int>(initialError);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultErrorTask.ResultCollectionVoidOkTaskAsync(
+            var resultAfterVoid = await resultErrorTask.RListVoidSomeTask(
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
@@ -62,7 +62,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultErrorTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultErrorTask.ResultCollectionVoidBadTaskAsync(
+            var resultAfterVoid = await resultErrorTask.RListVoidNoneTask(
                 errors => voidObjectMock.Object.TestNumbersVoid(GetListByErrorsCount(errors)));
 
             Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
@@ -80,7 +80,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultErrorTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultErrorTask.ResultCollectionVoidBadTaskAsync(
+            var resultAfterVoid = await resultErrorTask.RListVoidNoneTask(
                 errors => voidObjectMock.Object.TestNumbersVoid(GetListByErrorsCount(errors)));
 
             Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
@@ -98,7 +98,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultOk = RListFactory.SomeTask(initialCollection);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.ResultCollectionVoidOkBadTaskAsync(numbers => voidObjectMock.Object.TestNumbersVoid(numbers),
+            var resultAfterVoid = await resultOk.RListVoidMatchTask(numbers => voidObjectMock.Object.TestNumbersVoid(numbers),
                                                                      _ => voidObjectMock.Object.TestVoid());
 
             Assert.True(resultAfterVoid.Equals(resultOk.Result));
@@ -116,7 +116,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultError = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultCollectionVoidOkBadTaskAsync(
+            var resultAfterVoid = await resultError.RListVoidMatchTask(
                 _ => voidObjectMock.Object.TestVoid(),
                 errors => voidObjectMock.Object.TestNumbersVoid(new List<int> { errors.Count }));
 
@@ -135,7 +135,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultOkTask = RListFactory.SomeTask(initialCollection);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOkTask.ResultCollectionVoidOkWhereTaskAsync(_ => true,
+            var resultAfterVoid = await resultOkTask.RListVoidOptionTask(_ => true,
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultOkTask.Result));
@@ -153,7 +153,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultOkTask = RListFactory.SomeTask(initialCollection);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOkTask.ResultCollectionVoidOkWhereTaskAsync(_ => false,
+            var resultAfterVoid = await resultOkTask.RListVoidOptionTask(_ => false,
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultOkTask.Result));
@@ -171,7 +171,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultErrorTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultErrorTask.ResultCollectionVoidOkWhereTaskAsync(_ => true,
+            var resultAfterVoid = await resultErrorTask.RListVoidOptionTask(_ => true,
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
@@ -190,7 +190,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultErrorTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultErrorTask.ResultCollectionVoidOkWhereTaskAsync(_ => false,
+            var resultAfterVoid = await resultErrorTask.RListVoidOptionTask(_ => false,
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
             Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));

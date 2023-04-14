@@ -8,7 +8,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
     /// <summary>
     /// Extension methods for result collection monad task function with exception handling
     /// </summary>
-    public static class ResultCollectionBindTryTaskAsyncExtensions
+    public static class RListBindTryAsyncExtensions
     {
         /// <summary>
         /// Execute result collection monad task function with exception handling
@@ -17,8 +17,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="func">Result collection function</param>
         /// <param name="exceptionFunc">Exception function</param>
         /// <returns>Result collection</returns>
-        public static async Task<IRList<TValue>> ResultCollectionBindTryTaskAsync<TValue>(Func<Task<IRList<TValue>>> func,
-                                                                                          Func<Exception, IRError> exceptionFunc)
+        public static async Task<IRList<TValue>> RListBindTryAsync<TValue>(Func<Task<IRList<TValue>>> func,
+                                                                           Func<Exception, IRError> exceptionFunc)
             where TValue : notnull
         {
             try
@@ -38,9 +38,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="func">Result collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
-        public static async Task<IRList<TValue>> ResultCollectionBindTryTaskAsync<TValue>(Func<Task<IRList<TValue>>> func,
+        public static async Task<IRList<TValue>> RListBindTryAsync<TValue>(Func<Task<IRList<TValue>>> func,
                                                                                           IRError error)
             where TValue : notnull =>
-            await ResultCollectionBindTryTaskAsync(func, error.AppendException);
+            await RListBindTryAsync(func, error.AppendException);
     }
 }

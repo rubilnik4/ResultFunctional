@@ -31,7 +31,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueOut : notnull =>
             await @this.
             RValueOptionAsync(predicate, someFunc, noneFunc).
-            ToRListTaskAsync();
+            ToRListTask();
 
         /// <summary>
         /// Execute result value async function converting to result value base on predicate condition
@@ -86,7 +86,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueOut : notnull =>
             await @this.
             RValueMatchAsync(someFunc, noneFunc).
-            ToRListTaskAsync();
+            ToRListTask();
 
         /// <summary>
         /// Execute result value async function converting to result value if incoming result value hasn't errors
@@ -102,6 +102,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueOut : notnull =>
             await @this.
             RValueSomeAsync(someFunc).
-            ToRListTaskAsync();
+            ToRListTask();
     }
 }

@@ -9,7 +9,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
     /// <summary>
     /// Task result collection async reorder extension methods
     /// </summary>
-    public static class ResultCollectionToCollectionBindAsyncExtensions
+    public static class RListLiftAwaitExtensions
     {
         /// <summary>
         /// Async converting task result collection to ordinal collection
@@ -20,12 +20,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="someFunc">Function if incoming result collection hasn't errors</param>
         /// <param name="noneFunc">Function if incoming result collection has errors</param>
         /// <returns>Outgoing collection</returns>   
-        public static async Task<IReadOnlyCollection<TValueOut>> ResultCollectionToCollectionOkBadBindAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+        public static async Task<IReadOnlyCollection<TValueOut>> RListLiftMatchAwait<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
                                                                                                                                 Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> someFunc,
                                                                                                                                 Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValueOut>>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.ResultCollectionToCollectionOkBadAsync(someFunc, noneFunc));
+            MapAwait(awaitedThis => awaitedThis.RListLiftMatchAsync(someFunc, noneFunc));
     }
 }

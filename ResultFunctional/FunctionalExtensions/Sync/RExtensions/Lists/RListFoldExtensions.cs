@@ -7,7 +7,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
     /// <summary>
     /// Result collections extension methods
     /// </summary>
-    public static class RListExtensions
+    public static class RListFoldExtensions
     {
         /// <summary>
         /// Aggregate collection of result collections

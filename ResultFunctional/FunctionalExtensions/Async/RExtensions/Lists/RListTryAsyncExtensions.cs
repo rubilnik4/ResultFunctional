@@ -9,7 +9,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
     /// <summary>
     /// Async exception handling result collection extension methods
     /// </summary>
-    public static class ResultCollectionTryAsyncExtensions
+    public static class RListTryAsyncExtensions
     {
         /// <summary>
         /// Execute async function and handle exception with result collection converting
@@ -18,13 +18,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="func">Collection function</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result collection</returns>
-        public static async Task<IRList<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IReadOnlyCollection<TValue>>> func,
+        public static async Task<IRList<TValue>> RListTryAsync<TValue>(Func<Task<IReadOnlyCollection<TValue>>> func,
                                                                                   Func<Exception, IRError> exceptionFunc)
             where TValue : notnull
         {
             try
             {
-                return await func.Invoke().ToRListTaskAsync();
+                return await func.Invoke().ToRListTask();
             }
             catch (Exception ex)
             {
@@ -39,9 +39,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="func">Collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
-        public static async Task<IRList<TValue>> ResultCollectionTryAsync<TValue>(Func<Task<IReadOnlyCollection<TValue>>> func,
+        public static async Task<IRList<TValue>> RListTryAsync<TValue>(Func<Task<IReadOnlyCollection<TValue>>> func,
                                                                                   IRError error)
             where TValue : notnull =>
-            await ResultCollectionTryAsync(func, error.AppendException);
+            await RListTryAsync(func, error.AppendException);
     }
 }

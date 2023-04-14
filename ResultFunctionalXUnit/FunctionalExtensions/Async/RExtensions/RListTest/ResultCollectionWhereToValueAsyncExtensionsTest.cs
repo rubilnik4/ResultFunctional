@@ -93,7 +93,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var numberCollection = Collections.GetRangeNumber();
             var resultCollection = numberCollection.ToRList();
 
-            var resultAfterWhere = await resultCollection.ResultCollectionOkBadToValueAsync(
+            var resultAfterWhere = await resultCollection.RListValueMatchAsync(
                 okFunc: Collections.AggregateToStringAsync,
                 badFunc: _ => Task.FromResult(String.Empty));
 
@@ -110,7 +110,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorsInitial = CreateErrorListTwoTest();
             var resultCollection = errorsInitial.ToRList<int>();
 
-            var resultAfterWhere = await resultCollection.ResultCollectionOkBadToValueAsync(
+            var resultAfterWhere = await resultCollection.RListValueMatchAsync(
                 okFunc: Collections.AggregateToStringAsync,
                 badFunc: errors => Task.FromResult(errors.Count.ToString()));
 
@@ -127,7 +127,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var numberCollection = Collections.GetRangeNumber();
             var resultCollection = numberCollection.ToRList();
 
-            var resultAfterWhere = await resultCollection.ResultCollectionOkToValueAsync(Collections.AggregateToStringAsync);
+            var resultAfterWhere = await resultCollection.RListValueSomeAsync(Collections.AggregateToStringAsync);
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(await Collections.AggregateToStringAsync(numberCollection), resultAfterWhere.GetValue());
@@ -142,7 +142,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorInitial = CreateErrorTest();
             var resultCollection = errorInitial.ToRList<int>();
 
-            var resultAfterWhere = await resultCollection.ResultCollectionOkToValueAsync(Collections.AggregateToStringAsync);
+            var resultAfterWhere = await resultCollection.RListValueSomeAsync(Collections.AggregateToStringAsync);
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));

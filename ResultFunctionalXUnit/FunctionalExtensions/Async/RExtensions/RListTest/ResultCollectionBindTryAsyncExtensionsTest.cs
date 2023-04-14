@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using ResultFunctional.Models.Factories;
 using ResultFunctionalXUnit.Data;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists.ResultCollectionBindTryTaskAsyncExtensions;
+using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists.RListBindTryAsyncExtensions;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
@@ -19,7 +19,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         [Fact]
         public async Task ResultCollectionTry_Ok()
         {
-            var resultValue = await ResultCollectionBindTryTaskAsync(
+            var resultValue = await RListBindTryAsync(
                 () => RListFactory.SomeTask(DivisionCollection(1)), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Success);
@@ -32,7 +32,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         [Fact]
         public async Task ResultCollectionTry_Exception()
         {
-            var resultValue = await ResultCollectionBindTryTaskAsync(
+            var resultValue = await RListBindTryAsync(
                 () => RListFactory.SomeTask(DivisionCollection(0)), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Failure);
@@ -45,7 +45,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         [Fact]
         public async Task ResultCollectionTryFunc_Ok()
         {
-            var resultValue = await ResultCollectionBindTryTaskAsync(
+            var resultValue = await RListBindTryAsync(
                 () => RListFactory.SomeTask(DivisionCollection(1)), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Success);
@@ -58,7 +58,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         [Fact]
         public async Task ResultCollectionTryFunc_Exception()
         {
-            var resultValue = await ResultCollectionBindTryTaskAsync(
+            var resultValue = await RListBindTryAsync(
                  () => RListFactory.SomeTask(DivisionCollection(0)), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Failure);

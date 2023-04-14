@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
-using static ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists.RListTryExtensions;
+using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists.RListTryAsyncExtensions;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
 {
     /// <summary>
-    /// Exception handling task result collection with conditions extension methods
+    /// Async exception handling task result collection with conditions extension methods
     /// </summary>
-    public static class ResultCollectionTryWhereTaskAsyncExtensions
+    public static class RListTryOptionAwaitExtensions
     {
         /// <summary>
-        /// Execute function and handle exception with task result collection concat
+        /// Execute async function and handle exception with task result collection concat
         /// </summary>
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
@@ -21,16 +21,16 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="func">Collection function</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IRList<TValueOut>> ResultCollectionTryOkTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
-                                                                                                        Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
+        public static async Task<IRList<TValueOut>> RListTrySomeAwait<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+                                                                                                        Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
                                                                                                         Func<Exception, IRError> exceptionFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            ResultCollectionBindOkTaskAsync(value => RListTry(() => func.Invoke(value), exceptionFunc));
+                RListBindSomeAwait(value => RListTryAsync(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
-        /// Execute function and handle exception with task result collection concat
+        /// Execute async function and handle exception with task result collection concat
         /// </summary>
         /// <typeparam name="TValueIn">Incoming type</typeparam>
         /// <typeparam name="TValueOut">Outgoing type</typeparam>
@@ -38,12 +38,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="func">Collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IRList<TValueOut>> ResultCollectionTryOkTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
-                                                                                                     Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
+        public static async Task<IRList<TValueOut>> RListTrySomeAwait<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+                                                                                                     Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
                                                                                                      IRError error)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            ResultCollectionBindOkTaskAsync(value => RListTry(() => func.Invoke(value), error));
+            RListBindSomeAwait(value => RListTryAsync(() => func.Invoke(value), error));
     }
 }

@@ -9,7 +9,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
     /// <summary>
     /// Result collection async action extension methods
     /// </summary>
-    public static class ResultCollectionVoidAsyncExtensions
+    public static class RListVoidAsyncExtensions
     {
         /// <summary>
         /// Execute async action if result collection hasn't errors
@@ -18,7 +18,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result collection</returns>
-        public static async Task<IRList<TValue>> ResultCollectionVoidOkAsync<TValue>(this IRList<TValue> @this,
+        public static async Task<IRList<TValue>> RListVoidSomeAsync<TValue>(this IRList<TValue> @this,
                                                                                      Func<IReadOnlyCollection<TValue>, Task> action)
             where TValue : notnull =>
             await @this.
@@ -32,7 +32,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result collection</returns>  
-        public static async Task<IRList<TValue>> ResultCollectionVoidBadAsync<TValue>(this IRList<TValue> @this,
+        public static async Task<IRList<TValue>> RListVoidNoneAsync<TValue>(this IRList<TValue> @this,
                                                                                   Func<IReadOnlyCollection<IRError>, Task> action)
             where TValue : notnull =>
             await @this.
@@ -47,7 +47,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="actionSome">Action if result collection hasn't errors</param>
         /// <param name="actionNone">Action if result collection has errors</param>
         /// <returns>Unchanged result collection</returns>
-        public static async Task<IRList<TValue>> ResultCollectionVoidOkBadAsync<TValue>(this IRList<TValue> @this,
+        public static async Task<IRList<TValue>> RListVoidMatchAsync<TValue>(this IRList<TValue> @this,
                                                                                                    Func<IReadOnlyCollection<TValue>, Task> actionSome,
                                                                                                    Func<IReadOnlyCollection<IRError>, Task> actionNone)
             where TValue : notnull =>
@@ -64,7 +64,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result collection</returns>
-        public static async Task<IRList<TValue>> ResultCollectionVoidOkWhereAsync<TValue>(this IRList<TValue> @this,
+        public static async Task<IRList<TValue>> RListVoidOptionAsync<TValue>(this IRList<TValue> @this,
                                                                           Func<IReadOnlyCollection<TValue>, bool> predicate,
                                                                           Func<IReadOnlyCollection<TValue>, Task> action)
             where TValue : notnull =>
