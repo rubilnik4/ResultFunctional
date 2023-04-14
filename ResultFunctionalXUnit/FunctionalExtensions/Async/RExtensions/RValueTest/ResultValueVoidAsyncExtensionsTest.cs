@@ -25,7 +25,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultOk = initialValue.ToRValue();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.ResultValueVoidOkAsync(
+            var resultAfterVoid = await resultOk.RValueVoidSomeAsync(
                 number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.True(resultAfterVoid.Equals(resultOk));
@@ -43,7 +43,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultError = initialError.ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultValueVoidOkAsync(
+            var resultAfterVoid = await resultError.RValueVoidSomeAsync(
                 number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.True(resultAfterVoid.Equals(resultError));
@@ -61,7 +61,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultError = errorsInitial.ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultValueVoidBadAsync(
+            var resultAfterVoid = await resultError.RValueVoidNoneAsync(
                 errors => voidObjectMock.Object.TestNumberVoidAsync(errors.Count));
 
             Assert.True(resultAfterVoid.Equals(resultError));
@@ -79,7 +79,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultError = errorsInitial.ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultValueVoidBadAsync(
+            var resultAfterVoid = await resultError.RValueVoidNoneAsync(
                 errors => voidObjectMock.Object.TestNumberVoidAsync(errors.Count));
 
             Assert.True(resultAfterVoid.Equals(resultError));
@@ -97,7 +97,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultOk = initialValue.ToRValue();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.ResultValueVoidOkBadAsync(number => voidObjectMock.Object.TestNumberVoidAsync(number),
+            var resultAfterVoid = await resultOk.RValueVoidMatchAsync(number => voidObjectMock.Object.TestNumberVoidAsync(number),
                                                                 _ => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultOk));
@@ -115,7 +115,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultError = errorsInitial.ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultValueVoidOkBadAsync(_ => voidObjectMock.Object.TestVoidAsync(),
+            var resultAfterVoid = await resultError.RValueVoidMatchAsync(_ => voidObjectMock.Object.TestVoidAsync(),
                                                                 errors => voidObjectMock.Object.TestNumberVoidAsync(errors.Count));
 
             Assert.True(resultAfterVoid.Equals(resultError));
@@ -133,7 +133,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultOk = initialValue.ToRValue();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.ResultValueVoidOkWhereAsync(_ => true,
+            var resultAfterVoid = await resultOk.RValueVoidOptionAsync(_ => true,
                 number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.True(resultAfterVoid.Equals(resultOk));
@@ -151,7 +151,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultOk = initialValue.ToRValue();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.ResultValueVoidOkWhereAsync(_ => false,
+            var resultAfterVoid = await resultOk.RValueVoidOptionAsync(_ => false,
                 number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.True(resultAfterVoid.Equals(resultOk));
@@ -167,7 +167,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultError = CreateErrorTest().ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultValueVoidOkWhereAsync(_ => true,
+            var resultAfterVoid = await resultError.RValueVoidOptionAsync(_ => true,
                 number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.True(resultAfterVoid.Equals(resultError));
@@ -184,7 +184,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultError = CreateErrorTest().ToRValue<int>();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultValueVoidOkWhereAsync(_ => false,
+            var resultAfterVoid = await resultError.RValueVoidOptionAsync(_ => false,
                  number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.True(resultAfterVoid.Equals(resultError));

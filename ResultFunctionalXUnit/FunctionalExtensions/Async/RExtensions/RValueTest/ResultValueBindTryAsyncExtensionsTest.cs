@@ -4,7 +4,7 @@ using ResultFunctional.Models.Factories;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Values.ResultValueBindTryAsyncExtensions;
+using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Values.RValueBindTryAsyncExtensions;
 using static ResultFunctionalXUnit.Mocks.Implementation.SyncFunctions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTest
@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             int initialValue = Numbers.Number;
 
-            var resultValue = await ResultValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
+            var resultValue = await RValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
                                                             Exceptions.ExceptionError());
 
             Assert.True(resultValue.Success);
@@ -37,7 +37,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             const int initialValue = 0;
 
-            var resultValue = await ResultValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
+            var resultValue = await RValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
                                                             Exceptions.ExceptionError());
 
             Assert.True(resultValue.Failure);
@@ -52,7 +52,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             int initialValue = Numbers.Number;
 
-            var resultValue = await ResultValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
+            var resultValue = await RValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
                                                             Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Success);
@@ -67,7 +67,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             const int initialValue = 0;
 
-            var resultValue = await ResultValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
+            var resultValue = await RValueBindTryAsync(() => RValueFactory.SomeTask(Division(initialValue)),
                                                             Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Failure);

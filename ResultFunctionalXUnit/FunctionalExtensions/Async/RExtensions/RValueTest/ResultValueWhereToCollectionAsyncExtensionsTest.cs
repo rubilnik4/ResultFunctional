@@ -127,7 +127,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = await resultValue.ResultValueOkToCollectionAsync(NumberToCollectionAsync);
+            var resultAfterWhere = await resultValue.RValueListSomeAsync(NumberToCollectionAsync);
 
             Assert.True(resultAfterWhere.Success);
             Assert.True((await NumberToCollectionAsync(initialValue)).SequenceEqual(resultAfterWhere.GetValue()));
@@ -142,7 +142,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = await resultValue.ResultValueOkToCollectionAsync(NumberToCollectionAsync);
+            var resultAfterWhere = await resultValue.RValueListSomeAsync(NumberToCollectionAsync);
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));

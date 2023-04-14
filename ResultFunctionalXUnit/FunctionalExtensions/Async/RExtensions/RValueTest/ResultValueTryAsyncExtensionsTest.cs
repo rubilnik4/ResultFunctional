@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Values.ResultValueTryAsyncExtensions;
+using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Values.RValueTryAsyncExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTest
 {
@@ -19,7 +19,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         public async Task ResultValueTryAsync_Ok()
         {
             int initialValue = Numbers.Number;
-            var resultValue = await ResultValueTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
+            var resultValue = await RValueTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Success);
             Assert.Equal(await AsyncFunctions.DivisionAsync(initialValue), resultValue.GetValue());
@@ -32,7 +32,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         public async Task ResultValueTryAsync_Exception()
         {
             const int initialValue = 0;
-            var resultValue = await ResultValueTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
+            var resultValue = await RValueTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Failure);
             Assert.NotNull(resultValue.GetErrors().First().Exception);
@@ -45,7 +45,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         public async Task ResultValueTryAsyncFunc_Ok()
         {
             int initialValue = Numbers.Number;
-            var resultValue = await ResultValueTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionFunc());
+            var resultValue = await RValueTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Success);
             Assert.Equal(await AsyncFunctions.DivisionAsync(initialValue), resultValue.GetValue());
@@ -58,7 +58,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         public async Task ResultValueTryAsyncFunc_Exception()
         {
             const int initialValue = 0;
-            var resultValue = await ResultValueTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionFunc());
+            var resultValue = await RValueTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Failure);
             Assert.NotNull(resultValue.GetErrors().First().Exception);

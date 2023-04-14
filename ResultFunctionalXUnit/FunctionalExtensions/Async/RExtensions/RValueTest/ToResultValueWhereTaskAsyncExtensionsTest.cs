@@ -20,7 +20,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             const int number = 1;
 
-            var result = await Task.FromResult(number).ToResultValueWhereTaskAsync(_ => true,
+            var result = await Task.FromResult(number).ToRValueOptionTask(_ => true,
                                                                               _ => CreateErrorTest());
 
             Assert.True(result.Success);
@@ -36,7 +36,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             const int number = 1;
             var errorInitial = CreateErrorTest();
 
-            var result = await Task.FromResult(number).ToResultValueWhereTaskAsync(_ => false,
+            var result = await Task.FromResult(number).ToRValueOptionTask(_ => false,
                                                                               _ => errorInitial);
 
             Assert.True(result.Failure);
@@ -52,7 +52,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             var testString = StringTest.TestStringTask;
             var errorInitial = CreateErrorTest();
-            var result = await testString.ToResultValueWhereNullTaskAsync(_ => true,
+            var result = await testString.ToRValueEnsureOptionTask(_ => true,
                                                            _ => errorInitial);
 
             Assert.True(result.Success);
@@ -67,7 +67,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             var testString = StringTest.TestStringTask;
             var errorInitial = CreateErrorTest();
-            var result = await testString.ToResultValueWhereNullTaskAsync(_ => false,
+            var result = await testString.ToRValueEnsureOptionTask(_ => false,
                                                            _ => errorInitial);
 
             Assert.True(result.Failure);
@@ -82,7 +82,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             var testString = StringTest.TestStringTaskNull;
             var errorInitial = CreateErrorTest();
-            var result = await testString.ToResultValueWhereNullTaskAsync(_ => true,
+            var result = await testString.ToRValueEnsureOptionTask(_ => true,
                                                            _ => errorInitial);
 
             Assert.True(result.Failure);
@@ -97,7 +97,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             var testInt = Numbers.NumberTask;
             var errorInitial = CreateErrorTest();
-            var result = await testInt.ToResultValueWhereNullTaskAsync(_ => true,
+            var result = await testInt.ToRValueEnsureOptionTask(_ => true,
                                                         _ => errorInitial);
 
             Assert.True(result.Success);
@@ -112,7 +112,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             var testInt = Numbers.NumberTask;
             var errorInitial = CreateErrorTest();
-            var result = await testInt.ToResultValueWhereNullTaskAsync(_ => false,
+            var result = await testInt.ToRValueEnsureOptionTask(_ => false,
                                                         _ => errorInitial);
 
             Assert.True(result.Failure);
@@ -127,7 +127,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             var testInt = Numbers.NumberTaskNull;
             var errorInitial = CreateErrorTest();
-            var result = await testInt.ToResultValueWhereNullTaskAsync(_ => true,
+            var result = await testInt.ToRValueEnsureOptionTask(_ => true,
                                                         _ => errorInitial);
 
             Assert.True(result.Failure);
@@ -142,7 +142,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             var testString = StringTest.TestStringTask;
 
-            var result = await testString.ToResultValueWhereNullOkBadTaskAsync(_ => true,
+            var result = await testString.ToRValueEnsureWhereTask(_ => true,
                                                             test => test,
                                                             _ => CreateErrorTest());
 
@@ -159,7 +159,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var testString = StringTest.TestStringTask;
             var errorInitial = CreateErrorTest();
 
-            var result = await testString.ToResultValueWhereNullOkBadTaskAsync(_ => false,
+            var result = await testString.ToRValueEnsureWhereTask(_ => false,
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
@@ -176,7 +176,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var testString = StringTest.TestStringTaskNull;
             var errorInitial = CreateErrorTest();
 
-            var result = await testString.ToResultValueWhereNullOkBadTaskAsync(_ => true,
+            var result = await testString.ToRValueEnsureWhereTask(_ => true,
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
@@ -192,7 +192,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         {
             var testInt = Numbers.NumberTask;
 
-            var result = await testInt.ToResultValueWhereNullOkBadTaskAsync(_ => true,
+            var result = await testInt.ToRValueEnsureWhereTask(_ => true,
                                                             test => test,
                                                             _ => CreateErrorTest());
 
@@ -209,7 +209,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var testInt = Numbers.NumberTask;
             var errorInitial = CreateErrorTest();
 
-            var result = await testInt.ToResultValueWhereNullOkBadTaskAsync(_ => false,
+            var result = await testInt.ToRValueEnsureWhereTask(_ => false,
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 
@@ -226,7 +226,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var testInt = Numbers.NumberTaskNull;
             var errorInitial = CreateErrorTest();
 
-            var result = await testInt.ToResultValueWhereNullOkBadTaskAsync(_ => true,
+            var result = await testInt.ToRValueEnsureWhereTask(_ => true,
                                                             test => test.ToString(),
                                                             _ => errorInitial);
 

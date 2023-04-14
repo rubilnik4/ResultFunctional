@@ -23,7 +23,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var numberResult = RValueFactory.SomeTask(initialValue);
 
-            var numberAfterTry = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionError());
+            var numberAfterTry = await numberResult.RValueTrySomeTask(Division, Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Success);
             Assert.Equal(Division(initialValue), numberAfterTry.GetValue());
@@ -38,7 +38,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var initialError = CreateErrorTest();
             var numberResult = RValueFactory.NoneTask<int>(initialError);
 
-            var numberAfterTry = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionError());
+            var numberAfterTry = await numberResult.RValueTrySomeTask(Division, Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Failure);
             Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
@@ -53,7 +53,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             const int initialValue = 0;
             var numberResult = RValueFactory.SomeTask(initialValue);
 
-            var resultValue = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionError());
+            var resultValue = await numberResult.RValueTrySomeTask(Division, Exceptions.ExceptionError());
 
             Assert.True(resultValue.Failure);
             Assert.NotNull(resultValue.GetErrors().First().Exception);
@@ -68,7 +68,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var initialError = CreateErrorTest();
             var numberResult = RValueFactory.NoneTask<int>(initialError);
 
-            var numberAfterTry = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionError());
+            var numberAfterTry = await numberResult.RValueTrySomeTask(Division, Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Failure);
             Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
@@ -83,7 +83,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var numberResult = RValueFactory.SomeTask(initialValue);
 
-            var numberAfterTry = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionFunc());
+            var numberAfterTry = await numberResult.RValueTrySomeTask(Division, Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Success);
             Assert.Equal(Division(initialValue), numberAfterTry.GetValue());
@@ -98,7 +98,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var initialError = CreateErrorTest();
             var numberResult = RValueFactory.NoneTask<int>(initialError);
 
-            var numberAfterTry = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionFunc());
+            var numberAfterTry = await numberResult.RValueTrySomeTask(Division, Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Failure);
             Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));
@@ -113,7 +113,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             const int initialValue = 0;
             var numberResult = RValueFactory.SomeTask(initialValue);
 
-            var resultValue = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionFunc());
+            var resultValue = await numberResult.RValueTrySomeTask(Division, Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Failure);
             Assert.NotNull(resultValue.GetErrors().First().Exception);
@@ -128,7 +128,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var initialError = CreateErrorTest();
             var numberResult = RValueFactory.NoneTask<int>(initialError);
 
-            var numberAfterTry = await numberResult.ResultValueTryOkTaskAsync(Division, Exceptions.ExceptionFunc());
+            var numberAfterTry = await numberResult.RValueTrySomeTask(Division, Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Failure);
             Assert.True(initialError.Equals(numberAfterTry.GetErrors().First()));

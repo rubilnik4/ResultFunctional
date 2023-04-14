@@ -21,7 +21,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValueTask = RValueFactory.SomeTask(initialValue);
 
-            var resultAfterWhere = await resultValueTask.ResultValueToValueOkBadBindAsync(
+            var resultAfterWhere = await resultValueTask.RValueLiftMatchAwait(
                 okFunc: AsyncFunctions.IntToStringAsync,
                 badFunc: errors => AsyncFunctions.IntToStringAsync(errors.Count));
 
@@ -37,7 +37,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorsInitial = ErrorData.CreateErrorListTwoTest();
             var resultValueTask = RValueFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultValueTask.ResultValueToValueOkBadBindAsync(
+            var resultAfterWhere = await resultValueTask.RValueLiftMatchAwait(
                 okFunc: AsyncFunctions.IntToStringAsync,
                 badFunc: errors => AsyncFunctions.IntToStringAsync(errors.Count));
 

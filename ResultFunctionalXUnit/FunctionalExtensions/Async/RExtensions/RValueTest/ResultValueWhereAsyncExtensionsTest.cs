@@ -93,7 +93,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = await resultValue.ResultValueWhereAsync(_ => true,
+            var resultAfterWhere = await resultValue.RValueWhereAsync(_ => true,
                 okFunc: AsyncFunctions.IntToStringAsync,
                 badFunc: _ => Task.FromResult(CreateErrorListTwoTest().Count.ToString()));
 
@@ -111,7 +111,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValue = initialValue.ToRValue();
 
             var valueBad = CreateErrorListTwoTest().Count.ToString();
-            var resultAfterWhere = await resultValue.ResultValueWhereAsync(_ => false,
+            var resultAfterWhere = await resultValue.RValueWhereAsync(_ => false,
                 okFunc: AsyncFunctions.IntToStringAsync,
                 badFunc: _ => Task.FromResult(valueBad));
 
@@ -128,7 +128,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = await resultValue.ResultValueWhereAsync(_ => true,
+            var resultAfterWhere = await resultValue.RValueWhereAsync(_ => true,
                 okFunc: AsyncFunctions.IntToStringAsync,
                 badFunc: _ => Task.FromResult(CreateErrorListTwoTest().Count.ToString()));
 
@@ -145,7 +145,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorsInitial = CreateErrorTest();
             var resultValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = await resultValue.ResultValueWhereAsync(_ => false,
+            var resultAfterWhere = await resultValue.RValueWhereAsync(_ => false,
                 okFunc: AsyncFunctions.IntToStringAsync,
                 badFunc: _ => Task.FromResult(CreateErrorListTwoTest().Count.ToString()));
 
@@ -162,7 +162,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = await resultValue.ResultValueOkBadAsync(okFunc: AsyncFunctions.IntToStringAsync,
+            var resultAfterWhere = await resultValue.RValueMatchAsync(okFunc: AsyncFunctions.IntToStringAsync,
                                                                            badFunc: _ => Task.FromResult(String.Empty));
 
             Assert.True(resultAfterWhere.Success);
@@ -178,7 +178,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorsInitial = CreateErrorListTwoTest();
             var resultValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = await resultValue.ResultValueOkBadAsync(okFunc: _ => Task.FromResult(String.Empty),
+            var resultAfterWhere = await resultValue.RValueMatchAsync(okFunc: _ => Task.FromResult(String.Empty),
                                                                            badFunc: errors => AsyncFunctions.IntToStringAsync(errors.Count));
 
             Assert.True(resultAfterWhere.Success);
@@ -194,7 +194,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = await resultValue.ResultValueOkAsync(AsyncFunctions.IntToStringAsync);
+            var resultAfterWhere = await resultValue.RValueSomeAsync(AsyncFunctions.IntToStringAsync);
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(initialValue.ToString(), resultAfterWhere.GetValue());
@@ -209,7 +209,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = await resultValue.ResultValueOkAsync(AsyncFunctions.IntToStringAsync);
+            var resultAfterWhere = await resultValue.RValueSomeAsync(AsyncFunctions.IntToStringAsync);
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));
@@ -224,7 +224,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = await resultValue.ResultValueBadAsync(errors => Task.FromResult(errors.Count));
+            var resultAfterWhere = await resultValue.RValueNoneAsync(errors => Task.FromResult(errors.Count));
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(resultValue.GetValue(), resultAfterWhere.GetValue());
@@ -239,7 +239,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorsInitial = CreateErrorListTwoTest();
             var resultValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = await resultValue.ResultValueBadAsync(errors => Task.FromResult(errors.Count));
+            var resultAfterWhere = await resultValue.RValueNoneAsync(errors => Task.FromResult(errors.Count));
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(errorsInitial.Count, resultAfterWhere.GetValue());
@@ -254,7 +254,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = await resultValue.ResultValueCheckErrorsOkAsync(_ => true,
+            var resultAfterWhere = await resultValue.RValueEnsureAsync(_ => true,
                                                                               badFunc: _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Success);
@@ -271,7 +271,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValue = initialValue.ToRValue();
 
             var errorsBad = CreateErrorEnumerableTwoTest();
-            var resultAfterWhere = await resultValue.ResultValueCheckErrorsOkAsync(_ => false,
+            var resultAfterWhere = await resultValue.RValueEnsureAsync(_ => false,
                                                                               badFunc: _ => Task.FromResult(errorsBad));
 
             Assert.True(resultAfterWhere.Failure);
@@ -287,7 +287,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = await resultValue.ResultValueCheckErrorsOkAsync(_ => true,
+            var resultAfterWhere = await resultValue.RValueEnsureAsync(_ => true,
                                                                               badFunc: _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Failure);
@@ -303,7 +303,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = await resultValue.ResultValueCheckErrorsOkAsync(_ => false,
+            var resultAfterWhere = await resultValue.RValueEnsureAsync(_ => false,
                                                                               badFunc: _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Failure);

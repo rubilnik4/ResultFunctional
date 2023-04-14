@@ -30,7 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.ToRValueFromCollectionTaskAsync().
-            ResultValueContinueTaskAsync(predicate, someFunc, noneFunc);
+            RValueOptionTask(predicate, someFunc, noneFunc);
 
         /// <summary>
         /// Execute result collection task function converting to result value depending on result collection errors
@@ -47,7 +47,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.ToRValueFromCollectionTaskAsync().
-            ResultValueOkBadTaskAsync(someFunc, noneFunc);
+            RValueMatchTask(someFunc, noneFunc);
 
         /// <summary>
         /// Execute result collection task function converting to result value if incoming result collection hasn't errors
@@ -62,6 +62,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.ToRValueFromCollectionTaskAsync().
-            ResultValueOkTaskAsync(someFunc);
+            RValueSomeTask(someFunc);
     }
 }

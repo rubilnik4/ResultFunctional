@@ -93,7 +93,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = RValueFactory.SomeTask(initialValue);
 
-            var resultAfterWhere = await resultValue.ResultValueOkBadToCollectionBindAsync(
+            var resultAfterWhere = await resultValue.RValueListMatchAwait(
                 okFunc: NumberToCollectionAsync,
                 badFunc: _ => Task.FromResult((IReadOnlyCollection<int>)new List<int>()));
 
@@ -110,7 +110,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorsInitial = CreateErrorListTwoTest();
             var resultValue = RValueFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultValue.ResultValueOkBadToCollectionBindAsync(
+            var resultAfterWhere = await resultValue.RValueListMatchAwait(
                 okFunc: NumberToCollectionAsync,
                 badFunc: errors => Task.FromResult((IReadOnlyCollection<int>)new List<int> { errors.Count }));
 
@@ -127,7 +127,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = RValueFactory.SomeTask(initialValue);
 
-            var resultAfterWhere = await resultValue.ResultValueOkToCollectionBindAsync(NumberToCollectionAsync);
+            var resultAfterWhere = await resultValue.RValueListSomeAwait(NumberToCollectionAsync);
 
             Assert.True(resultAfterWhere.Success);
             Assert.True((await NumberToCollectionAsync(initialValue)).SequenceEqual(resultAfterWhere.GetValue()));
@@ -142,7 +142,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultValue.ResultValueOkToCollectionBindAsync(NumberToCollectionAsync);
+            var resultAfterWhere = await resultValue.RValueListSomeAwait(NumberToCollectionAsync);
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));

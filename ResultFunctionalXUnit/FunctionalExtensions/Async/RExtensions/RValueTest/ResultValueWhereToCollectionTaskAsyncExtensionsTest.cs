@@ -24,7 +24,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = RValueFactory.SomeTask(initialValue);
 
-            var resultAfterWhere = await resultValue.ResultValueContinueToCollectionTaskAsync(_ => true,
+            var resultAfterWhere = await resultValue.RValueListOptionTask(_ => true,
                 okFunc: NumberToCollection,
                 badFunc: _ => CreateErrorListTwoTest());
 
@@ -42,7 +42,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultValue = RValueFactory.SomeTask(initialValue);
 
             var errorBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await resultValue.ResultValueContinueToCollectionTaskAsync(_ => false,
+            var resultAfterWhere = await resultValue.RValueListOptionTask(_ => false,
                 okFunc: NumberToCollection,
                 badFunc: _ => errorBad);
 
@@ -59,7 +59,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultValue.ResultValueContinueToCollectionTaskAsync(_ => true,
+            var resultAfterWhere = await resultValue.RValueListOptionTask(_ => true,
                 okFunc: NumberToCollection,
                 badFunc: _ => CreateErrorListTwoTest());
 
@@ -76,7 +76,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultValue.ResultValueContinueToCollectionTaskAsync(_ => false,
+            var resultAfterWhere = await resultValue.RValueListOptionTask(_ => false,
                 okFunc: NumberToCollection,
                 badFunc: _ => CreateErrorListTwoTest());
 
@@ -93,7 +93,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = RValueFactory.SomeTask(initialValue);
 
-            var resultAfterWhere = await resultValue.ResultValueOkBadToCollectionTaskAsync(
+            var resultAfterWhere = await resultValue.RValueListMatchTask(
                 okFunc: NumberToCollection,
                 badFunc: _ => new List<int>());
 
@@ -110,7 +110,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorsInitial = CreateErrorListTwoTest();
             var resultValue = RValueFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultValue.ResultValueOkBadToCollectionTaskAsync(
+            var resultAfterWhere = await resultValue.RValueListMatchTask(
                 okFunc: NumberToCollection,
                 badFunc: errors => new List<int> { errors.Count });
 
@@ -127,7 +127,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = RValueFactory.SomeTask(initialValue);
 
-            var resultAfterWhere = await resultValue.ResultValueOkToCollectionTaskAsync(NumberToCollection);
+            var resultAfterWhere = await resultValue.RValueListSomeTask(NumberToCollection);
 
             Assert.True(resultAfterWhere.Success);
             Assert.True(NumberToCollection(initialValue).SequenceEqual(resultAfterWhere.GetValue()));
@@ -142,7 +142,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = RValueFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultValue.ResultValueOkToCollectionTaskAsync(NumberToCollection);
+            var resultAfterWhere = await resultValue.RValueListSomeTask(NumberToCollection);
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));

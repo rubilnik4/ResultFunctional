@@ -24,7 +24,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var resultValue = initialValue.ToRValue();
 
-            var resultAfterWhere = await resultValue.ResultValueBindOkToCollectionAsync(
+            var resultAfterWhere = await resultValue.RValueBindListSomeAsync(
                 number => RListFactory.SomeTask(NumberToCollection(number)));
 
             Assert.True(resultAfterWhere.Success);
@@ -40,7 +40,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var resultValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = await resultValue.ResultValueBindOkToCollectionAsync(
+            var resultAfterWhere = await resultValue.RValueBindListSomeAsync(
                 number => RListFactory.SomeTask(NumberToCollection(number)));
 
             Assert.True(resultAfterWhere.Failure);

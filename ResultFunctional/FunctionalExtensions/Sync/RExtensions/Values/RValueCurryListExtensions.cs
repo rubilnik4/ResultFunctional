@@ -19,13 +19,13 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Result value one argument high order function</param>
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
-        public static IRValue<Func<TOut>> RValueCurryListSome<TIn1, TOut>(this IRValue<Func<IEnumerable<TIn1>, TOut>> @this,
+        public static IRValue<Func<TOut>> RValueCurryList<TIn1, TOut>(this IRValue<Func<IEnumerable<TIn1>, TOut>> @this,
                                                                                    IRList<TIn1> arg1)
             where TIn1 : notnull
             where TOut : notnull =>
             @this.
             RValueSome(func => (Func<IReadOnlyCollection<TIn1>, TOut>)func).
-            RValueCurryListSome(arg1);
+            RValueCurryList(arg1);
 
         /// <summary>
         /// Get no arguments result value higher order collection function
@@ -35,7 +35,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Result value one argument high order function</param>
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
-        public static IRValue<Func<TOut>> RValueCurryListSome<TIn1, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TOut>> @this,
+        public static IRValue<Func<TOut>> RValueCurryList<TIn1, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TOut>> @this,
                                                                                         IRList<TIn1> arg1) 
             where TIn1 : notnull
             where TOut : notnull =>
@@ -52,14 +52,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Result value two arguments high order function</param>
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
-        public static IRValue<Func<TIn2, TOut>> RValueCurryListSome<TIn1, TIn2, TOut>(this IRValue<Func<IEnumerable<TIn1>, TIn2, TOut>> @this,
+        public static IRValue<Func<TIn2, TOut>> RValueCurryList<TIn1, TIn2, TOut>(this IRValue<Func<IEnumerable<TIn1>, TIn2, TOut>> @this,
                                                                                                     IRList<TIn1> arg1) 
             where TIn1 : notnull
             where TIn2 : notnull
             where TOut : notnull =>
             @this.
             RValueSome(func => (Func<IReadOnlyCollection<TIn1>, TIn2, TOut>)func).
-            RValueCurryListSome(arg1);
+            RValueCurryList(arg1);
 
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Result value two arguments high order function</param>
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
-        public static IRValue<Func<TIn2, TOut>> RValueCurryListSome<TIn1, TIn2, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TIn2, TOut>> @this,
+        public static IRValue<Func<TIn2, TOut>> RValueCurryList<TIn1, TIn2, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TIn2, TOut>> @this,
                                                                                           IRList<TIn1> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
@@ -90,7 +90,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Result value three arguments high order function</param>
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
-        public static IRValue<Func<TIn2, TIn3, TOut>> RValueCurryListSome<TIn1, TIn2, TIn3, TOut>(this IRValue<Func<IEnumerable<TIn1>, TIn2, TIn3, TOut>> @this,
+        public static IRValue<Func<TIn2, TIn3, TOut>> RValueCurryList<TIn1, TIn2, TIn3, TOut>(this IRValue<Func<IEnumerable<TIn1>, TIn2, TIn3, TOut>> @this,
                                                                                                     IRList<TIn1> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
@@ -98,7 +98,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
             where TOut : notnull =>
             @this.
             RValueSome(func => (Func<IReadOnlyCollection<TIn1>, TIn2, TIn3, TOut>)func).
-            RValueCurryListSome(arg1);
+            RValueCurryList(arg1);
 
         /// <summary>
         /// Get two arguments result value higher order collection function
@@ -110,7 +110,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Result value three arguments high order function</param>
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
-        public static IRValue<Func<TIn2, TIn3, TOut>> RValueCurryListSome<TIn1, TIn2, TIn3, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TIn2, TIn3, TOut>> @this,
+        public static IRValue<Func<TIn2, TIn3, TOut>> RValueCurryList<TIn1, TIn2, TIn3, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TIn2, TIn3, TOut>> @this,
                                                                                                     IRList<TIn1> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
@@ -131,7 +131,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Result value four arguments high order function</param>
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
-        public static IRValue<Func<TIn2, TIn3, TIn4, TOut>> RValueCurryListSome<TIn1, TIn2, TIn3, TIn4, TOut>(this IRValue<Func<IEnumerable<TIn1>, TIn2, TIn3, TIn4, TOut>> @this,
+        public static IRValue<Func<TIn2, TIn3, TIn4, TOut>> RValueCurryList<TIn1, TIn2, TIn3, TIn4, TOut>(this IRValue<Func<IEnumerable<TIn1>, TIn2, TIn3, TIn4, TOut>> @this,
                                                                                                                             IRList<TIn1> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
@@ -140,7 +140,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
             where TOut : notnull =>
             @this.
             RValueSome(func => (Func<IReadOnlyCollection<TIn1>, TIn2, TIn3, TIn4, TOut>)func).
-            RValueCurryListSome(arg1);
+            RValueCurryList(arg1);
 
         /// <summary>
         /// Get three arguments result value higher order collection function
@@ -153,7 +153,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Result value four arguments high order function</param>
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
-        public static IRValue<Func<TIn2, TIn3, TIn4, TOut>> RValueCurryListSome<TIn1, TIn2, TIn3, TIn4, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TIn2, TIn3, TIn4, TOut>> @this,
+        public static IRValue<Func<TIn2, TIn3, TIn4, TOut>> RValueCurryList<TIn1, TIn2, TIn3, TIn4, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TIn2, TIn3, TIn4, TOut>> @this,
                                                                                                                   IRList<TIn1> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
@@ -176,7 +176,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Result value five arguments high order function</param>
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
-        public static IRValue<Func<TIn2, TIn3, TIn4, TIn5, TOut>> RValueCurryListSome<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>(this IRValue<Func<IEnumerable<TIn1>, TIn2, TIn3, TIn4, TIn5, TOut>> @this,
+        public static IRValue<Func<TIn2, TIn3, TIn4, TIn5, TOut>> RValueCurryList<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>(this IRValue<Func<IEnumerable<TIn1>, TIn2, TIn3, TIn4, TIn5, TOut>> @this,
                                                                                                                                         IRList<TIn1> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
@@ -186,7 +186,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
             where TOut : notnull =>
             @this.
             RValueSome(func => (Func<IReadOnlyCollection<TIn1>, TIn2, TIn3, TIn4, TIn5, TOut>)func).
-            RValueCurryListSome(arg1);
+            RValueCurryList(arg1);
 
         /// <summary>
         /// Get four arguments result value higher order collection function
@@ -200,7 +200,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Result value five arguments high order function</param>
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
-        public static IRValue<Func<TIn2, TIn3, TIn4, TIn5, TOut>> RValueCurryListSome<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TIn2, TIn3, TIn4, TIn5, TOut>> @this,
+        public static IRValue<Func<TIn2, TIn3, TIn4, TIn5, TOut>> RValueCurryList<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TIn2, TIn3, TIn4, TIn5, TOut>> @this,
                                                                                                                              IRList<TIn1> arg1)
             where TIn1 : notnull
             where TIn2 : notnull

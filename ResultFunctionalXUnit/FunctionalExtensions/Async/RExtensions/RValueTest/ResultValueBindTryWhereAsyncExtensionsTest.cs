@@ -25,7 +25,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var numberResult = initialValue.ToRValue();
 
-            var numberAfterTry = await numberResult.ResultValueBindTryOkAsync(
+            var numberAfterTry = await numberResult.RValueBindTrySomeAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Success);
@@ -41,7 +41,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRValue<int>();
 
-            var numberAfterTry = await numberResult.ResultValueBindTryOkAsync(
+            var numberAfterTry = await numberResult.RValueBindTrySomeAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Failure);
@@ -57,7 +57,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             const int initialValue = 0;
             var numberResult = initialValue.ToRValue();
 
-            var resultValue = await numberResult.ResultValueBindTryOkAsync(
+            var resultValue = await numberResult.RValueBindTrySomeAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Failure);
@@ -73,7 +73,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRValue<int>();
 
-            var numberAfterTry = await numberResult.ResultValueBindTryOkAsync(
+            var numberAfterTry = await numberResult.RValueBindTrySomeAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionError());
 
             Assert.True(numberAfterTry.Failure);
@@ -89,7 +89,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var numberResult = initialValue.ToRValue();
 
-            var numberAfterTry = await numberResult.ResultValueBindTryOkAsync(
+            var numberAfterTry = await numberResult.RValueBindTrySomeAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Success);
@@ -105,7 +105,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRValue<int>();
 
-            var numberAfterTry = await numberResult.ResultValueBindTryOkAsync(
+            var numberAfterTry = await numberResult.RValueBindTrySomeAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Failure);
@@ -121,7 +121,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             const int initialNumber = 0;
             var numberResult = initialNumber.ToRValue();
 
-            var resultValue = await numberResult.ResultValueBindTryOkAsync(
+            var resultValue = await numberResult.RValueBindTrySomeAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionFunc());
 
             Assert.True(resultValue.Failure);
@@ -137,7 +137,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var initialError = CreateErrorTest();
             var numberResult = initialError.ToRValue<int>();
 
-            var numberAfterTry = await numberResult.ResultValueBindTryOkAsync(
+            var numberAfterTry = await numberResult.RValueBindTrySomeAsync(
                 numbers => RValueFactory.SomeTask(Division(numbers)), Exceptions.ExceptionFunc());
 
             Assert.True(numberAfterTry.Failure);
