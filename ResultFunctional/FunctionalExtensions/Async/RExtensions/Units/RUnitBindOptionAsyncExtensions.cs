@@ -9,7 +9,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
     /// <summary>
     /// Result error async extension methods for merging errors
     /// </summary>
-    public static class ResultErrorBindWhereAsyncExtensions
+    public static class RUnitBindOptionAsyncExtensions
     {
         /// <summary>
         /// Merge result error async function depending on incoming result error
@@ -18,7 +18,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="someFunc">Function if result error hasn't errors</param>
         /// <param name="noneFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IRUnit> ResultErrorBindOkBadAsync(this IRUnit @this, Func<Task<IRUnit>> someFunc,
+        public static async Task<IRUnit> RUnitBindMatchAsync(this IRUnit @this, Func<Task<IRUnit>> someFunc,
                                                                    Func<IReadOnlyCollection<IRError>, Task<IRUnit>> noneFunc) =>
             @this.Success
                 ? await someFunc.Invoke()
@@ -30,7 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="this">Incoming result error</param>
         /// <param name="someFunc">Function if result error hasn't errors</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IRUnit> ResultErrorBindOkAsync(this IRUnit @this, Func<Task<IRUnit>> someFunc) =>
+        public static async Task<IRUnit> RUnitBindSomeAsync(this IRUnit @this, Func<Task<IRUnit>> someFunc) =>
             @this.Success
                 ? await someFunc.Invoke()
                 : @this;

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Units;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
 {
     /// <summary>
-    /// Async exception handling task result error with conditions extension methods
+    /// Exception handling task result error with conditions extension methods
     /// </summary>
-    public static class ResultErrorTryWhereBindAsyncExtensions
+    public static class RUnitTryOptionTaskExtensions
     {
         /// <summary>
         /// Execute async function and handle exception with task result error concat
@@ -17,10 +18,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="action">Action</param>
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IRUnit> ResultErrorTryOkBindAsync(this Task<IRUnit> @this, Func<Task> action,
+        public static async Task<IRUnit> RUnitTrySomeTask(this Task<IRUnit> @this, Action action,
                                                                      Func<Exception, IRError> exceptionFunc) =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.ResultErrorTryOkAsync(action, exceptionFunc));
+            MapTask(awaitedThis => awaitedThis.RUnitTrySome(action, exceptionFunc));
 
         /// <summary>
         /// Execute async function and handle exception with task result error concat
@@ -29,8 +30,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="action">Action</param>
         /// <param name="error">Error</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IRUnit> ResultErrorTryOkBindAsync(this Task<IRUnit> @this, Func<Task> action,
+        public static async Task<IRUnit> RUnitTrySomeTask(this Task<IRUnit> @this, Action action,
                                                                          IRError error) =>
-            await @this.ResultErrorTryOkBindAsync(action, _ => error);
+            await @this.RUnitTrySomeTask(action, _ => error);
     }
 }

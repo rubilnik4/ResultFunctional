@@ -23,7 +23,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var resultOk = RUnitFactory.SomeTask();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.ResultErrorVoidOkBindAsync(() => voidObjectMock.Object.TestVoidAsync());
+            var resultAfterVoid = await resultOk.RUnitVoidSomeAwait(() => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultOk.Result));
             voidObjectMock.Verify(voidObject => voidObject.TestVoidAsync(), Times.Once);
@@ -39,7 +39,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var resultError = RUnitFactory.NoneTask(initialError);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultErrorVoidOkBindAsync(() => voidObjectMock.Object.TestVoidAsync());
+            var resultAfterVoid = await resultError.RUnitVoidSomeAwait(() => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultError.Result));
             Assert.True(resultAfterVoid.GetErrors().Last().Equals(initialError));
@@ -56,7 +56,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var resultError = RUnitFactory.NoneTask(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultErrorVoidBadBindAsync(errors => voidObjectMock.Object.TestNumberVoidAsync(errors.Count));
+            var resultAfterVoid = await resultError.RUnitVoidNoneAwait(errors => voidObjectMock.Object.TestNumberVoidAsync(errors.Count));
 
             Assert.True(resultAfterVoid.Equals(resultError.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
@@ -73,7 +73,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var resultError = RUnitFactory.NoneTask(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultErrorVoidBadBindAsync(errors => voidObjectMock.Object.TestNumberVoidAsync(errors.Count));
+            var resultAfterVoid = await resultError.RUnitVoidNoneAwait(errors => voidObjectMock.Object.TestNumberVoidAsync(errors.Count));
 
             Assert.True(resultAfterVoid.Equals(resultError.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
@@ -89,7 +89,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var resultOk = RUnitFactory.SomeTask();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.ResultErrorVoidOkBadBindAsync(() => voidObjectMock.Object.TestVoidAsync(),
+            var resultAfterVoid = await resultOk.RUnitVoidMatchAwait(() => voidObjectMock.Object.TestVoidAsync(),
                                                                 errors => voidObjectMock.Object.TestNumberVoidAsync(errors.Count));
 
             Assert.True(resultAfterVoid.Equals(resultOk.Result));
@@ -106,7 +106,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var resultError = RUnitFactory.NoneTask(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultErrorVoidOkBadBindAsync(() => voidObjectMock.Object.TestVoidAsync(),
+            var resultAfterVoid = await resultError.RUnitVoidMatchAwait(() => voidObjectMock.Object.TestVoidAsync(),
                                                                    errors => voidObjectMock.Object.TestNumberVoidAsync(errors.Count));
 
             Assert.True(resultAfterVoid.Equals(resultError.Result));
@@ -123,7 +123,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var resultOk = RUnitFactory.SomeTask();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.ResultErrorVoidOkWhereBindAsync(() => true,
+            var resultAfterVoid = await resultOk.RUnitVoidWhereAwait(() => true,
                 action: () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultOk.Result));
@@ -139,7 +139,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var resultOk = RUnitFactory.SomeTask();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.ResultErrorVoidOkWhereBindAsync(() => false,
+            var resultAfterVoid = await resultOk.RUnitVoidWhereAwait(() => false,
                 action: () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultOk.Result));
@@ -156,7 +156,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var resultError = RUnitFactory.NoneTask(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultErrorVoidOkWhereBindAsync(() => true,
+            var resultAfterVoid = await resultError.RUnitVoidWhereAwait(() => true,
                 action: () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultError.Result));
@@ -175,7 +175,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var resultError = RUnitFactory.NoneTask(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.ResultErrorVoidOkWhereBindAsync(() => false,
+            var resultAfterVoid = await resultError.RUnitVoidWhereAwait(() => false,
                 action: () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultError.Result));

@@ -10,7 +10,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units;
 /// <summary>
 /// Task result error extension methods for errors
 /// </summary>
-public static class ResultErrorWhereBindAsyncExtensions
+public static class RUnitOptionTaskExtensions
 {
     /// <summary>
     /// Check errors by predicate to task result error if ones hasn't errors
@@ -19,7 +19,7 @@ public static class ResultErrorWhereBindAsyncExtensions
     /// <param name="predicate">Predicate function</param>
     /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
-    public static async Task<IRUnit> ResultErrorCheckErrorsOkTaskAsync(this Task<IRUnit> @this, Func<bool> predicate,
+    public static async Task<IRUnit> RUnitEnsureTask(this Task<IRUnit> @this, Func<bool> predicate,
                                                                          Func<IReadOnlyCollection<IRError>> noneFunc) =>
         await @this.
         MapTask(awaitedThis => awaitedThis.RUnitEnsure(predicate, noneFunc));

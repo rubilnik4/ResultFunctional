@@ -9,7 +9,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
     /// <summary>
     /// Task result error action extension methods
     /// </summary>
-    public static class ResultErrorVoidTaskAsyncExtensions
+    public static class RUnitVoidTaskExtensions
     {
         /// <summary>
         /// Execute action if task result hasn't errors
@@ -17,7 +17,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="this">Incoming result error</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns> 
-        public static async Task<IRUnit> ResultErrorVoidOkTaskAsync(this Task<IRUnit> @this, Action action) =>
+        public static async Task<IRUnit> RUnitVoidSomeTask(this Task<IRUnit> @this, Action action) =>
             await @this.
             VoidSomeTask(awaitedThis => awaitedThis.Success,
                 action: _ => action.Invoke());
@@ -28,7 +28,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="this">Incoming result error</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns>
-        public static async Task<IRUnit> ResultErrorVoidBadTaskAsync(this Task<IRUnit> @this,
+        public static async Task<IRUnit> RUnitVoidNoneTask(this Task<IRUnit> @this,
                                                                        Action<IReadOnlyCollection<IRError>> action) =>
             await @this.
             VoidSomeTask(awaitedThis => awaitedThis.Failure,
@@ -41,7 +41,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="actionSome">Action if result hasn't errors</param>
         /// <param name="actionNone">Action if result has errors</param>
         /// <returns>Unchanged result error</returns>   
-        public static async Task<IRUnit> ResultErrorVoidOkBadTaskAsync(this Task<IRUnit> @this, Action actionSome,
+        public static async Task<IRUnit> RUnitVoidMatchTask(this Task<IRUnit> @this, Action actionSome,
                                                                              Action<IReadOnlyCollection<IRError>> actionNone) =>
             await @this.
             VoidOptionTask(awaitedThis => awaitedThis.Success,
@@ -55,7 +55,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result error</returns>  
-        public static async Task<IRUnit> ResultErrorVoidOkWhereTaskAsync(this Task<IRUnit> @this,
+        public static async Task<IRUnit> RUnitVoidWhereTask(this Task<IRUnit> @this,
                                                                            Func<bool> predicate,
                                                                            Action action) =>
             await @this.

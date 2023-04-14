@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using ResultFunctionalXUnit.Data;
 using ResultFunctionalXUnit.Mocks.Implementation;
 using Xunit;
-using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Units.ResultErrorTryAsyncExtensions;
+using static ResultFunctional.FunctionalExtensions.Async.RExtensions.Units.RUnitTryAsyncExtensions;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
 {
@@ -20,7 +20,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
         {
             int initialValue = Numbers.Number;
 
-            var resultValue = await ResultErrorTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
+            var resultValue = await RUnitTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Success);
         }
@@ -33,7 +33,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
         {
             const int initialValue = 0;
 
-            var resultValue = await ResultErrorTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
+            var resultValue = await RUnitTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
 
             Assert.True(resultValue.Failure);
             Assert.NotNull(resultValue.GetErrors().First().Exception);

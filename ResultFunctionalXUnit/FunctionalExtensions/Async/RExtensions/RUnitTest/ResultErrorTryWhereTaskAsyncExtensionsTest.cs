@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             int initialValue = Numbers.Number;
             var numberResult = RUnitFactory.SomeTask();
 
-            var resultError = await numberResult.ResultErrorTryOkTaskAsync(() => SyncFunctions.Division(initialValue), 
+            var resultError = await numberResult.RUnitTrySomeTask(() => SyncFunctions.Division(initialValue), 
                                                                        Exceptions.ExceptionError());
 
             Assert.True(resultError.Success);
@@ -37,7 +37,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             const int initialValue = 0;
             var numberResult = RUnitFactory.SomeTask();
 
-            var resultError = await numberResult.ResultErrorTryOkTaskAsync(() => SyncFunctions.Division(initialValue),
+            var resultError = await numberResult.RUnitTrySomeTask(() => SyncFunctions.Division(initialValue),
                                                                        Exceptions.ExceptionError());
 
             Assert.True(resultError.Failure);

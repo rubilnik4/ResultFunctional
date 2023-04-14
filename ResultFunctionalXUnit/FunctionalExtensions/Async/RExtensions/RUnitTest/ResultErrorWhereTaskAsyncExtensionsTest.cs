@@ -16,7 +16,7 @@ public class ResultErrorWhereBindAsyncExtensionsTest
     {
         var resultError = RUnitFactory.SomeTask();
 
-        var resultAfterWhere = await resultError.ResultErrorCheckErrorsOkBindAsync(() => true,
+        var resultAfterWhere = await resultError.RUnitEnsureAwait(() => true,
                                                                                CreateErrorListTwoTestTask);
 
         Assert.True(resultAfterWhere.Success);
@@ -31,7 +31,7 @@ public class ResultErrorWhereBindAsyncExtensionsTest
         var resultError = RUnitFactory.SomeTask();
 
         var errorBad = CreateErrorListTwoTestTask();
-        var resultAfterWhere = await resultError.ResultErrorCheckErrorsOkBindAsync(() => false,
+        var resultAfterWhere = await resultError.RUnitEnsureAwait(() => false,
                                                                                () => errorBad);
 
         Assert.True(resultAfterWhere.Failure);
@@ -47,7 +47,7 @@ public class ResultErrorWhereBindAsyncExtensionsTest
         var errorInitial = CreateErrorTest();
         var resultError = RUnitFactory.NoneTask(errorInitial);
 
-        var resultAfterWhere = await resultError.ResultErrorCheckErrorsOkBindAsync(() => true,
+        var resultAfterWhere = await resultError.RUnitEnsureAwait(() => true,
                                                                                CreateErrorListTwoTestTask);
 
         Assert.True(resultAfterWhere.Failure);
@@ -63,7 +63,7 @@ public class ResultErrorWhereBindAsyncExtensionsTest
         var errorsInitial = CreateErrorTest();
         var resultError = RUnitFactory.NoneTask(errorsInitial);
 
-        var resultAfterWhere = await resultError.ResultErrorCheckErrorsOkBindAsync(() => false,
+        var resultAfterWhere = await resultError.RUnitEnsureAwait(() => false,
                                                                                CreateErrorListTwoTestTask);
 
         Assert.True(resultAfterWhere.Failure);

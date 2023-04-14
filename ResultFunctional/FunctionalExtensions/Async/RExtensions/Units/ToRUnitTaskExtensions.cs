@@ -10,14 +10,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
     /// <summary>
     /// Result error task extension methods
     /// </summary>  
-    public static class ToResultErrorTaskAsyncExtensions
+    public static class ToRUnitTaskExtensions
     {
         /// <summary>
         /// Merge task result errors collection
         /// </summary>
         /// <param name="this">Result error collection</param>
         /// <returns>Result error</returns>
-        public static async Task<IRUnit> ToRUnitTaskAsync(this Task<IEnumerable<IRUnit>> @this) =>
+        public static async Task<IRUnit> ToRUnitTask(this Task<IEnumerable<IRUnit>> @this) =>
             await @this.
             MapTask(awaitedThis => awaitedThis.ToRUnit());
 
@@ -26,17 +26,17 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// </summary>
         /// <param name="this">Result error collection</param>
         /// <returns>Result error</returns>
-        public static async Task<IRUnit> ToRUnitTaskAsync(this Task<IReadOnlyCollection<IRUnit>> @this) =>
+        public static async Task<IRUnit> ToRUnitTask(this Task<IReadOnlyCollection<IRUnit>> @this) =>
             await @this.
             MapTask(awaitedThis => (IEnumerable<IRUnit>)awaitedThis).
-            ToRUnitTaskAsync();
+            ToRUnitTask();
 
         /// <summary>
         /// Merge errors collection
         /// </summary>
         /// <param name="this">Error collection</param>
         /// <returns>Result error</returns>
-        public static async Task<IRUnit> ToRUnitTaskAsync(this Task<IEnumerable<IRError>> @this) =>
+        public static async Task<IRUnit> ToRUnitTask(this Task<IEnumerable<IRError>> @this) =>
             await @this.
             MapTask(awaitedThis => awaitedThis.ToRUnit());
 
@@ -45,22 +45,22 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// </summary>
         /// <param name="this">Error collection</param>
         /// <returns>Result error</returns>
-        public static async Task<IRUnit> ToRUnitTaskAsync(this Task<IReadOnlyCollection<IRError>> @this) =>
+        public static async Task<IRUnit> ToRUnitTask(this Task<IReadOnlyCollection<IRError>> @this) =>
             await @this.
             MapTask(awaitedThis => (IEnumerable<IRError>)awaitedThis).
-            ToRUnitTaskAsync();
+            ToRUnitTask();
 
         /// <summary>
         /// Преобразовать в результирующий ответ
         /// </summary>  
-        public static async Task<IRUnit> ToRUnitTaskAsync(this IEnumerable<Task<IRUnit>> @this) =>
+        public static async Task<IRUnit> ToRUnitTask(this IEnumerable<Task<IRUnit>> @this) =>
             await Task.WhenAll(@this).
                        MapTask(result => result.ToRUnit());
 
         /// <summary>
         /// Преобразовать в результирующий ответ
         /// </summary>      
-        public static async Task<IRUnit> ToRUnitTaskAsync<TValue>(this Task<IRValue<TValue>> @this)
+        public static async Task<IRUnit> ToRUnitTask<TValue>(this Task<IRValue<TValue>> @this)
             where TValue : notnull =>
             await @this.
                 MapTask(awaitedThis => awaitedThis.ToRUnit());

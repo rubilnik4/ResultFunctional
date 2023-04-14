@@ -23,7 +23,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var initialResult = RUnitFactory.Some();
             var addingResult = RUnitFactory.Some();
 
-            var result = await initialResult.ResultErrorBindOkBadAsync(() => addingResult.ToTask(),
+            var result = await initialResult.RUnitBindMatchAsync(() => addingResult.ToTask(),
                                                                        _ => RUnitFactory.NoneTask(CreateErrorTest()));
 
             Assert.True(result.Success);
@@ -39,7 +39,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var addingResult = RUnitFactory.Some();
             var addingResultBad = CreateErrorTest().ToRUnit();
 
-            var result = await initialResult.ResultErrorBindOkBadAsync(() => addingResult.ToTask(),
+            var result = await initialResult.RUnitBindMatchAsync(() => addingResult.ToTask(),
                                                             _ => addingResultBad.ToTask());
 
             Assert.True(result.Failure);
@@ -55,7 +55,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var initialResult = RUnitFactory.Some();
             var addingResult = RUnitFactory.SomeTask();
 
-            var result = await initialResult.ResultErrorBindOkAsync(() => addingResult);
+            var result = await initialResult.RUnitBindSomeAsync(() => addingResult);
 
             Assert.True(result.Success);
         }
@@ -70,7 +70,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var initialResult = RUnitFactory.Some();
             var addingResult = initialError.ToRUnit();
 
-            var result = await initialResult.ResultErrorBindOkAsync(() => addingResult.ToTask());
+            var result = await initialResult.RUnitBindSomeAsync(() => addingResult.ToTask());
 
             Assert.True(result.Failure);
             Assert.True(result.GetErrors().First().Equals(initialError));
@@ -86,7 +86,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var initialResult = initialError.ToRUnit();
             var addingResult = initialError.ToRUnit();
 
-            var result = await initialResult.ResultErrorBindOkAsync(() => addingResult.ToTask());
+            var result = await initialResult.RUnitBindSomeAsync(() => addingResult.ToTask());
 
             Assert.True(result.Failure);
             Assert.True(result.Equals(initialResult));
@@ -102,7 +102,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
             var initialResult = initialError.ToRUnit();
             var addingResult = initialError.ToRUnit();
 
-            var result = await initialResult.ResultErrorBindOkAsync(() => addingResult.ToTask());
+            var result = await initialResult.RUnitBindSomeAsync(() => addingResult.ToTask());
 
             Assert.True(result.Failure);
             Assert.Single(result.GetErrors());
