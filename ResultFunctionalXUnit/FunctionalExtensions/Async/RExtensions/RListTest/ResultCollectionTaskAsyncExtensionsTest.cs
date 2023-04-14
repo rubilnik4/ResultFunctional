@@ -26,7 +26,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var results = Enumerable.Empty<IRList<int>>().Append(resultCollectionFirst).Append(resultCollectionSecond).
                                      Map(Task.FromResult);
 
-            var resultCollection = await results.ConcatResultCollectionTaskAsync();
+            var resultCollection = await results.RListFoldTask();
             var numberRange = resultCollectionFirst.GetValue().Concat(resultCollectionSecond.GetValue()).ToList();
 
             Assert.True(resultCollection.Success);
@@ -45,7 +45,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var results = Enumerable.Empty<IRList<int>>().Append(resultCollectionFirst).Append(resultCollectionErrorFirst).Append(resultCollectionErrorSecond).
                                      Map(Task.FromResult);
 
-            var resultCollection = await results.ConcatResultCollectionTaskAsync();
+            var resultCollection = await results.RListFoldTask();
 
             Assert.True(resultCollection.Failure);
             Assert.Equal(2, resultCollection.GetErrors().Count);

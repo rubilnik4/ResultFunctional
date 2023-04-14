@@ -24,7 +24,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var initialCollection = Collections.GetRangeNumber();
             var resultCollection = initialCollection.ToRList();
 
-            var resultAfterWhere = await resultCollection.ResultCollectionToCollectionOkBadAsync(
+            var resultAfterWhere = await resultCollection.RListLiftMatchAsync(
                 okFunc: Collections.CollectionToStringAsync,
                 badFunc: _ => Collections.GetEmptyStringList().ToTask());
 
@@ -40,7 +40,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorsInitial = ErrorData.CreateErrorListTwoTest();
             var resultCollection = errorsInitial.ToRList<int>();
 
-            var resultAfterWhere = await resultCollection.ResultCollectionToCollectionOkBadAsync(
+            var resultAfterWhere = await resultCollection.RListLiftMatchAsync(
                 okFunc: Collections.CollectionToStringAsync,
                 badFunc: errors => TaskEnumerableExtensions.ToTaskCollection(new List<string> { errors.Count.ToString() }));
 

@@ -23,7 +23,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var initialCollection = Collections.GetRangeNumber();
             var resultCollection = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionToCollectionOkBadBindAsync(
+            var resultAfterWhere = await resultCollection.RListLiftMatchAwait(
                 okFunc: Collections.CollectionToStringAsync,
                 badFunc: _ => TaskEnumerableExtensions.ToTaskCollection(Collections.GetEmptyStringList()));
 
@@ -39,7 +39,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorsInitial = ErrorData.CreateErrorListTwoTest();
             var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionToCollectionOkBadBindAsync(
+            var resultAfterWhere = await resultCollection.RListLiftMatchAwait(
                 okFunc: Collections.CollectionToStringAsync,
                 badFunc: errors => TaskEnumerableExtensions.ToTaskCollection(new List<string> { errors.Count.ToString() }));
 

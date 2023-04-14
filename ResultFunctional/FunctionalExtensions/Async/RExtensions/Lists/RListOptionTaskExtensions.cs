@@ -10,7 +10,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
     /// <summary>
     /// Extension methods for task result collection functor function with conditions
     /// </summary>
-    public static class ResultCollectionWhereTaskAsyncExtensions
+    public static class RListOptionTaskExtensions
     {
         /// <summary>
         /// Execute task result collection function base on predicate condition
@@ -22,7 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>           
-        public static async Task<IRList<TValueOut>> ResultCollectionContinueTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+        public static async Task<IRList<TValueOut>> RListOptionTask<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
                                                                                                            Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                            Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
                                                                                                            Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> noneFunc)
@@ -41,7 +41,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IRList<TValueOut>> ResultCollectionWhereTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+        public static async Task<IRList<TValueOut>> RListWhereTask<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> noneFunc)
@@ -59,7 +59,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="someFunc">Function if result collection hasn't errors</param>
         /// <param name="noneFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result collection</returns>     
-        public static async Task<IRList<TValueOut>> ResultCollectionOkBadTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+        public static async Task<IRList<TValueOut>> RListMatchTask<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
                                                                                                          Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
                                                                                                          Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValueOut>> noneFunc)
             where TValueIn : notnull
@@ -75,7 +75,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="someFunc">Function if result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IRList<TValueOut>> ResultCollectionOkTaskAsync<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
+        public static async Task<IRList<TValueOut>> RListSomeTask<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
                                                                                                       Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
@@ -89,7 +89,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="noneFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result collection</returns>  
-        public static async Task<IRList<TValue>> ResultCollectionBadTaskAsync<TValue>(this Task<IRList<TValue>> @this,
+        public static async Task<IRList<TValue>> RListNoneTask<TValue>(this Task<IRList<TValue>> @this,
                                                                                        Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValue>> noneFunc)
             where TValue : notnull =>
             await @this.
@@ -103,7 +103,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Result collection</returns>
-        public static async Task<IRList<TValue>> ResultCollectionCheckErrorsOkTaskAsync<TValue>(this Task<IRList<TValue>> @this,
+        public static async Task<IRList<TValue>> RListEnsureTask<TValue>(this Task<IRList<TValue>> @this,
                                                                            Func<IReadOnlyCollection<TValue>, bool> predicate,
                                                                            Func<IReadOnlyCollection<TValue>, IReadOnlyCollection<IRError>> noneFunc)
             where TValue : notnull =>

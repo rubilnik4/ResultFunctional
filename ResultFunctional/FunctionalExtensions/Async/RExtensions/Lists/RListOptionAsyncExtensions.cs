@@ -10,7 +10,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
     /// <summary>
     /// Extension methods for result collection async functor function with conditions
     /// </summary>
-    public static class ResultCollectionWhereAsyncExtensions
+    public static class RListOptionAsyncExtensions
     {
         /// <summary>
         /// Execute result collection async function base on predicate condition
@@ -22,7 +22,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>   
-        public static async Task<IRList<TValueOut>> ResultCollectionContinueAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+        public static async Task<IRList<TValueOut>> RListOptionAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                                                        Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                        Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> someFunc,
                                                                                                        Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<IRError>>> noneFunc)
@@ -30,8 +30,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueOut : notnull =>
             @this.Success
                 ? predicate(@this.GetValue())
-                    ? await someFunc.Invoke(@this.GetValue()).ToRListTaskAsync()
-                    : await noneFunc.Invoke(@this.GetValue()).ToRListTaskAsync<TValueOut>()
+                    ? await someFunc.Invoke(@this.GetValue()).ToRListTask()
+                    : await noneFunc.Invoke(@this.GetValue()).ToRListTask<TValueOut>()
                 : @this.GetErrors().ToRList<TValueOut>();
 
 
@@ -45,13 +45,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>   
-        public static async Task<IRList<TValueOut>> ResultCollectionContinueAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+        public static async Task<IRList<TValueOut>> RListOptionAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> someFunc,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
-             await @this.ResultCollectionContinueAsync(predicate,
+             await @this.RListOptionAsync(predicate,
                                                        someFunc,
                                                        values => noneFunc(values).ToCollectionTask());
 
@@ -65,7 +65,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IRList<TValueOut>> ResultCollectionWhereAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+        public static async Task<IRList<TValueOut>> RListWhereAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> someFunc,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> noneFunc)
@@ -73,8 +73,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValueOut : notnull =>
             @this.Success
                 ? predicate(@this.GetValue())
-                    ? await someFunc.Invoke(@this.GetValue()).ToRListTaskAsync()
-                    : await noneFunc.Invoke(@this.GetValue()).ToRListTaskAsync()
+                    ? await someFunc.Invoke(@this.GetValue()).ToRListTask()
+                    : await noneFunc.Invoke(@this.GetValue()).ToRListTask()
                 : @this.GetErrors().ToRList<TValueOut>();
 
         /// <summary>
@@ -87,13 +87,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IRList<TValueOut>> ResultCollectionWhereAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+        public static async Task<IRList<TValueOut>> RListWhereAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> someFunc,
                                                                                                             Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
-            await @this.ResultCollectionWhereAsync(predicate,
+            await @this.RListWhereAsync(predicate,
                                                       someFunc,
                                                       values => noneFunc(values).ToCollectionTask());
 
@@ -106,14 +106,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="someFunc">Function if result collection hasn't errors</param>
         /// <param name="noneFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result collection</returns>   
-        public static async Task<IRList<TValueOut>> ResultCollectionOkBadAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+        public static async Task<IRList<TValueOut>> RListMatchAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                                               Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> someFunc,
                                                                                               Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValueOut>>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
-                ? await someFunc.Invoke(@this.GetValue()).ToRListTaskAsync()
-                : await noneFunc.Invoke(@this.GetErrors()).ToRListTaskAsync();
+                ? await someFunc.Invoke(@this.GetValue()).ToRListTask()
+                : await noneFunc.Invoke(@this.GetErrors()).ToRListTask();
 
         /// <summary>
         /// Execute result collection async function if incoming result collection hasn't errors
@@ -123,12 +123,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="someFunc">Function if result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IRList<TValueOut>> ResultCollectionOkAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+        public static async Task<IRList<TValueOut>> RListSomeAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                                            Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> someFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
-                ? await someFunc.Invoke(@this.GetValue()).ToRListTaskAsync()
+                ? await someFunc.Invoke(@this.GetValue()).ToRListTask()
                 : @this.GetErrors().ToRList<TValueOut>();
 
         /// <summary>
@@ -138,12 +138,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="this">Incoming result collection</param>
         /// <param name="noneFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result collection</returns>
-        public static async Task<IRList<TValue>> ResultCollectionBadAsync<TValue>(this IRList<TValue> @this,
+        public static async Task<IRList<TValue>> RListNoneAsync<TValue>(this IRList<TValue> @this,
                                                                             Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValue>>> noneFunc)
             where TValue : notnull =>
             @this.Success
                 ? @this
-                : await noneFunc.Invoke(@this.GetErrors()).ToRListTaskAsync();
+                : await noneFunc.Invoke(@this.GetErrors()).ToRListTask();
 
         /// <summary>
         /// Check errors by predicate async to result collection if ones hasn't errors
@@ -153,12 +153,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Result collection</returns>
-        public static async Task<IRList<TValue>> ResultCollectionCheckErrorsOkAsync<TValue>(this IRList<TValue> @this,
+        public static async Task<IRList<TValue>> RListEnsureAsync<TValue>(this IRList<TValue> @this,
                                                                            Func<IReadOnlyCollection<TValue>, bool> predicate,
                                                                            Func<IReadOnlyCollection<TValue>, Task<IReadOnlyCollection<IRError>>> noneFunc)
             where TValue : notnull =>
             await @this.
-                ResultCollectionContinueAsync(predicate,
+                RListOptionAsync(predicate,
                                               collection => collection.ToCollectionTask(),
                                               noneFunc);
 
@@ -170,10 +170,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Result collection</returns>
-        public static async Task<IRList<TValue>> ResultCollectionCheckErrorsOkAsync<TValue>(this IRList<TValue> @this,
+        public static async Task<IRList<TValue>> RListEnsureAsync<TValue>(this IRList<TValue> @this,
                                                                            Func<IReadOnlyCollection<TValue>, bool> predicate,
                                                                            Func<IReadOnlyCollection<TValue>, IReadOnlyCollection<IRError>> noneFunc)
             where TValue : notnull =>
-            await @this.ResultCollectionCheckErrorsOkAsync(predicate, values => noneFunc(values).ToCollectionTask());
+            await @this.RListEnsureAsync(predicate, values => noneFunc(values).ToCollectionTask());
     }
 }

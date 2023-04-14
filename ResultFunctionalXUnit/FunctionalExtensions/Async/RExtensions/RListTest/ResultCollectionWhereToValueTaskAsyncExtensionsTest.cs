@@ -23,7 +23,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var numberCollection = Collections.GetRangeNumber();
             var resultCollection = RListFactory.SomeTask(numberCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueTaskAsync(_ => true,
+            var resultAfterWhere = await resultCollection.RListValueOptionTask(_ => true,
                 okFunc: Collections.AggregateToString,
                 badFunc: _ => CreateErrorListTwoTest());
 
@@ -41,7 +41,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultCollection = RListFactory.SomeTask(numberCollection);
 
             var errorsBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueTaskAsync(_ => false,
+            var resultAfterWhere = await resultCollection.RListValueOptionTask(_ => false,
                 okFunc: _ => String.Empty,
                 badFunc: _ => errorsBad);
 
@@ -58,7 +58,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorInitial = CreateErrorTest();
             var resultCollection = RListFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueTaskAsync(_ => true,
+            var resultAfterWhere = await resultCollection.RListValueOptionTask(_ => true,
                 okFunc: _ => String.Empty,
                 badFunc: _ => CreateErrorListTwoTest());
 
@@ -75,7 +75,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorInitial = CreateErrorTest();
             var resultCollection = RListFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionContinueToValueTaskAsync(_ => false,
+            var resultAfterWhere = await resultCollection.RListValueOptionTask(_ => false,
                 okFunc: _ => String.Empty,
                 badFunc: _ => CreateErrorListTwoTest());
 
@@ -92,7 +92,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var numberCollection = Collections.GetRangeNumber();
             var resultCollection = RListFactory.SomeTask(numberCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionOkBadToValueTaskAsync(
+            var resultAfterWhere = await resultCollection.RListValueMatchTask(
                 okFunc: Collections.AggregateToString,
                 badFunc: _ => String.Empty);
 
@@ -109,7 +109,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorsInitial = CreateErrorListTwoTest();
             var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionOkBadToValueTaskAsync(
+            var resultAfterWhere = await resultCollection.RListValueMatchTask(
                 okFunc: _ => String.Empty,
                 badFunc: errors => errors.Count.ToString());
 
@@ -126,7 +126,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var numberCollection = Collections.GetRangeNumber();
             var resultCollection = RListFactory.SomeTask(numberCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionOkToValueTaskAsync(Collections.AggregateToString);
+            var resultAfterWhere = await resultCollection.RListValueSomeTask(Collections.AggregateToString);
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(await Collections.AggregateToStringAsync(numberCollection), resultAfterWhere.GetValue());
@@ -141,7 +141,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorInitial = CreateErrorTest();
             var resultCollection = RListFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionOkToValueTaskAsync(Collections.AggregateToString);
+            var resultAfterWhere = await resultCollection.RListValueSomeTask(Collections.AggregateToString);
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));

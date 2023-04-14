@@ -9,7 +9,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
     /// <summary>
     /// Result collection async reorder extension methods
     /// </summary>
-    public static class ResultCollectionToCollectionAsyncExtensions
+    public static class RListLiftAsyncExtensions
     {
         /// <summary>
         /// Async converting result collection to ordinal collection
@@ -20,7 +20,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="someFunc">Function if incoming result collection hasn't errors</param>
         /// <param name="noneFunc">Function if incoming result collection has errors</param>
         /// <returns>Outgoing collection</returns>
-        public static async Task<IReadOnlyCollection<TValueOut>> ResultCollectionToCollectionOkBadAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+        public static async Task<IReadOnlyCollection<TValueOut>> RListLiftMatchAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                                                                             Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> someFunc,
                                                                                                                             Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValueOut>>> noneFunc)
             where TValueIn : notnull

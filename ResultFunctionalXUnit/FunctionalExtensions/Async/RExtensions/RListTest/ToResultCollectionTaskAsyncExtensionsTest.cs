@@ -27,7 +27,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
         var collection = GetRangeNumber();
         var resultNoError = RValueFactory.SomeTask<IEnumerable<int>>(collection);
 
-        var resultValue = await resultNoError.ToRListTaskAsync();
+        var resultValue = await resultNoError.ToRListTask();
 
         Assert.True(resultValue.Success);
         Assert.True(collection.SequenceEqual(resultValue.GetValue()));
@@ -42,7 +42,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
         var error = CreateErrorTest();
         var resultHasError = RValueFactory.NoneTask<IEnumerable<int>>(error);
 
-        var resultValue = await resultHasError.ToRListTaskAsync();
+        var resultValue = await resultHasError.ToRListTask();
 
         Assert.True(resultValue.Failure);
         Assert.Single(resultValue.GetErrors());
@@ -58,7 +58,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
         var collection = GetRangeNumber();
         var resultNoError = RValueFactory.SomeTask(collection);
 
-        var resultValue = await resultNoError.ToRListTaskAsync();
+        var resultValue = await resultNoError.ToRListTask();
 
         Assert.True(resultValue.Success);
         Assert.True(collection.SequenceEqual(resultValue.GetValue()));
@@ -73,7 +73,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
         var error = CreateErrorTest();
         var resultHasError = RValueFactory.NoneTask<IReadOnlyCollection<int>>(error);
 
-        var resultValue = await resultHasError.ToRListTaskAsync();
+        var resultValue = await resultHasError.ToRListTask();
 
         Assert.True(resultValue.Failure);
         Assert.Single(resultValue.GetErrors());
@@ -89,7 +89,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
         var collection = GetRangeNumber().ToList().AsReadOnly();
         var resultNoError = RValueFactory.SomeTask(collection);
 
-        var resultValue = await resultNoError.ToRListTaskAsync();
+        var resultValue = await resultNoError.ToRListTask();
 
         Assert.True(resultValue.Success);
         Assert.True(collection.SequenceEqual(resultValue.GetValue()));
@@ -104,7 +104,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
         var error = CreateErrorTest();
         var resultHasError = RValueFactory.NoneTask<ReadOnlyCollection<int>>(error);
 
-        var resultValue = await resultHasError.ToRListTaskAsync();
+        var resultValue = await resultHasError.ToRListTask();
 
         Assert.True(resultValue.Failure);
         Assert.Single(resultValue.GetErrors());
@@ -121,7 +121,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
         var collection = GetRangeNumber().ToList();
         var resultNoError = RValueFactory.SomeTask(collection);
 
-        var resultValue = await resultNoError.ToRListTaskAsync();
+        var resultValue = await resultNoError.ToRListTask();
 
         Assert.True(resultValue.Success);
         Assert.True(collection.SequenceEqual(resultValue.GetValue()));
@@ -136,7 +136,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
         var error = CreateErrorTest();
         var resultHasError = RValueFactory.NoneTask<List<int>>(error);
 
-        var resultValue = await resultHasError.ToRListTaskAsync();
+        var resultValue = await resultHasError.ToRListTask();
 
         Assert.True(resultValue.Failure);
         Assert.Single(resultValue.GetErrors());
@@ -164,7 +164,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
     public async Task ToResultCollectionTaskAsync()
     {
         var rangeTasks = Enumerable.Range(1, 10).Select(GetTaskNumber);
-        var resultCollection = await rangeTasks.ToRListTaskAsync();
+        var resultCollection = await rangeTasks.ToRListTask();
 
         Assert.True(resultCollection.Success);
         Assert.True(resultCollection.GetValue().SequenceEqual(Enumerable.Range(1, 10)));

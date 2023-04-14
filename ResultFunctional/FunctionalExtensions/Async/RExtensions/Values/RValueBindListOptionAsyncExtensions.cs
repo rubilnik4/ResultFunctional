@@ -25,6 +25,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueOut : notnull =>
             await @this.
             RValueBindSomeAsync(valueIn => someFunc(valueIn).ToRValueFromCollectionTaskAsync()).
-            ToRListTaskAsync();
+            ToRListTask();
     }
 }

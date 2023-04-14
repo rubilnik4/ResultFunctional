@@ -28,7 +28,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var resultCollection = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindContinueTaskAsync(_ => true,
+            var resultAfterWhere = await resultCollection.RListBindOptionTask(_ => true,
                 okFunc: numbers => CollectionToString(numbers).ToRList(),
                 badFunc: _ => CreateErrorListTwoTest());
 
@@ -46,7 +46,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultCollection = RListFactory.SomeTask(initialCollection);
 
             var errorsBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await resultCollection.ResultCollectionBindContinueTaskAsync(_ => false,
+            var resultAfterWhere = await resultCollection.RListBindOptionTask(_ => false,
                 okFunc: numbers => CollectionToString(numbers).ToRList(),
                 badFunc: _ => CreateErrorListTwoTest());
 
@@ -63,7 +63,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorInitial = CreateErrorTest();
             var resultCollection = RListFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindContinueTaskAsync(_ => true,
+            var resultAfterWhere = await resultCollection.RListBindOptionTask(_ => true,
                 okFunc: numbers => CollectionToString(numbers).ToRList(),
                 badFunc: _ => CreateErrorListTwoTest());
 
@@ -80,7 +80,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorsInitial = CreateErrorTest();
             var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindContinueTaskAsync(_ => false,
+            var resultAfterWhere = await resultCollection.RListBindOptionTask(_ => false,
                 okFunc: numbers => CollectionToString(numbers).ToRList(),
                 badFunc: _ => CreateErrorListTwoTest());
 
@@ -97,7 +97,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var resultCollection = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindWhereTaskAsync(_ => true,
+            var resultAfterWhere = await resultCollection.RListBindWhereTask(_ => true,
                 okFunc: numbers => CollectionToString(numbers).ToRList(),
                 badFunc: _ => CreateErrorListTwoTest().ToRList<string>());
 
@@ -115,7 +115,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultCollection = RListFactory.SomeTask(initialCollection);
 
             var errorsBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await resultCollection.ResultCollectionBindWhereTaskAsync(_ => false,
+            var resultAfterWhere = await resultCollection.RListBindWhereTask(_ => false,
                 okFunc: numbers => CollectionToString(numbers).ToRList(),
                 badFunc: _ => CreateErrorListTwoTest().ToRList<string>());
 
@@ -132,7 +132,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorInitial = CreateErrorTest();
             var resultCollection = RListFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindWhereTaskAsync(_ => true,
+            var resultAfterWhere = await resultCollection.RListBindWhereTask(_ => true,
                 okFunc: numbers => CollectionToString(numbers).ToRList(),
                 badFunc: _ => CreateErrorListTwoTest().ToRList<string>());
 
@@ -149,7 +149,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorsInitial = CreateErrorTest();
             var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindWhereTaskAsync(_ => false,
+            var resultAfterWhere = await resultCollection.RListBindWhereTask(_ => false,
                 okFunc: numbers => CollectionToString(numbers).ToRList(),
                 badFunc: _ => CreateErrorListTwoTest().ToRList<string>());
 
@@ -166,7 +166,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var resultCollection = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindOkBadTaskAsync(
+            var resultAfterWhere = await resultCollection.RListBindMatchTask(
                 numbers => CollectionToString(numbers).ToRList(),
                 errors => GetListByErrorsCountString(errors).ToRList());
 
@@ -183,7 +183,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorsInitial = CreateErrorListTwoTest();
             var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindOkBadTaskAsync(
+            var resultAfterWhere = await resultCollection.RListBindMatchTask(
                 numbers => CollectionToString(numbers).ToRList(),
                 errors => GetListByErrorsCountString(errors).ToRList());
 
@@ -200,7 +200,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var numberCollection = GetRangeNumber();
             var resultCollection = RListFactory.SomeTask(numberCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindOkTaskAsync(
+            var resultAfterWhere = await resultCollection.RListBindSomeTask(
                 numbers => CollectionToString(numbers).ToRList());
 
             Assert.True(resultAfterWhere.Success);
@@ -216,7 +216,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorInitial = CreateErrorTest();
             var resultCollection = RListFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindOkTaskAsync(
+            var resultAfterWhere = await resultCollection.RListBindSomeTask(
                 numbers=> CollectionToString(numbers).ToRList());
 
             Assert.True(resultAfterWhere.Failure);
@@ -232,7 +232,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var numberCollection = GetRangeNumber();
             var resultCollection = RListFactory.SomeTask(numberCollection);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindBadTaskAsync(
+            var resultAfterWhere = await resultCollection.RListBindNoneTask(
                 errors => GetListByErrorsCount(errors).ToRList());
 
             Assert.True(resultAfterWhere.Success);
@@ -248,7 +248,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorsInitial = CreateErrorListTwoTest();
             var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindBadTaskAsync(
+            var resultAfterWhere = await resultCollection.RListBindNoneTask(
                 errors => GetListByErrorsCount(errors).ToRList());
 
             Assert.True(resultAfterWhere.Success);
@@ -266,7 +266,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultError = RUnitFactory.Some();
             var resultFunctionsMock = GetNumberToError(resultError);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindErrorsOkTaskAsync(
+            var resultAfterWhere = await resultCollection.RListBindEnsureTask(
                 numbers => resultFunctionsMock.Object.NumbersToResult(numbers));
 
             Assert.True(resultAfterWhere.Success);
@@ -286,7 +286,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultError = initialError.ToRUnit();
             var resultFunctionsMock = GetNumberToError(resultError);
 
-            var resultAfterWhere = await resultCollection.ResultCollectionBindErrorsOkTaskAsync(
+            var resultAfterWhere = await resultCollection.RListBindEnsureTask(
                 number => resultFunctionsMock.Object.NumbersToResult(number));
 
             Assert.True(resultAfterWhere.Failure);
@@ -306,7 +306,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultFunctionsMock = GetNumberToError(resultError);
 
             var resultAfterWhere =
-                await resultValue.ResultCollectionBindErrorsOkTaskAsync(
+                await resultValue.RListBindEnsureTask(
                     number => resultFunctionsMock.Object.NumbersToResult(number));
 
             Assert.True(resultAfterWhere.Failure);
@@ -326,7 +326,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var resultError = initialErrorToAdd.ToRUnit();
             var resultFunctionsMock = GetNumberToError(resultError);
 
-            var resultAfterWhere = await resultValue.ResultCollectionBindErrorsOkTaskAsync(
+            var resultAfterWhere = await resultValue.RListBindEnsureTask(
                 number => resultFunctionsMock.Object.NumbersToResult(number));
 
             Assert.True(resultAfterWhere.Failure);
