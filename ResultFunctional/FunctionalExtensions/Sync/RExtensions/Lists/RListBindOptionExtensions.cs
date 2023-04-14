@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
 using ResultFunctional.Models.Options;
@@ -22,9 +23,9 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
         public static IRList<TValueOut> RListBindOption<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                          Func<IReadOnlyCollection<TValueIn>, bool> predicate,
-                                                                                          Func<IReadOnlyCollection<TValueIn>, IRList<TValueOut>> someFunc,
-                                                                                          Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> noneFunc)
+                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
+                                                                             Func<IReadOnlyCollection<TValueIn>, IRList<TValueOut>> someFunc,
+                                                                             Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
          @this.Success
@@ -32,6 +33,24 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
                  ? someFunc.Invoke(@this.GetValue())
                  : noneFunc.Invoke(@this.GetValue()).ToRList<TValueOut>()
              : @this.GetErrors().ToRList<TValueOut>();
+
+        /// <summary>
+        /// Execute monad result collection function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result collection</returns>
+        public static IRList<TValueOut> RListBindOption<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+                                                                             Func<IReadOnlyCollection<TValueIn>, bool> predicate,
+                                                                             Func<IReadOnlyCollection<TValueIn>, IRList<TValueOut>> someFunc,
+                                                                             Func<IReadOnlyCollection<TValueIn>, IEnumerable<IRError>> noneFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
+         @this.RListBindOption(predicate, someFunc, value => noneFunc(value).ToList());
 
         /// <summary>
         /// Execute monad result collection function base on predicate condition

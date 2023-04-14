@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
@@ -30,6 +31,24 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
             where TValueOut : notnull =>
              @this.ToRValue().
              RValueOption(predicate, someFunc, noneFunc);
+
+        /// <summary>
+        /// Execute result collection function converting to result value base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
+        public static IRValue<TValueOut> RListValueOption<TValueIn, TValueOut>(this IRList<TValueIn> @this,
+                                                                               Func<IReadOnlyCollection<TValueIn>, bool> predicate,
+                                                                               Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc,
+                                                                               Func<IReadOnlyCollection<TValueIn>, IEnumerable<IRError>> noneFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
+            @this.RListValueOption(predicate, someFunc, value => noneFunc(value).ToList());
 
         /// <summary>
         /// Execute result collection function converting to result value depending on result collection errors

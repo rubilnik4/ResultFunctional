@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Values;
 
@@ -31,6 +32,24 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
                  ? someFunc.Invoke(@this.GetValue()).ToRValue()
                  : noneFunc.Invoke(@this.GetValue()).ToRValue<TValueOut>()
              : @this.GetErrors().ToRValue<TValueOut>();
+
+        /// <summary>
+        /// Execute result value function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
+        public static IRValue<TValueOut> RValueOption<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+                                                                                  Func<TValueIn, bool> predicate,
+                                                                                  Func<TValueIn, TValueOut> someFunc,
+                                                                                  Func<TValueIn, IEnumerable<IRError>> noneFunc)
+             where TValueIn : notnull
+            where TValueOut : notnull =>
+         @this.RValueOption(predicate, someFunc, value => noneFunc(value).ToList());
 
         /// <summary>
         /// Execute result value function base on predicate condition returning value in any case
@@ -118,5 +137,19 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
             RValueOption(predicate,
                                 value => value,
                                 noneFunc);
+
+        /// <summary>
+        /// Check errors by predicate to result value if ones hasn't errors
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
+        /// <returns>Result value</returns>
+        public static IRValue<TValue> RValueEnsure<TValue>(this IRValue<TValue> @this, Func<TValue, bool> predicate,
+                                                           Func<TValue, IEnumerable<IRError>> noneFunc)
+            where TValue : notnull =>
+            @this.
+            RValueEnsure(predicate, value => noneFunc(value).ToList());
     }
 }

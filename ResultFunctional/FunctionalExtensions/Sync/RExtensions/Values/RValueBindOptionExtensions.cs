@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Options;
 using ResultFunctional.Models.Values;
@@ -32,6 +33,24 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
                  ? someFunc.Invoke(@this.GetValue())
                  :noneFunc.Invoke(@this.GetValue()).ToRValue<TValueOut>()
              : @this.GetErrors().ToRValue<TValueOut>();
+
+        /// <summary>
+        /// Execute monad result value function base on predicate condition
+        /// </summary>
+        /// <typeparam name="TValueIn">Incoming type</typeparam>
+        /// <typeparam name="TValueOut">Outgoing type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="predicate">Predicate function</param>
+        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
+        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
+        /// <returns>Outgoing result value</returns>
+        public static IRValue<TValueOut> RValueBindOption<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+                                                                               Func<TValueIn, bool> predicate,
+                                                                               Func<TValueIn, IRValue<TValueOut>> someFunc,
+                                                                               Func<TValueIn, IEnumerable<IRError>> noneFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
+            @this.RValueBindOption(predicate, someFunc, value => noneFunc(value).ToList());
 
         /// <summary>
         /// Execute monad result value function base on predicate condition

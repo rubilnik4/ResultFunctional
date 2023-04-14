@@ -19,8 +19,8 @@ public static class RUnitOptionExtensions
     /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
     public static IRUnit RUnitEnsure(this IRUnit @this,
-                                                  Func<bool> predicate,
-                                                  Func<IEnumerable<IRError>> noneFunc) =>
+                                     Func<bool> predicate,
+                                     Func<IEnumerable<IRError>> noneFunc) =>
         @this.Success
              ? predicate()
                  ? RUnitFactory.Some()
