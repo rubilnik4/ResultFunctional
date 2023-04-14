@@ -43,48 +43,4 @@ public class ToResultCollectionExtensionsTest
         Assert.Single(resultValue.GetErrors());
         Assert.True(error.Equals(resultValue.GetErrors().Last()));
     }
-
-    /// <summary>
-    /// Проверить объект на нул. Без ошибок
-    /// </summary>
-    [Fact]
-    public void ToResultCollectionNullCheck_Ok()
-    {
-        var collection = new List<string?> { "1", "2", "3" };
-
-        var resultString = collection.ToRListNullCheck(CreateErrorTest());
-
-        Assert.True(resultString.Success);
-        Assert.True(collection.SequenceEqual(resultString.GetValue()));
-    }
-
-    /// <summary>
-    /// Проверить объект на нул. Ошибка нулевого значения
-    /// </summary>
-    [Fact]
-    public void ToResultCollectionNullCheck_ErrorCollectionNull()
-    {
-        List<string?>? collection = null;
-        var initialError = CreateErrorTest();
-
-        var resultString = collection.ToRListNullCheck(initialError);
-
-        Assert.True(resultString.Failure);
-        Assert.True(resultString.GetErrors().First().Equals(initialError));
-    }
-
-    /// <summary>
-    /// Проверить объект на нул. Ошибка нулевого значения
-    /// </summary>
-    [Fact]
-    public void ToResultCollectionNullCheck_ErrorNull()
-    {
-        var collection = new List<string?> { "1", null, "3" };
-        var initialError = CreateErrorTest();
-
-        var resultString = collection.ToRListNullCheck(initialError);
-
-        Assert.True(resultString.Failure);
-        Assert.True(resultString.GetErrors().First().Equals(initialError));
-    }
 }

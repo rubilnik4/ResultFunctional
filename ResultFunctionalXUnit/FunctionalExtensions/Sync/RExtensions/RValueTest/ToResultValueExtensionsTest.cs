@@ -120,63 +120,6 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
         }
 
         /// <summary>
-        /// Проверить объект на нул. Без ошибок
-        /// </summary>
-        [Fact]
-        public void ToResultValueNullCheck_Ok()
-        {
-            const string initialString = "NotNull";
-
-            var result = initialString.ToRValueNullEnsure(CreateErrorTest());
-
-            Assert.True(result.Success);
-            Assert.Equal(initialString, result.GetValue());
-        }
-
-        /// <summary>
-        /// Проверить объект на нул. Ошибка нулевого значения
-        /// </summary>
-        [Fact]
-        public void ToResultValueNullCheck_ErrorNull()
-        {
-            const string? initialString = null;
-            var initialError = CreateErrorTest();
-            var result = initialString.ToRValueNullEnsure(initialError);
-
-            Assert.True(result.Failure);
-            Assert.True(result.GetErrors().First().Equals(initialError));
-        }
-
-        /// <summary>
-        /// Проверить объект на нул. Без ошибок
-        /// </summary>
-        [Fact]
-        public void ToResultValueNullCheckStruct_Ok()
-        {
-            int? initialInt = 1;
-
-            var result = initialInt.ToRValueNullEnsure(CreateErrorTest());
-
-            Assert.True(result.Success);
-            Assert.Equal(initialInt, result.GetValue());
-        }
-
-        /// <summary>
-        /// Проверить объект на нул. Ошибка нулевого значения
-        /// </summary>
-        [Fact]
-        public void ToResultValueNullCheckStruct_ErrorNull()
-        {
-            int? initialInt = null;
-            var initialError = CreateErrorTest();
-            var result = initialInt.ToRValueNullEnsure(initialError);
-
-            Assert.True(result.Failure);
-            Assert.True(result.GetErrors().First().Equals(initialError));
-        }
-
-
-        /// <summary>
         /// Вернуть результирующий ответ со значением без ошибок
         /// </summary>      
         [Fact]

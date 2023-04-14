@@ -48,19 +48,6 @@ public static class ToResultCollectionExtensions
             : @this.GetErrors().ToRList<TValue>();
 
     /// <summary>
-    /// Converting collection to result collection with null checking
-    /// </summary>
-    /// <typeparam name="TValue">Result type</typeparam>
-    /// <param name="this">Incoming collection</param>
-    /// <param name="error">Null error</param>
-    /// <returns>Outgoing result collection</returns>
-    public static IRList<TValue> ToRListNullCheck<TValue>(this IEnumerable<TValue?>? @this, IRError error)
-        where TValue : class =>
-        @this != null
-            ? @this.Select(value => value.ToRValueNullEnsure(error)).ToRList()
-            : error.ToRList<TValue>();
-
-    /// <summary>
     /// Converting result with collection type to result collection
     /// </summary>
     /// <typeparam name="TValue">Result type</typeparam>

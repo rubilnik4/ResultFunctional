@@ -37,30 +37,6 @@ public static class ToRValueTaskExtensions
         MapTask(awaitedThis => awaitedThis.ToRValueEnsure(error));
 
     /// <summary>
-    /// Converting value to result value with null checking
-    /// </summary>
-    /// <typeparam name="TValue">Result type</typeparam>
-    /// <param name="this">Incoming value</param>
-    /// <param name="error">Null error</param>
-    /// <returns>Outgoing result value</returns>
-    public static async Task<IRValue<TValue>> ToRValueNullEnsureTask<TValue>(this Task<TValue?> @this, IRError error)
-        where TValue : class =>
-        await @this.
-        MapTask(awaitedThis => awaitedThis.ToRValueNullEnsure(error));
-
-    /// <summary>
-    /// Converting value to result value with null checking
-    /// </summary>
-    /// <typeparam name="TValue">Result type</typeparam>
-    /// <param name="this">Incoming value</param>
-    /// <param name="error">Null error</param>
-    /// <returns>Outgoing result value</returns>
-    public static async Task<IRValue<TValue>> ToRValueNullEnsureTask<TValue>(this Task<TValue?> @this, IRError error)
-        where TValue : struct =>
-        await @this.
-        MapTask(awaitedThis => awaitedThis.ToRValueNullEnsure(error));
-
-    /// <summary>
     /// Converting task result unit to result value
     /// </summary>
     /// <typeparam name="TValue">Result type</typeparam>

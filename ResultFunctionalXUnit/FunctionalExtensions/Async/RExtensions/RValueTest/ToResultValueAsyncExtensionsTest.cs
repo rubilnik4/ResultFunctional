@@ -43,34 +43,6 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         }
 
         /// <summary>
-        /// Проверить объект на нул. Без ошибок
-        /// </summary>
-        [Fact]
-        public async Task ToResultValueNullCheckBind_Ok()
-        {
-            var initialString = Task.FromResult("NotNull");
-
-            var result = await initialString!.ToRValueNullEnsureAwait(CreateErrorTestTask());
-
-            Assert.True(result.Success);
-            Assert.Equal(initialString.Result, result.GetValue());
-        }
-
-        /// <summary>
-        /// Проверить объект на нул. Ошибка нулевого значения
-        /// </summary>
-        [Fact]
-        public async Task ToResultValueNullCheckBind_ErrorNull()
-        {
-            var initialString = Task.FromResult<string?>(null);
-            var initialError = CreateErrorTestTask();
-            var result = await initialString.ToRValueNullEnsureAwait(initialError);
-
-            Assert.True(result.Failure);
-            Assert.True(result.GetErrors().First().Equals(initialError.Result));
-        }
-
-        /// <summary>
         /// Вернуть результирующий ответ со значением без ошибок
         /// </summary>      
         [Fact]

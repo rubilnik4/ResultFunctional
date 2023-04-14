@@ -17,34 +17,6 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         /// Проверить объект на нул для задачи-объекта. Без ошибок
         /// </summary>
         [Fact]
-        public async Task ToResultValueNullCheckTaskAsync_Ok()
-        {
-            var initialString = Task.FromResult("NotNull");
-
-            var resultString = await initialString!.ToRValueNullEnsureTask(CreateErrorTest());
-
-            Assert.True(resultString.Success);
-            Assert.Equal(initialString.Result, resultString.GetValue());
-        }
-
-        /// <summary>
-        /// Проверить объект на нул для задачи-объекта. Ошибка нулевого значения
-        /// </summary>
-        [Fact]
-        public async Task ToResultValueNullCheckTaskAsync_ErrorNull()
-        {
-            var initialString = Task.FromResult<string?>(null);
-            var initialError = CreateErrorTest();
-            var resultString = await initialString.ToRValueNullEnsureTask(initialError);
-
-            Assert.True(resultString.Failure);
-            Assert.True(resultString.GetErrors().First().Equals(initialError));
-        }
-
-        /// <summary>
-        /// Проверить объект на нул для задачи-объекта. Без ошибок
-        /// </summary>
-        [Fact]
         public async Task ToResultValueNullCheckValueTaskAsync_Ok()
         {
             var initialString = Task.FromResult("NotNull");

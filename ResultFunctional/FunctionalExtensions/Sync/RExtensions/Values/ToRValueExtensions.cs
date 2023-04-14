@@ -46,32 +46,6 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
                 : error.ToRValue<TValue>();
 
         /// <summary>
-        /// Converting value to result value with null checking
-        /// </summary>
-        /// <typeparam name="TValue">Result type</typeparam>
-        /// <param name="this">Incoming value</param>
-        /// <param name="error">Null error</param>
-        /// <returns>Outgoing result value</returns>
-        public static IRValue<TValue> ToRValueNullEnsure<TValue>(this TValue? @this, IRError error)
-            where TValue : class =>
-            @this != null
-                ? @this.ToRValue()
-                : error.ToRValue<TValue>();
-
-        /// <summary>
-        /// Converting value to result value with null checking
-        /// </summary>
-        /// <typeparam name="TValue">Result type</typeparam>
-        /// <param name="this">Incoming value</param>
-        /// <param name="error">Null error</param>
-        /// <returns>Outgoing result value</returns>
-        public static IRValue<TValue> ToRValueNullEnsure<TValue>(this TValue? @this, IRError error)
-            where TValue : struct =>
-            @this != null
-                ? @this.Value.ToRValue()
-                : error.ToRValue<TValue>();
-
-        /// <summary>
         /// Converting result error to result value
         /// </summary>
         /// <typeparam name="TValue">Result type</typeparam>

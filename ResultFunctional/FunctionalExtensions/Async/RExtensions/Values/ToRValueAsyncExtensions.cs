@@ -24,29 +24,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             @this.ToRValueEnsure(await error);
 
         /// <summary>
-        /// Converting value to result value async with null checking
-        /// </summary>
-        /// <typeparam name="TValue">Result type</typeparam>
-        /// <param name="this">Incoming value</param>
-        /// <param name="error">Null error</param>
-        /// <returns>Outgoing result value</returns>
-        public static async Task<IRValue<TValue>> ToRValueNullEnsureAsync<TValue>(this TValue? @this, Task<IRError> error)
-            where TValue : class =>
-            @this.ToRValueNullEnsure(await error);
-
-        /// <summary>
-        /// Converting value to result value async with null checking
-        /// </summary>
-        /// <typeparam name="TValue">Result type</typeparam>
-        /// <param name="this">Incoming value</param>
-        /// <param name="error">Null error</param>
-        /// <returns>Outgoing result value</returns>
-        public static async Task<IRValue<TValue>> ToRValueNullEnsureAsync<TValue>(this TValue? @this,
-                                                                                           Task<IRError> error)
-            where TValue : struct =>
-            @this.ToRValueNullEnsure(await error);
-
-        /// <summary>
         /// Async converting result unit to result value
         /// </summary>
         /// <typeparam name="TValue">Result type</typeparam>

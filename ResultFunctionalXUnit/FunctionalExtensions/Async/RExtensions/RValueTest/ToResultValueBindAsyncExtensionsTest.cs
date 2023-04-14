@@ -42,62 +42,6 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         }
 
         /// <summary>
-        /// Проверить объект на нул. Без ошибок
-        /// </summary>
-        [Fact]
-        public async Task ToResultValueNullCheckBindAsync_Ok()
-        {
-            const string initialString = "NotNull";
-
-            var result = await initialString.ToRValueNullEnsureAsync(CreateErrorTestTask());
-
-            Assert.True(result.Success);
-            Assert.Equal(initialString, result.GetValue());
-        }
-
-        /// <summary>
-        /// Проверить объект на нул. Ошибка нулевого значения
-        /// </summary>
-        [Fact]
-        public async Task ToResultValueNullCheckBindAsync_ErrorNull()
-        {
-            const string? initialString = null;
-            var initialError = CreateErrorTestTask();
-            var result = await initialString.ToRValueNullEnsureAsync(initialError);
-
-            Assert.True(result.Failure);
-            Assert.True(result.GetErrors().First().Equals(initialError.Result));
-        }
-
-        /// <summary>
-        /// Проверить объект на нул. Без ошибок
-        /// </summary>
-        [Fact]
-        public async Task ToResultValueNullCheckStructBindAsync_Ok()
-        {
-            int? initialInt = 1;
-
-            var result = await initialInt.ToRValueNullEnsureAsync(CreateErrorTestTask());
-
-            Assert.True(result.Success);
-            Assert.Equal(initialInt, result.GetValue());
-        }
-
-        /// <summary>
-        /// Проверить объект на нул. Ошибка нулевого значения
-        /// </summary>
-        [Fact]
-        public async Task ToResultValueNullCheckStructBindAsync_ErrorNull()
-        {
-            int? initialInt = null;
-            var initialError = CreateErrorTestTask();
-            var result = await initialInt.ToRValueNullEnsureAsync(initialError);
-
-            Assert.True(result.Failure);
-            Assert.True(result.GetErrors().First().Equals(initialError.Result));
-        }
-
-        /// <summary>
         /// Вернуть результирующий ответ со значением без ошибок
         /// </summary>      
         [Fact]
