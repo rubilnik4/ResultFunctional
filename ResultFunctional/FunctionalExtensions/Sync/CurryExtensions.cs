@@ -15,8 +15,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync
         /// <param name="this">One argument higher order function</param>
         /// <param name="arg1">Argument</param>
         /// <returns>No arguments higher order function</returns>
-        public static Func<TOut> Curry<TIn1, TOut>(this Func<TIn1, TOut> @this, TIn1 arg1) =>
-            () => @this(arg1);
+        public static TOut Curry<TIn1, TOut>(this Func<TIn1, TOut> @this, TIn1 arg1) =>
+            @this(arg1);
 
         /// <summary>
         /// Get one argument higher order function

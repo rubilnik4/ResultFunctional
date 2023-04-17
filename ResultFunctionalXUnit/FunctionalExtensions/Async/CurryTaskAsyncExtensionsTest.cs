@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             var totalFunc = await taskFunc.CurryTask(3);
 
-            Assert.Equal(5, totalFunc.Invoke());
+            Assert.Equal(5, totalFunc);
         }
 
         /// <summary>

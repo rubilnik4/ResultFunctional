@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result error</returns>
         public static async Task<IRUnit> RUnitTrySomeTask(this Task<IRUnit> @this, Action action,
-                                                                     Func<Exception, IRError> exceptionFunc) =>
+                                                          Func<Exception, IRError> exceptionFunc) =>
             await @this.
             MapTask(awaitedThis => awaitedThis.RUnitTrySome(action, exceptionFunc));
 
@@ -30,8 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="action">Action</param>
         /// <param name="error">Error</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IRUnit> RUnitTrySomeTask(this Task<IRUnit> @this, Action action,
-                                                                         IRError error) =>
+        public static async Task<IRUnit> RUnitTrySomeTask(this Task<IRUnit> @this, Action action, IRError error) =>
             await @this.RUnitTrySomeTask(action, _ => error);
     }
 }

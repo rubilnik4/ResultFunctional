@@ -20,12 +20,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="this">Result value one argument high order function</param>
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
-        public static async Task<IRValue<Func<TOut>>> RValueCurryListAsync<TIn1, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TOut>> @this,
-                                                                                        Task<IRList<TIn1>> arg1)
+        public static async Task<IRValue<TOut>> RValueCurryListAsync<TIn1, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TOut>> @this,
+                                                                                 Task<IRList<TIn1>> arg1)
             where TIn1 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTask(@this.RValueCurryList);
+                MapTask(@this.RValueCurryList);
 
         /// <summary>
         /// Get one argument result value async higher order collection function
@@ -37,12 +37,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
         public static async Task<IRValue<Func<TIn2, TOut>>> RValueCurryListAsync<TIn1, TIn2, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TIn2, TOut>> @this,
-                                                                                          Task<IRList<TIn1>> arg1)
+                                                                                                   Task<IRList<TIn1>> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTask(@this.RValueCurryList);
+                MapTask(@this.RValueCurryList);
 
         /// <summary>
         /// Get two arguments result value async higher order collection function
@@ -55,13 +55,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
         public static async Task<IRValue<Func<TIn2, TIn3, TOut>>> RValueCurryListAsync<TIn1, TIn2, TIn3, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TIn2, TIn3, TOut>> @this,
-                                                                                                    Task<IRList<TIn1>> arg1) 
+                                                                                                               Task<IRList<TIn1>> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
             where TIn3 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTask(@this.RValueCurryList);
+                MapTask(@this.RValueCurryList);
 
         /// <summary>
         /// Get three arguments result value async higher order collection function
@@ -75,14 +75,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
         public static async Task<IRValue<Func<TIn2, TIn3, TIn4, TOut>>> RValueCurryListAsync<TIn1, TIn2, TIn3, TIn4, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TIn2, TIn3, TIn4, TOut>> @this,
-                                                                                                                  Task<IRList<TIn1>> arg1)
+                                                                                                                           Task<IRList<TIn1>> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
             where TIn3 : notnull
             where TIn4 : notnull
             where TOut : notnull =>
-             await arg1.
-            MapTask(@this.RValueCurryList);
+            await arg1.
+                MapTask(@this.RValueCurryList);
 
         /// <summary>
         /// Get four arguments result value async higher order collection function
@@ -97,7 +97,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="arg1">Result collection argument</param>
         /// <returns>Result value higher order function</returns>
         public static async Task<IRValue<Func<TIn2, TIn3, TIn4, TIn5, TOut>>> RValueCurryListAsync<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>(this IRValue<Func<IReadOnlyCollection<TIn1>, TIn2, TIn3, TIn4, TIn5, TOut>> @this,
-                                                                                                                             Task<IRList<TIn1>> arg1)
+                                                                                                                                       Task<IRList<TIn1>> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
             where TIn3 : notnull
@@ -105,6 +105,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn5 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTask(@this.RValueCurryList);
+                MapTask(@this.RValueCurryList);
     }
 }

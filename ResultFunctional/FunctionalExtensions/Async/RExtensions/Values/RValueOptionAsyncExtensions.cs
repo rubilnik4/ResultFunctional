@@ -23,9 +23,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IRValue<TValueOut>> RValueOptionAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                                   Func<TValueIn, bool> predicate,
-                                                                                                   Func<TValueIn, Task<TValueOut>> someFunc,
-                                                                                                   Func<TValueIn, Task<IReadOnlyCollection<IRError>>> noneFunc)
+                                                                                            Func<TValueIn, bool> predicate,
+                                                                                            Func<TValueIn, Task<TValueOut>> someFunc,
+                                                                                            Func<TValueIn, Task<IReadOnlyCollection<IRError>>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
@@ -45,13 +45,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IRValue<TValueOut>> RValueOptionAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                                        Func<TValueIn, bool> predicate,
-                                                                                                        Func<TValueIn, Task<TValueOut>> someFunc,
-                                                                                                        Func<TValueIn, IReadOnlyCollection<IRError>> noneFunc)
+                                                                                            Func<TValueIn, bool> predicate,
+                                                                                            Func<TValueIn, Task<TValueOut>> someFunc,
+                                                                                            Func<TValueIn, IEnumerable<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.RValueOptionAsync(predicate, someFunc,
-                                                 values => noneFunc(values).ToCollectionTask());
+                                          values => noneFunc(values).ToCollectionTask());
 
         /// <summary>
         /// Execute result value async function base on predicate condition returning value in any case
@@ -64,16 +64,16 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>   
         public static async Task<IRValue<TValueOut>> RValueWhereAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                                     Func<TValueIn, bool> predicate,
-                                                                                                     Func<TValueIn, Task<TValueOut>> someFunc,
-                                                                                                     Func<TValueIn, Task<TValueOut>> noneFunc)
+                                                                                           Func<TValueIn, bool> predicate,
+                                                                                           Func<TValueIn, Task<TValueOut>> someFunc,
+                                                                                           Func<TValueIn, Task<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
-         @this.Success
-             ? predicate(@this.GetValue())
-                 ? await someFunc.Invoke(@this.GetValue()).ToRValueTask()
-                 : await noneFunc.Invoke(@this.GetValue()).ToRValueTask()
-             : @this.GetErrors().ToRValue<TValueOut>();
+            @this.Success
+                ? predicate(@this.GetValue())
+                    ? await someFunc.Invoke(@this.GetValue()).ToRValueTask()
+                    : await noneFunc.Invoke(@this.GetValue()).ToRValueTask()
+                : @this.GetErrors().ToRValue<TValueOut>();
 
         /// <summary>
         /// Execute result value async function depending on result value errors
@@ -85,8 +85,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function if result value has errors</param>
         /// <returns>Outgoing result value</returns> 
         public static async Task<IRValue<TValueOut>> RValueMatchAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                                     Func<TValueIn, Task<TValueOut>> someFunc,
-                                                                                                     Func<IReadOnlyCollection<IRError>, Task<TValueOut>> noneFunc)
+                                                                                           Func<TValueIn, Task<TValueOut>> someFunc,
+                                                                                           Func<IReadOnlyCollection<IRError>, Task<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
@@ -102,7 +102,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="someFunc">Function if result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>  
         public static async Task<IRValue<TValueOut>> RValueSomeAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                             Func<TValueIn, Task<TValueOut>> someFunc)
+                                                                                          Func<TValueIn, Task<TValueOut>> someFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
@@ -117,7 +117,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function if result value has errors</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IRValue<TValue>> RValueNoneAsync<TValue>(this IRValue<TValue> @this,
-                                                                                   Func<IReadOnlyCollection<IRError>, Task<TValue>> noneFunc)
+                                                                          Func<IReadOnlyCollection<IRError>, Task<TValue>> noneFunc)
             where TValue : notnull =>
             @this.Success
                 ? @this
@@ -132,12 +132,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Result value</returns>
         public static async Task<IRValue<TValue>> RValueEnsureAsync<TValue>(this IRValue<TValue> @this,
-                                                                                        Func<TValue, bool> predicate,
-                                                                                        Func<TValue, Task<IReadOnlyCollection<IRError>>> noneFunc)
+                                                                            Func<TValue, bool> predicate,
+                                                                            Func<TValue, Task<IReadOnlyCollection<IRError>>> noneFunc)
             where TValue : notnull =>
-            await @this
-                .RValueOptionAsync(predicate,
-                                   Task.FromResult,
-                                   noneFunc);
+            await @this.RValueOptionAsync(predicate, Task.FromResult, noneFunc);
     }
 }

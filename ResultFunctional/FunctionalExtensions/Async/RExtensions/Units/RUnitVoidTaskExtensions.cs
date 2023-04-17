@@ -19,8 +19,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <returns>Unchanged result error</returns> 
         public static async Task<IRUnit> RUnitVoidSomeTask(this Task<IRUnit> @this, Action action) =>
             await @this.
-            VoidSomeTask(awaitedThis => awaitedThis.Success,
-                action: _ => action.Invoke());
+                VoidSomeTask(awaitedThis => awaitedThis.Success,
+                             action: _ => action.Invoke());
 
         /// <summary>
         /// Execute action if task result has errors
@@ -29,10 +29,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns>
         public static async Task<IRUnit> RUnitVoidNoneTask(this Task<IRUnit> @this,
-                                                                       Action<IReadOnlyCollection<IRError>> action) =>
+                                                           Action<IReadOnlyCollection<IRError>> action) =>
             await @this.
-            VoidSomeTask(awaitedThis => awaitedThis.Failure,
-                action: awaitedThis => action.Invoke(awaitedThis.GetErrors()));
+                VoidSomeTask(awaitedThis => awaitedThis.Failure,
+                             action: awaitedThis => action.Invoke(awaitedThis.GetErrors()));
 
         /// <summary>
         /// Execute action depending on task result errors
@@ -42,11 +42,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="actionNone">Action if result has errors</param>
         /// <returns>Unchanged result error</returns>   
         public static async Task<IRUnit> RUnitVoidMatchTask(this Task<IRUnit> @this, Action actionSome,
-                                                                             Action<IReadOnlyCollection<IRError>> actionNone) =>
+                                                            Action<IReadOnlyCollection<IRError>> actionNone) =>
             await @this.
-            VoidOptionTask(awaitedThis => awaitedThis.Success,
-                actionSome: _ => actionSome.Invoke(),
-                actionNone: awaitedThis => actionNone.Invoke(awaitedThis.GetErrors()));
+                VoidOptionTask(awaitedThis => awaitedThis.Success,
+                               actionSome: _ => actionSome.Invoke(),
+                               actionNone: awaitedThis => actionNone.Invoke(awaitedThis.GetErrors()));
 
         /// <summary>
         /// Execute action depending on task result errors and predicate
@@ -55,11 +55,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result error</returns>  
-        public static async Task<IRUnit> RUnitVoidWhereTask(this Task<IRUnit> @this,
-                                                                           Func<bool> predicate,
-                                                                           Action action) =>
+        public static async Task<IRUnit> RUnitVoidWhereTask(this Task<IRUnit> @this, Func<bool> predicate, Action action) =>
             await @this.
-            VoidSomeTask(awaitedThis=> awaitedThis.Success && predicate(),
-                action: _ => action.Invoke());
+                VoidSomeTask(awaitedThis => awaitedThis.Success && predicate(),
+                             action: _ => action.Invoke());
     }
 }

@@ -152,7 +152,7 @@ public class ToResultCollectionTaskAsyncExtensionsTest
         var numbers = Collections.GetRangeNumber();
         var resultCollectionTask = RListFactory.SomeTask(numbers);
 
-        var resultValue = await resultCollectionTask.ToRValueFromCollectionTaskAsync();
+        var resultValue = await resultCollectionTask.ToRValueTask();
 
         Assert.IsAssignableFrom<IRValue<IReadOnlyCollection<int>>>(resultValue);
     }

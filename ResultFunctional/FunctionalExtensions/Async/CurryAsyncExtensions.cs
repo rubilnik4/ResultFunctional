@@ -17,7 +17,7 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <param name="this">One argument higher order function</param>
         /// <param name="arg1">Argument</param>
         /// <returns>No arguments higher order function</returns>
-        public static async Task<Func<TOut>> CurryAsync<TIn1, TOut>(this Func<TIn1, TOut> @this, Task<TIn1> arg1) =>
+        public static async Task<TOut> CurryAsync<TIn1, TOut>(this Func<TIn1, TOut> @this, Task<TIn1> arg1) =>
             await arg1.
             MapTask(@this.Curry);
 

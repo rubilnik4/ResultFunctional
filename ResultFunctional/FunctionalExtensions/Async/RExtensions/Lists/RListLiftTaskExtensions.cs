@@ -22,8 +22,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="noneFunc">Function if incoming result collection has errors</param>
         /// <returns>Outgoing collection</returns> 
         public static async Task<IReadOnlyCollection<TValueOut>> RListLiftMatchTask<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
-                                                                                                                                Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
-                                                                                                                                Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValueOut>> noneFunc)
+                                                                                                         Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
+                                                                                                         Func<IReadOnlyCollection<IRError>, IEnumerable<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.

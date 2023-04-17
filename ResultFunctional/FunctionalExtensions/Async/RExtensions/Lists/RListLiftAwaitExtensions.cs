@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
@@ -21,11 +22,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="noneFunc">Function if incoming result collection has errors</param>
         /// <returns>Outgoing collection</returns>   
         public static async Task<IReadOnlyCollection<TValueOut>> RListLiftMatchAwait<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
-                                                                                                                                Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> someFunc,
-                                                                                                                                Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValueOut>>> noneFunc)
+                                                                                                          Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> someFunc,
+                                                                                                          Func<IReadOnlyCollection<IRError>,  IEnumerable<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.RListLiftMatchAsync(someFunc, noneFunc));
+                MapAwait(awaitedThis => awaitedThis.RListLiftMatchAsync(someFunc, noneFunc));
     }
 }

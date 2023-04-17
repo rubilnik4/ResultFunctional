@@ -20,11 +20,11 @@ public static class RUnitOptionAsyncExtensions
     /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
     public static async Task<IRUnit> RUnitEnsureAsync(this IRUnit @this,
-                                                                         Func<bool> predicate,
-                                                                         Func<Task<IReadOnlyCollection<IRError>>> noneFunc) =>
-         @this.Success
-             ? predicate()
-                 ? RUnit.Some()
-                 : await noneFunc.Invoke().ToRUnitTask()
-             : @this.GetErrors().ToRUnit();
+                                                      Func<bool> predicate,
+                                                      Func<Task<IReadOnlyCollection<IRError>>> noneFunc) =>
+        @this.Success
+            ? predicate()
+                ? RUnit.Some()
+                : await noneFunc.Invoke().ToRUnitTask()
+            : @this.GetErrors().ToRUnit();
 }

@@ -18,12 +18,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="this">Result value one argument high order function</param>
         /// <param name="arg1">Result value argument</param>
         /// <returns>Result value higher order function</returns>
-        public static async Task<IRValue<Func<TOut>>> RValueCurryAsync<TIn1, TOut>(this IRValue<Func<TIn1, TOut>> @this,
-                                                                                          Task<IRValue<TIn1>> arg1)
+        public static async Task<IRValue<TOut>> RValueCurryAsync<TIn1, TOut>(this IRValue<Func<TIn1, TOut>> @this,
+                                                                             Task<IRValue<TIn1>> arg1)
             where TIn1 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTask(@this.RValueCurry);
+                MapTask(@this.RValueCurry);
 
         /// <summary>
         /// Get one argument result value async higher order function
@@ -35,12 +35,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="arg1">Result value argument</param>
         /// <returns>Result value higher order function</returns>
         public static async Task<IRValue<Func<TIn2, TOut>>> RValueCurryAsync<TIn1, TIn2, TOut>(this IRValue<Func<TIn1, TIn2, TOut>> @this,
-                                                                                                          Task<IRValue<TIn1>> arg1)
+                                                                                               Task<IRValue<TIn1>> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTask(@this.RValueCurry);
+                MapTask(@this.RValueCurry);
 
         /// <summary>
         /// Get two arguments result value async higher order function
@@ -53,13 +53,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="arg1">Result value argument</param>
         /// <returns>Result value higher order function</returns>
         public static async Task<IRValue<Func<TIn2, TIn3, TOut>>> RValueCurryAsync<TIn1, TIn2, TIn3, TOut>(this IRValue<Func<TIn1, TIn2, TIn3, TOut>> @this,
-                                                                                                                      Task<IRValue<TIn1>> arg1)
+                                                                                                           Task<IRValue<TIn1>> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
             where TIn3 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTask(@this.RValueCurry);
+                MapTask(@this.RValueCurry);
 
         /// <summary>
         /// Get three arguments result value async higher order function
@@ -73,14 +73,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="arg1">Result value argument</param>
         /// <returns>Result value higher order function</returns>
         public static async Task<IRValue<Func<TIn2, TIn3, TIn4, TOut>>> RValueCurryAsync<TIn1, TIn2, TIn3, TIn4, TOut>(this IRValue<Func<TIn1, TIn2, TIn3, TIn4, TOut>> @this,
-                                                                                                                                  Task<IRValue<TIn1>> arg1)
+                                                                                                                       Task<IRValue<TIn1>> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
             where TIn3 : notnull
             where TIn4 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTask(@this.RValueCurry);
+                MapTask(@this.RValueCurry);
 
         /// <summary>
         /// Get four arguments result value async higher order function
@@ -95,7 +95,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="arg1">Result value argument</param>
         /// <returns>Result value higher order function</returns>
         public static async Task<IRValue<Func<TIn2, TIn3, TIn4, TIn5, TOut>>> RValueCurryAsync<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>(this IRValue<Func<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>> @this,
-                                                                                                                                              Task<IRValue<TIn1>> arg1)
+                                                                                                                                   Task<IRValue<TIn1>> arg1)
             where TIn1 : notnull
             where TIn2 : notnull
             where TIn3 : notnull
@@ -103,6 +103,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TIn5 : notnull
             where TOut : notnull =>
             await arg1.
-            MapTask(@this.RValueCurry);
+                MapTask(@this.RValueCurry);
     }
 }

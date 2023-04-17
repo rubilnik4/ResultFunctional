@@ -64,7 +64,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         public static IRList<TValueOut> RListWhere<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                         Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                         Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
-                                                                        Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> noneFunc)
+                                                                        Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
          @this.Success

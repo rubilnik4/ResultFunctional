@@ -20,11 +20,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValue>> ToRListOptionAwait<TValue>(this Task<IEnumerable<TValue>> @this,
-                                                                                          Func<IEnumerable<TValue>, bool> predicate,
-                                                                                          Func<IEnumerable<TValue>, Task<IRError>> noneFunc)
+                                                                            Func<IEnumerable<TValue>, bool> predicate,
+                                                                            Func<IEnumerable<TValue>, Task<IRError>> noneFunc)
             where TValue : notnull =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.ToRListOptionAsync(predicate, noneFunc));
+                MapAwait(awaitedThis => awaitedThis.ToRListOptionAsync(predicate, noneFunc));
 
         /// <summary>
         /// Async converting task collection to result collection base on predicate
@@ -35,11 +35,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValue>> ToRListOptionAwait<TValue>(this Task<IReadOnlyCollection<TValue>> @this,
-                                                                                            Func<IEnumerable<TValue>, bool> predicate,
-                                                                                            Func<IEnumerable<TValue>, Task<IRError>> noneFunc)
+                                                                            Func<IEnumerable<TValue>, bool> predicate,
+                                                                            Func<IEnumerable<TValue>, Task<IRError>> noneFunc)
             where TValue : notnull =>
             await @this.
-            MapTask(resultCollection => (IEnumerable<TValue>)resultCollection).
-            ToRListOptionAwait(predicate, noneFunc);
+                  MapTask(resultCollection => (IEnumerable<TValue>)resultCollection).
+                  ToRListOptionAwait(predicate, noneFunc);
     }
 }

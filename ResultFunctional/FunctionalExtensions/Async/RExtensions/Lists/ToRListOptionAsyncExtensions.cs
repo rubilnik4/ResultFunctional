@@ -21,11 +21,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValue>> ToRListOptionAsync<TValue>(this IEnumerable<TValue> @this,
-                                                                                      Func<IEnumerable<TValue>, bool> predicate,
-                                                                                      Func<IEnumerable<TValue>, Task<IRError>> noneFunc)
+                                                                            Func<IEnumerable<TValue>, bool> predicate,
+                                                                            Func<IEnumerable<TValue>, Task<IRError>> noneFunc)
             where TValue : notnull =>
             await @this.OptionAsync(predicate,
-                                           value => value.ToRList().ToTask(),
-                                           value => noneFunc(value).ToRListTask<TValue>());
+                                    value => value.ToRList().ToTask(),
+                                    value => noneFunc(value).ToRListTask<TValue>());
     }
 }

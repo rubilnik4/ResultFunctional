@@ -19,10 +19,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IRValue<TValue>> ToRValueOptionAwait<TValue>(this Task<TValue> @this,
-                                                                                      Func<TValue, bool> predicate,
-                                                                                      Func<TValue, Task<IRError>> noneFunc)
+                                                                              Func<TValue, bool> predicate,
+                                                                              Func<TValue, Task<IRError>> noneFunc)
             where TValue : notnull =>
-          await @this.
-          MapAwait(thisAwaited => thisAwaited.ToRValueOptionAsync(predicate, noneFunc));
+            await @this.
+                MapAwait(thisAwaited => thisAwaited.ToRValueOptionAsync(predicate, noneFunc));
     }
 }

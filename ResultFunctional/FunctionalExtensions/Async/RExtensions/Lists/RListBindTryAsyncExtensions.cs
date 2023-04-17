@@ -38,8 +38,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="func">Result collection function</param>
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
-        public static async Task<IRList<TValue>> RListBindTryAsync<TValue>(Func<Task<IRList<TValue>>> func,
-                                                                                          IRError error)
+        public static async Task<IRList<TValue>> RListBindTryAsync<TValue>(Func<Task<IRList<TValue>>> func, IRError error)
             where TValue : notnull =>
             await RListBindTryAsync(func, error.AppendException);
     }

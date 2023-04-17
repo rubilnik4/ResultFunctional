@@ -20,10 +20,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="action">Action</param>
         /// <returns>Unchanged result collection</returns>     
         public static async Task<IRList<TValue>> RListVoidSomeTask<TValue>(this Task<IRList<TValue>> @this,
-                                                                                         Action<IReadOnlyCollection<TValue>> action)
+                                                                           Action<IReadOnlyCollection<TValue>> action)
             where TValue : notnull =>
             await @this.
-            MapTask(awaitedThis => awaitedThis.RListVoidSome(action));
+                MapTask(awaitedThis => awaitedThis.RListVoidSome(action));
 
         /// <summary>
         /// Execute action if task result collection has errors
@@ -33,10 +33,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="action">Action</param>
         /// <returns>Unchanged result collection</returns>  
         public static async Task<IRList<TValue>> RListVoidNoneTask<TValue>(this Task<IRList<TValue>> @this,
-                                                                                      Action<IReadOnlyCollection<IRError>> action)
+                                                                           Action<IReadOnlyCollection<IRError>> action)
             where TValue : notnull =>
             await @this.
-            MapTask(awaitedThis => awaitedThis.RListVoidNone(action));
+                MapTask(awaitedThis => awaitedThis.RListVoidNone(action));
 
         /// <summary>
         /// Execute action depending on task result collection errors
@@ -47,11 +47,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="actionNone">Action if result collection has errors</param>
         /// <returns>Unchanged result collection</returns>      
         public static async Task<IRList<TValue>> RListVoidMatchTask<TValue>(this Task<IRList<TValue>> @this,
-                                                                                                     Action<IReadOnlyCollection<TValue>> actionSome,
-                                                                                                     Action<IReadOnlyCollection<IRError>> actionNone)
+                                                                            Action<IReadOnlyCollection<TValue>> actionSome,
+                                                                            Action<IReadOnlyCollection<IRError>> actionNone)
             where TValue : notnull =>
             await @this.
-            MapTask(awaitedThis => awaitedThis.RListVoidMatch(actionSome, actionNone));
+                MapTask(awaitedThis => awaitedThis.RListVoidMatch(actionSome, actionNone));
 
         /// <summary>
         /// Execute action depending on task result collection errors and predicate
@@ -62,10 +62,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result collection</returns>
         public static async Task<IRList<TValue>> RListVoidOptionTask<TValue>(this Task<IRList<TValue>> @this,
-                                                                                          Func<IReadOnlyCollection<TValue>, bool> predicate,
-                                                                                          Action<IReadOnlyCollection<TValue>> action)
+                                                                             Func<IReadOnlyCollection<TValue>, bool> predicate,
+                                                                             Action<IReadOnlyCollection<TValue>> action)
             where TValue : notnull =>
             await @this.
-            MapTask(awaitedThis => awaitedThis.RListVoidOption(predicate, action));
+                MapTask(awaitedThis => awaitedThis.RListVoidOption(predicate, action));
     }
 }

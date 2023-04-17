@@ -19,8 +19,8 @@ public static class RUnitOptionAwaitExtensions
     /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
     public static async Task<IRUnit> RUnitEnsureAwait(this Task<IRUnit> @this,
-                                                                         Func<bool> predicate,
-                                                                         Func<Task<IReadOnlyCollection<IRError>>> noneFunc) =>
-         await @this.
-        MapAwait(awaitedThis => awaitedThis.RUnitEnsureAsync(predicate, noneFunc));
+                                                      Func<bool> predicate,
+                                                      Func<Task<IReadOnlyCollection<IRError>>> noneFunc) =>
+        await @this.
+            MapAwait(awaitedThis => awaitedThis.RUnitEnsureAsync(predicate, noneFunc));
 }

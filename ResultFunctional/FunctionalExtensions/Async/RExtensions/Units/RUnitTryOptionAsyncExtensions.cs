@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result error</returns>
         public static async Task<IRUnit> RUnitTrySomeAsync(this IRUnit @this, Func<Task> action,
-                                                               Func<Exception, IRError> exceptionFunc) =>
+                                                           Func<Exception, IRError> exceptionFunc) =>
             await @this.RUnitBindSomeAsync(() => RUnitTryAsync(action.Invoke, exceptionFunc));
 
         /// <summary>

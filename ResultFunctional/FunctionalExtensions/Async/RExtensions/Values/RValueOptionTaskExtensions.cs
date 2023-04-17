@@ -23,13 +23,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns> 
         public static async Task<IRValue<TValueOut>> RValueOptionTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                                       Func<TValueIn, bool> predicate,
-                                                                                                       Func<TValueIn, TValueOut> someFunc,
-                                                                                                       Func<TValueIn, IReadOnlyCollection<IRError>> noneFunc)
+                                                                                           Func<TValueIn, bool> predicate,
+                                                                                           Func<TValueIn, TValueOut> someFunc,
+                                                                                           Func<TValueIn, IEnumerable<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapTask(awaitedThis => awaitedThis.RValueOption(predicate, someFunc, noneFunc));
+                MapTask(awaitedThis => awaitedThis.RValueOption(predicate, someFunc, noneFunc));
 
         /// <summary>
         /// Execute task result value function base on predicate condition returning value in any case
@@ -42,13 +42,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>   
         public static async Task<IRValue<TValueOut>> RValueWhereTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                                         Func<TValueIn, bool> predicate,
-                                                                                                         Func<TValueIn, TValueOut> someFunc,
-                                                                                                         Func<TValueIn, TValueOut> noneFunc)
+                                                                                          Func<TValueIn, bool> predicate,
+                                                                                          Func<TValueIn, TValueOut> someFunc,
+                                                                                          Func<TValueIn, TValueOut> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapTask(awaitedThis => awaitedThis.RValueWhere(predicate, someFunc, noneFunc));
+                MapTask(awaitedThis => awaitedThis.RValueWhere(predicate, someFunc, noneFunc));
 
         /// <summary>
         /// Execute task result value function depending on result value errors
@@ -60,12 +60,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function if result value has errors</param>
         /// <returns>Outgoing result value</returns> 
         public static async Task<IRValue<TValueOut>> RValueMatchTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                                         Func<TValueIn, TValueOut> someFunc,
-                                                                                                         Func<IReadOnlyCollection<IRError>, TValueOut> noneFunc)
+                                                                                          Func<TValueIn, TValueOut> someFunc,
+                                                                                          Func<IReadOnlyCollection<IRError>, TValueOut> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapTask(awaitedThis => awaitedThis.RValueMatch(someFunc, noneFunc));
+                MapTask(awaitedThis => awaitedThis.RValueMatch(someFunc, noneFunc));
 
         /// <summary>
         /// Execute task result value function if incoming result value hasn't errors
@@ -76,11 +76,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="someFunc">Function if result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>   
         public static async Task<IRValue<TValueOut>> RValueSomeTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                                      Func<TValueIn, TValueOut> someFunc)
+                                                                                         Func<TValueIn, TValueOut> someFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapTask(awaitedThis => awaitedThis.RValueSome(someFunc));
+                MapTask(awaitedThis => awaitedThis.RValueSome(someFunc));
 
         /// <summary>
         /// Execute task result value function if incoming result value has errors
@@ -90,10 +90,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function if result value has errors</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IRValue<TValue>> RValueNoneTask<TValue>(this Task<IRValue<TValue>> @this,
-                                                                                       Func<IReadOnlyCollection<IRError>, TValue> noneFunc)
+                                                                         Func<IReadOnlyCollection<IRError>, TValue> noneFunc)
             where TValue : notnull =>
             await @this.
-            MapTask(awaitedThis => awaitedThis.RValueNone(noneFunc));
+                MapTask(awaitedThis => awaitedThis.RValueNone(noneFunc));
 
         /// <summary>
         /// Check errors by predicate to task result value if ones hasn't errors
@@ -105,9 +105,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <returns>Result value</returns>
         public static async Task<IRValue<TValue>> RValueEnsureTask<TValue>(this Task<IRValue<TValue>> @this,
                                                                            Func<TValue, bool> predicate,
-                                                                           Func<TValue, IReadOnlyCollection<IRError>> noneFunc)
+                                                                           Func<TValue, IEnumerable<IRError>> noneFunc)
             where TValue : notnull =>
-             await @this.
-             MapTask(awaitedThis => awaitedThis.RValueEnsure(predicate, noneFunc));
+            await @this.
+                MapTask(awaitedThis => awaitedThis.RValueEnsure(predicate, noneFunc));
     }
 }

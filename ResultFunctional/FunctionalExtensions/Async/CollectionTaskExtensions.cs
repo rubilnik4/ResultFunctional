@@ -47,6 +47,15 @@ public static class CollectionTaskExtensions
         Task.FromResult(collection);
 
     /// <summary>
+    /// Converting enumerable to collection task type
+    /// </summary>
+    /// <typeparam name="T">Collection type</typeparam>
+    /// <param name="collection">Collection</param>
+    /// <returns>Collection</returns>
+    public static Task<IReadOnlyCollection<T>> ToCollectionTask<T>(this IEnumerable<T> collection) =>
+        Task.FromResult((IReadOnlyCollection<T>)collection.ToList());
+
+    /// <summary>
     /// Converting to enumerable type
     /// </summary>
     /// <typeparam name="T">Value type</typeparam>

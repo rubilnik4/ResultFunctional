@@ -21,10 +21,10 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="noneFunc">Function if incoming result collection has errors</param>
         /// <returns>Outgoing collection</returns>
         public static IReadOnlyCollection<TValueOut> RListLiftMatch<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                    Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
-                                                                                    Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValueOut>> noneFunc)
-             where TValueIn : notnull
-             where TValueOut : notnull =>
+                                                                                         Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
+                                                                                         Func<IReadOnlyCollection<IRError>, IEnumerable<TValueOut>> noneFunc)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             @this.Success
                 ? someFunc.Invoke(@this.GetValue()).ToList()
                 : noneFunc.Invoke(@this.GetErrors()).ToList();

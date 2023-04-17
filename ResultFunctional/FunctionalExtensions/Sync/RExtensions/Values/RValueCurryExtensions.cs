@@ -17,13 +17,13 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Result value one argument high order function</param>
         /// <param name="arg1">Result value argument</param>
         /// <returns>Result value higher order function</returns>
-        public static IRValue<Func<TOut>> RValueCurry<TIn1, TOut>(this IRValue<Func<TIn1, TOut>> @this,
+        public static IRValue<TOut> RValueCurry<TIn1, TOut>(this IRValue<Func<TIn1, TOut>> @this,
                                                                          IRValue<TIn1> arg1) 
             where TIn1 : notnull
             where TOut : notnull =>
             @this.Success && arg1.Success
                 ? @this.GetValue().Curry(arg1.GetValue()).ToRValue()
-                : @this.GetErrorsOrEmpty().Concat(arg1.GetErrorsOrEmpty()).ToRValue<Func<TOut>>();
+                : @this.GetErrorsOrEmpty().Concat(arg1.GetErrorsOrEmpty()).ToRValue<TOut>();
 
         /// <summary>
         /// Get one argument result value higher order function

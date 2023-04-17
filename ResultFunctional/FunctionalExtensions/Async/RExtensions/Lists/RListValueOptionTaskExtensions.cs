@@ -24,13 +24,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>     
         public static async Task<IRValue<TValueOut>> RListValueOptionTask<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
-                                                                                                                   Func<IReadOnlyCollection<TValueIn>, bool> predicate,
-                                                                                                                   Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc,
-                                                                                                                   Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> noneFunc)
+                                                                                               Func<IReadOnlyCollection<TValueIn>, bool> predicate,
+                                                                                               Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc,
+                                                                                               Func<IReadOnlyCollection<TValueIn>, IEnumerable<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
-            await @this.ToRValueFromCollectionTaskAsync().
-            RValueOptionTask(predicate, someFunc, noneFunc);
+            await @this.ToRValueTask().
+                        RValueOptionTask(predicate, someFunc, noneFunc);
 
         /// <summary>
         /// Execute result collection task function converting to result value depending on result collection errors
@@ -42,12 +42,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>        
         public static async Task<IRValue<TValueOut>> RListValueMatchTask<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
-                                                                                                         Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc,
-                                                                                                         Func<IReadOnlyCollection<IRError>, TValueOut> noneFunc)
+                                                                                              Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc,
+                                                                                              Func<IReadOnlyCollection<IRError>, TValueOut> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
-            await @this.ToRValueFromCollectionTaskAsync().
-            RValueMatchTask(someFunc, noneFunc);
+            await @this.ToRValueTask().
+                        RValueMatchTask(someFunc, noneFunc);
 
         /// <summary>
         /// Execute result collection task function converting to result value if incoming result collection hasn't errors
@@ -58,10 +58,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="someFunc">Function if result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns> 
         public static async Task<IRValue<TValueOut>> RListValueSomeTask<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
-                                                                                                                  Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc)
+                                                                                             Func<IReadOnlyCollection<TValueIn>, TValueOut> someFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
-            await @this.ToRValueFromCollectionTaskAsync().
-            RValueSomeTask(someFunc);
+            await @this.ToRValueTask().
+                        RValueSomeTask(someFunc);
     }
 }

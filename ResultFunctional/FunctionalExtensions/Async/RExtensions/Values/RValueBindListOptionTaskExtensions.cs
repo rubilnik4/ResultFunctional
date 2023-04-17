@@ -20,7 +20,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="someFunc">Function if incoming result value hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValueOut>> RValueBindListSomeTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                                                Func<TValueIn, IRList<TValueOut>> someFunc) 
+                                                                                                Func<TValueIn, IRList<TValueOut>> someFunc) 
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.

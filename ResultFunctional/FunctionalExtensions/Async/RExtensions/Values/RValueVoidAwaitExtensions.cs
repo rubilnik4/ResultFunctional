@@ -19,10 +19,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="action">Action</param>
         /// <returns>Unchanged result value</returns>
         public static async Task<IRValue<TValue>> RValueVoidSomeAwait<TValue>(this Task<IRValue<TValue>> @this,
-                                                                                     Func<TValue, Task> action)
+                                                                              Func<TValue, Task> action)
             where TValue : notnull =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.RValueVoidSomeAsync(action));
+                MapAwait(awaitedThis => awaitedThis.RValueVoidSomeAsync(action));
 
         /// <summary>
         /// Execute async action if task result value has errors
@@ -32,10 +32,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="action">Action</param>
         /// <returns>Unchanged result value</returns> 
         public static async Task<IRValue<TValue>> RValueVoidNoneAwait<TValue>(this Task<IRValue<TValue>> @this,
-                                                                                      Func<IReadOnlyCollection<IRError>, Task> action)
+                                                                              Func<IReadOnlyCollection<IRError>, Task> action)
             where TValue : notnull =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.RValueVoidNoneAsync(action));
+                MapAwait(awaitedThis => awaitedThis.RValueVoidNoneAsync(action));
 
         /// <summary>
         /// Execute async action depending on task result value errors
@@ -46,11 +46,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="actionNone">Action if result value has errors</param>
         /// <returns>Unchanged result value</returns>  
         public static async Task<IRValue<TValue>> RValueVoidMatchAwait<TValue>(this Task<IRValue<TValue>> @this,
-                                                                                             Func<TValue, Task> actionSome,
-                                                                                             Func<IReadOnlyCollection<IRError>, Task> actionNone)
+                                                                               Func<TValue, Task> actionSome,
+                                                                               Func<IReadOnlyCollection<IRError>, Task> actionNone)
             where TValue : notnull =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.RValueVoidMatchAsync(actionSome, actionNone));
+                MapAwait(awaitedThis => awaitedThis.RValueVoidMatchAsync(actionSome, actionNone));
 
         /// <summary>
         /// Execute async action depending on task result value errors and predicate
@@ -61,10 +61,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result value</returns>   
         public static async Task<IRValue<TValue>> RValueVoidOptionAwait<TValue>(this Task<IRValue<TValue>> @this,
-                                                                                          Func<TValue, bool> predicate,
-                                                                                          Func<TValue, Task> action)
+                                                                                Func<TValue, bool> predicate,
+                                                                                Func<TValue, Task> action)
             where TValue : notnull =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.RValueVoidOptionAsync(predicate, action));
+                MapAwait(awaitedThis => awaitedThis.RValueVoidOptionAsync(predicate, action));
     }
 }

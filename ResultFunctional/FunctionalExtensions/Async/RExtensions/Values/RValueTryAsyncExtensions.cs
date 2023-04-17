@@ -18,7 +18,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result value</returns>
         public static async Task<IRValue<TValue>> RValueTryAsync<TValue>(Func<Task<TValue>> func,
-                                                                              Func<Exception, IRError> exceptionFunc)
+                                                                         Func<Exception, IRError> exceptionFunc)
             where TValue : notnull
         {
             try

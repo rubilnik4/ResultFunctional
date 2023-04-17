@@ -21,12 +21,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IRValue<TValueOut>> RValueTrySomeTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                                    Func<TValueIn, TValueOut> func,
-                                                                                                    Func<Exception, IRError> exceptionFunc)
+                                                                                            Func<TValueIn, TValueOut> func,
+                                                                                            Func<Exception, IRError> exceptionFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            RValueBindSomeTask(value => RValueTry(() => func.Invoke(value), exceptionFunc));
+                RValueBindSomeTask(value => RValueTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
         /// Execute function and handle exception with task result value concat
@@ -38,11 +38,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="error">Error</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IRValue<TValueOut>> RValueTrySomeTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                                         Func<TValueIn, TValueOut> func, 
-                                                                                                         IRError error)
+                                                                                            Func<TValueIn, TValueOut> func,
+                                                                                            IRError error)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            RValueBindSomeTask(value => RValueTry(() => func.Invoke(value), error));
+                RValueBindSomeTask(value => RValueTry(() => func.Invoke(value), error));
     }
 }

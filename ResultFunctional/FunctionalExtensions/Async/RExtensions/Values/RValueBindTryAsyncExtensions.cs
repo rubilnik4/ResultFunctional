@@ -39,7 +39,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="error">Error</param>
         /// <returns>Result value</returns>
         public static async Task<IRValue<TValue>> RValueBindTryAsync<TValue>(Func<Task<IRValue<TValue>>> func,
-                                                                                  IRError error)
+                                                                             IRError error)
             where TValue : notnull =>
              await RValueBindTryAsync(func, error.AppendException);
     }

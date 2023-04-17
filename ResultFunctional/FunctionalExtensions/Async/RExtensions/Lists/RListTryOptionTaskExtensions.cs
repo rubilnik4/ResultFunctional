@@ -22,12 +22,12 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValueOut>> RListTrySomeTask<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
-                                                                                                        Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
-                                                                                                        Func<Exception, IRError> exceptionFunc)
+                                                                                          Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
+                                                                                          Func<Exception, IRError> exceptionFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            RListBindSomeTask(value => RListTry(() => func.Invoke(value), exceptionFunc));
+                RListBindSomeTask(value => RListTry(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
         /// Execute function and handle exception with task result collection concat
@@ -39,11 +39,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="error">Error</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValueOut>> RListTrySomeTask<TValueIn, TValueOut>(this Task<IRList<TValueIn>> @this,
-                                                                                                     Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
-                                                                                                     IRError error)
+                                                                                          Func<IReadOnlyCollection<TValueIn>, IEnumerable<TValueOut>> func,
+                                                                                          IRError error)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            RListBindSomeTask(value => RListTry(() => func.Invoke(value), error));
+                RListBindSomeTask(value => RListTry(() => func.Invoke(value), error));
     }
 }

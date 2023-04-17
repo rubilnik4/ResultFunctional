@@ -21,11 +21,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function if incoming result value has errors</param>
         /// <returns>Outgoing value</returns>
         public static async Task<TValueOut> RValueLiftMatchAwait<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                    Func<TValueIn, Task<TValueOut>> someFunc,
-                                                                                    Func<IReadOnlyCollection<IRError>, Task<TValueOut>> noneFunc) 
+                                                                                      Func<TValueIn, Task<TValueOut>> someFunc,
+                                                                                      Func<IReadOnlyCollection<IRError>, Task<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.RValueLiftMatchAsync(someFunc, noneFunc));
+                MapAwait(awaitedThis => awaitedThis.RValueLiftMatchAsync(someFunc, noneFunc));
     }
 }

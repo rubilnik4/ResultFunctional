@@ -98,7 +98,7 @@ public static class ToRListTaskExtensions
     /// <typeparam name="TValue">Result type</typeparam>
     /// <param name="this">Result collection</param>
     /// <returns>Result value</returns>
-    public static async Task<IRValue<IReadOnlyCollection<TValue>>> ToRValueFromCollectionTaskAsync<TValue>(this Task<IRList<TValue>> @this)
+    public static async Task<IRValue<IReadOnlyCollection<TValue>>> ToRValueTask<TValue>(this Task<IRList<TValue>> @this)
         where TValue : notnull =>
         await @this.
         MapTask(awaitedThis => awaitedThis.ToRValue());

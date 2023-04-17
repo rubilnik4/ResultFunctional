@@ -29,7 +29,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var resultOut = await resultValueFunc.RValueCurryListTask(resultArgument);
 
             Assert.True(resultOut.Success);
-            Assert.Equal(CurryFunctions.IntCollectionToString(initialValue), resultOut.GetValue().Invoke());
+            Assert.Equal(CurryFunctions.IntCollectionToString(initialValue), resultOut.GetValue());
         }
 
         /// <summary>

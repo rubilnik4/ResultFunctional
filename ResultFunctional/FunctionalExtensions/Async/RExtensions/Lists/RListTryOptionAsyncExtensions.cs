@@ -22,8 +22,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValueOut>> RListTrySomeAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                                    Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
-                                                                                                    Func<Exception, IRError> exceptionFunc)
+                                                                                           Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
+                                                                                           Func<Exception, IRError> exceptionFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
@@ -39,11 +39,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="error">Error</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValueOut>> RListTrySomeAsync<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                                     Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
-                                                                                                     IRError error)
+                                                                                           Func<IReadOnlyCollection<TValueIn>, Task<IReadOnlyCollection<TValueOut>>> func,
+                                                                                           IRError error)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            RListBindSomeAsync(value => RListTryAsync(() => func.Invoke(value), error));
+                RListBindSomeAsync(value => RListTryAsync(() => func.Invoke(value), error));
     }
 }

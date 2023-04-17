@@ -20,7 +20,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="noneFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result error</returns>
         public static async Task<IRUnit> RUnitBindMatchTask(this Task<IRUnit> @this, Func<IRUnit> someFunc,
-                                                             Func<IReadOnlyCollection<IRError>, IRUnit> noneFunc) =>
+                                                            Func<IReadOnlyCollection<IRError>, IRUnit> noneFunc) =>
            await @this.
            MapTask(awaitedThis => awaitedThis.RUnitBindMatch(someFunc, noneFunc));
 
@@ -30,8 +30,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="this">Incoming result error</param>
         /// <param name="someFunc">Function if result error hasn't errors</param>
         /// <returns>Outgoing result error</returns>
-        public static async Task<IRUnit> RUnitBindSomeTask(this Task<IRUnit> @this,
-                                                                          Func<IRUnit> someFunc) =>
+        public static async Task<IRUnit> RUnitBindSomeTask(this Task<IRUnit> @this, Func<IRUnit> someFunc) =>
             await @this.
             MapTask(awaitedThis => awaitedThis.RUnitBindSome(someFunc));
     }

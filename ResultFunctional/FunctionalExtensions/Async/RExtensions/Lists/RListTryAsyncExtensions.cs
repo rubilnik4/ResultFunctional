@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Result collection</returns>
         public static async Task<IRList<TValue>> RListTryAsync<TValue>(Func<Task<IReadOnlyCollection<TValue>>> func,
-                                                                                  Func<Exception, IRError> exceptionFunc)
+                                                                       Func<Exception, IRError> exceptionFunc)
             where TValue : notnull
         {
             try
@@ -40,7 +40,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="error">Error</param>
         /// <returns>Result collection</returns>
         public static async Task<IRList<TValue>> RListTryAsync<TValue>(Func<Task<IReadOnlyCollection<TValue>>> func,
-                                                                                  IRError error)
+                                                                       IRError error)
             where TValue : notnull =>
             await RListTryAsync(func, error.AppendException);
     }

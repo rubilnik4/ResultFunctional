@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="noneFunc">Function if result collection has errors</param>
         /// <returns>Outgoing result error</returns>
         public static async Task<IRUnit> RUnitBindMatchAsync(this IRUnit @this, Func<Task<IRUnit>> someFunc,
-                                                                   Func<IReadOnlyCollection<IRError>, Task<IRUnit>> noneFunc) =>
+                                                             Func<IReadOnlyCollection<IRError>, Task<IRUnit>> noneFunc) =>
             @this.Success
                 ? await someFunc.Invoke()
                 : await noneFunc.Invoke(@this.GetErrors());

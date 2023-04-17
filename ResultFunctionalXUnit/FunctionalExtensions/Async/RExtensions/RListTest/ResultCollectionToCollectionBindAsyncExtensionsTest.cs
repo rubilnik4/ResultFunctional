@@ -25,7 +25,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
 
             var resultAfterWhere = await resultCollection.RListLiftMatchAwait(
                 Collections.CollectionToStringAsync,
-                _ => TaskEnumerableExtensions.ToTaskCollection(Collections.GetEmptyStringList()));
+                _ => Collections.GetEmptyStringList());
 
             Assert.True(Collections.CollectionToString(initialCollection).SequenceEqual(resultAfterWhere));
         }
@@ -41,7 +41,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
 
             var resultAfterWhere = await resultCollection.RListLiftMatchAwait(
                 Collections.CollectionToStringAsync,
-                errors => TaskEnumerableExtensions.ToTaskCollection(new List<string> { errors.Count.ToString() }));
+                errors => new List<string> { errors.Count.ToString() });
 
             Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere.First());
         }

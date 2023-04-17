@@ -26,7 +26,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            RValueBindSomeAsync(value => RValueTryAsync(() => func.Invoke(value), exceptionFunc));
+                RValueBindSomeAsync(value => RValueTryAsync(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
         /// Execute async function and handle exception with result value concat
@@ -38,11 +38,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="error">Error</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IRValue<TValueOut>> RValueTrySomeAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                                     Func<TValueIn, Task<TValueOut>> func,
-                                                                                                     IRError error)
+                                                                                             Func<TValueIn, Task<TValueOut>> func,
+                                                                                             IRError error)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            RValueBindSomeAsync(value => RValueTryAsync(() => func.Invoke(value), error));
+                RValueBindSomeAsync(value => RValueTryAsync(() => func.Invoke(value), error));
     }
 }

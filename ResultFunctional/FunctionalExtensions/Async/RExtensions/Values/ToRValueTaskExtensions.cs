@@ -22,7 +22,7 @@ public static class ToRValueTaskExtensions
     public static async Task<IRValue<TValue>> ToRValueTask<TValue>(this Task<TValue> @this)
         where TValue : notnull =>
         await @this.
-        MapTask(awaitedThis => awaitedThis.ToRValue());
+            MapTask(awaitedThis => awaitedThis.ToRValue());
 
     /// <summary>
     /// Converting value to result value with null checking
@@ -34,7 +34,7 @@ public static class ToRValueTaskExtensions
     public static async Task<IRValue<TValue>> ToRValueEnsureTask<TValue>(this Task<TValue> @this, IRError error)
         where TValue : notnull =>
         await @this.
-        MapTask(awaitedThis => awaitedThis.ToRValueEnsure(error));
+            MapTask(awaitedThis => awaitedThis.ToRValueEnsure(error));
 
     /// <summary>
     /// Converting task result unit to result value
@@ -43,11 +43,11 @@ public static class ToRValueTaskExtensions
     /// <param name="this">Incoming result error</param>
     /// <param name="value">Value</param>
     /// <returns>Outgoing result value</returns>
-    public static async Task<IRValue<TValue>> ToRValueTask<TValue>(this Task<IRUnit> @this, TValue value) 
+    public static async Task<IRValue<TValue>> ToRValueTask<TValue>(this Task<IRUnit> @this, TValue value)
         where TValue : notnull =>
         await @this.
-        MapTask(awaitedThis => awaitedThis.ToRValue(value));
-    
+            MapTask(awaitedThis => awaitedThis.ToRValue(value));
+
     /// <summary>
     /// Converting task result to result value
     /// </summary>
@@ -70,7 +70,7 @@ public static class ToRValueTaskExtensions
     public static async Task<IRValue<TValue>> ToRValueBindTask<TValue>(this Task<IRUnit> @this, IRValue<TValue> resultValue)
         where TValue : notnull =>
         await @this.
-        MapTask(result => result.ToRValueBind(resultValue));
+            MapTask(result => result.ToRValueBind(resultValue));
 
     /// <summary>
     /// Converting task errors to result collection

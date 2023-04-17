@@ -26,7 +26,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultOut = resultValueFunc.RValueCurry(resultArgument);
 
             Assert.True(resultOut.Success);
-            Assert.Equal(initialValue.ToString(), resultOut.GetValue().Invoke());
+            Assert.Equal(initialValue.ToString(), resultOut.GetValue());
         }
 
         /// <summary>

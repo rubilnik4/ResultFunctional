@@ -21,8 +21,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function if incoming result value has errors</param>
         /// <returns>Outgoing value</returns>
         public static async Task<TValueOut> RValueLiftMatchAsync<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                    Func<TValueIn, Task<TValueOut>> someFunc,
-                                                                                    Func<IReadOnlyCollection<IRError>, Task<TValueOut>> noneFunc) 
+                                                                                      Func<TValueIn, Task<TValueOut>> someFunc,
+                                                                                      Func<IReadOnlyCollection<IRError>, Task<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success

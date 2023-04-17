@@ -24,14 +24,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns> 
         public static async Task<IRList<TValueOut>> RValueListOptionAwait<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                                                  Func<TValueIn, bool> predicate,
-                                                                                                                  Func<TValueIn, Task<IReadOnlyCollection<TValueOut>>> someFunc,
-                                                                                                                  Func<TValueIn, Task<IReadOnlyCollection<IRError>>> noneFunc)
+                                                                                               Func<TValueIn, bool> predicate,
+                                                                                               Func<TValueIn, Task<IReadOnlyCollection<TValueOut>>> someFunc,
+                                                                                               Func<TValueIn, Task<IReadOnlyCollection<IRError>>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            RValueOptionAwait(predicate, someFunc, noneFunc).
-            ToRListTask();
+                  RValueOptionAwait(predicate, someFunc, noneFunc).
+                  ToRListTask();
 
         /// <summary>
         /// Execute result value function converting to task result value base on predicate condition
@@ -44,14 +44,14 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns> 
         public static async Task<IRList<TValueOut>> RValueListOptionAwait<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                       Func<TValueIn, bool> predicate,
-                                                                                       Func<TValueIn, Task<IReadOnlyCollection<TValueOut>>> someFunc,
-                                                                                       Func<TValueIn, IReadOnlyCollection<IRError>> noneFunc)
+                                                                                               Func<TValueIn, bool> predicate,
+                                                                                               Func<TValueIn, Task<IReadOnlyCollection<TValueOut>>> someFunc,
+                                                                                               Func<TValueIn, IEnumerable<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.RValueListOptionAwait(predicate,
-                                                             someFunc,
-                                                             values => noneFunc(values).ToCollectionTask());
+                                              someFunc,
+                                              values => noneFunc(values).ToCollectionTask());
 
         /// <summary>
         /// Execute result value function converting to task result value depending on result value errors
@@ -63,13 +63,13 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>   
         public static async Task<IRList<TValueOut>> RValueListMatchAwait<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                    Func<TValueIn, Task<IReadOnlyCollection<TValueOut>>> someFunc,
-                                                                                    Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValueOut>>> noneFunc)
+                                                                                              Func<TValueIn, Task<IReadOnlyCollection<TValueOut>>> someFunc,
+                                                                                              Func<IReadOnlyCollection<IRError>, Task<IReadOnlyCollection<TValueOut>>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            RValueMatchAwait(someFunc, noneFunc).
-            ToRListTask();
+                  RValueMatchAwait(someFunc, noneFunc).
+                  ToRListTask();
 
         /// <summary>
         /// Execute result value function converting to task result value if incoming result value hasn't errors
@@ -80,11 +80,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="someFunc">Function if result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IRList<TValueOut>> RValueListSomeAwait<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
-                                                                                                            Func<TValueIn, Task<IReadOnlyCollection<TValueOut>>> someFunc)
+                                                                                             Func<TValueIn, Task<IReadOnlyCollection<TValueOut>>> someFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
-            RValueSomeAwait(someFunc).
-            ToRListTask();
+                  RValueSomeAwait(someFunc).
+                  ToRListTask();
     }
 }

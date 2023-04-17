@@ -19,10 +19,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="action">Action</param>
         /// <returns>Unchanged result collection</returns>    
         public static async Task<IRList<TValue>> RListVoidSomeAwait<TValue>(this Task<IRList<TValue>> @this,
-                                                                                         Func<IReadOnlyCollection<TValue>, Task> action)
+                                                                            Func<IReadOnlyCollection<TValue>, Task> action)
             where TValue : notnull =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.RListVoidSomeAsync(action));
+                MapAwait(awaitedThis => awaitedThis.RListVoidSomeAsync(action));
 
         /// <summary>
         /// Execute async action if task result collection has errors
@@ -32,10 +32,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="action">Action</param>
         /// <returns>Unchanged result collection</returns>
         public static async Task<IRList<TValue>> RListVoidNoneAwait<TValue>(this Task<IRList<TValue>> @this,
-                                                                                      Func<IReadOnlyCollection<IRError>, Task> action)
+                                                                            Func<IReadOnlyCollection<IRError>, Task> action)
             where TValue : notnull =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.RListVoidNoneAsync(action));
+                MapAwait(awaitedThis => awaitedThis.RListVoidNoneAsync(action));
 
         /// <summary>
         /// Execute async action depending on task result collection errors
@@ -46,11 +46,11 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="actionNone">Action if result collection has errors</param>
         /// <returns>Unchanged result collection</returns>     
         public static async Task<IRList<TValue>> RListVoidMatchAwait<TValue>(this Task<IRList<TValue>> @this,
-                                                                                                     Func<IReadOnlyCollection<TValue>, Task> actionSome,
-                                                                                                     Func<IReadOnlyCollection<IRError>, Task> actionNone)
+                                                                             Func<IReadOnlyCollection<TValue>, Task> actionSome,
+                                                                             Func<IReadOnlyCollection<IRError>, Task> actionNone)
             where TValue : notnull =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.RListVoidMatchAsync(actionSome, actionNone));
+                MapAwait(awaitedThis => awaitedThis.RListVoidMatchAsync(actionSome, actionNone));
 
         /// <summary>
         /// Execute async action depending on task result collection errors and predicate
@@ -61,10 +61,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result collection</returns>
         public static async Task<IRList<TValue>> RListVoidOptionAwait<TValue>(this Task<IRList<TValue>> @this,
-                                                                                          Func<IReadOnlyCollection<TValue>, bool> predicate,
-                                                                                          Func<IReadOnlyCollection<TValue>, Task> action)
+                                                                              Func<IReadOnlyCollection<TValue>, bool> predicate,
+                                                                              Func<IReadOnlyCollection<TValue>, Task> action)
             where TValue : notnull =>
             await @this.
-            MapAwait(awaitedThis => awaitedThis.RListVoidOptionAsync(predicate, action));
+                MapAwait(awaitedThis => awaitedThis.RListVoidOptionAsync(predicate, action));
     }
 }
