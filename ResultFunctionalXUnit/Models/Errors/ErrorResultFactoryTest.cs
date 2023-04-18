@@ -7,6 +7,7 @@ using ResultFunctional.Models.Errors.DatabaseErrors;
 using ResultFunctional.Models.Errors.RestErrors;
 using ResultFunctional.Models.Factories;
 using Xunit;
+// ReSharper disable EntityNameCapturedOnly.Local
 
 namespace ResultFunctionalXUnit.Models.Errors
 {
@@ -57,10 +58,15 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void ValueNotFoundError()
         {
-            var errorResult = RErrorFactory.ValueNotFound<string>(String.Empty);
+            const string value = "string";
+            const string description = "description";
+            var errorResult = RErrorFactory.ValueNotFound<string>(nameof(value), description);
 
             Assert.IsAssignableFrom<IRValueNotFoundError>(errorResult);
             Assert.IsAssignableFrom<IRValueNotFoundError>(errorResult.AppendException(new Exception()));
+            Assert.Equal(nameof(value), errorResult.ValueName);
+            Assert.Equal(description, errorResult.Description);
+            Assert.True(errorResult.ValueType == value.GetType());
         }
 
         /// <summary>
@@ -69,10 +75,26 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void ValueNotValidError()
         {
-            var errorResult = RErrorFactory.ValueNotValid(String.Empty, "Ошибка");
+            const string value = "string";
+            const string description = "description";
+            var errorResult = RErrorFactory.ValueNotValid(value, nameof(value), description);
 
             Assert.IsAssignableFrom<IRValueNotValidError>(errorResult);
             Assert.IsAssignableFrom<IRValueNotValidError>(errorResult.AppendException(new Exception()));
+        }
+
+        /// <summary>
+        /// Ошибка нулевого значения
+        /// </summary>
+        [Fact]
+        public void NullError()
+        {
+            const string value = "string";
+            const string description = "description";
+            var errorResult = RErrorFactory.ValueNull<string>(nameof(value), description);
+
+            Assert.IsAssignableFrom<IRValueNullError>(errorResult);
+            Assert.IsAssignableFrom<IRValueNullError>(errorResult.AppendException(new Exception()));
         }
 
         /// <summary>
@@ -81,7 +103,9 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void ValueDuplicatedError()
         {
-            var errorResult = RErrorFactory.ValueDuplicate(String.Empty, "Ошибка");
+            const string value = "string";
+            const string description = "description";
+            var errorResult = RErrorFactory.ValueDuplicate(value, nameof(value), description);
 
             Assert.IsAssignableFrom<IRValueDuplicateError>(errorResult);
             Assert.IsAssignableFrom<IRValueDuplicateError>(errorResult.AppendException(new Exception()));

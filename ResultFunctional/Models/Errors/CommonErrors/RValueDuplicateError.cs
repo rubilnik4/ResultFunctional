@@ -8,26 +8,28 @@ namespace ResultFunctional.Models.Errors.CommonErrors
     /// Duplicate error
     /// </summary>
     /// <typeparam name="TValue">Duplicate instance</typeparam>
-    public class RValueDuplicateError<TValue> : RBaseError<CommonErrorType, IRValueDuplicateError>, IRValueDuplicateError
+    public class RValueDuplicateError<TValue> : RValueError<TValue, IRValueDuplicateError>, IRValueDuplicateError
         where TValue : notnull
     {
         /// <summary>
         /// Initialize duplicate error
         /// </summary>
         /// <param name="value">Duplicate instance</param>
+        /// <param name="valueName">Value name</param>
         /// <param name="description">Description</param>
-        public RValueDuplicateError(TValue value, string description)
-           : this(value, description, null)
+        public RValueDuplicateError(TValue value, string valueName, string description)
+           : this(value, valueName, description, null)
         { }
 
         /// <summary>
         /// Initialize duplicate error
         /// </summary>
         /// <param name="value">Duplicate instance</param>
+        /// <param name="valueName">Value name</param>
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
-        protected RValueDuplicateError(TValue value, string description, Exception? exception)
-            : base(CommonErrorType.ValueDuplicated, description, exception)
+        protected RValueDuplicateError(TValue value, string valueName, string description, Exception? exception)
+            : base(valueName, CommonErrorType.ValueDuplicated, description, exception)
         {
             Value = value;
         }
@@ -44,6 +46,6 @@ namespace ResultFunctional.Models.Errors.CommonErrors
         /// <param name="exception">Exception</param>
         /// <returns>Duplicate error</returns>
         protected override IRValueDuplicateError InitializeType(string description, Exception? exception) =>
-            new RValueDuplicateError<TValue>(Value, description, exception);
+            new RValueDuplicateError<TValue>(Value, ValueName, description, exception);
     }
 }

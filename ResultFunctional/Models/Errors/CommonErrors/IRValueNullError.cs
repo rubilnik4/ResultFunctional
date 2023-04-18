@@ -4,8 +4,8 @@ using ResultFunctional.Models.Errors.BaseErrors;
 namespace ResultFunctional.Models.Errors.CommonErrors
 {
     /// <summary>
-    /// Not found error
+    /// Null argument error
     /// </summary>
-    public interface IRValueNotFoundError : IRValueError
+    public interface IRValueNullError : IRValueError
     { }
 }

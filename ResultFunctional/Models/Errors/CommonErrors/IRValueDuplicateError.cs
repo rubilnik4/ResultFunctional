@@ -6,6 +6,6 @@ namespace ResultFunctional.Models.Errors.CommonErrors
     /// <summary>
     /// Duplicate error
     /// </summary>
-    public interface IRValueDuplicateError : IRBaseError<CommonErrorType>
+    public interface IRValueDuplicateError : IRValueError
     { }
 }

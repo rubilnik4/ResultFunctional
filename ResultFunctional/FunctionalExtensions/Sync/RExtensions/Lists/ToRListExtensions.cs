@@ -12,7 +12,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists;
 /// <summary>
 /// Result collections extension methods
 /// </summary>
-public static class ToResultCollectionExtensions
+public static class ToRListExtensions
 {
     /// <summary>
     /// Converting collection to result collection

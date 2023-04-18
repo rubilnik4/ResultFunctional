@@ -25,7 +25,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
                                                                            Func<IEnumerable<TValue>, IRError> noneFunc)
             where TValue : notnull =>
             await @this.
-                MapTask(awaitedThis => awaitedThis.ToRListWhere(predicate, noneFunc));
+                MapTask(awaitedThis => awaitedThis.ToRListOption(predicate, noneFunc));
 
         /// <summary>
         /// Converting task collection to result collection base on predicate

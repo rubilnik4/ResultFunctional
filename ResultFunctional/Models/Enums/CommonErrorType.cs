@@ -8,6 +8,7 @@
         ValueNotValid,
         ValueNotFound,
         ValueDuplicated,
+        NullArgument,
         Unknown,
     }
 }

@@ -9,7 +9,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
     /// <summary>
     /// Result collections extension methods with condition
     /// </summary>
-    public static class ToResultCollectionWhereExtensions
+    public static class ToRListOptionExtensions
     {
         /// <summary>
         /// Converting collection to result collection base on predicate
@@ -19,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="predicate">Predicate function</param>
         /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>
-        public static IRList<TValue> ToRListWhere<TValue>(this IEnumerable<TValue> @this,
+        public static IRList<TValue> ToRListOption<TValue>(this IEnumerable<TValue> @this,
                                                           Func<IReadOnlyCollection<TValue>, bool> predicate,
                                                           Func<IReadOnlyCollection<TValue>, IRError> noneFunc)
             where TValue : notnull =>

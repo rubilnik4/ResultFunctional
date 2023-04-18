@@ -19,7 +19,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         {
             var initialCollection = GetRangeNumber();
 
-            var result = initialCollection.ToRListWhere(_ => true,
+            var result = initialCollection.ToRListOption(_ => true,
                                                         _ => CreateErrorTest());
 
             Assert.True(result.Success);
@@ -35,7 +35,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var errorInitial = CreateErrorTest();
 
-            var result = initialCollection.ToRListWhere(_ => false,
+            var result = initialCollection.ToRListOption(_ => false,
                                                                    _ => errorInitial);
 
             Assert.True(result.Failure);

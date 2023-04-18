@@ -7,7 +7,7 @@ namespace ResultFunctional.Models.Errors.BaseErrors
     /// Base error with type
     /// </summary>
     /// <typeparam name="TErrorType">Error type</typeparam>
-    /// /// <typeparam name="TError">Error result type</typeparam>
+    /// <typeparam name="TError">Error result type</typeparam>
     public abstract class RBaseError<TErrorType, TError> : RError, IRBaseError<TErrorType>
         where TErrorType : struct
         where TError : IRError
@@ -37,7 +37,7 @@ namespace ResultFunctional.Models.Errors.BaseErrors
         /// ID as error type
         /// </summary>
         public override string Id =>
-            ErrorType.ToString() ?? String.Empty;
+            ErrorType.ToString();
 
         /// <summary>
         /// Error type
@@ -93,7 +93,7 @@ namespace ResultFunctional.Models.Errors.BaseErrors
             ToString(String.Empty, CultureInfo.CurrentCulture);
 
         public string ToString(string? format, IFormatProvider? formatProvider) =>
-            ErrorType.ToString() ?? String.Empty;
+            ErrorType.ToString();
         #endregion
     }
 }

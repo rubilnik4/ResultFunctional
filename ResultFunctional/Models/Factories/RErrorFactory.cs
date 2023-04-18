@@ -147,33 +147,47 @@ namespace ResultFunctional.Models.Factories
         /// Create not found error
         /// </summary>
         /// <typeparam name="TValue">Not found instance</typeparam>
+        /// <param name="valueName">Value name</param>
         /// <param name="description">Description</param>
         /// <returns>Not found error</returns>
-        public static IRValueNotFoundError ValueNotFound<TValue>(string description)
-            where TValue : class =>
-            new RValueNotFoundError<TValue>(description);
+        public static IRValueNotFoundError ValueNotFound<TValue>(string valueName, string description)
+            where TValue : notnull =>
+            new RValueNotFoundError<TValue>(valueName, description);
+
+        /// <summary>
+        /// Create null argument error
+        /// </summary>
+        /// <typeparam name="TValue">Null argument instance</typeparam>
+        /// <param name="valueName">Value name</param>
+        /// <param name="description">Description</param>
+        /// <returns>Null argument error</returns>
+        public static IRValueNullError ValueNull<TValue>(string valueName, string description)
+            where TValue : notnull =>
+            new RValueNullError<TValue>(valueName, description);
 
         /// <summary>
         /// Create not valid error
         /// </summary>
         /// <typeparam name="TValue">Not valid instance</typeparam>
         /// <param name="value">>Not valid instance</param>
+        /// <param name="valueName">Value name</param>
         /// <param name="description">Description</param>
         /// <returns></returns>
-        public static IRValueNotValidError ValueNotValid<TValue>(TValue value, string description)
+        public static IRValueNotValidError ValueNotValid<TValue>(TValue value, string valueName, string description)
             where TValue : notnull =>
-            new RValueNotValidError<TValue>(value, nameof(TValue));
+            new RValueNotValidError<TValue>(value, valueName, description);
 
         /// <summary>
         /// Create duplicate error
         /// </summary>
         /// <typeparam name="TValue">Not valid instance</typeparam>
         /// <param name="value">>Not valid instance</param>
+        /// <param name="valueName">Value name</param>
         /// <param name="description">Description</param>
         /// <returns>Duplicate error</returns>
-        public static IRValueDuplicateError ValueDuplicate<TValue>(TValue value, string description)
+        public static IRValueDuplicateError ValueDuplicate<TValue>(TValue value, string valueName, string description)
             where TValue : notnull =>
-            new RValueDuplicateError<TValue>(value, nameof(TValue));
+            new RValueDuplicateError<TValue>(value, valueName, description);
 
         /// <summary>
         /// Create host connection error
