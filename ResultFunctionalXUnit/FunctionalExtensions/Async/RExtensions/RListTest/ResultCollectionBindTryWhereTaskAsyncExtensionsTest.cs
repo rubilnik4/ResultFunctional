@@ -14,13 +14,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Методы расширения для результирующего ответа со значением и обработкой исключений асинхронно. Тесты
     /// </summary>
-    public class ResultCollectionBindTryWhereTaskAsyncExtensionsTest
+    public class RListBindTryWhereTaskAsyncExtensionsTest
     {
         /// <summary>
         /// Асинхронный положительный результирующий ответ и отсутствие исключения
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryTaskAsyncOk_OkResult_OkTry()
+        public async Task RListBindTryTaskAsyncOk_OkResult_OkTry()
         {
             var initialNumbers = GetRangeNumber();
             var numbersResult = RListFactory.SomeTask(initialNumbers);
@@ -36,7 +36,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный результирующий ответ с ошибкой и отсутствие исключения
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryTaskAsyncOk_ErrorResult_OkTry()
+        public async Task RListBindTryTaskAsyncOk_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
             var numbersResult = RListFactory.NoneTask<int>(initialError);
@@ -52,7 +52,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный положительный результирующий ответ и исключение
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryTaskAsyncOk_OkResult_ExceptionTry()
+        public async Task RListBindTryTaskAsyncOk_OkResult_ExceptionTry()
         {
             var initialNumbers = GetRangeNumberWithZero();
             var numbersResult = RListFactory.SomeTask(initialNumbers);
@@ -68,7 +68,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный результирующий ответ с ошибкой и исключение
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryTaskAsyncOk_ErrorResult_ExceptionTry()
+        public async Task RListBindTryTaskAsyncOk_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
             var numbersResult = RListFactory.NoneTask<int>(initialError);
@@ -84,7 +84,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный положительный результирующий ответ и отсутствие исключения
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryTaskAsyncOkFunc_OkResult_OkTry()
+        public async Task RListBindTryTaskAsyncOkFunc_OkResult_OkTry()
         {
             var initialNumbers = GetRangeNumber();
             var numbersResult = RListFactory.SomeTask(initialNumbers);
@@ -100,7 +100,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный результирующий ответ с ошибкой и отсутствие исключения
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryTaskAsyncOkFunc_ErrorResult_OkTry()
+        public async Task RListBindTryTaskAsyncOkFunc_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
             var numbersResult = RListFactory.NoneTask<int>(initialError);
@@ -116,7 +116,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный положительный результирующий ответ и исключение
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryTaskAsyncOkFunc_OkResult_ExceptionTry()
+        public async Task RListBindTryTaskAsyncOkFunc_OkResult_ExceptionTry()
         {
             var initialNumbers = GetRangeNumberWithZero();
             var numbersResult = RListFactory.SomeTask(initialNumbers);
@@ -132,7 +132,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный результирующий ответ с ошибкой и исключение
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryTaskAsyncOkFunc_ErrorResult_ExceptionTry()
+        public async Task RListBindTryTaskAsyncOkFunc_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
             var numbersResult = RListFactory.NoneTask<int>(initialError);

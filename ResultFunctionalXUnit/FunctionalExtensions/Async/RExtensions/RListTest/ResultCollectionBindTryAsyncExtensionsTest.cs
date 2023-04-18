@@ -11,57 +11,57 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Методы расширения для результирующего ответа со значением и обработкой исключений асинхронно. Тесты
     /// </summary>
-    public class ResultCollectionBindTryAsyncExtensionsTest
+    public class RListBindTryAsyncExtensionsTest
     {
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ со значением
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTry_Ok()
+        public async Task RListTry_Ok()
         {
-            var resultValue = await RListBindTryAsync(
+            var RValue = await RListBindTryAsync(
                 () => RListFactory.SomeTask(DivisionCollection(1)), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.Success);
-            Assert.Equal(DivisionCollection(1), resultValue.GetValue());
+            Assert.True(RValue.Success);
+            Assert.Equal(DivisionCollection(1), RValue.GetValue());
         }
 
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTry_Exception()
+        public async Task RListTry_Exception()
         {
-            var resultValue = await RListBindTryAsync(
+            var RValue = await RListBindTryAsync(
                 () => RListFactory.SomeTask(DivisionCollection(0)), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.Failure);
-            Assert.NotNull(resultValue.GetErrors().First().Exception);
+            Assert.True(RValue.Failure);
+            Assert.NotNull(RValue.GetErrors().First().Exception);
         }
 
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ со значением
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryFunc_Ok()
+        public async Task RListTryFunc_Ok()
         {
-            var resultValue = await RListBindTryAsync(
+            var RValue = await RListBindTryAsync(
                 () => RListFactory.SomeTask(DivisionCollection(1)), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.Success);
-            Assert.Equal(DivisionCollection(1), resultValue.GetValue());
+            Assert.True(RValue.Success);
+            Assert.Equal(DivisionCollection(1), RValue.GetValue());
         }
 
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryFunc_Exception()
+        public async Task RListTryFunc_Exception()
         {
-            var resultValue = await RListBindTryAsync(
+            var RValue = await RListBindTryAsync(
                  () => RListFactory.SomeTask(DivisionCollection(0)), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.Failure);
-            Assert.NotNull(resultValue.GetErrors().First().Exception);
+            Assert.True(RValue.Failure);
+            Assert.NotNull(RValue.GetErrors().First().Exception);
         } }
 }

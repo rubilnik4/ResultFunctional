@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Options;
+using ResultFunctional.Models.Maybe;
 using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
@@ -133,7 +133,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="someFunc">Error function if incoming result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IRValue<TValue>> RValueBindEnsureAsync<TValue>(this IRValue<TValue> @this,
-                                                                                Func<TValue, Task<IROption>> someFunc)
+                                                                                Func<TValue, Task<IRMaybe>> someFunc)
             where TValue : notnull =>
             await @this.
                 RValueBindSomeAsync(value => someFunc.Invoke(value).ToRValueTask(value));

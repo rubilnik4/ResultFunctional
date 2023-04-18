@@ -10,78 +10,78 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Методы расширения для результирующего ответа со значением и обработкой исключений асинхронно. Тесты
     /// </summary>
-    public class ResultCollectionTryAsyncExtensionsTest
+    public class RListTryAsyncExtensionsTest
     {
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ со значением
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsync_Ok_IEnumerable()
+        public async Task RListTryAsync_Ok_IEnumerable()
         {
-            var resultValue = await RListTryAsync(() => DivisionCollectionAsync(1), Exceptions.ExceptionError());
+            var RValue = await RListTryAsync(() => DivisionCollectionAsync(1), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.Success);
-            Assert.Equal(await DivisionCollectionAsync(1), resultValue.GetValue());
+            Assert.True(RValue.Success);
+            Assert.Equal(await DivisionCollectionAsync(1), RValue.GetValue());
         }
 
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsync_Exception_IEnumerable()
+        public async Task RListTryAsync_Exception_IEnumerable()
         {
-            var resultValue = await RListTryAsync(() => DivisionCollectionAsync(0), Exceptions.ExceptionError());
+            var RValue = await RListTryAsync(() => DivisionCollectionAsync(0), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.Failure);
-            Assert.NotNull(resultValue.GetErrors().First().Exception);
+            Assert.True(RValue.Failure);
+            Assert.NotNull(RValue.GetErrors().First().Exception);
         }
 
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ со значением
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsyncFunc_Ok_IEnumerable()
+        public async Task RListTryAsyncFunc_Ok_IEnumerable()
         {
-            var resultValue = await RListTryAsync(() => DivisionCollectionAsync(1), Exceptions.ExceptionFunc());
+            var RValue = await RListTryAsync(() => DivisionCollectionAsync(1), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.Success);
-            Assert.Equal(await DivisionCollectionAsync(1), resultValue.GetValue());
+            Assert.True(RValue.Success);
+            Assert.Equal(await DivisionCollectionAsync(1), RValue.GetValue());
         }
 
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsyncFunc_Exception_IEnumerable()
+        public async Task RListTryAsyncFunc_Exception_IEnumerable()
         {
-            var resultValue = await RListTryAsync(() => DivisionCollectionAsync(0), Exceptions.ExceptionFunc());
+            var RValue = await RListTryAsync(() => DivisionCollectionAsync(0), Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.Failure);
-            Assert.NotNull(resultValue.GetErrors().First().Exception);
+            Assert.True(RValue.Failure);
+            Assert.NotNull(RValue.GetErrors().First().Exception);
         }
 
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ со значением
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsync_Ok_IReadonlyCollection()
+        public async Task RListTryAsync_Ok_IReadonlyCollection()
         {
-            var resultValue = await RListTryAsync(() => DivisionCollectionAsync(1), Exceptions.ExceptionError());
+            var RValue = await RListTryAsync(() => DivisionCollectionAsync(1), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.Success);
-            Assert.Equal(await DivisionCollectionAsync(1), resultValue.GetValue());
+            Assert.True(RValue.Success);
+            Assert.Equal(await DivisionCollectionAsync(1), RValue.GetValue());
         }
 
         /// <summary>
         /// Обработать асинхронную функцию, вернуть результирующий ответ с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsync_Exception_IReadonlyCollection()
+        public async Task RListTryAsync_Exception_IReadonlyCollection()
         {
-            var resultValue = await RListTryAsync(() => DivisionCollectionAsync(0), Exceptions.ExceptionError());
+            var RValue = await RListTryAsync(() => DivisionCollectionAsync(0), Exceptions.ExceptionError());
 
-            Assert.True(resultValue.Failure);
-            Assert.NotNull(resultValue.GetErrors().First().Exception);
+            Assert.True(RValue.Failure);
+            Assert.NotNull(RValue.GetErrors().First().Exception);
         }
     }
 }

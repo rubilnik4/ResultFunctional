@@ -13,42 +13,42 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Методы расширения для результирующего ответа с коллекцией. Тесты
     /// </summary>
-    public class ResultCollectionTaskAsyncExtensionsTest
+    public class RListTaskAsyncExtensionsTest
     {
         /// <summary>
         /// Проверить объект на нул. Ошибка нулевого значения
         /// </summary>
         [Fact]
-        public async Task ConcatResultCollection_Ok()
+        public async Task ConcatRList_Ok()
         {
-            var resultCollectionFirst = GetRangeNumber().ToRList();
-            var resultCollectionSecond = GetRangeNumber().ToRList();
-            var results = Enumerable.Empty<IRList<int>>().Append(resultCollectionFirst).Append(resultCollectionSecond).
+            var RListFirst = GetRangeNumber().ToRList();
+            var RListSecond = GetRangeNumber().ToRList();
+            var results = Enumerable.Empty<IRList<int>>().Append(RListFirst).Append(RListSecond).
                                      Map(Task.FromResult);
 
-            var resultCollection = await results.RListFoldTask();
-            var numberRange = resultCollectionFirst.GetValue().Concat(resultCollectionSecond.GetValue()).ToList();
+            var RList = await results.RListFoldTask();
+            var numberRange = RListFirst.GetValue().Concat(RListSecond.GetValue()).ToList();
 
-            Assert.True(resultCollection.Success);
-            Assert.True(numberRange.SequenceEqual(resultCollection.GetValue()));
+            Assert.True(RList.Success);
+            Assert.True(numberRange.SequenceEqual(RList.GetValue()));
         }
 
         /// <summary>
         /// Проверить объект на нул. Ошибка нулевого значения
         /// </summary>
         [Fact]
-        public async Task ConcatResultCollection_Error()
+        public async Task ConcatRList_Error()
         {
-            var resultCollectionFirst = GetRangeNumber().ToRList();
-            var resultCollectionErrorFirst = CreateErrorTest().ToRList<int>();
-            var resultCollectionErrorSecond = CreateErrorTest().ToRList<int>();
-            var results = Enumerable.Empty<IRList<int>>().Append(resultCollectionFirst).Append(resultCollectionErrorFirst).Append(resultCollectionErrorSecond).
+            var RListFirst = GetRangeNumber().ToRList();
+            var RListErrorFirst = CreateErrorTest().ToRList<int>();
+            var RListErrorSecond = CreateErrorTest().ToRList<int>();
+            var results = Enumerable.Empty<IRList<int>>().Append(RListFirst).Append(RListErrorFirst).Append(RListErrorSecond).
                                      Map(Task.FromResult);
 
-            var resultCollection = await results.RListFoldTask();
+            var RList = await results.RListFoldTask();
 
-            Assert.True(resultCollection.Failure);
-            Assert.Equal(2, resultCollection.GetErrors().Count);
+            Assert.True(RList.Failure);
+            Assert.Equal(2, RList.GetErrors().Count);
         }
     }
 }

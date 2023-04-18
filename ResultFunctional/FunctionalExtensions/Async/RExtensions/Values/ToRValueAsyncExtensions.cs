@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Options;
+using ResultFunctional.Models.Maybe;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
@@ -43,7 +43,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="this">Incoming result error</param>
         /// <param name="value">Value</param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IRValue<TValue>> ToRValueAsync<TValue>(this IROption @this, Task<TValue> value)
+        public static async Task<IRValue<TValue>> ToRValueAsync<TValue>(this IRMaybe @this, Task<TValue> value)
             where TValue : notnull =>
             @this.Success
                 ? await value.ToRValueTask()
@@ -69,7 +69,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="this">Incoming result error</param>
         /// <param name="resultValue">Result value</param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IRValue<TValue>> ToRValueBindAsync<TValue>(this IROption @this, Task<IRValue<TValue>> resultValue)
+        public static async Task<IRValue<TValue>> ToRValueBindAsync<TValue>(this IRMaybe @this, Task<IRValue<TValue>> resultValue)
             where TValue : notnull =>
             @this.Success
                 ? await resultValue

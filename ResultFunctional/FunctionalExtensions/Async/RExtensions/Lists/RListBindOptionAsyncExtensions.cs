@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
-using ResultFunctional.Models.Options;
+using ResultFunctional.Models.Maybe;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
 {
@@ -132,7 +132,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <param name="someFunc">Error function if incoming result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
         public static async Task<IRList<TValue>> RListBindEnsureAsync<TValue>(this IRList<TValue> @this,
-                                                                              Func<IReadOnlyCollection<TValue>, Task<IROption>> someFunc)
+                                                                              Func<IReadOnlyCollection<TValue>, Task<IRMaybe>> someFunc)
             where TValue : notnull =>
             await @this.
                 RListBindSomeAsync(collection => someFunc.Invoke(collection).ToRListTask(collection));

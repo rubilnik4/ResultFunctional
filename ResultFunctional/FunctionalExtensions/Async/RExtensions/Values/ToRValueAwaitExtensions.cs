@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Options;
+using ResultFunctional.Models.Maybe;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
@@ -44,7 +44,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="this">Incoming result error</param>
         /// <param name="value">Value</param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IRValue<TValue>> ToRValueAwait<TValue>(this Task<IROption> @this, Task<TValue> value)
+        public static async Task<IRValue<TValue>> ToRValueAwait<TValue>(this Task<IRMaybe> @this, Task<TValue> value)
             where TValue : notnull =>
             await @this.
             MapAwait(awaitedThis => awaitedThis.ToRValueAsync(value));
@@ -68,7 +68,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="this">Incoming result error</param>
         /// <param name="resultValue">Result value</param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IRValue<TValue>> ToRValueBindAwait<TValue>(this Task<IROption> @this, Task<IRValue<TValue>> resultValue)
+        public static async Task<IRValue<TValue>> ToRValueBindAwait<TValue>(this Task<IRMaybe> @this, Task<IRValue<TValue>> resultValue)
             where TValue : notnull =>
             await @this.
             MapAwait(result => result.ToRValueBindAsync(resultValue));

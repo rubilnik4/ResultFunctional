@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Options;
+using ResultFunctional.Models.Maybe;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
@@ -55,7 +55,7 @@ public static class ToRValueTaskExtensions
     /// <param name="this">Incoming result error</param>
     /// <param name="value">Value</param>
     /// <returns>Outgoing result value</returns>
-    public static async Task<IRValue<TValue>> ToRValueTask<TValue>(this Task<IROption> @this, TValue value)
+    public static async Task<IRValue<TValue>> ToRValueTask<TValue>(this Task<IRMaybe> @this, TValue value)
         where TValue : notnull =>
         await @this.
             MapTask(awaitedThis => awaitedThis.ToRValue(value));

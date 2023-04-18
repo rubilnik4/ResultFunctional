@@ -14,13 +14,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Асинхронное действие над внутренним типом результирующего ответа с коллекцией задачей-объектом.Тесты
     /// </summary>
-    public class ResultCollectionVoidTaskAsyncExtensionsTest
+    public class RListVoidTaskAsyncExtensionsTest
     {
         /// <summary>
         /// Проверка выполнения действия при результирующем ответе без ошибок с положительным условием
         /// </summary>
         [Fact]
-        public async Task ResultCollectionOkBindAsync_Ok_CallVoid()
+        public async Task RListOkBindAsync_Ok_CallVoid()
         {
             var initialCollection = GetRangeNumber();
             var resultOkTask = RListFactory.SomeTask(initialCollection);
@@ -38,16 +38,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Проверка выполнения действия при результирующем ответе с ошибкой с положительным условием
         /// </summary>
         [Fact]
-        public async Task ResultCollectionOkBindAsync_Bad_NotCallVoid()
+        public async Task RListOkBindAsync_Bad_NotCallVoid()
         {
             var initialError = CreateErrorTest();
-            var resultErrorTask = RListFactory.NoneTask<int>(initialError);
+            var RMaybeTask = RListFactory.NoneTask<int>(initialError);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultErrorTask.RListVoidSomeTask(
+            var resultAfterVoid = await RMaybeTask.RListVoidSomeTask(
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
-            Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
+            Assert.True(resultAfterVoid.Equals(RMaybeTask.Result));
             Assert.True(resultAfterVoid.GetErrors().Last().Equals(initialError));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Never);
         }
@@ -56,16 +56,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Проверка выполнения действия при результирующем ответе без ошибок с негативным условием
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBadBindAsync_Ok_CallVoid()
+        public async Task RListBadBindAsync_Ok_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultErrorTask = RListFactory.NoneTask<int>(errorsInitial);
+            var RMaybeTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultErrorTask.RListVoidNoneTask(
+            var resultAfterVoid = await RMaybeTask.RListVoidNoneTask(
                 errors => voidObjectMock.Object.TestNumbersVoid(GetListByErrorsCount(errors)));
 
-            Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
+            Assert.True(resultAfterVoid.Equals(RMaybeTask.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
@@ -74,16 +74,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Проверка выполнения действия при результирующем ответе с ошибкой с негативным условием
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBadBindAsync_Bad_CallVoid()
+        public async Task RListBadBindAsync_Bad_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultErrorTask = RListFactory.NoneTask<int>(errorsInitial);
+            var RMaybeTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultErrorTask.RListVoidNoneTask(
+            var resultAfterVoid = await RMaybeTask.RListVoidNoneTask(
                 errors => voidObjectMock.Object.TestNumbersVoid(GetListByErrorsCount(errors)));
 
-            Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
+            Assert.True(resultAfterVoid.Equals(RMaybeTask.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
@@ -92,7 +92,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Проверка выполнения действия при результирующем ответе. Положительный вариант
         /// </summary>
         [Fact]
-        public async Task ResultCollectionVoidOkBadTaskAsync_Ok()
+        public async Task RListVoidOkBadTaskAsync_Ok()
         {
             var initialCollection = GetRangeNumber();
             var resultOk = RListFactory.SomeTask(initialCollection);
@@ -110,17 +110,17 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Проверка выполнения действия при результирующем ответе. Негативный вариант
         /// </summary>
         [Fact]
-        public async Task ResultCollectionVoidOkBadTaskAsync_Bad()
+        public async Task RListVoidOkBadTaskAsync_Bad()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultError = RListFactory.NoneTask<int>(errorsInitial);
+            var RMaybe = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultError.RListVoidMatchTask(
+            var resultAfterVoid = await RMaybe.RListVoidMatchTask(
                 _ => voidObjectMock.Object.TestVoid(),
                 errors => voidObjectMock.Object.TestNumbersVoid(new List<int> { errors.Count }));
 
-            Assert.True(resultAfterVoid.Equals(resultError.Result));
+            Assert.True(resultAfterVoid.Equals(RMaybe.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
@@ -129,7 +129,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Проверка выполнения действия при результирующем ответе с положительным условием предиката без ошибок с положительным условием
         /// </summary>
         [Fact]
-        public async Task ResultCollectionOkWhereBindAsync_Ok_OkPredicate_CallVoid()
+        public async Task RListOkWhereBindAsync_Ok_OkPredicate_CallVoid()
         {
             var initialCollection = GetRangeNumber();
             var resultOkTask = RListFactory.SomeTask(initialCollection);
@@ -147,7 +147,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Проверка выполнения действия при результирующем ответе с отрицательным условием предиката без ошибок с положительным условием
         /// </summary>
         [Fact]
-        public async Task ResultCollectionOkWhereBindAsync_Ok_BadPredicate_NotCallVoid()
+        public async Task RListOkWhereBindAsync_Ok_BadPredicate_NotCallVoid()
         {
             var initialCollection = GetRangeNumber();
             var resultOkTask = RListFactory.SomeTask(initialCollection);
@@ -165,16 +165,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Проверка выполнения действия при результирующем ответе с положительным условием предиката без ошибок с отрицательным условием
         /// </summary>
         [Fact]
-        public async Task ResultCollectionOkWhereBindAsync_Bad_OkPredicate_NotCallVoid()
+        public async Task RListOkWhereBindAsync_Bad_OkPredicate_NotCallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultErrorTask = RListFactory.NoneTask<int>(errorsInitial);
+            var RMaybeTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultErrorTask.RListVoidOptionTask(_ => true,
+            var resultAfterVoid = await RMaybeTask.RListVoidOptionTask(_ => true,
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
-            Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
+            Assert.True(resultAfterVoid.Equals(RMaybeTask.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Never);
         }
@@ -184,16 +184,16 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Проверка выполнения действия при результирующем ответе с отрицательным условием предиката с ошибкой с отрицательным условием
         /// </summary>
         [Fact]
-        public async Task ResultCollectionOkWhereBindAsync_Bad_BadPredicate_NotCallVoid()
+        public async Task RListOkWhereBindAsync_Bad_BadPredicate_NotCallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultErrorTask = RListFactory.NoneTask<int>(errorsInitial);
+            var RMaybeTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultErrorTask.RListVoidOptionTask(_ => false,
+            var resultAfterVoid = await RMaybeTask.RListVoidOptionTask(_ => false,
                 numbers => voidObjectMock.Object.TestNumbersVoid(numbers));
 
-            Assert.True(resultAfterVoid.Equals(resultErrorTask.Result));
+            Assert.True(resultAfterVoid.Equals(RMaybeTask.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Never);
         }

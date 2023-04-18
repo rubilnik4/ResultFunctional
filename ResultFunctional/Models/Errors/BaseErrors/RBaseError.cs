@@ -37,7 +37,7 @@ namespace ResultFunctional.Models.Errors.BaseErrors
         /// ID as error type
         /// </summary>
         public override string Id =>
-            ErrorType.ToString();
+            GetErrorTypeString();
 
         /// <summary>
         /// Error type
@@ -88,12 +88,23 @@ namespace ResultFunctional.Models.Errors.BaseErrors
         public new TError AppendException(Exception exception) =>
             InitializeType(Description, exception);
 
+        /// <summary>
+        /// Convert error type to string
+        /// </summary>
+        /// <returns>String error type</returns>
+        private string GetErrorTypeString() =>
+            ErrorType.ToString()
+#if NET
+            ?? String.Empty
+#endif
+        ;
+
         #region IFormattable Support
         public override string ToString() =>
             ToString(String.Empty, CultureInfo.CurrentCulture);
 
         public string ToString(string? format, IFormatProvider? formatProvider) =>
-            ErrorType.ToString();
+            GetErrorTypeString();
         #endregion
     }
 }

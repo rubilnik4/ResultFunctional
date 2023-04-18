@@ -13,18 +13,18 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Преобразование результирующего ответа в коллекцию. Тесты
     /// </summary>
-    public class ResultCollectionToCollectionAsyncExtensionsTest
+    public class RListToCollectionAsyncExtensionsTest
     {
         /// <summary>
         /// Выполнение условия в положительном результирующем ответе со связыванием
         /// </summary>
         [Fact]
-        public async Task ResultCollectionToCollectionAsync_Ok_ReturnNewValue()
+        public async Task RListToCollectionAsync_Ok_ReturnNewValue()
         {
             var initialCollection = Collections.GetRangeNumber();
-            var resultCollection = initialCollection.ToRList();
+            var RList = initialCollection.ToRList();
 
-            var resultAfterWhere = await resultCollection.RListLiftMatchAsync(
+            var resultAfterWhere = await RList.RListLiftMatchAsync(
                 Collections.CollectionToStringAsync,
                 _ => Collections.GetEmptyStringList());
 
@@ -35,12 +35,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Возвращение предыдущей ошибки в положительном результирующем ответе с ошибкой со связыванием
         /// </summary>
         [Fact]
-        public async Task ResultCollectionToCollectionAsync_Bad_ReturnNewValue()
+        public async Task RListToCollectionAsync_Bad_ReturnNewValue()
         {
             var errorsInitial = ErrorData.CreateErrorListTwoTest();
-            var resultCollection = errorsInitial.ToRList<int>();
+            var RList = errorsInitial.ToRList<int>();
 
-            var resultAfterWhere = await resultCollection.RListLiftMatchAsync(
+            var resultAfterWhere = await RList.RListLiftMatchAsync(
                 Collections.CollectionToStringAsync,
                 errors => new List<string> { errors.Count.ToString() });
 

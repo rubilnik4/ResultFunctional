@@ -18,11 +18,11 @@ namespace ResultFunctionalXUnit.Models.Options
         [Fact]
         public void Initialize_OneError()
         {
-            var resultCollection = CreateErrorTest().ToRList<int>();
+            var rList = CreateErrorTest().ToRList<int>();
 
-            Assert.False(resultCollection.Success);
-            Assert.True(resultCollection.Failure);
-            Assert.Single(resultCollection.GetErrors());
+            Assert.False(rList.Success);
+            Assert.True(rList.Failure);
+            Assert.Single(rList.GetErrors());
         }
 
         /// <summary>
@@ -32,11 +32,11 @@ namespace ResultFunctionalXUnit.Models.Options
         public void Initialize_Errors()
         {
             var errors = CreateErrorListTwoTest();
-            var resultCollection = errors.ToRList<int>();
+            var rList = errors.ToRList<int>();
 
-            Assert.False(resultCollection.Success);
-            Assert.True(resultCollection.Failure);
-            Assert.Equal(errors.Count, resultCollection.GetErrors().Count);
+            Assert.False(rList.Success);
+            Assert.True(rList.Failure);
+            Assert.Equal(errors.Count, rList.GetErrors().Count);
         }
 
         /// <summary>
@@ -60,14 +60,14 @@ namespace ResultFunctionalXUnit.Models.Options
         [Fact]
         public void AppendError()
         {
-            var resultCollectionInitial = GetRangeNumber().ToRList();
+            var rListInitial = GetRangeNumber().ToRList();
             var errorToConcat = CreateErrorTest();
 
-            var resultCollectionConcat = resultCollectionInitial.AppendError(errorToConcat);
+            var rListConcat = rListInitial.AppendError(errorToConcat);
 
-            Assert.True(resultCollectionConcat.Failure);
-            Assert.Single(resultCollectionConcat.GetErrors());
-            Assert.True(errorToConcat.Equals(resultCollectionConcat.GetErrors().Last()));
+            Assert.True(rListConcat.Failure);
+            Assert.Single(rListConcat.GetErrors());
+            Assert.True(errorToConcat.Equals(rListConcat.GetErrors().Last()));
         }
 
         /// <summary>
@@ -76,14 +76,14 @@ namespace ResultFunctionalXUnit.Models.Options
         [Fact]
         public void ConcatErrors_TotalOne()
         {
-            var resultCollectionInitial = GetRangeNumber().ToRList();
+            var rListInitial = GetRangeNumber().ToRList();
             var errorToConcat = CreateErrorTest();
 
-            var resultCollectionConcat = resultCollectionInitial.ConcatErrors(errorToConcat);
+            var rListConcat = rListInitial.ConcatErrors(errorToConcat);
 
-            Assert.True(resultCollectionConcat.Failure);
-            Assert.Single(resultCollectionConcat.GetErrors());
-            Assert.True(errorToConcat.Equals(resultCollectionConcat.GetErrors().Last()));
+            Assert.True(rListConcat.Failure);
+            Assert.Single(rListConcat.GetErrors());
+            Assert.True(errorToConcat.Equals(rListConcat.GetErrors().Last()));
         }
 
         /// <summary>
@@ -93,15 +93,15 @@ namespace ResultFunctionalXUnit.Models.Options
         public void ConcatErrors_TotalTwo()
         {
             var initialError = CreateErrorTest();
-            var resultCollectionInitial = initialError.ToRList<int>();
+            var rListInitial = initialError.ToRList<int>();
             var errorToConcat = CreateErrorTest();
 
-            var resultCollectionConcat = resultCollectionInitial.ConcatErrors(errorToConcat);
+            var rListConcat = rListInitial.ConcatErrors(errorToConcat);
 
-            Assert.True(resultCollectionConcat.Failure);
-            Assert.Equal(2, resultCollectionConcat.GetErrors().Count);
-            Assert.True(initialError.Equals(resultCollectionConcat.GetErrors().First()));
-            Assert.True(errorToConcat.Equals(resultCollectionConcat.GetErrors().Last()));
+            Assert.True(rListConcat.Failure);
+            Assert.Equal(2, rListConcat.GetErrors().Count);
+            Assert.True(initialError.Equals(rListConcat.GetErrors().First()));
+            Assert.True(errorToConcat.Equals(rListConcat.GetErrors().Last()));
         }
 
         /// <summary>
@@ -111,13 +111,13 @@ namespace ResultFunctionalXUnit.Models.Options
         public void ConcatErrors_OkStatus_EmptyList()
         {
             var collection = GetRangeNumber();
-            var resultCollectionInitial = collection.ToRList();
+            var rListInitial = collection.ToRList();
             var errorsToConcat = Enumerable.Empty<IRError>();
 
-            var resultValueConcat = resultCollectionInitial.ConcatErrors(errorsToConcat);
+            var rValueConcat = rListInitial.ConcatErrors(errorsToConcat);
 
-            Assert.True(resultValueConcat.Success);
-            Assert.True(collection.SequenceEqual(resultValueConcat.GetValue()));
+            Assert.True(rValueConcat.Success);
+            Assert.True(collection.SequenceEqual(rValueConcat.GetValue()));
         }
         
         /// <summary>
@@ -127,12 +127,12 @@ namespace ResultFunctionalXUnit.Models.Options
         public void ToRValue_Ok()
         {
             var collection = GetRangeNumber();
-            var resultCollectionInitial = collection.ToRList();
+            var rListInitial = collection.ToRList();
 
-            var rValue = resultCollectionInitial.ToRValue();
+            var rValue = rListInitial.ToRValue();
 
             Assert.True(rValue.Success);
-            Assert.True(rValue.GetValue().Equals(resultCollectionInitial.GetValue()));
+            Assert.True(rValue.GetValue().Equals(rListInitial.GetValue()));
         }
 
         /// <summary>
@@ -142,9 +142,9 @@ namespace ResultFunctionalXUnit.Models.Options
         public void ToRValue_Error()
         {
             var initialError = CreateErrorTest();
-            var resultCollectionInitial = initialError.ToRList<int>();
+            var rListInitial = initialError.ToRList<int>();
 
-            var rValue = resultCollectionInitial.ToRValue();
+            var rValue = rListInitial.ToRValue();
 
             Assert.True(rValue.Failure);
             Assert.Single(rValue.GetErrors());

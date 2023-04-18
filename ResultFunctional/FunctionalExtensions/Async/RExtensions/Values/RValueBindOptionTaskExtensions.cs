@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Options;
+using ResultFunctional.Models.Maybe;
 using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
@@ -104,7 +104,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="someFunc">Error function if incoming result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>
         public static async Task<IRValue<TValue>> RValueBindEnsureTask<TValue>(this Task<IRValue<TValue>> @this,
-                                                                               Func<TValue, IROption> someFunc)
+                                                                               Func<TValue, IRMaybe> someFunc)
             where TValue : notnull =>
             await @this.
                 MapTask(awaitedThis => awaitedThis.RValueBindEnsure(someFunc));

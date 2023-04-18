@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Options;
+using ResultFunctional.Models.Maybe;
 
 namespace ResultFunctional.Models.Base;
 
@@ -12,7 +12,7 @@ namespace ResultFunctional.Models.Base;
 /// </summary>
 /// <typeparam name="TValue">Value</typeparam>
 /// <typeparam name="TOption">Result option</typeparam>
-internal abstract class RBase<TValue, TOption> : ROption, IRBase<TValue, TOption>
+internal abstract class RBase<TValue, TOption> : RMaybe, IRBase<TValue, TOption>
     where TValue : notnull
     where TOption : IRBase<TValue, TOption>
 {

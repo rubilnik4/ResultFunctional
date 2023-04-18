@@ -13,13 +13,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
     /// <summary>
     /// Методы расширения для результирующего ответа для задачи-объекта. Тесты
     /// </summary>
-    public class ToResultErrorTaskAsyncExtensionsTest
+    public class ToRMaybeTaskAsyncExtensionsTest
     {
         /// <summary>
         /// Преобразовать в результирующий ответ
         /// </summary>
         [Fact]
-        public async Task ToResultErrorTaskAsync_FromResult_Ok()
+        public async Task ToRMaybeTaskAsync_FromResult_Ok()
         {
             var results = new List<IRUnit>
             {
@@ -30,14 +30,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
 
             var result =  await taskResults.ToRUnitTask();
 
-            Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(resultError => resultError.GetErrors())));
+            Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(RMaybe => RMaybe.GetErrors())));
         }
 
         /// <summary>
         /// Преобразовать в результирующий ответ
         /// </summary>
         [Fact]
-        public async Task ToResultErrorTaskAsync_FromErrors_Ok()
+        public async Task ToRMaybeTaskAsync_FromErrors_Ok()
         {
             var results = new List<IRUnit>
             {
@@ -48,14 +48,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
 
             var result = await taskResults.ToRUnitTask();
 
-            Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(resultError => resultError.GetErrors())));
+            Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(RMaybe => RMaybe.GetErrors())));
         }
 
         /// <summary>
         /// Преобразовать в результирующий ответ
         /// </summary>
         [Fact]
-        public async Task ToResultErrorByError_Ok()
+        public async Task ToRMaybeByError_Ok()
         {
             var results = new List<IRError>
             {

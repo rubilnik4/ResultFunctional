@@ -13,18 +13,18 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Обработка асинхронных условий для результирующего ответа с коллекцией. Тесты
     /// </summary>
-    public class ResultCollectionWhereBindAsyncExtensionsTest
+    public class RListWhereBindAsyncExtensionsTest
     {
         /// <summary>
         /// Выполнение условия в положительном асинхронном результирующем ответе с коллекцией
         /// </summary>
         [Fact]
-        public async Task ResultCollectionContinueBindAsync_Ok_ReturnNewValue()
+        public async Task RListContinueBindAsync_Ok_ReturnNewValue()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = RListFactory.SomeTask(initialCollection);
+            var RList = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await resultCollection.RListOptionAwait(_ => true,
+            var resultAfterWhere = await RList.RListOptionAwait(_ => true,
                 CollectionToStringAsync,
                 _ => CreateErrorListTwoTestTask());
 
@@ -36,13 +36,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Выполнение условия в отрицательном асинхронном результирующем ответе с коллекцией без ошибки
         /// </summary>
         [Fact]
-        public async Task ResultCollectionContinueBindAsync_Ok_ReturnNewError()
+        public async Task RListContinueBindAsync_Ok_ReturnNewError()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = RListFactory.SomeTask(initialCollection);
+            var RList = RListFactory.SomeTask(initialCollection);
 
             var errorsBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await resultCollection.RListOptionAwait(_ => false,
+            var resultAfterWhere = await RList.RListOptionAwait(_ => false,
                 _ => ToTaskCollection(GetEmptyStringList()),
                 _ => ToTaskCollection(errorsBad));
 
@@ -54,12 +54,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Возвращение предыдущей ошибки в положительном асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionContinueBindAsync_Bad_ReturnNewValue()
+        public async Task RListContinueBindAsync_Bad_ReturnNewValue()
         {
             var errorInitial = CreateErrorTest();
-            var resultCollection = RListFactory.NoneTask<int>(errorInitial);
+            var RList = RListFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultCollection.RListOptionAwait(_ => true,
+            var resultAfterWhere = await RList.RListOptionAwait(_ => true,
                 _ => ToTaskCollection(GetEmptyStringList()),
                 _ => CreateErrorListTwoTestTask());
 
@@ -71,12 +71,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Возвращение предыдущей ошибки в отрицательном асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionContinueBindAsync_Bad_ReturnNewError()
+        public async Task RListContinueBindAsync_Bad_ReturnNewError()
         {
             var errorsInitial = CreateErrorTest();
-            var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
+            var RList = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.RListOptionAwait(_ => false,
+            var resultAfterWhere = await RList.RListOptionAwait(_ => false,
                 _ => ToTaskCollection(GetEmptyStringList()),
                 _ => CreateErrorListTwoTestTask());
 
@@ -88,12 +88,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Выполнение условия в асинхронном положительном результирующем ответе с коллекцией
         /// </summary>
         [Fact]
-        public async Task ResultCollectionWhereBindAsync_Ok_ReturnNewValue()
+        public async Task RListWhereBindAsync_Ok_ReturnNewValue()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = RListFactory.SomeTask(initialCollection);
+            var RList = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await resultCollection.RListWhereAwait(_ => true,
+            var resultAfterWhere = await RList.RListWhereAwait(_ => true,
                 CollectionToStringAsync,
                 _ => ToTaskCollection(GetEmptyStringList()));
 
@@ -105,12 +105,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Выполнение условия в асинхронном отрицательном результирующем ответе с коллекцией без ошибки
         /// </summary>
         [Fact]
-        public async Task ResultCollectionWhereBindAsync_Ok_ReturnNewValueByErrors()
+        public async Task RListWhereBindAsync_Ok_ReturnNewValueByErrors()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = RListFactory.SomeTask(initialCollection);
+            var RList = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await resultCollection.RListWhereAwait(_ => false,
+            var resultAfterWhere = await RList.RListWhereAwait(_ => false,
                 _ => ToTaskCollection(GetEmptyStringList()),
                 numbers => ToTaskCollection(new List<string> { numbers.Count.ToString() }));
 
@@ -123,12 +123,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Возвращение предыдущей ошибки в асинхронном положительном результирующем ответе с коллекцией с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionWhereBindAsync_Ok_ReturnError()
+        public async Task RListWhereBindAsync_Ok_ReturnError()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
+            var RList = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.RListWhereAwait(_ => true,
+            var resultAfterWhere = await RList.RListWhereAwait(_ => true,
                 _ => ToTaskCollection(GetEmptyStringList()),
                 errors => ToTaskCollection(new List<string> { errors.Count.ToString() }));
 
@@ -140,12 +140,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Возвращение предыдущей ошибки в асинхронном отрицательном результирующем ответе с коллекцией с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionWhereBindAsync_Bad_ReturnError()
+        public async Task RListWhereBindAsync_Bad_ReturnError()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
+            var RList = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.RListWhereAwait(_ => false,
+            var resultAfterWhere = await RList.RListWhereAwait(_ => false,
                 _ => ToTaskCollection(GetEmptyStringList()),
                 errors => ToTaskCollection(new List<string> { errors.Count.ToString() }));
 
@@ -157,12 +157,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Выполнение положительного условия в асинхронном результирующем ответе с коллекцией без ошибки
         /// </summary>      
         [Fact]
-        public async Task ResultCollectionOkBadBindAsync_Ok_ReturnNewValue()
+        public async Task RListOkBadBindAsync_Ok_ReturnNewValue()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = RListFactory.SomeTask(initialCollection);
+            var RList = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await resultCollection.RListMatchAwait(
+            var resultAfterWhere = await RList.RListMatchAwait(
                 CollectionToStringAsync,
                 _ => ToTaskCollection(GetEmptyStringList()));
 
@@ -174,12 +174,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Выполнение негативного условия в асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>      
         [Fact]
-        public async Task ResultCollectionOkBadBindAsync_Bad_ReturnNewValueByErrors()
+        public async Task RListOkBadBindAsync_Bad_ReturnNewValueByErrors()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
+            var RList = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.RListMatchAwait(
+            var resultAfterWhere = await RList.RListMatchAwait(
                 _ => ToTaskCollection(GetEmptyStringList()),
                 errors => ToTaskCollection(new List<string> { errors.Count.ToString() }));
 
@@ -192,12 +192,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Выполнение положительного условия в асинхронном результирующем ответе с коллекцией без ошибки
         /// </summary>   
         [Fact]
-        public async Task ResultCollectionOkBindAsync_Ok_ReturnNewValue()
+        public async Task RListOkBindAsync_Ok_ReturnNewValue()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = RListFactory.SomeTask(initialCollection);
+            var RList = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await resultCollection.RListSomeAwait(CollectionToStringAsync);
+            var resultAfterWhere = await RList.RListSomeAwait(CollectionToStringAsync);
 
             Assert.True(resultAfterWhere.Success);
             Assert.True((await CollectionToStringAsync(initialCollection)).SequenceEqual(resultAfterWhere.GetValue()));
@@ -207,12 +207,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Возвращение предыдущей ошибки в асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>   
         [Fact]
-        public async Task ResultCollectionOkBindAsync_Bad_ReturnInitial()
+        public async Task RListOkBindAsync_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
-            var resultCollection = RListFactory.NoneTask<int>(errorInitial);
+            var RList = RListFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultCollection.RListSomeAwait(CollectionToStringAsync);
+            var resultAfterWhere = await RList.RListSomeAwait(CollectionToStringAsync);
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));
@@ -222,12 +222,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Выполнение отрицательного условия в асинхронном результирующем ответе с коллекцией без ошибки
         /// </summary>   
         [Fact]
-        public async Task ResultCollectionBadBindAsync_Ok_ReturnInitial()
+        public async Task RListBadBindAsync_Ok_ReturnInitial()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = RListFactory.SomeTask(initialCollection);
+            var RList = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await resultCollection.RListNoneAwait(
+            var resultAfterWhere = await RList.RListNoneAwait(
                 errors => ToTaskCollection(GetListByErrorsCount(errors)));
 
             Assert.True(resultAfterWhere.Success);
@@ -238,12 +238,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Возвращение предыдущей ошибки в асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>   
         [Fact]
-        public async Task ResultCollectionBadBindAsync_Bad_ReturnNewValueByError()
+        public async Task RListBadBindAsync_Bad_ReturnNewValueByError()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
+            var RList = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.RListNoneAwait(
+            var resultAfterWhere = await RList.RListNoneAwait(
                 errors => ToTaskCollection(GetListByErrorsCount(errors)));
 
             Assert.True(resultAfterWhere.Success);
@@ -254,12 +254,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Выполнение условия в положительном асинхронном результирующем ответе с коллекцией
         /// </summary>
         [Fact]
-        public async Task ResultCollectionErrorOkBindAsync_Ok_CheckNoError()
+        public async Task RListErrorOkBindAsync_Ok_CheckNoError()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = RListFactory.SomeTask(initialCollection);
+            var RList = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await resultCollection.RListEnsureAwait(_ => true,
+            var resultAfterWhere = await RList.RListEnsureAwait(_ => true,
                 _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Success);
@@ -270,13 +270,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Выполнение условия в отрицательном асинхронном результирующем ответе с коллекцией без ошибки
         /// </summary>
         [Fact]
-        public async Task ResultCollectionErrorOkBindAsync_Ok_CheckHasError()
+        public async Task RListErrorOkBindAsync_Ok_CheckHasError()
         {
             var initialCollection = GetRangeNumber();
-            var resultCollection = RListFactory.SomeTask(initialCollection);
+            var RList = RListFactory.SomeTask(initialCollection);
 
             var errorsBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await resultCollection.RListEnsureAwait(_ => false,
+            var resultAfterWhere = await RList.RListEnsureAwait(_ => false,
                 _ => ToTaskCollection(errorsBad));
 
             Assert.True(resultAfterWhere.Failure);
@@ -287,12 +287,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Возвращение предыдущей ошибки в положительном асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionErrorOkBindAsync_Bad_CheckNoError()
+        public async Task RListErrorOkBindAsync_Bad_CheckNoError()
         {
             var errorInitial = CreateErrorTest();
-            var resultCollection = RListFactory.NoneTask<int>(errorInitial);
+            var RList = RListFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await resultCollection.RListEnsureAwait(_ => true,
+            var resultAfterWhere = await RList.RListEnsureAwait(_ => true,
                 _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Failure);
@@ -303,12 +303,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Возвращение предыдущей ошибки в отрицательном асинхронном результирующем ответе с коллекцией с ошибкой
         /// </summary>
         [Fact]
-        public async Task ResultCollectionErrorOkBindAsync_Bad_CheckHasError()
+        public async Task RListErrorOkBindAsync_Bad_CheckHasError()
         {
             var errorsInitial = CreateErrorTest();
-            var resultCollection = RListFactory.NoneTask<int>(errorsInitial);
+            var RList = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await resultCollection.RListEnsureAwait(_ => false,
+            var resultAfterWhere = await RList.RListEnsureAwait(_ => false,
                 _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Failure);

@@ -62,7 +62,6 @@
 
   <ItemGroup>
     <Folder Include="Models\Lists\" />
-    <Folder Include="Models\Options\" />
     <Folder Include="Models\Units\" />
   </ItemGroup>
 </Project>

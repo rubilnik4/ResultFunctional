@@ -22,13 +22,13 @@ namespace ResultFunctionalXUnit.Models.Options
         [Fact]
         public void Initialize_Base_OkStatus()
         {
-            var resultError = RUnitFactory.Some();
+            var rMaybe = RUnitFactory.Some();
 
-            Assert.True(resultError.Success);
-            Assert.False(resultError.Failure);
-            Assert.Null(resultError.Errors);
-            Assert.Throws<ArgumentNullException>(resultError.GetErrors);
-            Assert.Empty(resultError.GetErrorsOrEmpty());
+            Assert.True(rMaybe.Success);
+            Assert.False(rMaybe.Failure);
+            Assert.Null(rMaybe.Errors);
+            Assert.Throws<ArgumentNullException>(rMaybe.GetErrors);
+            Assert.Empty(rMaybe.GetErrorsOrEmpty());
         }
 
         /// <summary>
@@ -37,11 +37,11 @@ namespace ResultFunctionalXUnit.Models.Options
         [Fact]
         public void Initialize_Error_HasOne()
         {
-            var resultError = CreateErrorTest().ToRUnit();
+            var rMaybe = CreateErrorTest().ToRUnit();
 
-            Assert.False(resultError.Success);
-            Assert.True(resultError.Failure);
-            Assert.Single(resultError.GetErrors());
+            Assert.False(rMaybe.Success);
+            Assert.True(rMaybe.Failure);
+            Assert.Single(rMaybe.GetErrors());
         }
 
         /// <summary>
@@ -50,14 +50,14 @@ namespace ResultFunctionalXUnit.Models.Options
         [Fact]
         public void AppendError()
         {
-            var resultErrorInitial = RUnitFactory.Some();
+            var rMaybeInitial = RUnitFactory.Some();
             var errorToConcat = CreateErrorTest();
 
-            var resultErrorConcat = resultErrorInitial.AppendError(errorToConcat);
+            var rMaybeConcat = rMaybeInitial.AppendError(errorToConcat);
 
-            Assert.True(resultErrorConcat.Failure);
-            Assert.Equal(1, resultErrorConcat.GetErrors().Count);
-            Assert.True(errorToConcat.Equals(resultErrorConcat.GetErrors().Last()));
+            Assert.True(rMaybeConcat.Failure);
+            Assert.Equal(1, rMaybeConcat.GetErrors().Count);
+            Assert.True(errorToConcat.Equals(rMaybeConcat.GetErrors().Last()));
         }
 
         /// <summary>
@@ -66,14 +66,14 @@ namespace ResultFunctionalXUnit.Models.Options
         [Fact]
         public void ConcatErrors_TotalOne()
         {
-            var resultErrorInitial = RUnitFactory.Some();
+            var rMaybeInitial = RUnitFactory.Some();
             var errorToConcat = CreateErrorTest();
 
-            var resultErrorConcat = resultErrorInitial.ConcatErrors(errorToConcat);
+            var rMaybeConcat = rMaybeInitial.ConcatErrors(errorToConcat);
 
-            Assert.True(resultErrorConcat.Failure);
-            Assert.Equal(1, resultErrorConcat.GetErrors().Count);
-            Assert.True(errorToConcat.Equals(resultErrorConcat.GetErrors().Last()));
+            Assert.True(rMaybeConcat.Failure);
+            Assert.Equal(1, rMaybeConcat.GetErrors().Count);
+            Assert.True(errorToConcat.Equals(rMaybeConcat.GetErrors().Last()));
         }
 
         /// <summary>
@@ -83,13 +83,13 @@ namespace ResultFunctionalXUnit.Models.Options
         public void ConcatErrors_TotalTwo()
         {
             var errorToConcat = CreateErrorTest();
-            var resultErrorInitial = errorToConcat.ToRUnit();
+            var rMaybeInitial = errorToConcat.ToRUnit();
 
-            var resultErrorConcat = resultErrorInitial.ConcatErrors(errorToConcat);
+            var rMaybeConcat = rMaybeInitial.ConcatErrors(errorToConcat);
 
-            Assert.True(resultErrorConcat.Failure);
-            Assert.Equal(2, resultErrorConcat.GetErrors().Count);
-            Assert.True(errorToConcat.Equals(resultErrorConcat.GetErrors().Last()));
+            Assert.True(rMaybeConcat.Failure);
+            Assert.Equal(2, rMaybeConcat.GetErrors().Count);
+            Assert.True(errorToConcat.Equals(rMaybeConcat.GetErrors().Last()));
         }
 
         /// <summary>

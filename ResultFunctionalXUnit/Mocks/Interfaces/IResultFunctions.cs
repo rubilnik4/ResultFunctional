@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Options;
+using ResultFunctional.Models.Maybe;
 
 namespace ResultFunctionalXUnit.Mocks.Interfaces
 {
@@ -12,21 +12,21 @@ namespace ResultFunctionalXUnit.Mocks.Interfaces
         /// <summary>
         /// Преобразовать число в результирующий ответ 
         /// </summary>
-        IROption NumberToResult(int number);
+        IRMaybe NumberToResult(int number);
 
         /// <summary>
         /// Преобразовать число в результирующий ответ асинхронно
         /// </summary>
-        Task<IROption> NumberToResultAsync(int number);
+        Task<IRMaybe> NumberToResultAsync(int number);
 
         /// <summary>
         /// Преобразовать коллекцию чисел в результирующий ответ 
         /// </summary>
-        IROption NumbersToResult(IReadOnlyCollection<int> numbers);
+        IRMaybe NumbersToResult(IReadOnlyCollection<int> numbers);
 
         /// <summary>
         /// Преобразовать коллекцию чисел в результирующий ответ асинхронно
         /// </summary>
-        Task<IROption> NumbersToResultAsync(IReadOnlyCollection<int> numbers);
+        Task<IRMaybe> NumbersToResultAsync(IReadOnlyCollection<int> numbers);
     }
 }

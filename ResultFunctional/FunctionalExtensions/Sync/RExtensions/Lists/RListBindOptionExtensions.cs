@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Lists;
-using ResultFunctional.Models.Options;
+using ResultFunctional.Models.Maybe;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
 {
@@ -130,7 +130,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="someFunc">Error function if incoming result collection hasn't errors</param>
         /// <returns>Outgoing result collection</returns>
         public static IRList<TValue> RListBindEnsure<TValue>(this IRList<TValue> @this,
-                                                                          Func<IReadOnlyCollection<TValue>, IROption> someFunc) 
+                                                                          Func<IReadOnlyCollection<TValue>, IRMaybe> someFunc) 
             where TValue : notnull =>
             @this.
             RListBindSome(collection => someFunc.Invoke(collection).ToRList(collection));

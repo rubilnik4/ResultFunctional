@@ -8,7 +8,7 @@ using ResultFunctional.Models.Values;
 namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
 {
     /// <summary>
-    /// Result error task extension methods
+    /// Result unit task extension methods
     /// </summary>  
     public static class ToRUnitTaskExtensions
     {
@@ -51,15 +51,20 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
             ToRUnitTask();
 
         /// <summary>
-        /// Преобразовать в результирующий ответ
-        /// </summary>  
+        /// Merge result unit collection
+        /// </summary>
+        /// <param name="this">Result unit collection</param>
+        /// <returns>Result unit</returns>
         public static async Task<IRUnit> ToRUnitTask(this IEnumerable<Task<IRUnit>> @this) =>
             await Task.WhenAll(@this).
                        MapTask(result => result.ToRUnit());
 
         /// <summary>
-        /// Преобразовать в результирующий ответ
-        /// </summary>      
+        /// Converting result value to unit
+        /// </summary>
+        /// <typeparam name="TValue">Value type</typeparam>
+        /// <param name="this">Result value</param>
+        /// <returns>Result unit</returns>
         public static async Task<IRUnit> ToRUnitTask<TValue>(this Task<IRValue<TValue>> @this)
             where TValue : notnull =>
             await @this.

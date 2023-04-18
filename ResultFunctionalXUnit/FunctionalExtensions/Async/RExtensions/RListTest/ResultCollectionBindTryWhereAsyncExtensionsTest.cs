@@ -15,13 +15,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Методы расширения для результирующего ответа со значением и обработкой исключений асинхронно. Тесты
     /// </summary>
-    public class ResultCollectionBindTryWhereAsyncExtensionsTest
+    public class RListBindTryWhereAsyncExtensionsTest
     {
         /// <summary>
         /// Асинхронный положительный результирующий ответ и отсутствие исключения
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryAsyncOk_OkResult_OkTry()
+        public async Task RListBindTryAsyncOk_OkResult_OkTry()
         {
             var initialNumbers = GetRangeNumber();
             var numbersResult = initialNumbers.ToRList();
@@ -37,7 +37,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный результирующий ответ с ошибкой и отсутствие исключения
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryAsyncOk_ErrorResult_OkTry()
+        public async Task RListBindTryAsyncOk_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
             var numbersResult = initialError.ToRList<int>();
@@ -53,7 +53,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный положительный результирующий ответ и исключение
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryAsyncOk_OkResult_ExceptionTry()
+        public async Task RListBindTryAsyncOk_OkResult_ExceptionTry()
         {
             var initialNumbers = GetRangeNumberWithZero();
             var numbersResult = initialNumbers.ToRList();
@@ -69,7 +69,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный результирующий ответ с ошибкой и исключение
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryAsyncOk_ErrorResult_ExceptionTry()
+        public async Task RListBindTryAsyncOk_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
             var numbersResult = initialError.ToRList<int>();
@@ -85,7 +85,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный положительный результирующий ответ и отсутствие исключения
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryAsyncOkFunc_OkResult_OkTry()
+        public async Task RListBindTryAsyncOkFunc_OkResult_OkTry()
         {
             var initialNumbers = GetRangeNumber();
             var numbersResult = initialNumbers.ToRList();
@@ -101,7 +101,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный результирующий ответ с ошибкой и отсутствие исключения
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryAsyncOkFunc_ErrorResult_OkTry()
+        public async Task RListBindTryAsyncOkFunc_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
             var numbersResult = initialError.ToRList<int>();
@@ -117,7 +117,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный положительный результирующий ответ и исключение
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryAsyncOkFunc_OkResult_ExceptionTry()
+        public async Task RListBindTryAsyncOkFunc_OkResult_ExceptionTry()
         {
             var initialNumbers = GetRangeNumberWithZero();
             var numbersResult = initialNumbers.ToRList();
@@ -133,7 +133,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный результирующий ответ с ошибкой и исключение
         /// </summary>
         [Fact]
-        public async Task ResultCollectionBindTryAsyncOkFunc_ErrorResult_ExceptionTry()
+        public async Task RListBindTryAsyncOkFunc_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
             var numbersResult = initialError.ToRList<int>();

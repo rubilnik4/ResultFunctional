@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Options;
+using ResultFunctional.Models.Maybe;
 
 namespace ResultFunctional.Models.Base;
 
@@ -10,7 +10,7 @@ namespace ResultFunctional.Models.Base;
 /// </summary>
 /// <typeparam name="TValue">Value</typeparam>
 /// <typeparam name="TOption">Base result</typeparam>
-public interface IRBase<out TValue, out TOption>: IROption
+public interface IRBase<out TValue, out TOption>: IRMaybe
     where TValue : notnull
     where TOption : IRBase<TValue, TOption>
 {

@@ -10,13 +10,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Преобразование значений в результирующий ответ коллекции с условием. Тесты
     /// </summary>
-    public class ToResultCollectionWhereBindAsyncExtensionsTest
+    public class ToRListWhereBindAsyncExtensionsTest
     {
         /// <summary>
         /// Преобразовать значения в результирующий ответ с условием. Положительное условие
         /// </summary>
         [Fact]
-        public async Task ToResultCollectionWhereBindAsync_Ok()
+        public async Task ToRListWhereBindAsync_Ok()
         {
             var initialCollection = GetRangeNumber();
             var taskCollection = Task.FromResult(GetRangeNumber());
@@ -32,7 +32,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Преобразовать значения в результирующий ответ с условием. Негативное условие
         /// </summary>
         [Fact]
-        public async Task ToResultCollectionWhereBindAsync_BadError()
+        public async Task ToRListWhereBindAsync_BadError()
         {
             var initialCollection = GetRangeNumber();
             var taskCollection = Task.FromResult(initialCollection);

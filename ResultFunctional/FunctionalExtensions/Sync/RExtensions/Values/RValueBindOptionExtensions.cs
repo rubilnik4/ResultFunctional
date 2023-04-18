@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ResultFunctional.Models.Errors.BaseErrors;
-using ResultFunctional.Models.Options;
+using ResultFunctional.Models.Maybe;
 using ResultFunctional.Models.Values;
 
 namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
@@ -129,7 +129,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Incoming result value</param>
         /// <param name="someFunc">Error function if incoming result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValue> RValueBindEnsure<TValue>(this IRValue<TValue> @this, Func<TValue, IROption> someFunc)
+        public static IRValue<TValue> RValueBindEnsure<TValue>(this IRValue<TValue> @this, Func<TValue, IRMaybe> someFunc)
             where TValue : notnull =>
             @this.
             RValueBindSome(value => someFunc.Invoke(value).ToRValue(value));

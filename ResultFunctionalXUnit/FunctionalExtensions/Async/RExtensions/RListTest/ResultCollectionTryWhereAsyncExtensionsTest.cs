@@ -13,13 +13,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Методы расширения для результирующего ответа со значением и обработкой исключений асинхронно. Тесты
     /// </summary>
-    public class ResultCollectionTryWhereAsyncExtensionsTest
+    public class RListTryWhereAsyncExtensionsTest
     {
         /// <summary>
         /// Асинхронный положительный результирующий ответ и отсутствие исключения
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsyncOk_OkResult_OkTry()
+        public async Task RListTryAsyncOk_OkResult_OkTry()
         {
             var initialNumbers = GetRangeNumber();
             var numbersResult = initialNumbers.ToRList();
@@ -34,7 +34,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный результирующий ответ с ошибкой и отсутствие исключения
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsyncOk_ErrorResult_OkTry()
+        public async Task RListTryAsyncOk_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
             var numbersResult = initialError.ToRList<int>();
@@ -49,22 +49,22 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный положительный результирующий ответ и исключение
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsyncOk_OkResult_ExceptionTry()
+        public async Task RListTryAsyncOk_OkResult_ExceptionTry()
         {
             var initialNumbers = GetRangeNumber();
             var numberResult = initialNumbers.ToRList();
 
-            var resultValue = await numberResult.RListTrySomeAsync(DivisionCollectionByZeroAsync, Exceptions.ExceptionError());
+            var RValue = await numberResult.RListTrySomeAsync(DivisionCollectionByZeroAsync, Exceptions.ExceptionError());
 
-            Assert.True(resultValue.Failure);
-            Assert.NotNull(resultValue.GetErrors().First().Exception);
+            Assert.True(RValue.Failure);
+            Assert.NotNull(RValue.GetErrors().First().Exception);
         }
 
         /// <summary>
         /// Асинхронный результирующий ответ с ошибкой и исключение
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsyncOk_ErrorResult_ExceptionTry()
+        public async Task RListTryAsyncOk_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
             var numbersResult = initialError.ToRList<int>();
@@ -79,7 +79,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный положительный результирующий ответ и отсутствие исключения
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsyncOkFunc_OkResult_OkTry()
+        public async Task RListTryAsyncOkFunc_OkResult_OkTry()
         {
             var initialNumbers = GetRangeNumber();
             var numbersResult = initialNumbers.ToRList();
@@ -94,7 +94,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный результирующий ответ с ошибкой и отсутствие исключения
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsyncOkFunc_ErrorResult_OkTry()
+        public async Task RListTryAsyncOkFunc_ErrorResult_OkTry()
         {
             var initialError = CreateErrorTest();
             var numbersResult = initialError.ToRList<int>();
@@ -109,22 +109,22 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Асинхронный положительный результирующий ответ и исключение
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsyncOkFunc_OkResult_ExceptionTry()
+        public async Task RListTryAsyncOkFunc_OkResult_ExceptionTry()
         {
             var initialNumbers = GetRangeNumber();
             var numberResult = initialNumbers.ToRList();
 
-            var resultValue = await numberResult.RListTrySomeAsync(DivisionCollectionByZeroAsync, Exceptions.ExceptionFunc());
+            var RValue = await numberResult.RListTrySomeAsync(DivisionCollectionByZeroAsync, Exceptions.ExceptionFunc());
 
-            Assert.True(resultValue.Failure);
-            Assert.NotNull(resultValue.GetErrors().First().Exception);
+            Assert.True(RValue.Failure);
+            Assert.NotNull(RValue.GetErrors().First().Exception);
         }
 
         /// <summary>
         /// Асинхронный результирующий ответ с ошибкой и исключение
         /// </summary>
         [Fact]
-        public async Task ResultCollectionTryAsyncOkFunc_ErrorResult_ExceptionTry()
+        public async Task RListTryAsyncOkFunc_ErrorResult_ExceptionTry()
         {
             var initialError = CreateErrorTest();
             var numbersResult = initialError.ToRList<int>();
