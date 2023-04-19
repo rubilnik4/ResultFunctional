@@ -11,7 +11,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
     /// <summary>
     /// Extension methods for result value functions converting to result value
     /// </summary>
-    public static class RValueListOptionExtensions
+    public static class RValueToListOptionExtensions
     {
         /// <summary>
         /// Execute result value function converting to result value base on predicate condition
@@ -23,15 +23,15 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns> 
-        public static IRList<TValueOut> RValueListOption<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                             Func<TValueIn, bool> predicate,
-                                                                                             Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc,
-                                                                                             Func<TValueIn, IReadOnlyCollection<IRError>> noneFunc)
+        public static IRList<TValueOut> RValueToListOption<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+                                                                                Func<TValueIn, bool> predicate,
+                                                                                Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc,
+                                                                                Func<TValueIn, IReadOnlyCollection<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.
-            RValueOption(predicate, someFunc, noneFunc).
-            ToRList();
+                RValueOption(predicate, someFunc, noneFunc).
+                ToRList();
 
         /// <summary>
         /// Execute result value function converting to result value base on predicate condition
@@ -43,14 +43,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns> 
-        public static IRList<TValueOut> RValueListOption<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                             Func<TValueIn, bool> predicate,
-                                                                                             Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc,
-                                                                                             Func<TValueIn, IEnumerable<IRError>> noneFunc)
+        public static IRList<TValueOut> RValueToListOption<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+                                                                                Func<TValueIn, bool> predicate,
+                                                                                Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc,
+                                                                                Func<TValueIn, IEnumerable<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.
-            RValueListOption(predicate, someFunc, value => noneFunc(value).ToList());
+                RValueToListOption(predicate, someFunc, value => noneFunc(value).ToList());
 
         /// <summary>
         /// Execute result value function converting to result value depending on result value errors
@@ -61,14 +61,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>   
-        public static IRList<TValueOut> RValueListMatch<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                    Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc,
-                                                                                    Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValueOut>> noneFunc)
+        public static IRList<TValueOut> RValueToListMatch<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+                                                                               Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc,
+                                                                               Func<IReadOnlyCollection<IRError>, IReadOnlyCollection<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.
-            RValueMatch(someFunc, noneFunc).
-            ToRList();
+                RValueMatch(someFunc, noneFunc).
+                ToRList();
 
         /// <summary>
         /// Execute result value function converting to result value if incoming result value hasn't errors
@@ -78,12 +78,12 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Incoming result value</param>
         /// <param name="someFunc">Function if result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>
-        public static IRList<TValueOut> RValueListSome<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                            Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc)
+        public static IRList<TValueOut> RValueToListSome<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
+                                                                              Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.
-            RValueSome(someFunc).
-            ToRList();
+                RValueSome(someFunc).
+                ToRList();
     }
 }

@@ -13,7 +13,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
     /// <summary>
     /// Обработка асинхронных условий для результирующего ответа с значением с возвращением к коллекции. Тесты
     /// </summary>
-    public class RValueListOptionAsyncExtensionsTest
+    public class RValueToListOptionAsyncExtensionsTest
     {
         /// <summary>
         /// Выполнение асинхронного положительного условия в результирующем ответе значения с возвращением к коллекции
@@ -24,7 +24,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var rValue = initialValue.ToRValue();
 
-            var resultAfterWhere = await rValue.RValueListOptionAsync(_ => true,
+            var resultAfterWhere = await rValue.RValueToListOptionAsync(_ => true,
                 NumberToCollectionAsync,
                 _ => CreateErrorListTwoTestTask());
 
@@ -42,7 +42,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var rValue = initialValue.ToRValue();
 
             var errorsBad = CreateErrorListTwoTestTask();
-            var resultAfterWhere = await rValue.RValueListOptionAsync(_ => false,
+            var resultAfterWhere = await rValue.RValueToListOptionAsync(_ => false,
                 NumberToCollectionAsync,
                 _ => errorsBad);
 
@@ -59,7 +59,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var rValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = await rValue.RValueListOptionAsync(_ => true,
+            var resultAfterWhere = await rValue.RValueToListOptionAsync(_ => true,
                 NumberToCollectionAsync,
                 _ => CreateErrorListTwoTestTask());
 
@@ -76,7 +76,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorsInitial = CreateErrorTest();
             var rValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = await rValue.RValueListOptionAsync(_ => false,
+            var resultAfterWhere = await rValue.RValueToListOptionAsync(_ => false,
                 NumberToCollectionAsync,
                 _ => CreateErrorListTwoTestTask());
 
@@ -93,7 +93,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var rValue = initialValue.ToRValue();
 
-            var resultAfterWhere = await rValue.RValueListMatchAsync(
+            var resultAfterWhere = await rValue.RValueToListMatchAsync(
                 NumberToCollectionAsync,
                 _ => Task.FromResult((IReadOnlyCollection<int>)new List<int>()));
 
@@ -110,7 +110,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorsInitial = CreateErrorListTwoTest();
             var rValue = errorsInitial.ToRValue<int>();
 
-            var resultAfterWhere = await rValue.RValueListMatchAsync(
+            var resultAfterWhere = await rValue.RValueToListMatchAsync(
                 NumberToCollectionAsync,
                 errors => Task.FromResult((IReadOnlyCollection<int>)new List<int> { errors.Count }));
 
@@ -127,7 +127,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             int initialValue = Numbers.Number;
             var rValue = initialValue.ToRValue();
 
-            var resultAfterWhere = await rValue.RValueListSomeAsync(NumberToCollectionAsync);
+            var resultAfterWhere = await rValue.RValueToListSomeAsync(NumberToCollectionAsync);
 
             Assert.True(resultAfterWhere.Success);
             Assert.True((await NumberToCollectionAsync(initialValue)).SequenceEqual(resultAfterWhere.GetValue()));
@@ -142,7 +142,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
             var errorInitial = CreateErrorTest();
             var rValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = await rValue.RValueListSomeAsync(NumberToCollectionAsync);
+            var resultAfterWhere = await rValue.RValueToListSomeAsync(NumberToCollectionAsync);
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));

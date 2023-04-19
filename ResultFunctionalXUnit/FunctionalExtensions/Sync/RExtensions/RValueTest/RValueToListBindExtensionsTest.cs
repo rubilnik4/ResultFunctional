@@ -11,7 +11,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
     /// <summary>
     /// Обработка условий для результирующего ответа со связыванием с значением с возвращением к коллекции. Тесты
     /// </summary>
-    public class RValueBindListExtensionsTest
+    public class RValueToListBindExtensionsTest
     {
         /// <summary>
         /// Выполнение положительного условия в результирующем ответе со связыванием без ошибки
@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             int initialValue = Numbers.Number;
             var rValue = initialValue.ToRValue();
 
-            var resultAfterWhere = rValue.RValueBindListSome(
+            var resultAfterWhere = rValue.RValueToListBindSome(
                 number => NumberToCollection(number).ToRList());
 
             Assert.True(resultAfterWhere.Success);
@@ -38,7 +38,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var errorInitial = CreateErrorTest();
             var rValue = errorInitial.ToRValue<int>();
 
-            var resultAfterWhere = rValue.RValueBindListSome(
+            var resultAfterWhere = rValue.RValueToListBindSome(
                 number => NumberToCollection(number).ToRList());
 
             Assert.True(resultAfterWhere.Failure);

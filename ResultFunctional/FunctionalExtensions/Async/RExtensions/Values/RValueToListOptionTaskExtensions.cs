@@ -11,7 +11,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
     /// <summary>
     /// Extension methods for task result value functions converting to result collection
     /// </summary>
-    public static class RValueListOptionTaskExtensions
+    public static class RValueToListOptionTaskExtensions
     {
         /// <summary>
         /// Execute result value function converting to task result value base on predicate condition
@@ -23,7 +23,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns> 
-        public static async Task<IRList<TValueOut>> RValueListOptionTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
+        public static async Task<IRList<TValueOut>> RValueToListOptionTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
                                                                                               Func<TValueIn, bool> predicate,
                                                                                               Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc,
                                                                                               Func<TValueIn, IEnumerable<IRError>> noneFunc)
@@ -42,7 +42,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="someFunc">Function if predicate <see langword="true"/></param>
         /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
         /// <returns>Outgoing result collection</returns>   
-        public static async Task<IRList<TValueOut>> RValueListMatchTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
+        public static async Task<IRList<TValueOut>> RValueToListMatchTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
                                                                                              Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc,
                                                                                              Func<IReadOnlyCollection<IRError>, IEnumerable<TValueOut>> noneFunc)
             where TValueIn : notnull
@@ -59,7 +59,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <param name="this">Incoming result value</param>
         /// <param name="someFunc">Function if result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>
-        public static async Task<IRList<TValueOut>> RValueListSomeTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
+        public static async Task<IRList<TValueOut>> RValueToListSomeTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
                                                                                             Func<TValueIn, IReadOnlyCollection<TValueOut>> someFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
