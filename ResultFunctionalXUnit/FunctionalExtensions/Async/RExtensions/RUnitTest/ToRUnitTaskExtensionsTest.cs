@@ -13,7 +13,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
     /// <summary>
     /// Методы расширения для результирующего ответа для задачи-объекта. Тесты
     /// </summary>
-    public class ToRMaybeTaskAsyncExtensionsTest
+    public class ToRUnitTaskExtensionsTest
     {
         /// <summary>
         /// Преобразовать в результирующий ответ
@@ -30,7 +30,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
 
             var result =  await taskResults.ToRUnitTask();
 
-            Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(RMaybe => RMaybe.GetErrors())));
+            Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(rMaybe => rMaybe.GetErrors())));
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RUnitTest
 
             var result = await taskResults.ToRUnitTask();
 
-            Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(RMaybe => RMaybe.GetErrors())));
+            Assert.True(result.GetErrors().SequenceEqual(results.SelectMany(rMaybe => rMaybe.GetErrors())));
         }
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
     /// <summary>
     /// Методы расширения для результирующего ответа и обработкой исключений. Тесты
     /// </summary>
-    public class RMaybeTryWhereAsyncExtensionsTest
+    public class RMaybeTryOptionsAsyncExtensionsTest
     {
         /// <summary>
         /// Обработать функцию, вернуть результирующий ответ
@@ -22,10 +22,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
             int initialValue = Numbers.Number;
             var numberResult = RUnitFactory.Some();
 
-            var RMaybe = await numberResult.RMaybeTrySomeAsync(() => AsyncFunctions.DivisionAsync(initialValue),
+            var rMaybe = await numberResult.RMaybeTrySomeAsync(() => AsyncFunctions.DivisionAsync(initialValue),
                                                                        Exceptions.ExceptionError());
 
-            Assert.True(RMaybe.Success);
+            Assert.True(rMaybe.Success);
         }
 
         /// <summary>
@@ -37,11 +37,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
             const int initialValue = 0;
             var numberResult = RUnitFactory.Some();
 
-            var RMaybe = await numberResult.RMaybeTrySomeAsync(() => AsyncFunctions.DivisionAsync(initialValue),
+            var rMaybe = await numberResult.RMaybeTrySomeAsync(() => AsyncFunctions.DivisionAsync(initialValue),
                                                                        Exceptions.ExceptionError());
 
-            Assert.True(RMaybe.Failure);
-            Assert.NotNull(RMaybe.GetErrors().First().Exception);
+            Assert.True(rMaybe.Failure);
+            Assert.NotNull(rMaybe.GetErrors().First().Exception);
         }
     }
 }

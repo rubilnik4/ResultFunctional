@@ -11,37 +11,37 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
     /// <summary>
     /// Методы расширения для результирующего ответа и обработкой исключений. Тесты
     /// </summary>
-    public class RMaybeTryWhereTaskAsyncExtensionsTest
+    public class RMaybeTryOptionAwaitExtensionsTest
     {
         /// <summary>
         /// Обработать функцию, вернуть результирующий ответ
         /// </summary>
         [Fact]
-        public async Task RMaybeTryWhereTaskAsync_Ok()
+        public async Task RMaybeTryWhereBindAsync_Ok()
         {
             int initialValue = Numbers.Number;
             var numberResult = RUnitFactory.SomeTask();
 
-            var RMaybe = await numberResult.ToRMaybeTask().RMaybeTrySomeTask(() => SyncFunctions.Division(initialValue),
-                                                                                  Exceptions.ExceptionError());
+            var rMaybe = await numberResult.ToRMaybeTask().RMaybeTrySomeAwait(() => AsyncFunctions.DivisionAsync(initialValue),
+                                                                       Exceptions.ExceptionError());
 
-            Assert.True(RMaybe.Success);
+            Assert.True(rMaybe.Success);
         }
 
         /// <summary>
         /// Обработать функцию, вернуть результирующий ответ с ошибкой
         /// </summary>
         [Fact]
-        public async Task RMaybeTryWhereTaskAsync_Exception()
+        public async Task RMaybeTryWhereBindAsync_Exception()
         {
             const int initialValue = 0;
             var numberResult = RUnitFactory.SomeTask();
 
-            var RMaybe = await numberResult.ToRMaybeTask().RMaybeTrySomeTask(() => SyncFunctions.Division(initialValue),
-                                                                                  Exceptions.ExceptionError());
+            var rMaybe = await numberResult.ToRMaybeTask().RMaybeTrySomeAwait(() => AsyncFunctions.DivisionAsync(initialValue),
+                                                                       Exceptions.ExceptionError());
 
-            Assert.True(RMaybe.Failure);
-            Assert.NotNull(RMaybe.GetErrors().First().Exception);
+            Assert.True(rMaybe.Failure);
+            Assert.NotNull(rMaybe.GetErrors().First().Exception);
         }
     }
 }

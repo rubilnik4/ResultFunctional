@@ -6,18 +6,18 @@ using static ResultFunctionalXUnit.Data.ErrorData;
 
 namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTest;
 
-public class RMaybeWhereTaskAsyncExtensionsTest
+public class RMaybeOptionAwaitExtensionsTest
 {
     /// <summary>
     /// Выполнение условия в положительном результирующем ответе
     /// </summary>
     [Fact]
-    public async Task RMaybeCheckErrorsOkTaskAsync_Ok_CheckNoError()
+    public async Task RMaybeCheckErrorsOkBindAsync_Ok_CheckNoError()
     {
-        var RMaybe = RUnitFactory.SomeTask();
+        var rMaybe = RUnitFactory.SomeTask();
 
-        var resultAfterWhere = await RMaybe.ToRMaybeTask().RUnitEnsureTask(() => true,
-                                                                               CreateErrorListTwoTest);
+        var resultAfterWhere = await rMaybe.ToRMaybeTask().RUnitEnsureAwait(() => true,
+                                                                               CreateErrorListTwoTestTask);
 
         Assert.True(resultAfterWhere.Success);
     }
@@ -26,29 +26,29 @@ public class RMaybeWhereTaskAsyncExtensionsTest
     /// Выполнение условия в отрицательном результирующем ответе без ошибки
     /// </summary>
     [Fact]
-    public async Task RMaybeCheckErrorsOkTaskAsync_Ok_CheckHasError()
+    public async Task RMaybeCheckErrorsOkBindAsync_Ok_CheckHasError()
     {
-        var RMaybe = RUnitFactory.SomeTask();
+        var rMaybe = RUnitFactory.SomeTask();
 
-        var errorBad = CreateErrorListTwoTest();
-        var resultAfterWhere = await RMaybe.ToRMaybeTask().RUnitEnsureTask(() => false,
+        var errorBad = CreateErrorListTwoTestTask();
+        var resultAfterWhere = await rMaybe.ToRMaybeTask().RUnitEnsureAwait(() => false,
                                                                                () => errorBad);
 
         Assert.True(resultAfterWhere.Failure);
-        Assert.Equal(errorBad.Count, resultAfterWhere.GetErrors().Count);
+        Assert.Equal(errorBad.Result.Count, resultAfterWhere.GetErrors().Count);
     }
 
     /// <summary>
     /// Возвращение предыдущей ошибки в положительном результирующем ответе с ошибкой
     /// </summary>
     [Fact]
-    public async Task RMaybeCheckErrorsOkTaskAsync_Bad_CheckNoError()
+    public async Task RMaybeCheckErrorsOkBindAsync_Bad_CheckNoError()
     {
         var errorInitial = CreateErrorTest();
-        var RMaybe = RUnitFactory.NoneTask(errorInitial);
+        var rMaybe = RUnitFactory.NoneTask(errorInitial);
 
-        var resultAfterWhere = await RMaybe.ToRMaybeTask().RUnitEnsureTask(() => true,
-                                                                               CreateErrorListTwoTest);
+        var resultAfterWhere = await rMaybe.ToRMaybeTask().RUnitEnsureAwait(() => true,
+                                                                               CreateErrorListTwoTestTask);
 
         Assert.True(resultAfterWhere.Failure);
         Assert.Single(resultAfterWhere.GetErrors());
@@ -58,13 +58,13 @@ public class RMaybeWhereTaskAsyncExtensionsTest
     /// Возвращение предыдущей ошибки в отрицательном результирующем ответе с ошибкой
     /// </summary>
     [Fact]
-    public async Task RMaybeCheckErrorsOkTaskAsync_Bad_CheckHasError()
+    public async Task RMaybeCheckErrorsOkBindAsync_Bad_CheckHasError()
     {
         var errorsInitial = CreateErrorTest();
-        var RMaybe = RUnitFactory.NoneTask(errorsInitial);
+        var rMaybe = RUnitFactory.NoneTask(errorsInitial);
 
-        var resultAfterWhere = await RMaybe.ToRMaybeTask().RUnitEnsureTask(() => false,
-                                                                               CreateErrorListTwoTest);
+        var resultAfterWhere = await rMaybe.ToRMaybeTask().RUnitEnsureAwait(() => false,
+                                                                               CreateErrorListTwoTestTask);
 
         Assert.True(resultAfterWhere.Failure);
         Assert.Single(resultAfterWhere.GetErrors());

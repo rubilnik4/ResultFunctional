@@ -20,9 +20,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
         {
             int initialValue = Numbers.Number;
 
-            var RValue = await RMaybeTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
+            var rValue = await RMaybeTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
 
-            Assert.True(RValue.Success);
+            Assert.True(rValue.Success);
         }
 
         /// <summary>
@@ -33,10 +33,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
         {
             const int initialValue = 0;
 
-            var RValue = await RMaybeTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
+            var rValue = await RMaybeTryAsync(() => AsyncFunctions.DivisionAsync(initialValue), Exceptions.ExceptionError());
 
-            Assert.True(RValue.Failure);
-            Assert.NotNull(RValue.GetErrors().First().Exception);
+            Assert.True(rValue.Failure);
+            Assert.NotNull(rValue.GetErrors().First().Exception);
         }
     }
 }
