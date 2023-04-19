@@ -42,5 +42,16 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
             where TValue : notnull =>
             await @this.
             MapTask(thisAwaited => thisAwaited.RListFold());
+
+        /// <summary>
+        /// Aggregate collection of task result collections
+        /// </summary>
+        /// <typeparam name="TValue">Result type</typeparam>
+        /// <param name="this">Incoming collection of result collection</param>
+        /// <returns>Outgoing result collection</returns>
+        public static async Task<IRList<TValue>> RListFoldTask<TValue>(this IEnumerable<Task<IRList<TValue>>> @this)
+            where TValue : notnull =>
+            await Task.WhenAll(@this).
+            MapTask(result => result.RListFold());
     }
 }

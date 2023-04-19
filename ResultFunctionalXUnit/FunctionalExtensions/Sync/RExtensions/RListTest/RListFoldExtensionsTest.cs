@@ -10,7 +10,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
     /// <summary>
     /// Методы расширения для результирующей коллекции со значением. Тесты
     /// </summary>
-    public class RListExtensionsTest
+    public class RListFoldExtensionsTest
     {
         /// <summary>
         /// Проверить объект на нул. Ошибка нулевого значения
