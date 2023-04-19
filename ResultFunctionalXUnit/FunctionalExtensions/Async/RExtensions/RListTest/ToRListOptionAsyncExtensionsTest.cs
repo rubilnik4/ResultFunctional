@@ -10,19 +10,18 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Преобразование значений в результирующий ответ коллекции с условием. Тесты
     /// </summary>
-    public class ToRListWhereAsyncTaskExtensionsTest
+    public class ToRListOptionAsyncExtensionsTest
     {
         /// <summary>
         /// Преобразовать значения в результирующий ответ с условием. Положительное условие
         /// </summary>
         [Fact]
-        public async Task ToRListWhereTaskAsync_Ok()
+        public async Task ToRListWhereAsync_Ok()
         {
             var initialCollection = GetRangeNumber();
-            var taskCollection = Task.FromResult(GetRangeNumber());
 
-            var result = await taskCollection.ToRListOptionTask(_ => true,
-                                                                                _ => CreateErrorTest());
+            var result = await initialCollection.ToRListOptionAsync(_ => true,
+                                                                                _ => CreateErrorTestTask());
 
             Assert.True(result.Success);
             Assert.True(initialCollection.SequenceEqual(result.GetValue()));
@@ -32,14 +31,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Преобразовать значения в результирующий ответ с условием. Негативное условие
         /// </summary>
         [Fact]
-        public async Task ToRListWhereTaskAsync_BadError()
+        public async Task ToRListWhereAsync_BadError()
         {
             var initialCollection = GetRangeNumber();
-            var taskCollection = Task.FromResult(initialCollection);
             var errorInitial = CreateErrorTest();
 
-            var result = await taskCollection.ToRListOptionTask(_ => false,
-                                                                               _ => errorInitial);
+            var result = await initialCollection.ToRListOptionAsync(_ => false,
+                                                                               _ => Task.FromResult(errorInitial));
 
             Assert.True(result.Failure);
             Assert.True(result.GetErrors().First().Equals(errorInitial));

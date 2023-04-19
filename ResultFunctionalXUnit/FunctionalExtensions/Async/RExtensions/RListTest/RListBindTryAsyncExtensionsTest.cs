@@ -19,11 +19,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         [Fact]
         public async Task RListTry_Ok()
         {
-            var RValue = await RListBindTryAsync(
+            var rValue = await RListBindTryAsync(
                 () => RListFactory.SomeTask(DivisionCollection(1)), Exceptions.ExceptionError());
 
-            Assert.True(RValue.Success);
-            Assert.Equal(DivisionCollection(1), RValue.GetValue());
+            Assert.True(rValue.Success);
+            Assert.Equal(DivisionCollection(1), rValue.GetValue());
         }
 
         /// <summary>
@@ -32,11 +32,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         [Fact]
         public async Task RListTry_Exception()
         {
-            var RValue = await RListBindTryAsync(
+            var rValue = await RListBindTryAsync(
                 () => RListFactory.SomeTask(DivisionCollection(0)), Exceptions.ExceptionError());
 
-            Assert.True(RValue.Failure);
-            Assert.NotNull(RValue.GetErrors().First().Exception);
+            Assert.True(rValue.Failure);
+            Assert.NotNull(rValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -45,11 +45,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         [Fact]
         public async Task RListTryFunc_Ok()
         {
-            var RValue = await RListBindTryAsync(
+            var rValue = await RListBindTryAsync(
                 () => RListFactory.SomeTask(DivisionCollection(1)), Exceptions.ExceptionFunc());
 
-            Assert.True(RValue.Success);
-            Assert.Equal(DivisionCollection(1), RValue.GetValue());
+            Assert.True(rValue.Success);
+            Assert.Equal(DivisionCollection(1), rValue.GetValue());
         }
 
         /// <summary>
@@ -58,10 +58,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         [Fact]
         public async Task RListTryFunc_Exception()
         {
-            var RValue = await RListBindTryAsync(
+            var rValue = await RListBindTryAsync(
                  () => RListFactory.SomeTask(DivisionCollection(0)), Exceptions.ExceptionFunc());
 
-            Assert.True(RValue.Failure);
-            Assert.NotNull(RValue.GetErrors().First().Exception);
+            Assert.True(rValue.Failure);
+            Assert.NotNull(rValue.GetErrors().First().Exception);
         } }
 }

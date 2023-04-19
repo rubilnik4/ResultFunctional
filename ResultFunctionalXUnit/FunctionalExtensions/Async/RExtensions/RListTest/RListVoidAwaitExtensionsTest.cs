@@ -14,7 +14,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Асинхронное действие над внутренним типом результирующего ответа с коллекцией задачей-объектом.Тесты
     /// </summary>
-    public class RListVoidBindAsyncExtensionsTest
+    public class RListVoidAwaitExtensionsTest
     {
         /// <summary>
         /// Проверка выполнения асинхронного действия при результирующем ответе без ошибок с положительным условием
@@ -41,13 +41,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         public async Task RListOkBindAsync_Bad_NotCallVoid()
         {
             var initialError = CreateErrorTest();
-            var RMaybeTask = RListFactory.NoneTask< int>(initialError);
+            var rMaybeTask = RListFactory.NoneTask< int>(initialError);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await RMaybeTask.RListVoidSomeAwait(
+            var resultAfterVoid = await rMaybeTask.RListVoidSomeAwait(
                 numbers => voidObjectMock.Object.TestNumbersVoidAsync(numbers));
 
-            Assert.True(resultAfterVoid.Equals(RMaybeTask.Result));
+            Assert.True(resultAfterVoid.Equals(rMaybeTask.Result));
             Assert.True(resultAfterVoid.GetErrors().Last().Equals(initialError));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Never);
         }
@@ -59,13 +59,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         public async Task RListBadBindAsync_Ok_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var RMaybeTask = RListFactory.NoneTask<int>(errorsInitial);
+            var rMaybeTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await RMaybeTask.RListVoidNoneAwait(
+            var resultAfterVoid = await rMaybeTask.RListVoidNoneAwait(
                 errors => voidObjectMock.Object.TestNumbersVoidAsync(GetListByErrorsCount(errors)));
 
-            Assert.True(resultAfterVoid.Equals(RMaybeTask.Result));
+            Assert.True(resultAfterVoid.Equals(rMaybeTask.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
@@ -77,13 +77,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         public async Task RListBadBindAsync_Bad_CallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var RMaybeTask = RListFactory.NoneTask<int>(errorsInitial);
+            var rMaybeTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await RMaybeTask.RListVoidNoneAwait(
+            var resultAfterVoid = await rMaybeTask.RListVoidNoneAwait(
                 errors => voidObjectMock.Object.TestNumbersVoidAsync(GetListByErrorsCount(errors)));
 
-            Assert.True(resultAfterVoid.Equals(RMaybeTask.Result));
+            Assert.True(resultAfterVoid.Equals(rMaybeTask.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
@@ -113,14 +113,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         public async Task RListVoidOkBadBindAsync_Bad()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var RMaybe = RListFactory.NoneTask<int>(errorsInitial);
+            var rMaybe = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await RMaybe.RListVoidMatchAwait(
+            var resultAfterVoid = await rMaybe.RListVoidMatchAwait(
                 _ => voidObjectMock.Object.TestVoidAsync(),
                 errors => voidObjectMock.Object.TestNumbersVoidAsync(new List<int> { errors.Count }));
 
-            Assert.True(resultAfterVoid.Equals(RMaybe.Result));
+            Assert.True(resultAfterVoid.Equals(rMaybe.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
@@ -168,13 +168,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         public async Task RListOkWhereBindAsync_Bad_OkPredicate_NotCallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var RMaybeTask = RListFactory.NoneTask<int>(errorsInitial);
+            var rMaybeTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await RMaybeTask.RListVoidOptionAwait(_ => true,
+            var resultAfterVoid = await rMaybeTask.RListVoidOptionAwait(_ => true,
                 numbers => voidObjectMock.Object.TestNumbersVoidAsync(numbers));
 
-            Assert.True(resultAfterVoid.Equals(RMaybeTask.Result));
+            Assert.True(resultAfterVoid.Equals(rMaybeTask.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Never);
         }
@@ -187,13 +187,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         public async Task RListOkWhereBindAsync_Bad_BadPredicate_NotCallVoid()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var RMaybeTask = RListFactory.NoneTask<int>(errorsInitial);
+            var rMaybeTask = RListFactory.NoneTask<int>(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await RMaybeTask.RListVoidOptionAwait(_ => false,
+            var resultAfterVoid = await rMaybeTask.RListVoidOptionAwait(_ => false,
                 numbers => voidObjectMock.Object.TestNumbersVoidAsync(numbers));
 
-            Assert.True(resultAfterVoid.Equals(RMaybeTask.Result));
+            Assert.True(resultAfterVoid.Equals(rMaybeTask.Result));
             Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Never);
         }

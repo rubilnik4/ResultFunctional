@@ -10,17 +10,18 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
     /// <summary>
     /// Преобразование значений в результирующий ответ коллекции с условием. Тесты
     /// </summary>
-    public class ToRListWhereAsyncExtensionsTest
+    public class ToRListOptionAwaitExtensionsTest
     {
         /// <summary>
         /// Преобразовать значения в результирующий ответ с условием. Положительное условие
         /// </summary>
         [Fact]
-        public async Task ToRListWhereAsync_Ok()
+        public async Task ToRListWhereBindAsync_Ok()
         {
             var initialCollection = GetRangeNumber();
+            var taskCollection = Task.FromResult(GetRangeNumber());
 
-            var result = await initialCollection.ToRListOptionAsync(_ => true,
+            var result = await taskCollection.ToRListOptionAwait(_ => true,
                                                                                 _ => CreateErrorTestTask());
 
             Assert.True(result.Success);
@@ -31,12 +32,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Преобразовать значения в результирующий ответ с условием. Негативное условие
         /// </summary>
         [Fact]
-        public async Task ToRListWhereAsync_BadError()
+        public async Task ToRListWhereBindAsync_BadError()
         {
             var initialCollection = GetRangeNumber();
+            var taskCollection = Task.FromResult(initialCollection);
             var errorInitial = CreateErrorTest();
 
-            var result = await initialCollection.ToRListOptionAsync(_ => false,
+            var result = await taskCollection.ToRListOptionAwait(_ => false,
                                                                                _ => Task.FromResult(errorInitial));
 
             Assert.True(result.Failure);

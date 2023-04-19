@@ -16,7 +16,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
 /// <summary>
 /// Методы расширения для результирующего ответа с коллекцией. Тесты
 /// </summary>
-public class ToRListTaskAsyncExtensionsTest
+public class ToRListTaskExtensionsTest
 {
     /// <summary>
     /// Вернуть результирующий ответ задачи-объекта с коллекцией без ошибок
@@ -27,10 +27,10 @@ public class ToRListTaskAsyncExtensionsTest
         var collection = GetRangeNumber();
         var resultNoError = RValueFactory.SomeTask<IEnumerable<int>>(collection);
 
-        var RValue = await resultNoError.ToRListTask();
+        var rValue = await resultNoError.ToRListTask();
 
-        Assert.True(RValue.Success);
-        Assert.True(collection.SequenceEqual(RValue.GetValue()));
+        Assert.True(rValue.Success);
+        Assert.True(collection.SequenceEqual(rValue.GetValue()));
     }
 
     /// <summary>
@@ -42,11 +42,11 @@ public class ToRListTaskAsyncExtensionsTest
         var error = CreateErrorTest();
         var resultHasError = RValueFactory.NoneTask<IEnumerable<int>>(error);
 
-        var RValue = await resultHasError.ToRListTask();
+        var rValue = await resultHasError.ToRListTask();
 
-        Assert.True(RValue.Failure);
-        Assert.Single(RValue.GetErrors());
-        Assert.True(error.Equals(RValue.GetErrors().Last()));
+        Assert.True(rValue.Failure);
+        Assert.Single(rValue.GetErrors());
+        Assert.True(error.Equals(rValue.GetErrors().Last()));
     }
 
     /// <summary>
@@ -58,10 +58,10 @@ public class ToRListTaskAsyncExtensionsTest
         var collection = GetRangeNumber();
         var resultNoError = RValueFactory.SomeTask(collection);
 
-        var RValue = await resultNoError.ToRListTask();
+        var rValue = await resultNoError.ToRListTask();
 
-        Assert.True(RValue.Success);
-        Assert.True(collection.SequenceEqual(RValue.GetValue()));
+        Assert.True(rValue.Success);
+        Assert.True(collection.SequenceEqual(rValue.GetValue()));
     }
 
     /// <summary>
@@ -73,11 +73,11 @@ public class ToRListTaskAsyncExtensionsTest
         var error = CreateErrorTest();
         var resultHasError = RValueFactory.NoneTask<IReadOnlyCollection<int>>(error);
 
-        var RValue = await resultHasError.ToRListTask();
+        var rValue = await resultHasError.ToRListTask();
 
-        Assert.True(RValue.Failure);
-        Assert.Single(RValue.GetErrors());
-        Assert.True(error.Equals(RValue.GetErrors().Last()));
+        Assert.True(rValue.Failure);
+        Assert.Single(rValue.GetErrors());
+        Assert.True(error.Equals(rValue.GetErrors().Last()));
     }
 
     /// <summary>
@@ -89,10 +89,10 @@ public class ToRListTaskAsyncExtensionsTest
         var collection = GetRangeNumber().ToList().AsReadOnly();
         var resultNoError = RValueFactory.SomeTask(collection);
 
-        var RValue = await resultNoError.ToRListTask();
+        var rValue = await resultNoError.ToRListTask();
 
-        Assert.True(RValue.Success);
-        Assert.True(collection.SequenceEqual(RValue.GetValue()));
+        Assert.True(rValue.Success);
+        Assert.True(collection.SequenceEqual(rValue.GetValue()));
     }
 
     /// <summary>
@@ -104,11 +104,11 @@ public class ToRListTaskAsyncExtensionsTest
         var error = CreateErrorTest();
         var resultHasError = RValueFactory.NoneTask<ReadOnlyCollection<int>>(error);
 
-        var RValue = await resultHasError.ToRListTask();
+        var rValue = await resultHasError.ToRListTask();
 
-        Assert.True(RValue.Failure);
-        Assert.Single(RValue.GetErrors());
-        Assert.True(error.Equals(RValue.GetErrors().Last()));
+        Assert.True(rValue.Failure);
+        Assert.Single(rValue.GetErrors());
+        Assert.True(error.Equals(rValue.GetErrors().Last()));
     }
 
 
@@ -121,10 +121,10 @@ public class ToRListTaskAsyncExtensionsTest
         var collection = GetRangeNumber().ToList();
         var resultNoError = RValueFactory.SomeTask(collection);
 
-        var RValue = await resultNoError.ToRListTask();
+        var rValue = await resultNoError.ToRListTask();
 
-        Assert.True(RValue.Success);
-        Assert.True(collection.SequenceEqual(RValue.GetValue()));
+        Assert.True(rValue.Success);
+        Assert.True(collection.SequenceEqual(rValue.GetValue()));
     }
 
     /// <summary>
@@ -136,11 +136,11 @@ public class ToRListTaskAsyncExtensionsTest
         var error = CreateErrorTest();
         var resultHasError = RValueFactory.NoneTask<List<int>>(error);
 
-        var RValue = await resultHasError.ToRListTask();
+        var rValue = await resultHasError.ToRListTask();
 
-        Assert.True(RValue.Failure);
-        Assert.Single(RValue.GetErrors());
-        Assert.True(error.Equals(RValue.GetErrors().Last()));
+        Assert.True(rValue.Failure);
+        Assert.Single(rValue.GetErrors());
+        Assert.True(error.Equals(rValue.GetErrors().Last()));
     }
 
     /// <summary>
@@ -150,11 +150,11 @@ public class ToRListTaskAsyncExtensionsTest
     public async Task ToRValue_Ok()
     {
         var numbers = Collections.GetRangeNumber();
-        var RListTask = RListFactory.SomeTask(numbers);
+        var rListTask = RListFactory.SomeTask(numbers);
 
-        var RValue = await RListTask.ToRValueTask();
+        var rValue = await rListTask.ToRValueTask();
 
-        Assert.IsAssignableFrom<IRValue<IReadOnlyCollection<int>>>(RValue);
+        Assert.IsAssignableFrom<IRValue<IReadOnlyCollection<int>>>(rValue);
     }
 
     /// <summary>
@@ -164,10 +164,10 @@ public class ToRListTaskAsyncExtensionsTest
     public async Task ToRListTaskAsync()
     {
         var rangeTasks = Enumerable.Range(1, 10).Select(GetTaskNumber);
-        var RList = await rangeTasks.ToRListTask();
+        var rList = await rangeTasks.ToRListTask();
 
-        Assert.True(RList.Success);
-        Assert.True(RList.GetValue().SequenceEqual(Enumerable.Range(1, 10)));
+        Assert.True(rList.Success);
+        Assert.True(rList.GetValue().SequenceEqual(Enumerable.Range(1, 10)));
     }
 
     private static async Task<IRValue<int>> GetTaskNumber(int number)
