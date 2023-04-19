@@ -1,66 +1,64 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists;
-using ResultFunctional.Models.Factories;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists;
 using ResultFunctionalXUnit.Data;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
 
-namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
+namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
 {
     /// <summary>
-    /// Обработка условий для результирующего ответа задачи-объекта с коллекцией с возвращением к значению. Тесты
+    /// Обработка условий для результирующего ответа с коллекцией с возвращением к значению. Тесты
     /// </summary>
-    public class RListValueOptionTaskExtensionsTest
+    public class RListToValueOptionExtensionsTest
     {
         /// <summary>
         /// Выполнение условия в положительном результирующем ответе с коллекцией и возвращением к значению
         /// </summary>
         [Fact]
-        public async Task RListContinueToValueTaskAsync_Ok_ReturnNewValue()
+        public void RListContinueToValue_Ok_ReturnNewValue()
         {
             var numberCollection = Collections.GetRangeNumber();
-            var rList = RListFactory.SomeTask(numberCollection);
+            var rList = numberCollection.ToRList();
 
-            var resultAfterWhere = await rList.RListValueOptionTask(_ => true,
-                Collections.AggregateToString,
-                _ => CreateErrorListTwoTest());
+            var resultAfterWhere = rList.RListToValueOption(_ => true,
+                                                          Collections.AggregateToString,
+                                                          _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.Success);
-            Assert.Equal(await Collections.AggregateToStringAsync(numberCollection), resultAfterWhere.GetValue());
+            Assert.Equal(Collections.AggregateToString(numberCollection), resultAfterWhere.GetValue());
         }
 
         /// <summary>
         /// Выполнение условия в отрицательном результирующем ответе без ошибки с коллекцией и возвращением к значению
         /// </summary>
         [Fact]
-        public async Task RListContinueToValueTaskAsync_Ok_ReturnNewError()
+        public void RValueContinueToValue_Ok_ReturnNewError()
         {
             var numberCollection = Collections.GetRangeNumber();
-            var rList = RListFactory.SomeTask(numberCollection);
+            var rList = numberCollection.ToRList();
 
-            var errorsBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await rList.RListValueOptionTask(_ => false,
-                _ => String.Empty,
-                _ => errorsBad);
+            var errorBad = CreateErrorListTwoTest();
+            var resultAfterWhere = rList.RListToValueOption(_ => false,
+                                                          _ => String.Empty,
+                                                          _ => errorBad);
 
             Assert.True(resultAfterWhere.Failure);
-            Assert.Equal(errorsBad.Count, resultAfterWhere.GetErrors().Count);
+            Assert.Equal(errorBad.Count, resultAfterWhere.GetErrors().Count);
         }
 
         /// <summary>
         /// Возвращение предыдущей ошибки в положительном результирующем ответе с ошибкой с коллекцией и возвращением к значению
         /// </summary>
         [Fact]
-        public async Task RListContinueToValueTaskAsync_Bad_ReturnNewValue()
+        public void RValueContinueToValue_Bad_ReturnNewValue()
         {
             var errorInitial = CreateErrorTest();
-            var rList = RListFactory.NoneTask<int>(errorInitial);
+            var rList = errorInitial.ToRList<int>();
 
-            var resultAfterWhere = await rList.RListValueOptionTask(_ => true,
-                _ => String.Empty,
-                _ => CreateErrorListTwoTest());
+            var resultAfterWhere = rList.RListToValueOption(_ => true,
+                                                          _ => String.Empty,
+                                                          _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.Failure);
             Assert.Single(resultAfterWhere.GetErrors());
@@ -70,14 +68,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Возвращение предыдущей ошибки в отрицательном результирующем ответе с ошибкой с коллекцией и возвращением к значению
         /// </summary>
         [Fact]
-        public async Task RListContinueToValueTaskAsync_Bad_ReturnNewError()
+        public void RValueContinueToValue_Bad_ReturnNewError()
         {
             var errorInitial = CreateErrorTest();
-            var rList = RListFactory.NoneTask<int>(errorInitial);
+            var rList = errorInitial.ToRList<int>();
 
-            var resultAfterWhere = await rList.RListValueOptionTask(_ => false,
-                _ => String.Empty,
-                _ => CreateErrorListTwoTest());
+            var resultAfterWhere = rList.RListToValueOption(_ => false,
+                                                          _ => String.Empty, 
+                                                          _ => CreateErrorListTwoTest());
 
             Assert.True(resultAfterWhere.Failure);
             Assert.Single(resultAfterWhere.GetErrors());
@@ -87,31 +85,29 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Выполнение положительного условия в результирующем ответе без ошибки с коллекцией и возвращением к значению
         /// </summary>      
         [Fact]
-        public async Task RListOkBadToValueTaskAsync_Ok_ReturnNewValue()
+        public void RValueOkBadToValue_Ok_ReturnNewValue()
         {
             var numberCollection = Collections.GetRangeNumber();
-            var rList = RListFactory.SomeTask(numberCollection);
+            var rList = numberCollection.ToRList();
 
-            var resultAfterWhere = await rList.RListValueMatchTask(
-                Collections.AggregateToString,
-                _ => String.Empty);
+            var resultAfterWhere = rList.RListToValueMatch(Collections.AggregateToString,
+                                                         _ => String.Empty);
 
             Assert.True(resultAfterWhere.Success);
-            Assert.Equal(await Collections.AggregateToStringAsync(numberCollection), resultAfterWhere.GetValue());
+            Assert.Equal(Collections.AggregateToString(numberCollection), resultAfterWhere.GetValue());
         }
 
         /// <summary>
         /// Выполнение негативного условия в результирующем ответе с ошибкой с коллекцией и возвращением к значению
         /// </summary>      
         [Fact]
-        public async Task RListOkBadToValueTaskAsync_Bad_ReturnNewValueByErrors()
+        public void RValueOkBadToValue_Bad_ReturnNewValueByErrors()
         {
             var errorsInitial = CreateErrorListTwoTest();
-            var rList = RListFactory.NoneTask<int>(errorsInitial);
+            var rList = errorsInitial.ToRList<int>();
 
-            var resultAfterWhere = await rList.RListValueMatchTask(
-                _ => String.Empty,
-                errors => errors.Count.ToString());
+            var resultAfterWhere = rList.RListToValueMatch(_ => String.Empty,
+                                                         errors => errors.Count.ToString());
 
             Assert.True(resultAfterWhere.Success);
             Assert.Equal(errorsInitial.Count.ToString(), resultAfterWhere.GetValue());
@@ -121,27 +117,27 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Выполнение положительного условия в результирующем ответе без ошибки с коллекцией и возвращением к значению
         /// </summary>   
         [Fact]
-        public async Task RListOkToValueTaskAsync_Ok_ReturnNewValue()
+        public void RValueOkToValue_Ok_ReturnNewValue()
         {
             var numberCollection = Collections.GetRangeNumber();
-            var rList = RListFactory.SomeTask(numberCollection);
+            var rList = numberCollection.ToRList();
 
-            var resultAfterWhere = await rList.RListValueSomeTask(Collections.AggregateToString);
+            var resultAfterWhere = rList.RListToValueSome(Collections.AggregateToString);
 
             Assert.True(resultAfterWhere.Success);
-            Assert.Equal(await Collections.AggregateToStringAsync(numberCollection), resultAfterWhere.GetValue());
+            Assert.Equal(Collections.AggregateToString(numberCollection), resultAfterWhere.GetValue());
         }
 
         /// <summary>
         /// Возвращение предыдущей ошибки в результирующем ответе с ошибкой с коллекцией и возвращением к значению
         /// </summary>   
         [Fact]
-        public async Task RListOkToValueTaskAsync_Bad_ReturnInitial()
+        public void RValueOkToValue_Bad_ReturnInitial()
         {
             var errorInitial = CreateErrorTest();
-            var rList = RListFactory.NoneTask<int>(errorInitial);
+            var rList = errorInitial.ToRList<int>();
 
-            var resultAfterWhere = await rList.RListValueSomeTask(Collections.AggregateToString);
+            var resultAfterWhere = rList.RListToValueSome(Collections.AggregateToString);
 
             Assert.True(resultAfterWhere.Failure);
             Assert.True(errorInitial.Equals(resultAfterWhere.GetErrors().Last()));
