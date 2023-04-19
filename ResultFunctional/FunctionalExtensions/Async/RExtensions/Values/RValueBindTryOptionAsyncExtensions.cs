@@ -25,8 +25,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
                                                                                                  Func<Exception, IRError> exceptionFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
-            await @this.
-                RValueBindSomeAsync(value => RValueBindTryAsync(() => func.Invoke(value), exceptionFunc));
+            await @this
+               .RValueBindSomeAsync(value => RValueBindTryAsync(() => func.Invoke(value), exceptionFunc));
 
         /// <summary>
         /// Execute result value async function in no error case; else catch exception

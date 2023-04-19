@@ -53,7 +53,7 @@ internal class RList<TValue>: RBase<IReadOnlyCollection<TValue>, IRList<TValue>>
     /// <returns>Result value</returns>
     public IRValue<IReadOnlyCollection<TValue>> ToRValue() =>
          Success
-            ? ToRValue(GetValue())
+            ? MaybeRValue(GetValue())
             : GetErrors().ToRValue<IReadOnlyCollection<TValue>>();
 
     /// <summary>

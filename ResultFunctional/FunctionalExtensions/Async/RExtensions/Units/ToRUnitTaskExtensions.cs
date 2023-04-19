@@ -68,6 +68,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         public static async Task<IRUnit> ToRUnitTask<TValue>(this Task<IRValue<TValue>> @this)
             where TValue : notnull =>
             await @this.
-                MapTask(awaitedThis => awaitedThis.ToRUnit());
+                MapTask(awaitedThis => awaitedThis.MaybeRUnit());
     }
 }

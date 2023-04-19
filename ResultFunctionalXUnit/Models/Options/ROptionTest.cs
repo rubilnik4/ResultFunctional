@@ -16,7 +16,7 @@ public class ROptionTest
     {
         var rUnit = RUnitFactory.Some();
 
-        var rUnitNew = rUnit.ToRUnit();
+        var rUnitNew = rUnit.MaybeRUnit();
 
         Assert.True(rUnitNew.Success);
     }
@@ -30,7 +30,7 @@ public class ROptionTest
         var error = CreateErrorTest();
         var rUnit = RUnitFactory.None(error);
 
-        var rUnitNew = rUnit.ToRUnit();
+        var rUnitNew = rUnit.MaybeRUnit();
 
         Assert.True(rUnitNew.Failure);
         Assert.True(error.Equals(rUnitNew.GetErrors().First()));
@@ -45,7 +45,7 @@ public class ROptionTest
         const int number = 2;
         var rUnit = RUnitFactory.Some();
 
-        var rUnitNew = rUnit.ToRValue(number);
+        var rUnitNew = rUnit.MaybeRValue(number);
 
         Assert.True(rUnitNew.Success);
     }
@@ -60,7 +60,7 @@ public class ROptionTest
         var error = CreateErrorTest();
         var rUnit = RUnitFactory.None(error);
 
-        var rUnitNew = rUnit.ToRValue(number);
+        var rUnitNew = rUnit.MaybeRValue(number);
 
         Assert.True(rUnitNew.Failure);
         Assert.True(error.Equals(rUnitNew.GetErrors().First()));
@@ -75,7 +75,7 @@ public class ROptionTest
         var collection = GetRangeNumber();
         var rUnit = RUnitFactory.Some();
 
-        var rUnitNew = rUnit.ToRList(collection);
+        var rUnitNew = rUnit.MaybeRList(collection);
 
         Assert.True(rUnitNew.Success);
     }
@@ -90,7 +90,7 @@ public class ROptionTest
         var error = CreateErrorTest();
         var rUnit = RUnitFactory.None(error);
 
-        var rUnitNew = rUnit.ToRList(collection);
+        var rUnitNew = rUnit.MaybeRList(collection);
 
         Assert.True(rUnitNew.Failure);
         Assert.True(error.Equals(rUnitNew.GetErrors().First()));

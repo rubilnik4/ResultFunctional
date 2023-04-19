@@ -128,7 +128,7 @@ public abstract class RMaybe : IRMaybe
     /// Converting to result unit
     /// </summary>
     /// <returns>Result unit</returns>
-    public IRUnit ToRUnit() =>
+    public IRUnit MaybeRUnit() =>
         Success 
             ? RUnitFactory.Some() 
             : RUnitFactory.None(GetErrors());
@@ -138,7 +138,7 @@ public abstract class RMaybe : IRMaybe
     /// </summary>
     /// <typeparam name="TValue">Value</typeparam>
     /// <returns>Result value</returns>
-    public IRValue<TValue> ToRValue<TValue>(TValue value)
+    public IRValue<TValue> MaybeRValue<TValue>(TValue value)
         where TValue : notnull =>
         Success
             ? RValueFactory.Some(value)
@@ -149,7 +149,7 @@ public abstract class RMaybe : IRMaybe
     /// </summary>
     /// <typeparam name="TValue">Value</typeparam>
     /// <returns>Result collection</returns>
-    public IRList<TValue> ToRList<TValue>(IReadOnlyCollection<TValue> values)
+    public IRList<TValue> MaybeRList<TValue>(IReadOnlyCollection<TValue> values)
         where TValue : notnull =>
         Success
             ? RListFactory.Some(values)

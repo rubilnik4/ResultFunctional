@@ -46,7 +46,7 @@ public static class ToRValueTaskExtensions
     public static async Task<IRValue<TValue>> ToRValueTask<TValue>(this Task<IRUnit> @this, TValue value)
         where TValue : notnull =>
         await @this.
-            MapTask(awaitedThis => awaitedThis.ToRValue(value));
+            MapTask(awaitedThis => awaitedThis.MaybeRValue(value));
 
     /// <summary>
     /// Converting task result to result value
@@ -58,7 +58,7 @@ public static class ToRValueTaskExtensions
     public static async Task<IRValue<TValue>> ToRValueTask<TValue>(this Task<IRMaybe> @this, TValue value)
         where TValue : notnull =>
         await @this.
-            MapTask(awaitedThis => awaitedThis.ToRValue(value));
+            MapTask(awaitedThis => awaitedThis.MaybeRValue(value));
 
     /// <summary>
     /// Merge task result error with result value
