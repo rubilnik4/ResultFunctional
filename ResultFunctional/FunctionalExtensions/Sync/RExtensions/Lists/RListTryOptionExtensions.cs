@@ -21,8 +21,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result collection</returns>
         public static IRList<TValueOut> RListTrySome<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                   Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> func,
-                                                                                   Func<Exception, IRError> exceptionFunc)
+                                                                          Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> func,
+                                                                          Func<Exception, IRError> exceptionFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.RListBindSome(value => RListTry(() => func.Invoke(value), exceptionFunc));
@@ -37,8 +37,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="error">Error</param>
         /// <returns>Outgoing result collection</returns>
         public static IRList<TValueOut> RListTrySome<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                   Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> func,
-                                                                                   IRError error)
+                                                                          Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> func,
+                                                                          IRError error)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.RListBindSome(value => RListTry(() => func.Invoke(value), error));

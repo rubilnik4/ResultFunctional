@@ -54,11 +54,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialNumbers = GetRangeNumberWithZero();
             var numberResult = initialNumbers.ToRList();
 
-            var RValue = numberResult.RListBindTrySome(
+            var rValue = numberResult.RListBindTrySome(
                 numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionError());
 
-            Assert.True(RValue.Failure);
-            Assert.NotNull(RValue.GetErrors().First().Exception);
+            Assert.True(rValue.Failure);
+            Assert.NotNull(rValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -118,11 +118,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialNumbers = GetRangeNumberWithZero();
             var numberResult = initialNumbers.ToRList();
 
-            var RValue = numberResult.RListBindTrySome(
+            var rValue = numberResult.RListBindTrySome(
                 numbers => DivisionByCollection(numbers).ToRList(), Exceptions.ExceptionFunc());
 
-            Assert.True(RValue.Failure);
-            Assert.NotNull(RValue.GetErrors().First().Exception);
+            Assert.True(rValue.Failure);
+            Assert.NotNull(rValue.GetErrors().First().Exception);
         }
 
         /// <summary>

@@ -24,32 +24,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         public static IRList<TValueOut> RListOption<TValueIn, TValueOut>(this IRList<TValueIn> @this,
                                                                          Func<IReadOnlyCollection<TValueIn>, bool> predicate,
                                                                          Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
-                                                                         Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<IRError>> noneFunc)
-            where TValueIn : notnull
-            where TValueOut : notnull =>
-         @this.Success
-             ? predicate(@this.GetValue())
-                 ? someFunc.Invoke(@this.GetValue()).ToRList()
-                 : noneFunc.Invoke(@this.GetValue()).ToRList<TValueOut>()
-             : @this.GetErrors().ToRList<TValueOut>();
-
-        /// <summary>
-        /// Execute result collection function base on predicate condition
-        /// </summary>
-        /// <typeparam name="TValueIn">Incoming type</typeparam>
-        /// <typeparam name="TValueOut">Outgoing type</typeparam>
-        /// <param name="this">Incoming result collection</param>
-        /// <param name="predicate">Predicate function</param>
-        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
-        /// <returns>Outgoing result collection</returns>
-        public static IRList<TValueOut> RListOption<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                         Func<IReadOnlyCollection<TValueIn>, bool> predicate,
-                                                                         Func<IReadOnlyCollection<TValueIn>, IReadOnlyCollection<TValueOut>> someFunc,
                                                                          Func<IReadOnlyCollection<TValueIn>, IEnumerable<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
-            @this.RListOption(predicate, someFunc, value => noneFunc(value).ToList());
+            @this.Success
+                ? predicate(@this.GetValue())
+                    ? someFunc.Invoke(@this.GetValue()).ToRList()
+                    : noneFunc.Invoke(@this.GetValue()).ToRList<TValueOut>()
+                : @this.GetErrors().ToRList<TValueOut>();
 
         /// <summary>
         /// Execute result collection function base on predicate condition returning collection in any case
@@ -131,26 +113,9 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <returns>Result collection</returns>
         public static IRList<TValue> RListEnsure<TValue>(this IRList<TValue> @this,
                                                          Func<IReadOnlyCollection<TValue>, bool> predicate,
-                                                         Func<IReadOnlyCollection<TValue>, IReadOnlyCollection<IRError>> noneFunc)
-            where TValue : notnull =>
-            @this.
-            RListOption(predicate,
-                        value => value,
-                        noneFunc);
-
-        /// <summary>
-        /// Check errors by predicate to result collection if ones hasn't errors
-        /// </summary>
-        /// <typeparam name="TValue">Result type</typeparam>
-        /// <param name="this">Result collection</param>
-        /// <param name="predicate">Predicate function</param>
-        /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
-        /// <returns>Result collection</returns>
-        public static IRList<TValue> RListEnsure<TValue>(this IRList<TValue> @this,
-                                                         Func<IReadOnlyCollection<TValue>, bool> predicate,
                                                          Func<IReadOnlyCollection<TValue>, IEnumerable<IRError>> noneFunc)
             where TValue : notnull =>
-            @this.
-            RListEnsure(predicate, value => noneFunc(value).ToList());
+            @this
+               .RListOption(predicate, value => value, noneFunc);
     }
 }

@@ -17,7 +17,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="exceptionFunc">Exception function</param>
         /// <returns>Result collection</returns>
         public static IRList<TValue> RListBindTry<TValue>(Func<IRList<TValue>> func,
-                                                                     Func<Exception, IRError> exceptionFunc)
+                                                          Func<Exception, IRError> exceptionFunc)
             where TValue : notnull
         {
             try

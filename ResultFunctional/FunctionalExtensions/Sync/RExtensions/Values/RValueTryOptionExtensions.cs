@@ -20,8 +20,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="exceptionFunc">Function converting exception to error</param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValueOut> RValueTrySome<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                               Func<TValueIn, TValueOut> func,
-                                                                               Func<Exception, IRError> exceptionFunc)
+                                                                            Func<TValueIn, TValueOut> func,
+                                                                            Func<Exception, IRError> exceptionFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.RValueBindSome(value => RValueTry(() => func.Invoke(value), exceptionFunc));
@@ -36,8 +36,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="error">Error</param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValueOut> RValueTrySome<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                    Func<TValueIn, TValueOut> func,
-                                                                                    IRError error)
+                                                                            Func<TValueIn, TValueOut> func,
+                                                                            IRError error)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.RValueBindSome(value => RValueTry(() => func.Invoke(value), error));

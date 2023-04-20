@@ -20,8 +20,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="noneFunc">Function if incoming result value has errors</param>
         /// <returns>Outgoing value</returns>
         public static TValueOut RValueLiftMatch<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                             Func<TValueIn, TValueOut> someFunc,
-                                                                             Func<IReadOnlyCollection<IRError>, TValueOut> noneFunc)
+                                                                     Func<TValueIn, TValueOut> someFunc,
+                                                                     Func<IReadOnlyCollection<IRError>, TValueOut> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success

@@ -18,10 +18,10 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="noneFunc">Error function if predicate <see langword="false"/></param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValue> ToRValueOption<TValue>(this TValue @this, Func<TValue, bool> predicate,
-                                                                 Func<TValue, IRError> noneFunc)
+                                                             Func<TValue, IRError> noneFunc)
             where TValue : notnull =>
             @this.Option(predicate,
-                                value => value.ToRValue(),
-                                value => noneFunc(value).ToRValue<TValue>());
+                         value => value.ToRValue(),
+                         value => noneFunc(value).ToRValue<TValue>());
     }
 }

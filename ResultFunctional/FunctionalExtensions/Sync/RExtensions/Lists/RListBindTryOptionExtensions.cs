@@ -21,8 +21,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="exceptionFunc">Exception function</param>
         /// <returns>Outgoing result collection</returns>
         public static IRList<TValueOut> RListBindTrySome<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                       Func<IReadOnlyCollection<TValueIn>, IRList<TValueOut>> func,
-                                                                                       Func<Exception, IRError> exceptionFunc)
+                                                                              Func<IReadOnlyCollection<TValueIn>, IRList<TValueOut>> func,
+                                                                              Func<Exception, IRError> exceptionFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.RListBindSome(value => RListBindTry(() => func.Invoke(value), exceptionFunc));
@@ -37,10 +37,10 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
         /// <param name="error">Error</param>
         /// <returns>Outgoing result collection</returns>
         public static IRList<TValueOut> RListBindTrySome<TValueIn, TValueOut>(this IRList<TValueIn> @this,
-                                                                                                  Func<IReadOnlyCollection<TValueIn>, IRList<TValueOut>> func,
-                                                                                                  IRError error)
-             where TValueIn : notnull
-             where TValueOut : notnull =>
+                                                                              Func<IReadOnlyCollection<TValueIn>, IRList<TValueOut>> func,
+                                                                              IRError error)
+            where TValueIn : notnull
+            where TValueOut : notnull =>
             @this.RListBindSome(value => RListBindTry(() => func.Invoke(value), error));
     }
 }

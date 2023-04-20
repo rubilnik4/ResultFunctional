@@ -257,8 +257,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         {
             var initialCollection = GetRangeNumber();
             var rList = initialCollection.ToRList();
-            var RMaybe = RUnitFactory.Some();
-            var resultFunctionsMock = GetNumbersToError(RMaybe);
+            var rMaybe = RUnitFactory.Some();
+            var resultFunctionsMock = GetNumbersToError(rMaybe);
 
             var resultAfterWhere = rList.RListBindEnsure(numbers => resultFunctionsMock.Object.NumbersToResult(numbers));
 
@@ -276,8 +276,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var initialError = CreateErrorTest();
             var rList = initialCollection.ToRList();
-            var RMaybe = initialError.ToRUnit();
-            var resultFunctionsMock = GetNumbersToError(RMaybe);
+            var rMaybe = initialError.ToRUnit();
+            var resultFunctionsMock = GetNumbersToError(rMaybe);
 
             var resultAfterWhere = rList.RListBindEnsure(numbers => resultFunctionsMock.Object.NumbersToResult(numbers));
 
@@ -294,8 +294,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         {
             var errorsInitial = CreateErrorListTwoTest();
             var rList = errorsInitial.ToRList<int>();
-            var RMaybe = RUnitFactory.Some();
-            var resultFunctionsMock = GetNumbersToError(RMaybe);
+            var rMaybe = RUnitFactory.Some();
+            var resultFunctionsMock = GetNumbersToError(rMaybe);
 
             var resultAfterWhere = rList.RListBindEnsure(numbers => resultFunctionsMock.Object.NumbersToResult(numbers));
 
@@ -313,8 +313,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
             var errorsInitial = CreateErrorListTwoTest();
             var initialError = CreateErrorTest();
             var rList = errorsInitial.ToRList<int>();
-            var RMaybe = initialError.ToRUnit();
-            var resultFunctionsMock = GetNumbersToError(RMaybe);
+            var rMaybe = initialError.ToRUnit();
+            var resultFunctionsMock = GetNumbersToError(rMaybe);
 
             var resultAfterWhere = rList.RListBindEnsure(numbers => resultFunctionsMock.Object.NumbersToResult(numbers));
 
@@ -326,10 +326,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         /// <summary>
         /// Получить функцию с результирующим ответом
         /// </summary>
-        private static Mock<IResultFunctions> GetNumbersToError(IRMaybe RMaybe) =>
+        private static Mock<IResultFunctions> GetNumbersToError(IRMaybe rMaybe) =>
             new Mock<IResultFunctions>().
                 Void(mock => mock.Setup(resultFunctions => resultFunctions.NumbersToResult(It.IsAny<IReadOnlyCollection<int>>())).
-                                  Returns(RMaybe));
+                                  Returns(rMaybe));
 
         /// <summary>
         /// Получить результирующую коллекцию по количеству ошибок

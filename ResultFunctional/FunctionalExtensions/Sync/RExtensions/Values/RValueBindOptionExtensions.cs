@@ -25,32 +25,14 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         public static IRValue<TValueOut> RValueBindOption<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
                                                                                Func<TValueIn, bool> predicate,
                                                                                Func<TValueIn, IRValue<TValueOut>> someFunc,
-                                                                               Func<TValueIn, IReadOnlyCollection<IRError>> noneFunc)
-            where TValueIn : notnull
-            where TValueOut : notnull =>
-         @this.Success
-             ? predicate(@this.GetValue())
-                 ? someFunc.Invoke(@this.GetValue())
-                 :noneFunc.Invoke(@this.GetValue()).ToRValue<TValueOut>()
-             : @this.GetErrors().ToRValue<TValueOut>();
-
-        /// <summary>
-        /// Execute monad result value function base on predicate condition
-        /// </summary>
-        /// <typeparam name="TValueIn">Incoming type</typeparam>
-        /// <typeparam name="TValueOut">Outgoing type</typeparam>
-        /// <param name="this">Incoming result value</param>
-        /// <param name="predicate">Predicate function</param>
-        /// <param name="someFunc">Function if predicate <see langword="true"/></param>
-        /// <param name="noneFunc">Function returning errors if predicate <see langword="false"/></param>
-        /// <returns>Outgoing result value</returns>
-        public static IRValue<TValueOut> RValueBindOption<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                               Func<TValueIn, bool> predicate,
-                                                                               Func<TValueIn, IRValue<TValueOut>> someFunc,
                                                                                Func<TValueIn, IEnumerable<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
-            @this.RValueBindOption(predicate, someFunc, value => noneFunc(value).ToList());
+            @this.Success
+                ? predicate(@this.GetValue())
+                    ? someFunc.Invoke(@this.GetValue())
+                    : noneFunc.Invoke(@this.GetValue()).ToRValue<TValueOut>()
+                : @this.GetErrors().ToRValue<TValueOut>();
 
         /// <summary>
         /// Execute monad result value function base on predicate condition
@@ -101,7 +83,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="someFunc">Function if incoming result value hasn't errors</param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValueOut> RValueBindSome<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                     Func<TValueIn, IRValue<TValueOut>> someFunc)
+                                                                             Func<TValueIn, IRValue<TValueOut>> someFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             @this.Success
@@ -116,7 +98,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="noneFunc">Function if incoming result value has errors</param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValue> RValueBindNone<TValue>(this IRValue<TValue> @this,
-                                                                      Func<IReadOnlyCollection<IRError>, IRValue<TValue>> noneFunc)
+                                                             Func<IReadOnlyCollection<IRError>, IRValue<TValue>> noneFunc)
             where TValue : notnull =>
             @this.Success
                 ? @this

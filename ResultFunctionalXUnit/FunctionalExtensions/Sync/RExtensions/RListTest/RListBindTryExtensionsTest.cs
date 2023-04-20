@@ -33,11 +33,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         public void RListBindTry_Exception()
         {
             const int initialValue = 0;
-            var RValue = RListBindTry(
+            var rValue = RListBindTry(
                 () => DivisionCollection(initialValue).ToRList(), Exceptions.ExceptionError());
 
-            Assert.True(RValue.Failure);
-            Assert.NotNull(RValue.GetErrors().First().Exception);
+            Assert.True(rValue.Failure);
+            Assert.NotNull(rValue.GetErrors().First().Exception);
         }
 
         /// <summary>
@@ -61,11 +61,11 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RListTest
         public void RListBindTryFunc_Exception()
         {
             const int initialValue = 0;
-            var RValue = RListBindTry(
+            var rValue = RListBindTry(
                 () => DivisionCollection(initialValue).ToRList(), Exceptions.ExceptionFunc());
 
-            Assert.True(RValue.Failure);
-            Assert.NotNull(RValue.GetErrors().First().Exception);
+            Assert.True(rValue.Failure);
+            Assert.NotNull(rValue.GetErrors().First().Exception);
         }
     }
 }

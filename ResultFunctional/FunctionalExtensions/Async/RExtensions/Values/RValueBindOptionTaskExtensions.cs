@@ -26,7 +26,7 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         public static async Task<IRValue<TValueOut>> RValueBindOptionTask<TValueIn, TValueOut>(this Task<IRValue<TValueIn>> @this,
                                                                                                Func<TValueIn, bool> predicate,
                                                                                                Func<TValueIn, IRValue<TValueOut>> someFunc,
-                                                                                               Func<TValueIn, IReadOnlyCollection<IRError>> noneFunc)
+                                                                                               Func<TValueIn, IEnumerable<IRError>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
             await @this.
