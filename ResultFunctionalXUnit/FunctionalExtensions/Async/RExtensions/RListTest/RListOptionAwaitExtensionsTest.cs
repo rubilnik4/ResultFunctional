@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Async;
 using ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists;
 using ResultFunctional.Models.Factories;
 using Xunit;
@@ -24,7 +25,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var rList = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await rList.RListOptionAwait(_ => true,
+            var resultAfterWhere = await rList.RListOptionAwait(_ => true.ToTask(),
                 CollectionToStringAsync,
                 _ => CreateErrorListTwoTestTask());
 
@@ -42,7 +43,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var rList = RListFactory.SomeTask(initialCollection);
 
             var errorsBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await rList.RListOptionAwait(_ => false,
+            var resultAfterWhere = await rList.RListOptionAwait(_ => false.ToTask(),
                 _ => ToTaskCollection(GetEmptyStringList()),
                 _ => ToTaskCollection(errorsBad));
 
@@ -59,7 +60,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorInitial = CreateErrorTest();
             var rList = RListFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await rList.RListOptionAwait(_ => true,
+            var resultAfterWhere = await rList.RListOptionAwait(_ => true.ToTask(),
                 _ => ToTaskCollection(GetEmptyStringList()),
                 _ => CreateErrorListTwoTestTask());
 
@@ -76,7 +77,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorsInitial = CreateErrorTest();
             var rList = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await rList.RListOptionAwait(_ => false,
+            var resultAfterWhere = await rList.RListOptionAwait(_ => false.ToTask(),
                 _ => ToTaskCollection(GetEmptyStringList()),
                 _ => CreateErrorListTwoTestTask());
 
@@ -259,7 +260,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var initialCollection = GetRangeNumber();
             var rList = RListFactory.SomeTask(initialCollection);
 
-            var resultAfterWhere = await rList.RListEnsureAwait(_ => true,
+            var resultAfterWhere = await rList.RListEnsureAwait(_ => true.ToTask(),
                 _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Success);
@@ -276,7 +277,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var rList = RListFactory.SomeTask(initialCollection);
 
             var errorsBad = CreateErrorListTwoTest();
-            var resultAfterWhere = await rList.RListEnsureAwait(_ => false,
+            var resultAfterWhere = await rList.RListEnsureAwait(_ => false.ToTask(),
                 _ => ToTaskCollection(errorsBad));
 
             Assert.True(resultAfterWhere.Failure);
@@ -292,7 +293,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorInitial = CreateErrorTest();
             var rList = RListFactory.NoneTask<int>(errorInitial);
 
-            var resultAfterWhere = await rList.RListEnsureAwait(_ => true,
+            var resultAfterWhere = await rList.RListEnsureAwait(_ => true.ToTask(),
                 _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Failure);
@@ -308,7 +309,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             var errorsInitial = CreateErrorTest();
             var rList = RListFactory.NoneTask<int>(errorsInitial);
 
-            var resultAfterWhere = await rList.RListEnsureAwait(_ => false,
+            var resultAfterWhere = await rList.RListEnsureAwait(_ => false.ToTask(),
                 _ => CreateErrorListTwoTestTask());
 
             Assert.True(resultAfterWhere.Failure);
