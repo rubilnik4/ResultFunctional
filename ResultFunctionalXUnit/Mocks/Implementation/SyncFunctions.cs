@@ -24,13 +24,13 @@ namespace ResultFunctionalXUnit.Mocks.Implementation
         /// <summary>
         /// Функция деления на коллекцию чисел
         /// </summary>
-        public static IEnumerable<int> DivisionByCollection(IEnumerable<int> dividers) =>
-            dividers.Select(divider => 10 / divider);
+        public static IReadOnlyCollection<int> DivisionByCollection(IEnumerable<int> dividers) =>
+            dividers.Select(divider => 10 / divider).ToList();
 
         /// <summary>
         /// Функция деления на коллекцию чисел
         /// </summary>
-        public static IEnumerable<int> DivisionCollectionByZero(IEnumerable<int> _) =>
+        public static IReadOnlyCollection<int> DivisionCollectionByZero(IEnumerable<int> _) =>
             throw new DivideByZeroException();
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace ResultFunctionalXUnit.Mocks.Implementation
         /// <summary>
         /// Преобразовать число в коллекцию повторений
         /// </summary>
-        public static IEnumerable<int> NumberToCollection(int number) =>
-            Enumerable.Repeat(number, 3);
+        public static IReadOnlyCollection<int> NumberToCollection(int number) =>
+            Enumerable.Repeat(number, 3).ToList();
     }
 }

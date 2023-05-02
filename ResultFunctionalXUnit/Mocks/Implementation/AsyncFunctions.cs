@@ -37,25 +37,25 @@ namespace ResultFunctionalXUnit.Mocks.Implementation
         /// </summary>
         public static async Task<IReadOnlyCollection<int>> DivisionCollectionAsync(int divider) =>
             await DivisionListAsync(divider).
-            MapTaskAsync(collection => collection.AsReadOnly());
+            MapTask(collection => collection.AsReadOnly());
 
         /// <summary>
         /// Функция деления на ноль коллекции асинхронно
         /// </summary>
         public static async Task<IEnumerable<int>> DivisionEnumerableAsync(int divider) =>
             await DivisionListAsync(divider).
-            MapTaskAsync(collection => collection.AsReadOnly());
+            MapTask(collection => collection.AsReadOnly());
 
         /// <summary>
         /// Функция деления на коллекцию чисел асинхронно
         /// </summary>
-        public static async Task<IEnumerable<int>> DivisionByCollectionAsync(IEnumerable<int> dividers) =>
-            await Task.FromResult(dividers.Select(divider => 10 / divider));
+        public static async Task<IReadOnlyCollection<int>> DivisionByCollectionAsync(IEnumerable<int> dividers) =>
+            await Task.FromResult(dividers.Select(divider => 10 / divider).ToList());
 
         /// <summary>
         /// Функция деления на коллекцию чисел
         /// </summary>
-        public static Task<IEnumerable<int>> DivisionCollectionByZeroAsync(IEnumerable<int> dividers) =>
+        public static Task<IReadOnlyCollection<int>> DivisionCollectionByZeroAsync(IEnumerable<int> dividers) =>
             throw new DivideByZeroException(dividers.ToString());
 
         /// <summary>

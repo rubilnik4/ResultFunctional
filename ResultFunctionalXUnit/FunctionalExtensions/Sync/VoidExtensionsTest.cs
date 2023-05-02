@@ -36,8 +36,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
 
             int numberAfterVoid =
                 initialNumber.
-                VoidOk(number => number > 0,
-                    action: number => voidObjectMock.Object.TestNumberVoid(number));
+                VoidSome(number => number > 0,
+                    number => voidObjectMock.Object.TestNumberVoid(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
             voidObjectMock.Verify(voidObject => voidObject.TestNumberVoid(initialNumber), Times.Once);
@@ -54,8 +54,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
 
             int numberAfterVoid =
                 initialNumber.
-                VoidOk(number => number < 0,
-                    action: number => voidObjectMock.Object.TestNumberVoid(number));
+                VoidSome(number => number < 0,
+                    number => voidObjectMock.Object.TestNumberVoid(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
             voidObjectMock.Verify(voidObject => voidObject.TestNumberVoid(initialNumber), Times.Never);
@@ -70,7 +70,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
             const int initialNumber = 1;
             var voidObjectMock = new Mock<IVoidObject>();
 
-            int numberAfterVoid = initialNumber.VoidWhere(_ => true,
+            int numberAfterVoid = initialNumber.VoidOption(_ => true,
                                                           number => voidObjectMock.Object.TestNumberVoid(number),
                                                           _ => voidObjectMock.Object.TestVoid());
 
@@ -87,7 +87,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
             const int initialNumber = 1;
             var voidObjectMock = new Mock<IVoidObject>();
 
-            int numberAfterVoid = initialNumber.VoidWhere(_ => false,
+            int numberAfterVoid = initialNumber.VoidOption(_ => false,
                                                           _ => voidObjectMock.Object.TestVoid(),
                                                           number => voidObjectMock.Object.TestNumberVoid(number));
 

@@ -16,11 +16,11 @@ jobs:
         
       - name: Build Solution
         run: 
-          dotnet build ResultFunctional.sln -c Release
+          dotnet build -c Release
 
       - name: Test Solution
         run: |
-          dotnet test ResultFunctional.sln -c Release
+          dotnet test -c Release
 
       - name: NuGet push nuget.org
         run: | 

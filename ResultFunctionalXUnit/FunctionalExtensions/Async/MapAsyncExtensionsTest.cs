@@ -19,7 +19,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             const int numberInitial = 2;
             var numberTask = Task.FromResult(numberInitial);
 
-            string stringFromNumber = await numberTask.MapBindAsync(AsyncFunctions.IntToStringAsync);
+            string stringFromNumber = await numberTask.MapAwait(AsyncFunctions.IntToStringAsync);
 
             Assert.Equal(numberInitial.ToString(), stringFromNumber);
         }

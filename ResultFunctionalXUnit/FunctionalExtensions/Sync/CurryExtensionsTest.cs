@@ -19,7 +19,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
 
             var totalFunc = plusTwoFunc.Curry(3);
 
-            Assert.Equal(5, totalFunc.Invoke());
+            Assert.Equal(5, totalFunc);
         }
 
         /// <summary>
