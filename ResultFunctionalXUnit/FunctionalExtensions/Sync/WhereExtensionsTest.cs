@@ -18,9 +18,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
             const string test = "WhereTest";
 
             string testAfterWhere = 
-                test.WhereContinue(testWhere => !String.IsNullOrWhiteSpace(testWhere),
-                okFunc: testWhere => testWhere.ToLowerInvariant(),
-                badFunc: testWhere => testWhere);
+                test.Option(testWhere => !String.IsNullOrWhiteSpace(testWhere),
+                testWhere => testWhere.ToLowerInvariant(),
+                testWhere => testWhere);
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }
@@ -34,9 +34,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
             const string testParseNumber = "44";
 
             int numberAfterTest =
-                testParseNumber.WhereContinue(numberToParse => Int32.TryParse(numberToParse, out _),
-                okFunc: Int32.Parse,
-                badFunc: _ => 0);
+                testParseNumber.Option(numberToParse => Int32.TryParse(numberToParse, out _),
+                Int32.Parse,
+                _ => 0);
 
             Assert.Equal(44, numberAfterTest);
         }
@@ -50,9 +50,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
             const string test = "BadTest";
 
             string testAfterWhere =
-                test.WhereContinue(testWhere => testWhere.Length == 0,
-                okFunc: testWhere => testWhere,
-                badFunc: testWhere => testWhere.ToLower());
+                test.Option(testWhere => testWhere.Length == 0,
+                testWhere => testWhere,
+                testWhere => testWhere.ToLower());
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }
@@ -66,9 +66,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
             const string testParseNumber = "test";
 
             int numberAfterTest =
-                testParseNumber.WhereContinue(numberToParse => Int32.TryParse(numberToParse, out _),
-                okFunc: _ => 0,
-                badFunc: numberToParse => numberToParse.Length);
+                testParseNumber.Option(numberToParse => Int32.TryParse(numberToParse, out _),
+                _ => 0,
+                numberToParse => numberToParse.Length);
 
             Assert.Equal(testParseNumber.Length, numberAfterTest);
         }
@@ -83,8 +83,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
             const string test = "WhereOk";
 
             string testAfterWhere =
-                test.WhereOk(testWhere => !String.IsNullOrWhiteSpace(testWhere),
-                okFunc: testWhere => testWhere.ToLowerInvariant());
+                test.OptionSome(testWhere => !String.IsNullOrWhiteSpace(testWhere),
+                testWhere => testWhere.ToLowerInvariant());
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }
@@ -98,8 +98,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
             const string test = "BadTest";
 
             string testAfterWhere =
-                test.WhereBad(testWhere => testWhere.Length == 0,
-                    badFunc: testWhere => testWhere.ToLower());
+                test.OptionNone(testWhere => testWhere.Length == 0,
+                    testWhere => testWhere.ToLower());
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }

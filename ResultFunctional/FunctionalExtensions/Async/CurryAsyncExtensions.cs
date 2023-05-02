@@ -17,9 +17,9 @@ namespace ResultFunctional.FunctionalExtensions.Async
         /// <param name="this">One argument higher order function</param>
         /// <param name="arg1">Argument</param>
         /// <returns>No arguments higher order function</returns>
-        public static async Task<Func<TOut>> CurryAsync<TIn1, TOut>(this Func<TIn1, TOut> @this, Task<TIn1> arg1) =>
+        public static async Task<TOut> CurryAsync<TIn1, TOut>(this Func<TIn1, TOut> @this, Task<TIn1> arg1) =>
             await arg1.
-            MapTaskAsync(@this.Curry);
+            MapTask(@this.Curry);
 
         /// <summary>
         /// Get one argument async higher order function
@@ -33,7 +33,7 @@ namespace ResultFunctional.FunctionalExtensions.Async
         public static async Task<Func<TIn2, TOut>> CurryAsync<TIn1, TIn2, TOut>(this Func<TIn1, TIn2, TOut> @this,
                                                                                 Task<TIn1> arg1) =>
             await arg1.
-            MapTaskAsync(@this.Curry);
+            MapTask(@this.Curry);
 
         /// <summary>
         /// Get two arguments async higher order function
@@ -48,7 +48,7 @@ namespace ResultFunctional.FunctionalExtensions.Async
         public static async Task<Func<TIn2, TIn3, TOut>> CurryAsync<TIn1, TIn2, TIn3, TOut>(this Func<TIn1, TIn2, TIn3, TOut> @this,
                                                                                 Task<TIn1> arg1) =>
             await arg1.
-            MapTaskAsync(@this.Curry);
+            MapTask(@this.Curry);
 
         /// <summary>
         /// Get three arguments async higher order function
@@ -64,7 +64,7 @@ namespace ResultFunctional.FunctionalExtensions.Async
         public static async Task<Func<TIn2, TIn3, TIn4, TOut>> CurryAsync<TIn1, TIn2, TIn3, TIn4, TOut>(this Func<TIn1, TIn2, TIn3, TIn4, TOut> @this,
                                                                                             Task<TIn1> arg1) =>
             await arg1.
-            MapTaskAsync(@this.Curry);
+            MapTask(@this.Curry);
 
         /// <summary>
         /// Get four arguments async higher order function
@@ -81,6 +81,6 @@ namespace ResultFunctional.FunctionalExtensions.Async
         public static async Task<Func<TIn2, TIn3, TIn4, TIn5, TOut>> CurryAsync<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>(this Func<TIn1, TIn2, TIn3, TIn4, TIn5, TOut> @this,
                                                                                                         Task<TIn1> arg1) =>
             await arg1.
-            MapTaskAsync(@this.Curry);
+            MapTask(@this.Curry);
     }
 }

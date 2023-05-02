@@ -28,7 +28,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Action</param>
         /// <returns>Unchanged source</returns>
-        public static TValue VoidOk<TValue>(this TValue @this, Func<TValue, bool> predicate, Action<TValue> action) =>
+        public static TValue VoidSome<TValue>(this TValue @this, Func<TValue, bool> predicate, Action<TValue> action) =>
             predicate(@this)
                 ? @this.Void(_ => action.Invoke(@this))
                 : @this;
@@ -39,13 +39,13 @@ namespace ResultFunctional.FunctionalExtensions.Sync
         /// <typeparam name="TValue">Action type</typeparam>
         /// <param name="this">Source</param>
         /// <param name="predicate">Predicate function</param>
-        /// <param name="actionOk">Action if predicate <see langword="true"/></param>
-        /// <param name="actionBad">Action if predicate <see langword="false"/></param>
+        /// <param name="actionSome">Action if predicate <see langword="true"/></param>
+        /// <param name="actionNone">Action if predicate <see langword="false"/></param>
         /// <returns>Unchanged source</returns>
-        public static TValue VoidWhere<TValue>(this TValue @this, Func<TValue, bool> predicate,
-                                               Action<TValue> actionOk, Action<TValue> actionBad) =>
+        public static TValue VoidOption<TValue>(this TValue @this, Func<TValue, bool> predicate,
+                                               Action<TValue> actionSome, Action<TValue> actionNone) =>
             predicate(@this)
-                ? @this.Void(_ => actionOk.Invoke(@this))
-                : @this.Void(_ => actionBad.Invoke(@this));
+                ? @this.Void(_ => actionSome.Invoke(@this))
+                : @this.Void(_ => actionNone.Invoke(@this));
     }
 }

@@ -21,7 +21,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             var totalFunc = await plusTwoFunc.CurryAsync(Task.FromResult(3));
 
-            Assert.Equal(5, totalFunc.Invoke());
+            Assert.Equal(5, totalFunc);
         }
 
         /// <summary>

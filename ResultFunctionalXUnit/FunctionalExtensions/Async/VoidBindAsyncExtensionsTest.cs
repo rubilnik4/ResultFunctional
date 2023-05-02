@@ -22,7 +22,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             var voidObjectMock = new Mock<IVoidObject>();
 
             int numberAfterVoid = await numberTask.
-                                  VoidBindAsync(number => voidObjectMock.Object.TestNumberVoidAsync(number));
+                                  VoidAwait(number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
             voidObjectMock.Verify(voidObject => voidObject.TestNumberVoidAsync(initialNumber), Times.Once);
@@ -40,8 +40,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             int numberAfterVoid =
                 await numberTask.
-                VoidOkBindAsync(number => number > 0,
-                    action: number => voidObjectMock.Object.TestNumberVoidAsync(number));
+                VoidSomeAwait(number => number > 0,
+                    number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
             voidObjectMock.Verify(voidObject => voidObject.TestNumberVoidAsync(initialNumber), Times.Once);
@@ -59,8 +59,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             int numberAfterVoid =
                 await numberTask.
-                VoidOkBindAsync(number => number < 0,
-                    action: number => voidObjectMock.Object.TestNumberVoidAsync(number));
+                VoidSomeAwait(number => number < 0,
+                    number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
             voidObjectMock.Verify(voidObject => voidObject.TestNumberVoidAsync(initialNumber), Times.Never);
@@ -76,7 +76,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             var numberTask = Task.FromResult(initialNumber);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            int numberAfterVoid = await numberTask.VoidWhereBindAsync(_ => true,
+            int numberAfterVoid = await numberTask.VoidOptionAwait(_ => true,
                                                           number => voidObjectMock.Object.TestNumberVoidAsync(number),
                                                           _ => voidObjectMock.Object.TestVoidAsync());
 
@@ -94,7 +94,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             var numberTask = Task.FromResult(initialNumber);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            int numberAfterVoid = await numberTask.VoidWhereBindAsync(_ => false,
+            int numberAfterVoid = await numberTask.VoidOptionAwait(_ => false,
                                                           _ => voidObjectMock.Object.TestVoidAsync(),
                                                           number => voidObjectMock.Object.TestNumberVoidAsync(number));
 

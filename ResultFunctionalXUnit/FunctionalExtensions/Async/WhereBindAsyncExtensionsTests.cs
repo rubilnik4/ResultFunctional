@@ -19,9 +19,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             const string test = "WhereTest";
 
             string testAfterWhere =
-               await Task.FromResult(test).WhereContinueBindAsync(testWhere => !String.IsNullOrWhiteSpace(testWhere),
-                okFunc: testWhere => Task.FromResult(testWhere.ToLowerInvariant()),
-                badFunc: Task.FromResult);
+               await Task.FromResult(test).OptionAwait(testWhere => !String.IsNullOrWhiteSpace(testWhere),
+                testWhere => Task.FromResult(testWhere.ToLowerInvariant()),
+                Task.FromResult);
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }
@@ -35,10 +35,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             const string testParseNumber = "44";
 
             int numberAfterTest =
-               await Task.FromResult(testParseNumber).WhereContinueBindAsync(
+               await Task.FromResult(testParseNumber).OptionAwait(
                  numberToParse => Int32.TryParse(numberToParse, out _),
-                okFunc: numberToParse => Task.FromResult(Int32.Parse(numberToParse)),
-                badFunc: numberToParse => Task.FromResult(0));
+                numberToParse => Task.FromResult(Int32.Parse(numberToParse)),
+                numberToParse => Task.FromResult(0));
 
             Assert.Equal(44, numberAfterTest);
         }
@@ -52,9 +52,9 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             const string test = "BadTest";
 
             string testAfterWhere =
-                await Task.FromResult(test).WhereContinueBindAsync(testWhere => testWhere.Length == 0,
-                okFunc: Task.FromResult,
-                badFunc: testWhere => Task.FromResult(testWhere.ToLower()));
+                await Task.FromResult(test).OptionAwait(testWhere => testWhere.Length == 0,
+                Task.FromResult,
+                testWhere => Task.FromResult(testWhere.ToLower()));
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }
@@ -68,10 +68,10 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             const string testParseNumber = "test";
 
             int numberAfterTest =
-                await Task.FromResult(testParseNumber).WhereContinueBindAsync(
+                await Task.FromResult(testParseNumber).OptionAwait(
                 numberToParse => Int32.TryParse(numberToParse, out _),
-                okFunc: numberToParse => Task.FromResult(0),
-                badFunc: numberToParse => Task.FromResult(numberToParse.Length));
+                numberToParse => Task.FromResult(0),
+                numberToParse => Task.FromResult(numberToParse.Length));
 
             Assert.Equal(testParseNumber.Length, numberAfterTest);
         }
@@ -86,8 +86,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             const string test = "WhereOk";
 
             string testAfterWhere =
-                await Task.FromResult(test).WhereOkBindAsync(testWhere => !String.IsNullOrWhiteSpace(testWhere),
-                okFunc: testWhere => Task.FromResult(testWhere.ToLowerInvariant()));
+                await OptionAwaitExtensions.OptionSomeAwait(Task.FromResult(test), testWhere => !String.IsNullOrWhiteSpace(testWhere),
+                                                            testWhere => Task.FromResult(testWhere.ToLowerInvariant()));
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }
@@ -101,8 +101,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             const string test = "BadTest";
 
             string testAfterWhere =
-                await Task.FromResult(test).WhereBadBindAsync(testWhere => testWhere.Length == 0,
-                    badFunc: testWhere => Task.FromResult(testWhere.ToLower()));
+                await Task.FromResult(test).OptionNoneAwait(testWhere => testWhere.Length == 0,
+                    testWhere => Task.FromResult(testWhere.ToLower()));
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
         }

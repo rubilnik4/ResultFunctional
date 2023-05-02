@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.BaseErrors;
 
 namespace ResultFunctionalXUnit.Data
 {
@@ -56,13 +56,13 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Получить количество ошибок списком
         /// </summary>
-        public static IReadOnlyCollection<int> GetListByErrorsCount(IReadOnlyCollection<IErrorResult> errors) =>
+        public static IReadOnlyCollection<int> GetListByErrorsCount(IReadOnlyCollection<IRError> errors) =>
             new List<int> { errors.Count };
 
         /// <summary>
         /// Получить количество ошибок списком
         /// </summary>
-        public static IReadOnlyCollection<string> GetListByErrorsCountString(IReadOnlyCollection<IErrorResult> errors) =>
+        public static IReadOnlyCollection<string> GetListByErrorsCountString(IReadOnlyCollection<IRError> errors) =>
             new List<string> { errors.Count.ToString() };
 
         /// <summary>

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ResultFunctional.Models.Enums;
-using ResultFunctional.Models.Implementations.Errors;
-using ResultFunctional.Models.Interfaces.Errors.Base;
+using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Factories;
 
 namespace ResultFunctionalXUnit.Data
 {
@@ -14,14 +14,14 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Создать тестовый экземпляр ошибки
         /// </summary>
-        public static IErrorResult CreateErrorTest() =>
-            ErrorResultFactory.CommonError(CommonErrorType.Unknown, "Test error");
+        public static IRError CreateErrorTest() =>
+            RErrorFactory.Common(CommonErrorType.Unknown, "Test error");
 
         /// <summary>
         /// Создать тестовый экземпляр списка ошибок
         /// </summary>
-        public static IReadOnlyList<IErrorResult> CreateErrorListTwoTest() =>
-            new List<IErrorResult>
+        public static IReadOnlyList<IRError> CreateErrorListTwoTest() =>
+            new List<IRError>
             {
                 CreateErrorTest(),
                 CreateErrorTest(),
@@ -30,19 +30,19 @@ namespace ResultFunctionalXUnit.Data
         /// <summary>
         /// Создать тестовый экземпляр множества ошибок
         /// </summary>
-        public static IReadOnlyCollection<IErrorResult> CreateErrorEnumerableTwoTest() =>
+        public static IReadOnlyCollection<IRError> CreateErrorEnumerableTwoTest() =>
             CreateErrorListTwoTest();
 
         /// <summary>
         /// Создать тестовый экземпляр ошибки в задаче
         /// </summary>
-        public static Task<IErrorResult> CreateErrorTestTask() =>
+        public static Task<IRError> CreateErrorTestTask() =>
             Task.FromResult(CreateErrorTest());
 
         /// <summary>
         /// Создать тестовый экземпляр списка ошибок
         /// </summary>
-        public static Task<IReadOnlyCollection<IErrorResult>> CreateErrorListTwoTestTask() =>
+        public static Task<IReadOnlyCollection<IRError>> CreateErrorListTwoTestTask() =>
             Task.FromResult(CreateErrorEnumerableTwoTest());
     }
 }

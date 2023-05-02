@@ -10,9 +10,9 @@
     <PackageId>ResultFunctional</PackageId>
     <Copyright>Ivan Rubilnik</Copyright>
     <Configurations>Debug;Release</Configurations>   
-    <AssemblyVersion>1.1.11</AssemblyVersion>
-    <FileVersion>1.1.11</FileVersion>
-    <Version>1.1.11</Version>
+    <AssemblyVersion>2.0.11</AssemblyVersion>
+    <FileVersion>2.0.11</FileVersion>
+    <Version>2.0.11-alpha</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<RepositoryUrl>https://github.com/rubilnik4/ResultFunctional</RepositoryUrl>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -59,4 +59,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
     <NoWarn>$(NoWarn);1701;1702;CS1591;NU1701</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Lists\" />
+    <Folder Include="Models\Units\" />
+  </ItemGroup>
 </Project>

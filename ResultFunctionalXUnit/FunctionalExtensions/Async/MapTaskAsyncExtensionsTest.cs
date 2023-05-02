@@ -18,7 +18,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             const int numberInitial = 2;
             var numberTask = Task.FromResult(numberInitial);
 
-            string stringFromNumber = await numberTask.MapTaskAsync(number => number.ToString());
+            string stringFromNumber = await numberTask.MapTask(number => number.ToString());
 
             Assert.Equal(numberInitial.ToString(), stringFromNumber);
         }

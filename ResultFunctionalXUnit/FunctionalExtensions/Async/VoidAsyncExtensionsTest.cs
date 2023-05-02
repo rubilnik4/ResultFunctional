@@ -38,8 +38,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             int numberAfterVoid =
                 await initialNumber.
-                VoidOkAsync(number => number > 0,
-                    action: number => voidObjectMock.Object.TestNumberVoidAsync(number));
+                VoidSomeAsync(number => number > 0,
+                    number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
             voidObjectMock.Verify(voidObject => voidObject.TestNumberVoidAsync(initialNumber), Times.Once);
@@ -56,8 +56,8 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
 
             int numberAfterVoid =
                 await initialNumber.
-                VoidOkAsync(number => number < 0,
-                    action: number => voidObjectMock.Object.TestNumberVoidAsync(number));
+                VoidSomeAsync(number => number < 0,
+                    number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
             Assert.Equal(initialNumber, numberAfterVoid);
             voidObjectMock.Verify(voidObject => voidObject.TestNumberVoid(initialNumber), Times.Never);
@@ -73,7 +73,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             const int initialNumber = 1;
             var voidObjectMock = new Mock<IVoidObject>();
 
-            int numberAfterVoid = await initialNumber.VoidWhereAsync(_ => true,
+            int numberAfterVoid = await initialNumber.VoidOptionAsync(_ => true,
                                                           number => voidObjectMock.Object.TestNumberVoidAsync(number),
                                                           _ => voidObjectMock.Object.TestVoidAsync());
 
@@ -90,7 +90,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             const int initialNumber = 1;
             var voidObjectMock = new Mock<IVoidObject>();
 
-            int numberAfterVoid = await initialNumber.VoidWhereAsync(_ => false,
+            int numberAfterVoid = await initialNumber.VoidOptionAsync(_ => false,
                                                           _ => voidObjectMock.Object.TestVoidAsync(),
                                                           number => voidObjectMock.Object.TestNumberVoidAsync(number));
 
