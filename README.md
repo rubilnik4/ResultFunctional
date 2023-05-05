@@ -38,12 +38,12 @@ string stringNumber =number.ToString();
  string stringNumber = "4";
  int number = stringNumber
      .Option(parse => Int32.TryParse(parse, out _),
-                  parse => Int32.Parse(parse),
-                  _ => 0);
+             parse => Int32.Parse(parse),
+             _ => 0);
 // or
  string stringNumber = "4";
-bool canParse = Int32.TryParse(parse, out _);
-int number = canParse ? Int32.Parse(parse) :  0;
+ bool canParse = Int32.TryParse(parse, out _);
+ int number = canParse ? Int32.Parse(parse) :  0;
 ```
 #### Curry
 #### Void
