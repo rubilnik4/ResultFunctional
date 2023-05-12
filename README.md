@@ -13,7 +13,7 @@
 ### Summary
 Feature | Description
 | ------------ | ------------ |
-`Map` | Функтор. Стандартная функция преобразования из одного объекта в другой
+`Map` | Функция преобразования из одного объекта в другой
 `Option` | Функция преобразования одного объекта в другой в зависимости от условия
 `Curry` | Трансформация в функцию с меньшим количеством входных аргументов
 `Void` | Операции с методами
@@ -34,9 +34,9 @@ string stringNumber =number.ToString();
 Возвращаемый тип объекта в обоих функциях одинаков.
 Feature | Signature | Description
 | ------------ | ------------ | ------------ |
-`Option` | (a, a -> bool, a -> b, a -> b) => b | Преобразование одного объекта в другой в зависимости от условия
-`OptionSome` | (a, a -> bool, a -> a) => a | Изменение объекта при выполнении условия
-`OptionNone` | (a, a -> bool, a -> a) => a | Изменение при невыполнении условия
+`Option` | `(a, a -> bool, a -> b, a -> b) => b` | Преобразование одного объекта в другой в зависимости от условия
+`OptionSome` | `(a, a -> bool, a -> a) => a` | Изменение объекта при выполнении условия
+`OptionNone` | `(a, a -> bool, a -> a) => a` | Изменение при невыполнении условия
 ```csharp
 string stringNumber = "4";
 int number = stringNumber
@@ -52,10 +52,10 @@ int number = canParse ? Int32.Parse(parse) :  0;
 Функция предназначенная для уменьшения входных аргументов исходной функции (функций высокого порядка). Каррирование представляет собой частичное выполнение функции
 Feature | Signature | Description
 | ------------ | ------------ | ------------ |
-`Curry` | (a -> t, a) => (() => t) | Преобразование в функцию без аргументов
-`Curry` | ((a, b) -> t, a) => (b => t) | Преобразование в функцию с одним аргументом
+`Curry` | `(a -> t, a) => (() => t)` | Преобразование в функцию без аргументов
+`Curry` | `((a, b) -> t, a) => (b => t)` | Преобразование в функцию с одним аргументом
 ...
-`Curry` | ((a1, a2... an) -> t, a1) => (a2... an => t) | Общий вид функции для уменьшения количества аргументов
+`Curry` | `((a1, a2... an) -> t, a1) => (a2... an => t)` | Общий вид функции для уменьшения количества аргументов
 ```csharp
 Func<int, int, int> func2 = (x, y) => x + y;
 Func<int, int> func1 = func2.Curry(4);
@@ -69,9 +69,9 @@ int result = func2(4 + 5);
 В функциональном программировании отсутствуют методы не вовзращающие значений (void, action). В таких случаях их превращают в функции, вовзращающие тип Unit. Но в некоторых случаях, например для логирования, от этого правила можно отступить.
 Feature | Signature | Description
 | ------------ | ------------ | ------------ |
-`Void` | (a, a => ()) => a | Выполнить действие над объектом
-`VoidSome` | (a, a => bool, a => ()) => a | Выполнить действие над объектом при положительном условии
-`VoidOption` | (a, a => bool, a => (), a => ()) => a | Выполнить действия над объектом в зависимости от условия
+`Void` | `(a, a => ()) => a` | Выполнить действие над объектом
+`VoidSome` | `(a, a => bool, a => ()) => a` | Выполнить действие над объектом при положительном условии
+`VoidOption` | `(a, a => bool, a => (), a => ()) => a` | Выполнить действия над объектом в зависимости от условия
 ```csharp
 int numeric = 1;
 var result = numeric
@@ -117,12 +117,12 @@ Property/Method | Description
 Каждый класс имеет статические методы Some и None для перехода в состояние Success и Failure соответсвенно.
 Class | Feature | Signature| Status
 | ------------ | ------------ | ------------ | ------------ |
-`RUnit` | `RUnit.Some` | _ => IRUnit | Success
-`RUnit` | `RUnit.None` | IRError => IRUnit | Failure
-`RValue` | `RValue<T>.Some` | T => IRValue<T> | Success
-`RValue` | `RValue<T>.None` | IRError => IRValue<T> | Failure
-`RList` | `RList<T>.Some` | IReadOnlyCollection<T> => IRList<T> | Success
-`RList` | `RList<T>.None` | IRError => IRList<T> | Failure
+`RUnit` | `RUnit.Some` | `_ => IRUnit` | Success
+`RUnit` | `RUnit.None` | `IRError => IRUnit` | Failure
+`RValue` | `RValue<T>.Some` | `T => IRValue<T>` | Success
+`RValue` | `RValue<T>.None` | `IRError => IRValue<T>` | Failure
+`RList` | `RList<T>.Some` | `IReadOnlyCollection<T> => IRList<T>` | Success
+`RList` | `RList<T>.None` | `IRError => IRList<T>` | Failure
 ```csharp
 int number = 2;
 IRValue<int> result = RValue<int>.Some(2);
@@ -135,12 +135,12 @@ return result.Success; // false
 #### Factory
 Class | Feature | Signature| Status
 | ------------ | ------------ | ------------ | ------------ |
-`RUnitFactory` | `RUnitFactory.Some` | _ => IRUnit | Success
-`RUnitFactory` | `RUnitFactory.None` | IRError => IRUnit | Failure
-`RValueFactory` | `RValueFactory.Some<T>` | T => IRValue<T> | Success
-`RValueFactory` | `RValueFactory.None<T>` | IRError => IRValue<T> | Failure
-`RListFactory` | `RListFactory.Some<T>` | IReadOnlyCollection<T> => IRList<T> | Success
-`RListFactory` | `RListFactory.None<T>` | IRError => IRList<T> | Failure
+`RUnitFactory` | `RUnitFactory.Some` | `_ => IRUnit` | Success
+`RUnitFactory` | `RUnitFactory.None` | `IRError => IRUnit` | Failure
+`RValueFactory` | `RValueFactory.Some<T>` | `T => IRValue<T>` | Success
+`RValueFactory` | `RValueFactory.None<T>` | `IRError => IRValue<T>` | Failure
+`RListFactory` | `RListFactory.Some<T>` | `IReadOnlyCollection<T> => IRList<T>` | Success
+`RListFactory` | `RListFactory.None<T>` | `IRError => IRList<T>` | Failure
 ```csharp
 List<int> collection = new List<int>() {1, 2, 3};
 IRList<int> result = RListFactory.Some(collection);
@@ -153,17 +153,56 @@ return result.Success; // false
 #### Extensions
 Class | Feature | Signature| Status
 | ------------ | ------------ | ------------ | ------------ |
-`ToRValueExtensions` | `ToRValue<T>` | T => IRValue<T> | Success
-`ToRValueExtensions` | `ToRValue<T>` | IEnumerable<IRError> => IRValue<T> | Failure
-`ToRListExtensions` | `ToRList<T>` | IReadOnlyCollection<T> => IRList<T> | Success
-`ToRListExtensions` | `ToRList<T>` | IEnumerable<IRError> => IRList<T> | Failure
+`ToRValueExtensions` | `ToRValue<T>` | `T => IRValue<T>` | Success
+`ToRValueExtensions` | `ToRValue<T>` | `IEnumerable<IRError> => IRValue<T>` | Failure
+`ToRListExtensions` | `ToRList<T>` | `IReadOnlyCollection<T> => IRList<T>` | Success
+`ToRListExtensions` | `ToRList<T>` | `IEnumerable<IRError> => IRList<T>` | Failure
 ```csharp
 int number = 2;
 IRValue<int> result = number.ToRValue();
 return result.Success; // true   
     
+IEnumerable<IRError> error = RErrorFactory.Simple("Ошибка").ToList();
+IRValue<int> result = error.ToRValue<int>(error);
+return result.Success; // false     
+```
+#### From IRError
+Из ошибок типа IRError можно создавать R классы, содержащие эти же ошибки.
+Class | Feature | Signature| Status
+| ------------ | ------------ | ------------ | ------------ |
+`IRError` | `ToRUnit` | `_ => IRUnit` | Failure
+`IRError` | `ToRValue<T>` | `_ => IRValue<T>` | Failure
+`IRError` | `ToRList<T>` | `_ => IRList<T>` | Failure
+```csharp
 IRError error = RErrorFactory.Simple("Ошибка");
 IRValue<int> result = error.ToRValue<int>(error);
 return result.Success; // false     
 ```
 ### Result Error
+Объект IRError можно обозначить как R часть функционального Either<L,R> или же часть None функционального Option. IRError может содержать в себе Exception, если создан после возникновения исключения.
+Property/Method | Description
+| ------------ | ------------ |
+`Description` | Описание ошибки
+`Exception` | Исключение
+`AppendException` | Присвоить искючение
+#### Error types
+Ошибки можно классифицировать с помощью `IRBaseError<TErrorType>`, где TErrorType - любая произвольная структура. Библиотека содержит стандартные решения для некоторых типов ошибок.
+Error | Error type | Derived types examples | Description
+| ------------ | ------------ | ------------ | ------------ |
+RCommonError | `CommonErrorType` | RSimpleError, IRValueNotFoundError, IRValueNullError | Общие ошибки
+RAuthorizeError | `AuthorizeErrorType` | - | Ошибки авторизации
+RConversionError | `ConversionErrorType` | IRDeserializeError, IRSerializeError, RJsonSchemeError | Ошибки конвертации
+RDatabaseError | `DatabaseErrorType` | IRDatabaseAccessError, IRDatabaseValueNotFoundError, IRDatabaseValueNotValidError | Ошибки базы данных
+RRestError | `RestErrorType` | RRestHostError, RRestMessageError, RRestTimeoutError | Ошибки rest сервисов
+#### Initialization
+Ошибки стоит инициализировать через фабрику RErrorFactory.
+```csharp
+RSimpleError errorSimple = RErrorFactory.Simple("Ошибка");
+
+RRestMessageError errorRest = RErrorFactory.Rest(RestErrorType.BadRequest, "BadRequest" ,"Неверно сформированнный запрос"); 
+
+string emptyString = null;
+IRValueNullError errorValueNull = RErrorFactory.ValueNull(nameof(emptyString), "Не задано значение");  
+```
+#### Reflection
+Существуют методы для определения типа классификации IRError ошибки.
