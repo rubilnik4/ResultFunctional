@@ -114,5 +114,56 @@ Property/Method | Description
 ### Initialization
 Инициализировать классы типа IRMaybe можно несколькими способами: через статические классы, через фабрику и через методы расширений. Если методы были применены к значению, то это приведет класс к состоянию Success. Если к ошибкам типа IRError - то к состоянию типа Failure.
 #### Static classes
+Каждый класс имеет статические методы Some и None для перехода в состояние Success и Failure соответсвенно.
+Class | Feature | Signature| Status
+| ------------ | ------------ | ------------ | ------------ |
+`RUnit` | `RUnit.Some` | _ => IRUnit | Success
+`RUnit` | `RUnit.None` | IRError => IRUnit | Failure
+`RValue` | `RValue<T>.Some` | T => IRValue<T> | Success
+`RValue` | `RValue<T>.None` | IRError => IRValue<T> | Failure
+`RList` | `RList<T>.Some` | IReadOnlyCollection<T> => IRList<T> | Success
+`RList` | `RList<T>.None` | IRError => IRList<T> | Failure
+```csharp
+int number = 2;
+IRValue<int> result = RValue<int>.Some(2);
+return result.Success; // true   
+    
+IRError error = RErrorFactory.Simple("Ошибка");
+IRValue<int> result = RValue<int>.None(error);
+return result.Success; // false     
+```
 #### Factory
+Class | Feature | Signature| Status
+| ------------ | ------------ | ------------ | ------------ |
+`RUnitFactory` | `RUnitFactory.Some` | _ => IRUnit | Success
+`RUnitFactory` | `RUnitFactory.None` | IRError => IRUnit | Failure
+`RValueFactory` | `RValueFactory.Some<T>` | T => IRValue<T> | Success
+`RValueFactory` | `RValueFactory.None<T>` | IRError => IRValue<T> | Failure
+`RListFactory` | `RListFactory.Some<T>` | IReadOnlyCollection<T> => IRList<T> | Success
+`RListFactory` | `RListFactory.None<T>` | IRError => IRList<T> | Failure
+```csharp
+List<int> collection = new List<int>() {1, 2, 3};
+IRList<int> result = RListFactory.Some(collection);
+return result.Success; // true     
+    
+IRError error = RErrorFactory.Simple("Ошибка");
+IRList<int> result = RListFactory<int>.None(error);
+return result.Success; // false     
+```
 #### Extensions
+Class | Feature | Signature| Status
+| ------------ | ------------ | ------------ | ------------ |
+`ToRValueExtensions` | `ToRValue<T>` | T => IRValue<T> | Success
+`ToRValueExtensions` | `ToRValue<T>` | IEnumerable<IRError> => IRValue<T> | Failure
+`ToRListExtensions` | `ToRList<T>` | IReadOnlyCollection<T> => IRList<T> | Success
+`ToRListExtensions` | `ToRList<T>` | IEnumerable<IRError> => IRList<T> | Failure
+```csharp
+int number = 2;
+IRValue<int> result = number.ToRValue();
+return result.Success; // true   
+    
+IRError error = RErrorFactory.Simple("Ошибка");
+IRValue<int> result = error.ToRValue<int>(error);
+return result.Success; // false     
+```
+### Result Error
