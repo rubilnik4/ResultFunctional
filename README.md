@@ -9,6 +9,12 @@
 - Специальная (RExtensions). Оперирует result-объектами данной библиотеки и позволяет писать код в функицональном fluent стиле.
 
 Для каждой из функций предусмотрены синхронные и асинхронные расширения.
+## Problems
+- Разделение преднамеренных и непреднамеренных ошибок (exception);
+- Устранение ошибок нулевого значения (null value);
+- Устранение или изоляция побочных эффектов в методах (pure methods)
+- Жесткое соответствие сигнатурам методом (primitive obsession)
+- Неизменяемоесть (immutability)
 ## Common functions
 ### Summary
 Feature | Description
@@ -76,17 +82,17 @@ Feature | Signature | Description
 int numeric = 1;
 var result = numeric
     .VoidOption(number => number> 0,
-                number => Log.Debug($"{number} is positive"),
-                number => Log.Debug($"{number} is not negative"));
+                number => Console.WriteLine($"{number} is positive"),
+                number => Console.WriteLine($"{number} is not negative"));
 // or
 int number = 1;
 if (number > 0)
 {
-    Log.Debug($"{number} is positive");
+    Console.WriteLine($"{number} is positive");
 }
 else
 {
-    Log.Debug($"{number} is not negative");
+    Console.WriteLine($"{number} is not negative");
 }
 ```
 ### Conclusion
@@ -94,13 +100,13 @@ else
 ## Result library
 ### Summary
 Основным классом, используемым для методов расширений, является IRMaybe. Так же как и функциональный класс Option состоит из двух частией: Some и None. В качестве Some используются дженерики разных типов, None представляет собой различные вариации ошибок типа IRError. Все классы библиотеки имеют префикс R.
-Class | Generic type | Description
-| ------------ | ------------ | ------------ |
-`IRMaybe` | - | Базовый класс, определяющий наличие ошибки
-`IRUnit` | Unit | Класс с отсутствующим дженериком
-`IRValue` | Value | Класс, содержащий значение
-`IRList` | Collection | Класс, содержащий коллекцию значений
-### Concepts
+Class | Generic type | Base class | Description
+| ------------ | ------------ | ------------ | ------------ |
+`IRMaybe` | - | `-` | Базовый класс, определяющий наличие ошибки
+`IRUnit` | Unit | `IRMaybe<Unit>` | Класс с отсутствующим дженериком
+`IRValue` | Value | `IRMaybe<TValue>` | Класс, содержащий значение
+`IRList` | Collection | `IRMaybe<IReadOnlyCollection<TValue>>` | Класс, содержащий коллекцию значений
+### IRMaybe
 Все классы наследники IRMaybe могут находиться в двух состояниях: Success и Failure. В случае Success класс возвращает хранимое значение дженерика, а в случае Failure - коллекцию ошибок. Нахождение в промежуточном состоянии, то есть хранении и значения и ошибок - исключено. 
 Property/Method | Description
 | ------------ | ------------ |
@@ -178,13 +184,38 @@ IRError error = RErrorFactory.Simple("Ошибка");
 IRValue<int> result = error.ToRValue<int>(error);
 return result.Success; // false     
 ```
-### Result Error
-Объект IRError можно обозначить как R часть функционального Either<L,R> или же часть None функционального Option. IRError может содержать в себе Exception, если создан после возникновения исключения.
+### IRUnit
+Класс IRUnit представляет собой наиболее простой вариант использования IRMaybe. Используется в случаях, когда необходимо передать лишь факт наличия или отсутствия ошибки. В качестве значения Value используется структура Unit.
+```csharp
+private IRMaybe CanUpdate(string field) =>
+    !String.IsNullOrWhiteSpace(field)
+        ? RUnit.Some()
+        : RUnit.None(RErrorFactory.Simple("Empty string"));
+        
+private Update(string field)
+{
+    var result = CanUpdate(field);
+    if (result.Success)
+    {
+        Console.WriteLine("field is updated");
+    }
+    else
+    {
+        Console.WriteLine(result.GetErrors().First());
+    }
+}
+```
+### IRValue
+
+### IRList
+
+### IRError
+Объект IRError можно обозначить как R часть функционального Either<L,R> или же часть None функционального Option. IRError может содержать в себе Exception, если создан после возникновения исключения. IRMaybe в виде правой части содержит в себе коллекцию IRError.
 Property/Method | Description
 | ------------ | ------------ |
 `Description` | Описание ошибки
 `Exception` | Исключение
-`AppendException` | Присвоить искючение
+`AppendException` | Присвоить исключение
 #### Error types
 Ошибки можно классифицировать с помощью `IRBaseError<TErrorType>`, где TErrorType - любая произвольная структура. Библиотека содержит стандартные решения для некоторых типов ошибок.
 Error | Error type | Derived types examples | Description
@@ -194,6 +225,7 @@ RAuthorizeError | `AuthorizeErrorType` | - | Ошибки авторизации
 RConversionError | `ConversionErrorType` | IRDeserializeError, IRSerializeError, RJsonSchemeError | Ошибки конвертации
 RDatabaseError | `DatabaseErrorType` | IRDatabaseAccessError, IRDatabaseValueNotFoundError, IRDatabaseValueNotValidError | Ошибки базы данных
 RRestError | `RestErrorType` | RRestHostError, RRestMessageError, RRestTimeoutError | Ошибки rest сервисов
+RTypeError | `TErrorType: struct` | - | Ошибка с произвольной структурой
 #### Initialization
 Ошибки стоит инициализировать через фабрику RErrorFactory.
 ```csharp
@@ -202,7 +234,28 @@ RSimpleError errorSimple = RErrorFactory.Simple("Ошибка");
 RRestMessageError errorRest = RErrorFactory.Rest(RestErrorType.BadRequest, "BadRequest" ,"Неверно сформированнный запрос"); 
 
 string emptyString = null;
-IRValueNullError errorValueNull = RErrorFactory.ValueNull(nameof(emptyString), "Не задано значение");  
+IRValueNullError errorValueNull = RErrorFactory.ValueNull(nameof(emptyString), "Not initialized");  
+
+RTypeError<CommonErrorType> errorByType = RErrorFactory.ByType(CommonErrorType.Unknown, "Ошибка");
 ```
 #### Reflection
 Существуют методы для определения типа классификации IRError ошибки.
+Property/Method | Generic type | Description
+| ------------ | ------------ | ------------ |
+`IsError<TErrorType>` | `TErrorType: IRError` | Является ли текущим типом ошибки
+`HasError<TErrorType>` | `TErrorType: IRError` | Является или наследуется от текущего типа
+`IsErrorType<TErrorTypeCompare>` | `TErrorType: struct` | Содержит ли в себе структуру ошибки
+```csharp
+string emptyString = null;
+IRError notValidError = RErrorFactory.ValueNull(nameof(emptyString), "Not initialized");
+bool isNullError = notValidError.IsError<IRValueNullError>(); // true
+bool hasNullError = notValidError.HasError<IRValueNullError>(); // false
+bool isValueError = notValidError.IsError<IRValueError>(); // true
+bool hasValueError = notValidError.HasError<IRValueError>(); // true
+
+IRError errorRest = RErrorFactory.Rest(RestErrorType.BadRequest, "BadRequest" ,"Неверно сформированнный запрос"); 
+var isRestErrorType = errorRest.IsErrorType<RestErrorType>(); // true
+var isBadRequestType = errorRest.IsErrorType(RestErrorType.BadRequest); // true
+var isCommonErrorType = errorRest.IsErrorType<CommonErrorType>(); // false
+var isNullValueType = errorRest.IsErrorType(CommonErrorType.NullArgument); // false
+```
