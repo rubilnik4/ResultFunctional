@@ -107,7 +107,7 @@ Class | Generic type | Base class | Description
 `IRValue` | Value | `IRMaybe<TValue>` | Класс, содержащий значение
 `IRList` | Collection | `IRMaybe<IReadOnlyCollection<TValue>>` | Класс, содержащий коллекцию значений
 ### IRMaybe
-Все классы наследники IRMaybe могут находиться в двух состояниях: Success и Failure. В случае Success класс возвращает хранимое значение дженерика, а в случае Failure - коллекцию ошибок. Нахождение в промежуточном состоянии, то есть хранении и значения и ошибок - исключено. 
+Все классы наследники `IRMaybe` могут находиться в двух состояниях: Success и Failure. В случае Success класс возвращает хранимое значение дженерика, а в случае Failure - коллекцию ошибок. Нахождение в промежуточном состоянии, то есть хранении и значения и ошибок - исключено. 
 Property/Method | Description
 | ------------ | ------------ |
 `Success` | Успешное состояние
@@ -118,7 +118,7 @@ Property/Method | Description
 `GetErrors` | Вернуть список ошибок. В случае Success выбросить исключение
 `GetErrorsOrEmpty` | Вернуть список ошибок. В случае Success вернуть пустой список
 ### Initialization
-Инициализировать классы типа IRMaybe можно несколькими способами: через статические классы, через фабрику и через методы расширений. Если методы были применены к значению, то это приведет класс к состоянию Success. Если к ошибкам типа IRError - то к состоянию типа Failure.
+Инициализировать классы типа `IRMaybe` можно несколькими способами: через статические классы, через фабрику и через методы расширений. Если методы были применены к значению, то это приведет класс к состоянию Success. Если к ошибкам типа `IRError` - то к состоянию типа Failure.
 #### Static classes
 Каждый класс имеет статические методы Some и None для перехода в состояние Success и Failure соответсвенно.
 Class | Feature | Signature| Status
@@ -173,7 +173,7 @@ IRValue<int> result = error.ToRValue<int>(error);
 return result.Success; // false     
 ```
 #### From IRError
-Из ошибок типа IRError можно создавать R классы, содержащие эти же ошибки.
+Из ошибок типа `IRError` можно создавать R классы, содержащие эти же ошибки.
 Class | Feature | Signature| Status
 | ------------ | ------------ | ------------ | ------------ |
 `IRError` | `ToRUnit` | `_ => IRUnit` | Failure
@@ -185,14 +185,14 @@ IRValue<int> result = error.ToRValue<int>(error);
 return result.Success; // false     
 ```
 ### IRUnit
-Класс IRUnit представляет собой наиболее простой вариант использования IRMaybe. Используется в случаях, когда необходимо передать лишь факт наличия или отсутствия ошибки. В качестве значения Value используется структура Unit.
+Класс `IRUnit` представляет собой наиболее простой вариант использования `IRMaybe`. Используется в случаях, когда необходимо передать лишь факт наличия или отсутствия ошибки. В качестве значения TValue используется структура `Unit`.
 ```csharp
 private IRMaybe CanUpdate(string field) =>
     !String.IsNullOrWhiteSpace(field)
         ? RUnit.Some()
         : RUnit.None(RErrorFactory.Simple("Empty string"));
         
-private Update(string field)
+private void Update(string field)
 {
     var result = CanUpdate(field);
     if (result.Success)
@@ -206,11 +206,49 @@ private Update(string field)
 }
 ```
 ### IRValue
-
+Класс `IRValue` является самым распространенным вариантом использования `IRMaybe`. Он содержит в себе значение Value, которое может быть представленно классом (class) или структурой (struct). Value не может иметь значение null.
+```csharp
+private IRValue<int> GetPositiveNumber(int number) =>
+    number > 0
+        ? number.ToRValue(number)
+        : RErrorFactory.Simple("Non positive number").ToRValue();
+        
+private void SetNumber(int number)
+{
+    var resultNumber = GetPositiveNumber(number);
+    if (resultNumber.Success)
+    {
+        Console.WriteLine($"number {resultNumber.GetValue()} is positive");
+    }
+    else
+    {
+        Console.WriteLine(result.GetErrors().First());
+    }
+}
+```
 ### IRList
-
+Класс `IRList` служит для упрощенной работы с коллекциями и списками. В качестве значения Value используется коллекция `IReadOnlyCollection<TValue>`. Коллекция не может иметь значение null, но может не иметь значение (Empty).
+```csharp
+private IRList<int> GetPositiveList(IEnumarable<int> collection) =>
+    collection
+        .ToRListOption(numbers => numbers.All(number => number > 0),
+                       _ => RErrorFactory.Simple("Collection has non positive values"));
+        
+private void SetNumbers(IEnumarable<int> collection)
+{
+    var resultNumbers = GetPositiveList(collection);
+    if (resultNumbers.Success)
+    {
+        Console.WriteLine($"numbers {resultNumber.GetValue()} are positive");
+    }
+    else
+    {
+        Console.WriteLine(result.GetErrors().First());
+    }
+}
+```
 ### IRError
-Объект IRError можно обозначить как R часть функционального Either<L,R> или же часть None функционального Option. IRError может содержать в себе Exception, если создан после возникновения исключения. IRMaybe в виде правой части содержит в себе коллекцию IRError.
+Объект `IRError` можно обозначить как R часть функционального Either<L, R> или же часть None функционального Option. `IRError` может содержать в себе Exception, если создан после возникновения исключения. `IRMaybe` в виде правой части содержит в себе коллекцию `IRError`.
 Property/Method | Description
 | ------------ | ------------ |
 `Description` | Описание ошибки
@@ -227,7 +265,7 @@ RDatabaseError | `DatabaseErrorType` | IRDatabaseAccessError, IRDatabaseValueNot
 RRestError | `RestErrorType` | RRestHostError, RRestMessageError, RRestTimeoutError | Ошибки rest сервисов
 RTypeError | `TErrorType: struct` | - | Ошибка с произвольной структурой
 #### Initialization
-Ошибки стоит инициализировать через фабрику RErrorFactory.
+Ошибки стоит инициализировать через фабрику `RErrorFactory`.
 ```csharp
 RSimpleError errorSimple = RErrorFactory.Simple("Ошибка");
 
@@ -239,7 +277,7 @@ IRValueNullError errorValueNull = RErrorFactory.ValueNull(nameof(emptyString), "
 RTypeError<CommonErrorType> errorByType = RErrorFactory.ByType(CommonErrorType.Unknown, "Ошибка");
 ```
 #### Reflection
-Существуют методы для определения типа классификации IRError ошибки.
+Существуют методы для определения типа классификации `IRError` ошибки.
 Property/Method | Generic type | Description
 | ------------ | ------------ | ------------ |
 `IsError<TErrorType>` | `TErrorType: IRError` | Является ли текущим типом ошибки
