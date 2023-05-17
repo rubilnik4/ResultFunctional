@@ -11,7 +11,7 @@ namespace ResultFunctional.Models.Units;
 /// <summary>
 /// Result with unit value
 /// </summary>
-internal class RUnit : RBase<Unit, IRUnit>, IRUnit
+public class RUnit : RBase<Unit, IRUnit>, IRUnit
 {
     protected RUnit()
         : base(Unit.Value)

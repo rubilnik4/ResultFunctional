@@ -36,7 +36,7 @@ namespace ResultFunctional.Models.Errors.CommonErrors
         /// </summary>
         /// <typeparam name="TErrorTypeCompare">Error type</typeparam>
         /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
-        public override bool IsErrorType<TErrorTypeCompare>()
+        public override bool HasErrorType<TErrorTypeCompare>()
             where TErrorTypeCompare : struct =>
             false;
 
@@ -46,7 +46,7 @@ namespace ResultFunctional.Models.Errors.CommonErrors
         /// <typeparam name="TErrorTypeCompare">Error type</typeparam>
         /// <param name="errorType">Error type value</param>
         /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
-        public override bool IsErrorType<TErrorTypeCompare>(TErrorTypeCompare errorType)
+        public override bool HasErrorType<TErrorTypeCompare>(TErrorTypeCompare errorType)
             where TErrorTypeCompare : struct =>
             false;
     }

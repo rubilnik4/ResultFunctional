@@ -23,7 +23,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = (IRError)RErrorFactory.Common(CommonErrorType.Unknown, "Неизвестная ошибка");
 
-            bool hasType = errorResult.IsErrorType<CommonErrorType>();
+            bool hasType = errorResult.HasErrorType<CommonErrorType>();
 
             Assert.True(hasType);
         }
@@ -36,7 +36,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = (IRError)RErrorFactory.Common(CommonErrorType.Unknown, "Неизвестная ошибка");
 
-            bool hasType = errorResult.IsErrorType<DatabaseErrorType>();
+            bool hasType = errorResult.HasErrorType<DatabaseErrorType>();
 
             Assert.False(hasType);
         }
@@ -49,7 +49,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = (IRError)RErrorFactory.Simple("Неизвестная ошибка");
 
-            bool hasType = errorResult.IsErrorType<DatabaseErrorType>();
+            bool hasType = errorResult.HasErrorType<DatabaseErrorType>();
 
             Assert.False(hasType);
         }
@@ -62,7 +62,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = (IRError)RErrorFactory.Common(CommonErrorType.Unknown, "Неизвестная ошибка");
 
-            bool hasType = errorResult.IsErrorType(CommonErrorType.Unknown);
+            bool hasType = errorResult.HasErrorType(CommonErrorType.Unknown);
 
             Assert.True(hasType);
         }
@@ -76,7 +76,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = (IRError)RErrorFactory.Common(CommonErrorType.Unknown, "Неизвестная ошибка");
 
-            bool hasType = errorResult.IsErrorType(CommonErrorType.ValueDuplicated);
+            bool hasType = errorResult.HasErrorType(CommonErrorType.ValueDuplicated);
 
             Assert.False(hasType);
         }
@@ -89,7 +89,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         {
             var errorResult = (IRError)RErrorFactory.Simple("Неизвестная ошибка");
 
-            bool hasType = errorResult.IsErrorType(DatabaseErrorType.Connection);
+            bool hasType = errorResult.HasErrorType(DatabaseErrorType.Connection);
 
             Assert.False(hasType);
         }

@@ -29,35 +29,35 @@ namespace ResultFunctional.Models.Errors.BaseErrors
         /// <summary>
         /// Is error result type equal to current type
         /// </summary>
-        /// <typeparam name="TErrorType">Error result type</typeparam>
+        /// <typeparam name="TError">Error result type</typeparam>
         /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
-        bool IsError<TErrorType>()
-            where TErrorType : IRError;
+        bool IsError<TError>()
+            where TError : IRError;
 
         /// <summary>
         /// Is error result type equal to current or base type
         /// </summary>
-        /// <typeparam name="TErrorType">Error result type</typeparam>
+        /// <typeparam name="TError">Error result type</typeparam>
         /// <returns><see langword="true"/> if error equal to the type or base type; otherwise <see langword="false"/></returns>
-        bool HasError<TErrorType>()
-            where TErrorType : IRError;
+        bool HasError<TError>()
+            where TError : IRError;
 
         /// <summary>
         /// Is error type equal to current error type
         /// </summary>
-        /// <typeparam name="TErrorTypeCompare">Error type</typeparam>
+        /// <typeparam name="TErrorType">Error type</typeparam>
         /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
-        bool IsErrorType<TErrorTypeCompare>()
-            where TErrorTypeCompare : struct;
+        bool HasErrorType<TErrorType>()
+            where TErrorType : struct;
 
         /// <summary>
         /// Is error type value equal to current error type
         /// </summary>
-        /// <typeparam name="TErrorTypeCompare">Error type</typeparam>
+        /// <typeparam name="TErrorType">Error type</typeparam>
         /// <param name="errorType">Error type value</param>
         /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
-        bool IsErrorType<TErrorTypeCompare>(TErrorTypeCompare errorType)
-            where TErrorTypeCompare : struct;
+        bool HasErrorType<TErrorType>(TErrorType errorType)
+            where TErrorType : struct;
 
         /// <summary>
         /// Create error  with exception and base parameters.
