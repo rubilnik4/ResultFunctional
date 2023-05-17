@@ -133,7 +133,8 @@ Class | Feature | Signature| Status
 int number = 2;
 IRValue<int> result = RValue<int>.Some(2);
 return result.Success; // true   
-    
+```  
+```csharp
 IRError error = RErrorFactory.Simple("Ошибка");
 IRValue<int> result = RValue<int>.None(error);
 return result.Success; // false     
@@ -151,7 +152,8 @@ Class | Feature | Signature| Status
 List<int> collection = new List<int>() {1, 2, 3};
 IRList<int> result = RListFactory.Some(collection);
 return result.Success; // true     
-    
+``` 
+```csharp
 IRError error = RErrorFactory.Simple("Ошибка");
 IRList<int> result = RListFactory<int>.None(error);
 return result.Success; // false     
@@ -167,7 +169,8 @@ Class | Feature | Signature| Status
 int number = 2;
 IRValue<int> result = number.ToRValue();
 return result.Success; // true   
-    
+```
+```csharp  
 IEnumerable<IRError> error = RErrorFactory.Simple("Ошибка").ToList();
 IRValue<int> result = error.ToRValue<int>(error);
 return result.Success; // false     
@@ -247,6 +250,32 @@ private void SetNumbers(IEnumarable<int> collection)
     }
 }
 ```
+### Polymorphism
+Каждый из вышеперечесленных классов можно напрямую преобразовать в `IRMaybe`. `IRMaybe` тоже можно преобразовать в другие классы с помощью специальных методов. Если классы находятся в статусе Failure, то ошибка передастся и в конвертируемые объекты.
+From | To | Feature | Signature
+| ------------ | ------------ | ------------ | ------------ |
+`IRUnit` | `IRMaybe` | `(IRMaybe)IRUnit` | `_ => IRMaybe`
+`IRValue` | `IRMaybe` | `(IRMaybe)IRValue` |  `_ => IRMaybe`
+`IRList` | `IRMaybe` | `(IRMaybe)IRList` |  `_ => IRMaybe`
+`IRMaybe` | `IRUnit` | `ToRUnit` | `_ => IRUnit`
+`IRMaybe` | `IRValue` | `ToRValue<TValue>` | `TValue => IRValue<TValue>`
+`IRMaybe` | `IRList` | `ToRList<TValue>` | `IReadOnlyCollection<TValue> => IRList<TValue>`
+`IRList` | `IRValue` | `ToRValue` |  `_ => IRValue<IReadonlyCollection<TValue>>`
+```csharp
+IRMaybe maybe = RUnit.Some();
+IRValue<string> rValue = maybe.ToRValue("value");
+return rValue.Success; // true 
+```
+```csharp
+IRMaybe maybe = RErrorFactory.Simple("Error").ToRUnit();
+IRList<int> rList = maybe.ToRList(Enumerable.Range(0, 3).ToList());
+return rValue.Success; // false 
+```
+```csharp
+IRValue<string> rValue = "value".ToRValue();
+IRValue<IReadOnlyCollection<int>> rList = rList.ToRValue(); 
+return rValue.Success; // false 
+```
 ### IRError
 Объект `IRError` можно обозначить как R часть функционального Either<L, R> или же часть None функционального Option. `IRError` может содержать в себе Exception, если создан после возникновения исключения. `IRMaybe` в виде правой части содержит в себе коллекцию `IRError`.
 Property/Method | Description
@@ -267,7 +296,7 @@ RTypeError | `TErrorType: struct` | - | Ошибка с произвольной
 #### Initialization
 Ошибки стоит инициализировать через фабрику `RErrorFactory`.
 ```csharp
-RSimpleError errorSimple = RErrorFactory.Simple("Ошибка");
+RSimpleError errorSimple = RErrorFactory.Simple("Error");
 
 RRestMessageError errorRest = RErrorFactory.Rest(RestErrorType.BadRequest, "BadRequest" ,"Неверно сформированнный запрос"); 
 
@@ -276,13 +305,13 @@ IRValueNullError errorValueNull = RErrorFactory.ValueNull(nameof(emptyString), "
 
 RTypeError<CommonErrorType> errorByType = RErrorFactory.ByType(CommonErrorType.Unknown, "Ошибка");
 ```
-#### Reflection
+#### IRError Reflection
 Существуют методы для определения типа классификации `IRError` ошибки.
 Property/Method | Generic type | Description
 | ------------ | ------------ | ------------ |
-`IsError<TErrorType>` | `TErrorType: IRError` | Является ли текущим типом ошибки
-`HasError<TErrorType>` | `TErrorType: IRError` | Является или наследуется от текущего типа
-`IsErrorType<TErrorTypeCompare>` | `TErrorType: struct` | Содержит ли в себе структуру ошибки
+`IsError<TError>` | `TError: IRError` | Является ли текущим типом ошибки
+`HasError<TError>` | `TError: IRError` | Является или наследуется от текущего типа
+`HasErrorType<TErrorType>` | `TErrorType: struct` | Содержит ли в себе структуру ошибки
 ```csharp
 string emptyString = null;
 IRError notValidError = RErrorFactory.ValueNull(nameof(emptyString), "Not initialized");
@@ -292,8 +321,25 @@ bool isValueError = notValidError.IsError<IRValueError>(); // true
 bool hasValueError = notValidError.HasError<IRValueError>(); // true
 
 IRError errorRest = RErrorFactory.Rest(RestErrorType.BadRequest, "BadRequest" ,"Неверно сформированнный запрос"); 
-var isRestErrorType = errorRest.IsErrorType<RestErrorType>(); // true
-var isBadRequestType = errorRest.IsErrorType(RestErrorType.BadRequest); // true
-var isCommonErrorType = errorRest.IsErrorType<CommonErrorType>(); // false
-var isNullValueType = errorRest.IsErrorType(CommonErrorType.NullArgument); // false
+var isRestErrorType = errorRest.HasErrorType<RestErrorType>(); // true
+var isBadRequestType = errorRest.HasErrorType(RestErrorType.BadRequest); // true
+var isCommonErrorType = errorRest.HasErrorType<CommonErrorType>(); // false
+var isNullValueType = errorRest.HasErrorType(CommonErrorType.NullArgument); // false
 ```
+#### IRMaybe Reflection
+В классе `IRMaybe` можно определить тип и классификацию ошибок `IRError`, если он находится в статусе Failure. Методы эквиваленты тем, что описаны для класса `IRError`, только применяются для всей коллекции ошибок. Если хоть одна ошибка сооветсвует запрашиваемым параметрам, метод возвращает true.
+Property/Method | Generic type | Description
+| ------------ | ------------ | ------------ |
+`IsAnyError<TError>` | `TError: IRError` | Содержит ли текущий тип ошибки
+`HasAnyError<TError>` | `TError: IRError` |  Содержит ли текущий или наследуемый тип ошибки
+`HasAnyErrorType<TErrorType>` | `TErrorType: struct` | Содержит ли структуру ошибки
+```csharp
+IRError errorRest = RErrorFactory.Rest(RestErrorType.BadRequest, "BadRequest" ,"Неверно сформированнный запрос"); 
+IRMaybe rMaybe = errorRest.ToRMaybe();
+bool isValueError = rMaybe.IsAnyError<IRRestError>(); // false
+bool hasNullError = rMaybe.HasAnyError<IRRestError>(); // true
+var isBadRequestType = rMaybe.HasAnyErrorType(RestErrorType.BadRequest); // true
+```
+### Conclusion
+Класс `IRMaybe` является оберткой для хранения переменных в состоянии Success или же хранения ошибок `IRError` в состояние Failure. В последствие в этим классам могут быть применены методы расширения (Result extensions) для последующей обработки данных.
+## Result extensions
