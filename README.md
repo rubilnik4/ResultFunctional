@@ -343,3 +343,7 @@ var isBadRequestType = rMaybe.HasAnyErrorType(RestErrorType.BadRequest); // true
 ### Conclusion
 Класс `IRMaybe` является оберткой для хранения переменных в состоянии Success или же хранения ошибок `IRError` в состояние Failure. В последствие в этим классам могут быть применены методы расширения (Result extensions) для последующей обработки данных.
 ## Result extensions
+### IRMaybe extensions
+### IRValue extensions
+### IRList extensions
+### Conclusion
