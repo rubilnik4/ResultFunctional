@@ -371,11 +371,11 @@ Extension | Function type | Description
 Extension | Signature | Description
 | ------------ | ------------ | ------------ |
 `-` | - | Отсутствует
-`Void` | `R<T> => R<T>` | Выполнение void действия и возвращение R класса в неизменном состоянии
-`Try` | `Exception => R<T>` | Выполнение функции в `Try/catch` обертке и преобразование `Exception` в тип `IRError`.
-`Curry` | `(R<(T => T)>, R<T>) => (() => R<T>)` |  Уменьшение входных аргументов функции высокого порядка.
-`Lift` | R<T> => T | Разворачивание объекта из обертки для обоих статусов Success и Failure
-`Fold` | List<R<T>> => RList<T> | Объединение R классов в коллекцию
+`Void` | `R<T> => R<T>` | Выполнение void действия
+`Try` | `Exception => R<T>` | Преобразование `Exception` в тип `IRError` при `Try/catch`
+`Curry` | `(R<T => T>, R<T>) => () => R<T>` |  Уменьшение входных аргументов функции высокого порядка
+`Lift` | `R<T> => T` | Разворачивание объекта из обертки `RLibrary`
+`Fold` | `List<R<T>> => RList<T>` | Объединение R классов в коллекцию
 #### 4. Status action
 Действие в зависимости от статуса объекта `IRMaybe`. Функции могут обрабатывать значения как в статусе Success, так и в статусе Failure.
 Extension | Status action | Description
