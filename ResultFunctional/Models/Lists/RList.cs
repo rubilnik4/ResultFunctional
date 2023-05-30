@@ -16,7 +16,7 @@ namespace ResultFunctional.Models.Lists;
 /// Result with collection
 /// </summary>
 /// <typeparam name="TValue">Value</typeparam>
-internal class RList<TValue>: RBase<IReadOnlyCollection<TValue>, IRList<TValue>>, IRList<TValue>
+public class RList<TValue>: RBase<IReadOnlyCollection<TValue>, IRList<TValue>>, IRList<TValue>
     where TValue: notnull
 {
     protected RList(IReadOnlyCollection<TValue> values)

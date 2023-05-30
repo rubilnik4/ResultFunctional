@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using ResultFunctional.FunctionalExtensions.Sync;
 
 namespace ResultFunctional.FunctionalExtensions.Async;
 
@@ -16,4 +18,14 @@ public static class TaskExtensions
     public static Task<TValue> ToTask<TValue>(this TValue value)
         where TValue : notnull =>
         Task.FromResult(value);
+
+    /// <summary>
+    /// Decorate action to task function
+    /// </summary>
+    /// <typeparam name="TValue">Value type</typeparam>
+    /// <param name="action">Action</param>
+    /// <returns>Task function</returns>
+    public static Func<TValue, Task> ToTask<TValue>(this Action<TValue> action)
+        where TValue : notnull =>
+        value => Task.CompletedTask.Void(_ => action(value));
 }

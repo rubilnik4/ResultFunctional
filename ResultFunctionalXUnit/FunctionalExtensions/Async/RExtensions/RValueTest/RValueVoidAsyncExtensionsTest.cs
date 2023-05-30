@@ -91,6 +91,42 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RValueTes
         /// Проверка выполнения асинхронного действия при результирующем ответе. Положительный вариант
         /// </summary>
         [Fact]
+        public async Task RValueVoidOkBadAsyncPart_Ok()
+        {
+            int initialValue = Numbers.Number;
+            var resultOk = initialValue.ToRValue();
+            var voidObjectMock = new Mock<IVoidObject>();
+
+            var resultAfterVoid = await resultOk.RValueVoidMatchAsync(number => voidObjectMock.Object.TestNumberVoidAsync(number),
+                                                                      _ => voidObjectMock.Object.TestVoid());
+
+            Assert.True(resultAfterVoid.Equals(resultOk));
+            Assert.Equal(initialValue, resultAfterVoid.GetValue());
+            voidObjectMock.Verify(voidObject => voidObject.TestNumberVoidAsync(initialValue), Times.Once);
+        }
+
+        /// <summary>
+        /// Проверка выполнения асинхронного действия при результирующем ответе. Негативный вариант
+        /// </summary>
+        [Fact]
+        public async Task RValueVoidOkBadAsyncPart_Bad()
+        {
+            var errorsInitial = CreateErrorListTwoTest();
+            var rMaybe = errorsInitial.ToRValue<int>();
+            var voidObjectMock = new Mock<IVoidObject>();
+
+            var resultAfterVoid = await rMaybe.RValueVoidMatchAsync(_ => voidObjectMock.Object.TestVoidAsync(),
+                                                                    errors => voidObjectMock.Object.TestNumberVoid(errors.Count));
+
+            Assert.True(resultAfterVoid.Equals(rMaybe));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
+            voidObjectMock.Verify(voidObject => voidObject.TestNumberVoid(It.IsAny<int>()), Times.Once);
+        }
+
+        /// <summary>
+        /// Проверка выполнения асинхронного действия при результирующем ответе. Положительный вариант
+        /// </summary>
+        [Fact]
         public async Task RValueVoidOkBadAsync_Ok()
         {
             int initialValue = Numbers.Number;

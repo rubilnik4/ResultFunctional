@@ -88,6 +88,44 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
             voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
         }
 
+
+        /// <summary>
+        /// Проверка выполнения действия при результирующем ответе. Положительный вариант
+        /// </summary>
+        [Fact]
+        public async Task RListVoidOkBadAsyncPart_Ok()
+        {
+            var initialCollection = GetRangeNumber();
+            var resultOk = initialCollection.ToRList();
+            var voidObjectMock = new Mock<IVoidObject>();
+
+            var resultAfterVoid = await resultOk.RListVoidMatchAsync(numbers => voidObjectMock.Object.TestNumbersVoidAsync(numbers),
+                                                                                _ => voidObjectMock.Object.TestVoid());
+
+            Assert.True(resultAfterVoid.Equals(resultOk));
+            Assert.Equal(initialCollection, resultAfterVoid.GetValue());
+            voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
+        }
+
+        /// <summary>
+        /// Проверка выполнения действия при результирующем ответе. Негативный вариант
+        /// </summary>
+        [Fact]
+        public async Task RListVoidOkBadAsyncPart_Bad()
+        {
+            var errorsInitial = CreateErrorListTwoTest();
+            var rMaybe = errorsInitial.ToRList<int>();
+            var voidObjectMock = new Mock<IVoidObject>();
+
+            var resultAfterVoid = await rMaybe.RListVoidMatchAsync(
+                _ => voidObjectMock.Object.TestVoidAsync(),
+                errors => voidObjectMock.Object.TestNumbersVoid(GetListByErrorsCount(errors)));
+
+            Assert.True(resultAfterVoid.Equals(rMaybe));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
+            voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Once);
+        }
+
         /// <summary>
         /// Проверка выполнения действия при результирующем ответе. Положительный вариант
         /// </summary>

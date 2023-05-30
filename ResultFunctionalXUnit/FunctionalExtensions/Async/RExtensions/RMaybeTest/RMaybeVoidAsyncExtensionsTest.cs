@@ -84,6 +84,40 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
         /// Проверка выполнения действия при результирующем ответе. Положительный вариант
         /// </summary>
         [Fact]
+        public async Task RMaybeVoidOkBadAsyncPart_Ok()
+        {
+            var resultOk = RUnitFactory.Some();
+            var voidObjectMock = new Mock<IVoidObject>();
+
+            var resultAfterVoid = await resultOk.RMaybeVoidMatchAsync(() => voidObjectMock.Object.TestVoidAsync(),
+                                                                errors => voidObjectMock.Object.TestNumberVoid(errors.Count));
+
+            Assert.True(resultAfterVoid.Equals(resultOk));
+            voidObjectMock.Verify(voidObject => voidObject.TestVoidAsync(), Times.Once);
+        }
+
+        /// <summary>
+        /// Проверка выполнения действия при результирующем ответе. Негативный вариант
+        /// </summary>
+        [Fact]
+        public async Task RMaybeVoidOkBadAsyncPart_Bad()
+        {
+            var errorsInitial = CreateErrorListTwoTest();
+            var rMaybe = RUnitFactory.None(errorsInitial);
+            var voidObjectMock = new Mock<IVoidObject>();
+
+            var resultAfterVoid = await rMaybe.RMaybeVoidMatchAsync(() => voidObjectMock.Object.TestVoidAsync(),
+                                                                   errors => voidObjectMock.Object.TestNumberVoid(errors.Count));
+
+            Assert.True(resultAfterVoid.Equals(rMaybe));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
+            voidObjectMock.Verify(voidObject => voidObject.TestNumberVoid(It.IsAny<int>()), Times.Once);
+        }
+
+        /// <summary>
+        /// Проверка выполнения действия при результирующем ответе. Положительный вариант
+        /// </summary>
+        [Fact]
         public async Task RMaybeVoidOkBadAsync_Ok()
         {
             var resultOk = RUnitFactory.Some();
@@ -123,7 +157,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
             var resultOk = RUnitFactory.Some();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.RMaybeVoidWhereAsync(() => true,
+            var resultAfterVoid = await resultOk.RMaybeVoidOptionAsync(() => true,
                 () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultOk));
@@ -139,7 +173,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
             var resultOk = RUnitFactory.Some();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.RMaybeVoidWhereAsync(() => false,
+            var resultAfterVoid = await resultOk.RMaybeVoidOptionAsync(() => false,
                 () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultOk));
@@ -156,7 +190,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
             var rMaybe = RUnitFactory.None(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await rMaybe.RMaybeVoidWhereAsync(() => true,
+            var resultAfterVoid = await rMaybe.RMaybeVoidOptionAsync(() => true,
                 () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(rMaybe));
@@ -175,7 +209,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
             var rMaybe = RUnitFactory.None(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await rMaybe.RMaybeVoidWhereAsync(() => false,
+            var resultAfterVoid = await rMaybe.RMaybeVoidOptionAsync(() => false,
                 () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(rMaybe));

@@ -101,8 +101,8 @@ namespace ResultFunctionalXUnit.Models.Options
             var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var result = databaseTableError.ToRUnit();
 
-            Assert.True(result.HasError<IRDatabaseAccessError>());
-            Assert.True(result.HasError<RDatabaseAccessError>());
+            Assert.True(result.HasAnyError<IRDatabaseAccessError>());
+            Assert.True(result.HasAnyError<RDatabaseAccessError>());
         }
 
         /// <summary>
@@ -114,8 +114,8 @@ namespace ResultFunctionalXUnit.Models.Options
             var databaseTableError = RErrorFactory.DatabaseAccess("TestTable", "error");
             var result = databaseTableError.ToRUnit();
 
-            Assert.False(result.IsError<IRDatabaseAccessError>());
-            Assert.True(result.IsError<RDatabaseAccessError>());
+            Assert.False(result.IsAnyError<IRDatabaseAccessError>());
+            Assert.True(result.IsAnyError<RDatabaseAccessError>());
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace ResultFunctionalXUnit.Models.Options
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
             var result = errors.ToRUnit();
 
-            Assert.True(result.HasErrorType<DatabaseErrorType>());
+            Assert.True(result.HasAnyErrorType<DatabaseErrorType>());
         }
 
         /// <summary>
@@ -162,8 +162,8 @@ namespace ResultFunctionalXUnit.Models.Options
             var errors = new List<IRError> { valueNotFoundError, databaseTableError };
             var result = errors.ToRUnit();
 
-            Assert.True(result.HasErrorType(CommonErrorType.ValueNotFound));
-            Assert.False(result.HasErrorType(CommonErrorType.ValueNotValid));
+            Assert.True(result.HasAnyErrorType(CommonErrorType.ValueNotFound));
+            Assert.False(result.HasAnyErrorType(CommonErrorType.ValueNotValid));
         }
 
         /// <summary>

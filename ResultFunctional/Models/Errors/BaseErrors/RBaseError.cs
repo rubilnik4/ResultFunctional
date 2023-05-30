@@ -49,7 +49,7 @@ namespace ResultFunctional.Models.Errors.BaseErrors
         /// </summary>
         /// <typeparam name="TRErrorType">Error type</typeparam>
         /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
-        public override bool IsErrorType<TRErrorType>()
+        public override bool HasErrorType<TRErrorType>()
             where TRErrorType : struct =>
             typeof(TErrorType) == typeof(TRErrorType);
 
@@ -59,9 +59,9 @@ namespace ResultFunctional.Models.Errors.BaseErrors
         /// <typeparam name="TRErrorType">Error type</typeparam>
         /// <param name="errorType">Error type value</param>
         /// <returns><see langword="true"/> if error equal to the type; otherwise <see langword="false"/></returns>
-        public override bool IsErrorType<TRErrorType>(TRErrorType errorType)
+        public override bool HasErrorType<TRErrorType>(TRErrorType errorType)
             where TRErrorType : struct =>
-            IsErrorType<TRErrorType>() && ErrorType.GetHashCode() == errorType.GetHashCode();
+            HasErrorType<TRErrorType>() && ErrorType.GetHashCode() == errorType.GetHashCode();
 
         /// <summary>
         /// Initialize base error

@@ -63,7 +63,7 @@ public abstract class RMaybe : IRMaybe
     /// </summary>
     /// <typeparam name="TError">Error type</typeparam>
     /// <returns><see langword="true"/> if error equal to the current type; otherwise <see langword="false"/></returns>
-    public bool IsError<TError>()
+    public bool IsAnyError<TError>()
         where TError : IRError =>
         Errors?.Any(error => error.IsError<TError>()) == true;
 
@@ -72,7 +72,7 @@ public abstract class RMaybe : IRMaybe
     /// </summary>
     /// <typeparam name="TError">Error type</typeparam>
     /// <returns><see langword="true"/> if error equal or derived to the current type; otherwise <see langword="false"/></returns>
-    public bool HasError<TError>()
+    public bool HasAnyError<TError>()
         where TError : IRError =>
         Errors?.Any(error => error.HasError<TError>()) == true;
 
@@ -91,7 +91,7 @@ public abstract class RMaybe : IRMaybe
     /// </summary>
     /// <typeparam name="TErrorType">Error type</typeparam>
     /// <returns><see langword="true"/> if error type equal to the current error type; otherwise <see langword="false"/></returns>
-    public bool HasErrorType<TErrorType>()
+    public bool HasAnyErrorType<TErrorType>()
         where TErrorType : struct =>
         Errors?.Any(error => error is IRBaseError<TErrorType>) == true;
 
@@ -101,7 +101,7 @@ public abstract class RMaybe : IRMaybe
     /// <typeparam name="TErrorType">Error type</typeparam>
     /// <param name="errorType">Error type</param>
     /// <returns><see langword="true"/> if error type equal to the current error type; otherwise <see langword="false"/></returns>
-    public bool HasErrorType<TErrorType>(TErrorType errorType)
+    public bool HasAnyErrorType<TErrorType>(TErrorType errorType)
         where TErrorType : struct =>
         Errors?.OfType<IRBaseError<TErrorType>>()
                .Any(error => error.ErrorType.Equals(errorType)) == true;

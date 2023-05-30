@@ -8,7 +8,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
     /// <summary>
     /// Методы расширения для проверки условий для асинхронной задачи-объекта. Тесты
     /// </summary>
-    public class WhereBindAsyncExtensionsTests
+    public class OptionAwaitExtensionsTests
     {
         /// <summary>
         /// Условие продолжающее действие. Положительное
@@ -38,7 +38,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
                await Task.FromResult(testParseNumber).OptionAwait(
                  numberToParse => Int32.TryParse(numberToParse, out _),
                 numberToParse => Task.FromResult(Int32.Parse(numberToParse)),
-                numberToParse => Task.FromResult(0));
+                _ => Task.FromResult(0));
 
             Assert.Equal(44, numberAfterTest);
         }
@@ -70,7 +70,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
             int numberAfterTest =
                 await Task.FromResult(testParseNumber).OptionAwait(
                 numberToParse => Int32.TryParse(numberToParse, out _),
-                numberToParse => Task.FromResult(0),
+                _ => Task.FromResult(0),
                 numberToParse => Task.FromResult(numberToParse.Length));
 
             Assert.Equal(testParseNumber.Length, numberAfterTest);

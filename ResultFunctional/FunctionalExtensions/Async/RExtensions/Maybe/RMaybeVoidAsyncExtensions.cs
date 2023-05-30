@@ -19,9 +19,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Maybe
         /// <param name="action">Action</param>
         /// <returns>Unchanged result error</returns>
         public static async Task<IRMaybe> RMaybeVoidSomeAsync(this IRMaybe @this, Func<Task> action) =>
-            await @this.
-            VoidSomeAsync(_ => @this.Success,
-                        _ => action.Invoke());
+            await @this
+               .VoidSomeAsync(_ => @this.Success,
+                              _ => action.Invoke());
 
         /// <summary>
         /// Execute async action if result has errors
@@ -31,9 +31,23 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Maybe
         /// <returns>Unchanged result error</returns>
         public static async Task<IRMaybe> RMaybeVoidNoneAsync(this IRMaybe @this,
                                                               Func<IReadOnlyCollection<IRError>, Task> action) =>
-            await @this.
-            VoidSomeAsync(_ => @this.Failure,
-                        _ => action.Invoke(@this.GetErrors()));
+            await @this
+               .VoidSomeAsync(_ => @this.Failure,
+                              _ => action.Invoke(@this.GetErrors()));
+
+        /// <summary>
+        /// Execute async action depending on result errors
+        /// </summary>
+        /// <param name="this">Incoming result error</param>
+        /// <param name="actionSome">Action if result hasn't errors</param>
+        /// <param name="actionNone">Action if result has errors</param>
+        /// <returns>Unchanged result error</returns>
+        public static async Task<IRMaybe> RMaybeVoidMatchAsync(this IRMaybe @this, Func<Task> actionSome,
+                                                              Action<IReadOnlyCollection<IRError>> actionNone) =>
+            await @this
+               .VoidOptionAsync(_ => @this.Success,
+                                _ => actionSome.Invoke(),
+                                _ => actionNone.ToTask().Invoke(@this.GetErrors()));
 
         /// <summary>
         /// Execute async action depending on result errors
@@ -44,8 +58,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Maybe
         /// <returns>Unchanged result error</returns>
         public static async Task<IRMaybe> RMaybeVoidMatchAsync(this IRMaybe @this, Func<Task> actionSome,
                                                               Func<IReadOnlyCollection<IRError>, Task> actionNone) =>
-            await @this.
-                VoidOptionAsync(_ => @this.Success,
+            await @this
+               .VoidOptionAsync(_ => @this.Success,
                                 _ => actionSome.Invoke(),
                                 _ => actionNone.Invoke(@this.GetErrors()));
 
@@ -56,9 +70,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Maybe
         /// <param name="predicate">Predicate function</param>
         /// <param name="action">Function if predicate <see langword="true"/></param>
         /// <returns>Unchanged result error</returns>
-        public static async Task<IRMaybe> RMaybeVoidWhereAsync(this IRMaybe @this, Func<bool> predicate, Func<Task> action) =>
-            await @this.
-                VoidSomeAsync(_ => @this.Success && predicate(),
+        public static async Task<IRMaybe> RMaybeVoidOptionAsync(this IRMaybe @this, Func<bool> predicate, Func<Task> action) =>
+            await @this
+               .VoidSomeAsync(_ => @this.Success && predicate(),
                               _ => action.Invoke());
     }
 }
