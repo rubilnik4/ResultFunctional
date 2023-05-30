@@ -92,6 +92,44 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RListTest
         /// Проверка выполнения действия при результирующем ответе. Положительный вариант
         /// </summary>
         [Fact]
+        public async Task RListVoidOkBadBindAsyncPart_Ok()
+        {
+            var initialCollection = GetRangeNumber();
+            var resultOk = RListFactory.SomeTask(initialCollection);
+            var voidObjectMock = new Mock<IVoidObject>();
+
+            var resultAfterVoid = await resultOk.RListVoidMatchAwait(numbers => voidObjectMock.Object.TestNumbersVoidAsync(numbers),
+                                                                     _ => voidObjectMock.Object.TestVoid());
+
+            Assert.True(resultAfterVoid.Equals(resultOk.Result));
+            Assert.Equal(initialCollection, resultAfterVoid.GetValue());
+            voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoidAsync(initialCollection), Times.Once);
+        }
+
+        /// <summary>
+        /// Проверка выполнения действия при результирующем ответе. Негативный вариант
+        /// </summary>
+        [Fact]
+        public async Task RListVoidOkBadBindAsyncPart_Bad()
+        {
+            var errorsInitial = CreateErrorListTwoTest();
+            var rMaybe = RListFactory.NoneTask<int>(errorsInitial);
+            var voidObjectMock = new Mock<IVoidObject>();
+
+            var resultAfterVoid = await rMaybe.RListVoidMatchAwait(
+                _ => voidObjectMock.Object.TestVoidAsync(),
+                errors => voidObjectMock.Object.TestNumbersVoid(new List<int> { errors.Count }));
+
+            Assert.True(resultAfterVoid.Equals(rMaybe.Result));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
+            voidObjectMock.Verify(voidObject => voidObject.TestNumbersVoid(It.IsAny<IEnumerable<int>>()), Times.Once);
+        }
+
+
+        /// <summary>
+        /// Проверка выполнения действия при результирующем ответе. Положительный вариант
+        /// </summary>
+        [Fact]
         public async Task RListVoidOkBadBindAsync_Ok()
         {
             var initialCollection = GetRangeNumber();

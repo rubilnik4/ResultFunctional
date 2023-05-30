@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Threading.Tasks;
-using ResultFunctional.FunctionalExtensions.Async;
+using ResultFunctional.FunctionalExtensions.Sync;
 using Xunit;
 
-namespace ResultFunctionalXUnit.FunctionalExtensions.Async
+namespace ResultFunctionalXUnit.FunctionalExtensions.Sync
 {
     /// <summary>
-    /// Методы расширения для проверки условий для задачи-объекта. Тесты
+    /// Методы расширения для проверки условий. Тесты
     /// </summary>
-    public class WhereTaskAsyncExtensionsTest
+    public class OptionExtensionsTest
     {
         /// <summary>
         /// Условие продолжающее действие. Положительное
         /// </summary>  
         [Fact]
-        public async Task WhereContinueTaskAsync_Ok()
+        public void WhereContinue_Ok()
         {
             const string test = "WhereTest";
 
-            string testAfterWhere =
-               await Task.FromResult(test).OptionTask(testWhere => !String.IsNullOrWhiteSpace(testWhere),
+            string testAfterWhere = 
+                test.Option(testWhere => !String.IsNullOrWhiteSpace(testWhere),
                 testWhere => testWhere.ToLowerInvariant(),
                 testWhere => testWhere);
 
@@ -30,15 +29,14 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
         /// Условие продолжающее действие. Положительное. Возвращает другой тип
         /// </summary>  
         [Fact]
-        public async Task WhereContinueTaskAsync_Ok_AnotherType()
+        public void WhereContinue_Ok_AnotherType()
         {
             const string testParseNumber = "44";
 
             int numberAfterTest =
-               await Task.FromResult(testParseNumber).OptionTask(
-                 numberToParse => Int32.TryParse(numberToParse, out _),
+                testParseNumber.Option(numberToParse => Int32.TryParse(numberToParse, out _),
                 Int32.Parse,
-                numberToParse => 0);
+                _ => 0);
 
             Assert.Equal(44, numberAfterTest);
         }
@@ -47,12 +45,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
         /// Условие продолжающее действие. Негативное
         /// </summary>  
         [Fact]
-        public async Task WhereContinueTaskAsync_Bad()
+        public void WhereContinue_Bad()
         {
             const string test = "BadTest";
 
             string testAfterWhere =
-                await Task.FromResult(test).OptionTask(testWhere => testWhere.Length == 0,
+                test.Option(testWhere => testWhere.Length == 0,
                 testWhere => testWhere,
                 testWhere => testWhere.ToLower());
 
@@ -63,14 +61,13 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
         /// Условие продолжающее действие. Положительное. Возвращает другой тип
         /// </summary>  
         [Fact]
-        public async Task WhereContinueTaskAsync_Bad_AnotherType()
+        public void WhereContinue_Bad_AnotherType()
         {
             const string testParseNumber = "test";
 
             int numberAfterTest =
-                await Task.FromResult(testParseNumber).OptionTask(
-                numberToParse => Int32.TryParse(numberToParse, out _),
-                numberToParse => 0,
+                testParseNumber.Option(numberToParse => Int32.TryParse(numberToParse, out _),
+                _ => 0,
                 numberToParse => numberToParse.Length);
 
             Assert.Equal(testParseNumber.Length, numberAfterTest);
@@ -81,12 +78,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
         /// Обработка позитивного условия
         /// </summary>  
         [Fact]
-        public async Task WhereOkTaskAsync_LowCaseText()
+        public void WhereOk_LowCaseText()
         {
             const string test = "WhereOk";
 
             string testAfterWhere =
-                await Task.FromResult(test).OptionSomeTask(testWhere => !String.IsNullOrWhiteSpace(testWhere),
+                test.OptionSome(testWhere => !String.IsNullOrWhiteSpace(testWhere),
                 testWhere => testWhere.ToLowerInvariant());
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);
@@ -96,12 +93,12 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async
         /// Обработка негативного условия
         /// </summary>
         [Fact]
-        public  async Task WhereBadTaskAsync_LowCaseText()
+        public void WhereBad_LowCaseText()
         {
             const string test = "BadTest";
 
             string testAfterWhere =
-                await Task.FromResult(test).OptionNoneTask(testWhere => testWhere.Length == 0,
+                test.OptionNone(testWhere => testWhere.Length == 0,
                     testWhere => testWhere.ToLower());
 
             Assert.Equal(test.ToLowerInvariant(), testAfterWhere);

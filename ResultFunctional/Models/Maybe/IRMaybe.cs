@@ -45,7 +45,7 @@ public interface IRMaybe
     /// </summary>
     /// <typeparam name="TError">Error type</typeparam>
     /// <returns><see langword="true"/> if error equal to the current type; otherwise <see langword="false"/></returns>
-    bool IsError<TError>()
+    bool IsAnyError<TError>()
         where TError : IRError;
 
     /// <summary>
@@ -53,7 +53,7 @@ public interface IRMaybe
     /// </summary>
     /// <typeparam name="TError">Error type</typeparam>
     /// <returns><see langword="true"/> if error equal or derived to the current type; otherwise <see langword="false"/></returns>
-    bool HasError<TError>()
+    bool HasAnyError<TError>()
         where TError : IRError;
 
     /// <summary>
@@ -67,7 +67,7 @@ public interface IRMaybe
     /// </summary>
     /// <typeparam name="TErrorType">Error type</typeparam>
     /// <returns><see langword="true"/> if error type equal to the current error type; otherwise <see langword="false"/></returns>
-    bool HasErrorType<TErrorType>()
+    bool HasAnyErrorType<TErrorType>()
         where TErrorType : struct;
 
     /// <summary>
@@ -76,7 +76,7 @@ public interface IRMaybe
     /// <typeparam name="TErrorType">Error type</typeparam>
     /// <param name="errorType">Error type</param>
     /// <returns><see langword="true"/> if error type equal to the current error type; otherwise <see langword="false"/></returns>
-    bool HasErrorType<TErrorType>(TErrorType errorType)
+    bool HasAnyErrorType<TErrorType>(TErrorType errorType)
         where TErrorType : struct;
 
     /// <summary>

@@ -49,12 +49,29 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Values
         /// <returns>Unchanged result value</returns>
         public static async Task<IRValue<TValue>> RValueVoidMatchAsync<TValue>(this IRValue<TValue> @this,
                                                                                Func<TValue, Task> actionSome,
+                                                                               Action<IReadOnlyCollection<IRError>> actionNone)
+            where TValue : notnull =>
+            await @this.
+                VoidOptionAsync(_ => @this.Success,
+                                _ => actionSome.Invoke(@this.GetValue()),
+                                _ => actionNone.ToTask().Invoke(@this.GetErrors()));
+
+        /// <summary>
+        /// Execute async action depending on result value errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result value</param>
+        /// <param name="actionSome">Action if result value hasn't errors</param>
+        /// <param name="actionNone">Action if result value has errors</param>
+        /// <returns>Unchanged result value</returns>
+        public static async Task<IRValue<TValue>> RValueVoidMatchAsync<TValue>(this IRValue<TValue> @this,
+                                                                               Func<TValue, Task> actionSome,
                                                                                Func<IReadOnlyCollection<IRError>, Task> actionNone)
             where TValue : notnull =>
             await @this.
                 VoidOptionAsync(_ => @this.Success,
-                                actionSome: _ => actionSome.Invoke(@this.GetValue()),
-                                actionNone: _ => actionNone.Invoke(@this.GetErrors()));
+                                _ => actionSome.Invoke(@this.GetValue()),
+                                _ => actionNone.Invoke(@this.GetErrors()));
 
         /// <summary>
         /// Execute async action depending on result value errors and predicate

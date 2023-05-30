@@ -12,7 +12,7 @@ namespace ResultFunctional.Models.Base;
 /// </summary>
 /// <typeparam name="TValue">Value</typeparam>
 /// <typeparam name="TOption">Result option</typeparam>
-internal abstract class RBase<TValue, TOption> : RMaybe, IRBase<TValue, TOption>
+public abstract class RBase<TValue, TOption> : RMaybe, IRBase<TValue, TOption>
     where TValue : notnull
     where TOption : IRBase<TValue, TOption>
 {

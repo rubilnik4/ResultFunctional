@@ -46,8 +46,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="actionNone">Action if result value has errors</param>
         /// <returns>Unchanged result value</returns>
         public static IRValue<TValue> RValueVoidMatch<TValue>(this IRValue<TValue> @this,
-                                                                        Action<TValue> actionSome,
-                                                                        Action<IReadOnlyCollection<IRError>> actionNone)
+                                                              Action<TValue> actionSome,
+                                                              Action<IReadOnlyCollection<IRError>> actionNone)
              where TValue : notnull =>
             @this.
             VoidOption(_ => @this.Success,

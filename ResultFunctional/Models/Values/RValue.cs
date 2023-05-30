@@ -12,7 +12,7 @@ namespace ResultFunctional.Models.Values;
 /// Result with value
 /// </summary>
 /// <typeparam name="TValue">Value</typeparam>
-internal class RValue<TValue> : RBase<TValue, IRValue<TValue>>, IRValue<TValue>
+public class RValue<TValue> : RBase<TValue, IRValue<TValue>>, IRValue<TValue>
     where TValue : notnull
 {
     protected RValue(TValue value)
