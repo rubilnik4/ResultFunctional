@@ -21,9 +21,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         public static async Task<IRList<TValue>> RListVoidSomeAsync<TValue>(this IRList<TValue> @this,
                                                                             Func<IReadOnlyCollection<TValue>, Task> action)
             where TValue : notnull =>
-            await @this.
-                VoidSomeAsync(_ => @this.Success,
-                              action: _ => action.Invoke(@this.GetValue()));
+            await @this
+               .VoidSomeAsync(_ => @this.Success,
+                              _ => action.Invoke(@this.GetValue()));
 
         /// <summary>
         /// Execute async action if result collection has errors
@@ -35,9 +35,26 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         public static async Task<IRList<TValue>> RListVoidNoneAsync<TValue>(this IRList<TValue> @this,
                                                                             Func<IReadOnlyCollection<IRError>, Task> action)
             where TValue : notnull =>
-            await @this.
-                VoidSomeAsync(_ => @this.Failure,
-                              action: _ => action.Invoke(@this.GetErrors()));
+            await @this
+               .VoidSomeAsync(_ => @this.Failure,
+                              _ => action.Invoke(@this.GetErrors()));
+
+        /// <summary>
+        /// Execute async action depending on result collection errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="actionSome">Action if result collection hasn't errors</param>
+        /// <param name="actionNone">Action if result collection has errors</param>
+        /// <returns>Unchanged result collection</returns>
+        public static async Task<IRList<TValue>> RListVoidMatchAsync<TValue>(this IRList<TValue> @this,
+                                                                             Func<IReadOnlyCollection<TValue>, Task> actionSome,
+                                                                             Action<IReadOnlyCollection<IRError>> actionNone)
+            where TValue : notnull =>
+            await @this
+               .VoidOptionAsync(_ => @this.Success,
+                                _ => actionSome.Invoke(@this.GetValue()),
+                                _ => actionNone.ToTask().Invoke(@this.GetErrors()));
 
         /// <summary>
         /// Execute async action depending on result collection errors
@@ -51,10 +68,10 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
                                                                              Func<IReadOnlyCollection<TValue>, Task> actionSome,
                                                                              Func<IReadOnlyCollection<IRError>, Task> actionNone)
             where TValue : notnull =>
-            await @this.
-                VoidOptionAsync(_ => @this.Success,
-                                actionSome: _ => actionSome.Invoke(@this.GetValue()),
-                                actionNone: _ => actionNone.Invoke(@this.GetErrors()));
+            await @this
+               .VoidOptionAsync(_ => @this.Success,
+                                _ => actionSome.Invoke(@this.GetValue()),
+                                _ => actionNone.Invoke(@this.GetErrors()));
 
         /// <summary>
         /// Execute async action depending on result collection errors and predicate
@@ -68,8 +85,8 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
                                                                               Func<IReadOnlyCollection<TValue>, bool> predicate,
                                                                               Func<IReadOnlyCollection<TValue>, Task> action)
             where TValue : notnull =>
-            await @this.
-                VoidSomeAsync(_ => @this.Success && predicate(@this.GetValue()),
-                              action: _ => action.Invoke(@this.GetValue()));
+            await @this
+               .VoidSomeAsync(_ => @this.Success && predicate(@this.GetValue()),
+                              _ => action.Invoke(@this.GetValue()));
     }
 }

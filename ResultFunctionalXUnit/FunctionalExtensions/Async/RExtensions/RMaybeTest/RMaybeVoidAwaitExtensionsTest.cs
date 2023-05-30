@@ -84,6 +84,40 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
         /// Проверка выполнения действия при результирующем ответе. Положительный вариант
         /// </summary>
         [Fact]
+        public async Task RMaybeVoidOkBadBindAsyncPart_Ok()
+        {
+            var resultOk = RUnitFactory.SomeTask();
+            var voidObjectMock = new Mock<IVoidObject>();
+
+            var resultAfterVoid = await resultOk.ToRMaybeTask().RMaybeVoidMatchAwait(() => voidObjectMock.Object.TestVoidAsync(),
+                                                                errors => voidObjectMock.Object.TestNumberVoid(errors.Count));
+
+            Assert.True(resultAfterVoid.Equals(resultOk.Result));
+            voidObjectMock.Verify(voidObject => voidObject.TestVoidAsync(), Times.Once);
+        }
+
+        /// <summary>
+        /// Проверка выполнения действия при результирующем ответе. Негативный вариант
+        /// </summary>
+        [Fact]
+        public async Task RMaybeVoidOkBadBindAsyncPart_Bad()
+        {
+            var errorsInitial = CreateErrorListTwoTest();
+            var rMaybe = RUnitFactory.NoneTask(errorsInitial);
+            var voidObjectMock = new Mock<IVoidObject>();
+
+            var resultAfterVoid = await rMaybe.ToRMaybeTask().RMaybeVoidMatchAwait(() => voidObjectMock.Object.TestVoidAsync(),
+                                                                   errors => voidObjectMock.Object.TestNumberVoid(errors.Count));
+
+            Assert.True(resultAfterVoid.Equals(rMaybe.Result));
+            Assert.True(errorsInitial.SequenceEqual(resultAfterVoid.GetErrors()));
+            voidObjectMock.Verify(voidObject => voidObject.TestNumberVoid(It.IsAny<int>()), Times.Once);
+        }
+
+        /// <summary>
+        /// Проверка выполнения действия при результирующем ответе. Положительный вариант
+        /// </summary>
+        [Fact]
         public async Task RMaybeVoidOkBadBindAsync_Ok()
         {
             var resultOk = RUnitFactory.SomeTask();
@@ -123,7 +157,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
             var resultOk = RUnitFactory.SomeTask();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.ToRMaybeTask().RMaybeVoidWhereAwait(() => true,
+            var resultAfterVoid = await resultOk.ToRMaybeTask().RMaybeVoidOptionAwait(() => true,
                 () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultOk.Result));
@@ -139,7 +173,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
             var resultOk = RUnitFactory.SomeTask();
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await resultOk.ToRMaybeTask().RMaybeVoidWhereAwait(() => false,
+            var resultAfterVoid = await resultOk.ToRMaybeTask().RMaybeVoidOptionAwait(() => false,
                 () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(resultOk.Result));
@@ -156,7 +190,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
             var rMaybe = RUnitFactory.NoneTask(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await rMaybe.ToRMaybeTask().RMaybeVoidWhereAwait(() => true,
+            var resultAfterVoid = await rMaybe.ToRMaybeTask().RMaybeVoidOptionAwait(() => true,
                 () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(rMaybe.Result));
@@ -175,7 +209,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
             var rMaybe = RUnitFactory.NoneTask(errorsInitial);
             var voidObjectMock = new Mock<IVoidObject>();
 
-            var resultAfterVoid = await rMaybe.ToRMaybeTask().RMaybeVoidWhereAwait(() => false,
+            var resultAfterVoid = await rMaybe.ToRMaybeTask().RMaybeVoidOptionAwait(() => false,
                 () => voidObjectMock.Object.TestVoidAsync());
 
             Assert.True(resultAfterVoid.Equals(rMaybe.Result));

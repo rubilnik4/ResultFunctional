@@ -47,6 +47,21 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Lists
         /// <returns>Unchanged result collection</returns>     
         public static async Task<IRList<TValue>> RListVoidMatchAwait<TValue>(this Task<IRList<TValue>> @this,
                                                                              Func<IReadOnlyCollection<TValue>, Task> actionSome,
+                                                                             Action<IReadOnlyCollection<IRError>> actionNone)
+            where TValue : notnull =>
+            await @this.
+                MapAwait(awaitedThis => awaitedThis.RListVoidMatchAsync(actionSome, actionNone));
+
+        /// <summary>
+        /// Execute async action depending on task result collection errors
+        /// </summary>
+        /// <typeparam name="TValue">Incoming type</typeparam>
+        /// <param name="this">Incoming result collection</param>
+        /// <param name="actionSome">Action if result collection hasn't errors</param>
+        /// <param name="actionNone">Action if result collection has errors</param>
+        /// <returns>Unchanged result collection</returns>     
+        public static async Task<IRList<TValue>> RListVoidMatchAwait<TValue>(this Task<IRList<TValue>> @this,
+                                                                             Func<IReadOnlyCollection<TValue>, Task> actionSome,
                                                                              Func<IReadOnlyCollection<IRError>, Task> actionNone)
             where TValue : notnull =>
             await @this.
