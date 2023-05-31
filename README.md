@@ -376,16 +376,49 @@ Extension | Signature | Description
 `Curry` | `(R<T => T>, R<T>) => () => R<T>` |  Уменьшение входных аргументов функции высокого порядка
 `Lift` | `R<T> => T` | Разворачивание объекта из обертки `RLibrary`
 `Fold` | `List<R<T>> => RList<T>` | Объединение `R` классов в коллекцию
-#### 4. Status action
+#### 5. Status action
 Действие в зависимости от статуса объекта `RLibrary`. Функции могут обрабатывать значения как в статусе `Success`, так и в статусе `Failure`.
 Extension | Signature |  Description
 | ------------ | ------------ | ------------ |
 `Option` | `(R<T>, T => bool, T => T, T => IRError) => R<T>` | Только `Success`. При выполнении условия преобразует `T`, иначе возвращает ошибку `IRError`
 `Where` | `(R<T>, T => bool, T => T, T => T) => R<T>` | Только `Success`. В зависимости от условия преобразует `T`
-`Match` | `(R<T>, T => T, IRError => T) => R<T>` | При `Success` преобразует `T`. При Failure преобразует `IRError` в `T`
+`Match` | `(R<T>, T => T, IRError => T) => R<T>` | При `Success` преобразует `T`. При `Failure` преобразует `IRError` в `T`
 `Some` | `(R<T>, T => T) => R<T>` | Только `Success`. Преобразует `T`
 `None` | `(R<T>, IRError => T) => R<T>` | Только `Failure`. Преобразует `IRError` в `T`
-`Ensure` | `(R<T>, T => bool, T => IRError) => R<T>` | Проверяет статус. При `Failure` возвращает ошибку `IRError`   
+`Ensure` | `(R<T>, T => bool, T => IRError) => R<T>` | Проверяет статус. При `Failure` возвращает ошибку `IRError`
+При всех действиях за исключением `None` и `Match` функция для `R` объекта исполняется только в статусе `Success`. При статусе `Failure` объект остается неизменным и происходит пропуск шага.
+#### 6. Asynchronous
+Каждый из методов имеет асинхронное расширение. Асинхронные методы можно использовать в классическом написании с применением `await` или же во fluent стиле с примнением расширений: `Async`, `Task`, `Await`.
+Extension | Signature |  Description
+| ------------ | ------------ | ------------ |
+`Async` | `(T, T => Task<T>) => Task<T>` | Исполняемая асинхронная функция
+`Task` | `(Task<T>, T => T) => Task<T>` | Объект в обертке-задаче `Task`
+`Await` | `(Task<T>, T => Task<T>) => Task<T>` | Исполняемая асинхронная функция для задачи `Task`
+```csharp
+private int AddSync(int x, int y) =>
+    x + y;
+    
+private async Task<int> AddAsync(int x, int y) =>
+    await Task.FromResult(x + y);
+```
+```csharp
+private async Task<IRValue<int>> Classic(int initial, int additional)
+{
+    var initialR = initial.ToRValue();
+    var firstR = await initialR.RValueSomeAsync(number => AddAsync(number, additional));
+    var secondR = firstR.RValueSome(number => AddSync(number, additional));
+    var thirdR = await secondR.RValueSomeAsync(number => AddSync(number, additional));
+    return thirdR;
+}
+```
+```csharp
+private async Task<IRValue<int>> Fluent(int initial, int additional) =>
+    await initial
+        .ToRValue()
+        .RValueSomeAsync(number => AddAsync(number, additional))
+        .RValueSomeTask(number => AddSync(number, additional))
+        .RValueSomeAwait(number => AddAsync(number, additional));
+```
 ### IRUnit extensions
 ### IRValue extensions
 ### IRList extensions
