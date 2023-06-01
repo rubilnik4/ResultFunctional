@@ -56,6 +56,17 @@ namespace ResultFunctionalXUnit.Models.Options
         }
 
         /// <summary>
+        /// Инициализация со значением
+        /// </summary>
+        [Fact]
+        public void Initialize_Exception()
+        {
+            string empty = null!;
+
+            Assert.Throws<ArgumentNullException>(empty.ToRValue);
+        }
+
+        /// <summary>
         /// Добавление ошибки
         /// </summary>
         [Fact]

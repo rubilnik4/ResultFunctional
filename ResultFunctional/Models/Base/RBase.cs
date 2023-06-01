@@ -18,7 +18,7 @@ public abstract class RBase<TValue, TOption> : RMaybe, IRBase<TValue, TOption>
 {
     protected RBase(TValue value)
     {
-        Value = value;
+        Value = value ?? throw new ArgumentNullException(nameof(value));
     }
 
     protected RBase(IRError error)
