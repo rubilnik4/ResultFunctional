@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Factories;
 using Xunit;
 using static ResultFunctionalXUnit.Data.ErrorData;
@@ -6,7 +9,7 @@ using static ResultFunctionalXUnit.Data.Collections;
 
 namespace ResultFunctionalXUnit.Models.Options;
 
-public class ROptionTest
+public class RMaybeTest
 {
     /// <summary>
     /// Перевод в RUnit
@@ -34,6 +37,17 @@ public class ROptionTest
 
         Assert.True(rUnitNew.Failure);
         Assert.True(error.Equals(rUnitNew.GetErrors().First()));
+    }
+
+    /// <summary>
+    /// Перевод в RUnit с ошибкой
+    /// </summary>
+    [Fact]
+    public void ToRUnit_Error_Exception()
+    {
+        IReadOnlyCollection<IRError> error = null!;
+
+        Assert.Throws<ArgumentNullException>(() => RUnitFactory.None(error));
     }
 
     /// <summary>

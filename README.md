@@ -27,7 +27,7 @@ Feature | Description
 Стандартная функция преобразования из типа A в тип B. Применяется в цепочках, чтобы не нарушать fluent стиль.
 Feature | Signature | Description
 | ------------ | ------------ | ------------ |
-`Map` | (a, a -> b) -> b | Преобразование одного объекта в другой
+`Map` | (a, a => b) => b | Преобразование одного объекта в другой
 ```csharp
 int number = 2;
 string stringNumber = number.Map(convert => convert.ToString());
@@ -40,9 +40,9 @@ string stringNumber =number.ToString();
 Возвращаемый тип объекта в обоих функциях одинаков.
 Feature | Signature | Description
 | ------------ | ------------ | ------------ |
-`Option` | `(a, a -> bool, a -> b, a -> b) => b` | Преобразование одного объекта в другой в зависимости от условия
-`OptionSome` | `(a, a -> bool, a -> a) => a` | Изменение объекта при выполнении условия
-`OptionNone` | `(a, a -> bool, a -> a) => a` | Изменение при невыполнении условия
+`Option` | `(a, a => bool, a => b, a => b) => b` | Преобразование одного объекта в другой в зависимости от условия
+`OptionSome` | `(a, a => bool, a => a) => a` | Изменение объекта при выполнении условия
+`OptionNone` | `(a, a => bool, a => a) => a` | Изменение при невыполнении условия
 ```csharp
 string stringNumber = "4";
 int number = stringNumber
@@ -58,10 +58,10 @@ int number = canParse ? Int32.Parse(parse) :  0;
 Функция предназначенная для уменьшения входных аргументов исходной функции (функций высокого порядка). Каррирование представляет собой частичное выполнение функции
 Feature | Signature | Description
 | ------------ | ------------ | ------------ |
-`Curry` | `(a -> t, a) => (() => t)` | Преобразование в функцию без аргументов
-`Curry` | `((a, b) -> t, a) => (b => t)` | Преобразование в функцию с одним аргументом
+`Curry` | `(a => t, a) => (() => t)` | Преобразование в функцию без аргументов
+`Curry` | `((a, b) => t, a) => (b => t)` | Преобразование в функцию с одним аргументом
 ...
-`Curry` | `((a1, a2... an) -> t, a1) => (a2... an => t)` | Общий вид функции для уменьшения количества аргументов
+`Curry` | `((a1, a2... an) => t, a1) => (a2... an => t)` | Общий вид функции для уменьшения количества аргументов
 ```csharp
 Func<int, int, int> func2 = (x, y) => x + y;
 Func<int, int> func1 = func2.Curry(4);
@@ -99,7 +99,7 @@ else
 Сами по себе общие функции не приводят к улучшению читаемости кода. Однако они являются базой, на которой основаны дальнейшие функции.
 ## Result library
 ### Summary
-Основным классом, используемым для методов расширений, является IRMaybe. Так же как и функциональный класс Option состоит из двух частией: Some и None. В качестве Some используются дженерики разных типов, None представляет собой различные вариации ошибок типа IRError. Все классы библиотеки имеют префикс R.
+Основным классом, используемым для методов расширений, является `IRMaybe`. Так же как и функциональный класс Option состоит из двух частией: `Some` и `None`. В качестве `Some` используются дженерики разных типов, `None` представляет собой различные вариации ошибок типа `IRError`. Все классы библиотеки имеют префикс `R`.
 Class | Generic type | Base class | Description
 | ------------ | ------------ | ------------ | ------------ |
 `IRMaybe` | - | `-` | Базовый класс, определяющий наличие ошибки
@@ -107,20 +107,20 @@ Class | Generic type | Base class | Description
 `IRValue` | Value | `IRMaybe<TValue>` | Класс, содержащий значение
 `IRList` | Collection | `IRMaybe<IReadOnlyCollection<TValue>>` | Класс, содержащий коллекцию значений
 ### IRMaybe
-Все классы наследники `IRMaybe` могут находиться в двух состояниях: Success и Failure. В случае Success класс возвращает хранимое значение дженерика, а в случае Failure - коллекцию ошибок. Нахождение в промежуточном состоянии, то есть хранении и значения и ошибок - исключено. 
+Все классы наследники `IRMaybe` могут находиться в двух состояниях: `Success` и `Failure`. В случае `Success` класс возвращает хранимое значение дженерика, а в случае `Failure `- коллекцию ошибок. Нахождение в промежуточном состоянии, то есть хранении и значения и ошибок - исключено. 
 Property/Method | Description
 | ------------ | ------------ |
 `Success` | Успешное состояние
 `Failure` | Состояние с ошибками
-`Value` | Значение хранимой переменной. В случае Failure - null
-`Errors` | Хранимые ошибки. В случае Success - null
-`GetValue` | Вернуть переменную. В случае Failure выбросить исключение
-`GetErrors` | Вернуть список ошибок. В случае Success выбросить исключение
-`GetErrorsOrEmpty` | Вернуть список ошибок. В случае Success вернуть пустой список
+`Value` | Значение хранимой переменной. В случае `Failure` - null
+`Errors` | Хранимые ошибки. В случае `Success` - null
+`GetValue` | Вернуть переменную. В случае `Failure` выбросить исключение
+`GetErrors` | Вернуть список ошибок. В случае `Success` выбросить исключение
+`GetErrorsOrEmpty` | Вернуть список ошибок. В случае `Success` вернуть пустой список
 ### Initialization
-Инициализировать классы типа `IRMaybe` можно несколькими способами: через статические классы, через фабрику и через методы расширений. Если методы были применены к значению, то это приведет класс к состоянию Success. Если к ошибкам типа `IRError` - то к состоянию типа Failure.
+Инициализировать классы типа `IRMaybe` можно несколькими способами: через статические классы, через фабрику и через методы расширений. Если методы были применены к значению, то это приведет класс к состоянию `Success`. Если к ошибкам типа `IRError` - то к состоянию типа `Failure`.
 #### Static classes
-Каждый класс имеет статические методы Some и None для перехода в состояние Success и Failure соответсвенно.
+Каждый класс имеет статические методы `Some` и `None` для перехода в состояние `Success` и `Failure` соответсвенно.
 Class | Feature | Signature| Status
 | ------------ | ------------ | ------------ | ------------ |
 `RUnit` | `RUnit.Some` | `_ => IRUnit` | Success
@@ -188,7 +188,7 @@ IRValue<int> result = error.ToRValue<int>(error);
 return result.Success; // false     
 ```
 ### IRUnit
-Класс `IRUnit` представляет собой наиболее простой вариант использования `IRMaybe`. Используется в случаях, когда необходимо передать лишь факт наличия или отсутствия ошибки. В качестве значения TValue используется структура `Unit`.
+Класс `IRUnit` представляет собой наиболее простой вариант использования `IRMaybe`. Используется в случаях, когда необходимо передать лишь факт наличия или отсутствия ошибки. В качестве значения `TValue` используется структура `Unit`.
 ```csharp
 private IRMaybe CanUpdate(string field) =>
     !String.IsNullOrWhiteSpace(field)
@@ -209,7 +209,7 @@ private void Update(string field)
 }
 ```
 ### IRValue
-Класс `IRValue` является самым распространенным вариантом использования `IRMaybe`. Он содержит в себе значение Value, которое может быть представленно классом (class) или структурой (struct). Value не может иметь значение null.
+Класс `IRValue` является самым распространенным вариантом использования `IRMaybe`. Он содержит в себе значение `Value`, которое может быть представленно классом `class` или структурой `struct`. `Value` не может иметь значение null.
 ```csharp
 private IRValue<int> GetPositiveNumber(int number) =>
     number > 0
@@ -230,7 +230,7 @@ private void SetNumber(int number)
 }
 ```
 ### IRList
-Класс `IRList` служит для упрощенной работы с коллекциями и списками. В качестве значения Value используется коллекция `IReadOnlyCollection<TValue>`. Коллекция не может иметь значение null, но может не иметь значение (Empty).
+Класс `IRList` служит для упрощенной работы с коллекциями и списками. В качестве значения Value используется коллекция `IReadOnlyCollection<TValue>`. Коллекция не может иметь значение null, но может не иметь значение `Empty`.
 ```csharp
 private IRList<int> GetPositiveList(IEnumarable<int> collection) =>
     collection
@@ -251,7 +251,7 @@ private void SetNumbers(IEnumarable<int> collection)
 }
 ```
 ### Polymorphism
-Каждый из вышеперечесленных классов можно напрямую преобразовать в `IRMaybe`. `IRMaybe` тоже можно преобразовать в другие классы с помощью специальных методов. Если классы находятся в статусе Failure, то ошибка передастся и в конвертируемые объекты.
+Каждый из вышеперечесленных классов можно напрямую преобразовать в `IRMaybe`. `IRMaybe` тоже можно преобразовать в другие классы с помощью специальных методов. Если классы находятся в статусе `Failure`, то ошибка передастся и в конвертируемые объекты.
 From | To | Feature | Signature
 | ------------ | ------------ | ------------ | ------------ |
 `IRUnit` | `IRMaybe` | `(IRMaybe)IRUnit` | `_ => IRMaybe`
@@ -277,14 +277,14 @@ IRValue<IReadOnlyCollection<int>> rList = rList.ToRValue();
 return rValue.Success; // false 
 ```
 ### IRError
-Объект `IRError` можно обозначить как R часть функционального Either<L, R> или же часть None функционального Option. `IRError` может содержать в себе Exception, если создан после возникновения исключения. `IRMaybe` в виде правой части содержит в себе коллекцию `IRError`.
+Объект `IRError` можно обозначить как `R` часть функционального `Either<L, R>` или же часть `None` функционального `Option`. `IRError` может содержать в себе `Exception`, если создан после возникновения исключения. `IRMaybe` в виде правой части содержит в себе коллекцию `IRError`.
 Property/Method | Description
 | ------------ | ------------ |
 `Description` | Описание ошибки
 `Exception` | Исключение
 `AppendException` | Присвоить исключение
 #### Error types
-Ошибки можно классифицировать с помощью `IRBaseError<TErrorType>`, где TErrorType - любая произвольная структура. Библиотека содержит стандартные решения для некоторых типов ошибок.
+Ошибки можно классифицировать с помощью `IRBaseError<TErrorType>`, где `TErrorType` - любая произвольная структура. Библиотека содержит стандартные решения для некоторых типов ошибок.
 Error | Error type | Derived types examples | Description
 | ------------ | ------------ | ------------ | ------------ |
 RCommonError | `CommonErrorType` | RSimpleError, IRValueNotFoundError, IRValueNullError | Общие ошибки
@@ -327,7 +327,7 @@ var isCommonErrorType = errorRest.HasErrorType<CommonErrorType>(); // false
 var isNullValueType = errorRest.HasErrorType(CommonErrorType.NullArgument); // false
 ```
 #### IRMaybe Reflection
-В классе `IRMaybe` можно определить тип и классификацию ошибок `IRError`, если он находится в статусе Failure. Методы эквиваленты тем, что описаны для класса `IRError`, только применяются для всей коллекции ошибок. Если хоть одна ошибка сооветсвует запрашиваемым параметрам, метод возвращает true.
+В классе `IRMaybe` можно определить тип и классификацию ошибок `IRError`, если он находится в статусе `Failure`. Методы эквиваленты тем, что описаны для класса `IRError`, только применяются для всей коллекции ошибок. Если хоть одна ошибка сооветсвует запрашиваемым параметрам, метод возвращает `true`.
 Property/Method | Generic type | Description
 | ------------ | ------------ | ------------ |
 `IsAnyError<TError>` | `TError: IRError` | Содержит ли текущий тип ошибки
@@ -341,9 +341,86 @@ bool hasNullError = rMaybe.HasAnyError<IRRestError>(); // true
 var isBadRequestType = rMaybe.HasAnyErrorType(RestErrorType.BadRequest); // true
 ```
 ### Conclusion
-Класс `IRMaybe` является оберткой для хранения переменных в состоянии Success или же хранения ошибок `IRError` в состояние Failure. В последствие в этим классам могут быть применены методы расширения (Result extensions) для последующей обработки данных.
+Класс `IRMaybe` является оберткой для хранения переменных в состоянии Success или же хранения ошибок `IRError` в состояние `Failure`. В последствие в этим классам могут быть применены методы расширения `RExtensions` для последующей обработки данных.
 ## Result extensions
-### IRMaybe extensions
+Методы расширения для библиотеки `RLibrary` предназначены для обработки значений `IRMaybe` в зависимости от статуса. Для каждого из классов (`IRUnit`, `IRValue`, `IRList`) существуют свои методы расширения.
+### Сlassification
+Все методы расширения можно разбить на функционльные части.
+Example | Structure
+| ------------ | ------------ |
+`RValueBindOptionAsync` | `R(1)-Value(2)-Bind(3)-(4)-Option(5)-Async(6)`
+`RMaybeTry` | `R(1)-Maybe(2)-(3)-Try(4)-(5)-(6)`
+`RListVoidSomeAwait` | `R(1)-List(2)-(3)-Void(4)-Some(5)-Await(6)`
+#### 1. Prefix
+Префикс библиотеки `RExtensions`. Для `Common` методов расширения префикс отсутствует.
+#### 2. RClass
+Класс, для которого применяется метода расширения. Всего таких классов три: `IRUnit`, `IRValue`, `IRList`. Общие методы `IRMaybe` применимы для всех классов.
+Extension | Apply to | Description
+| ------------ | ------------ | ------------ |
+`Maybe` | `IRMaybe`, `IRUnit`, `IRValue`, `IRList` | Общие методы расширения для всех классов
+`Value` | `IRValue`, `IRList` | Методы расширения для классов, содержащих значения
+`List` |  `IRList` | Методы расширения для классов, содержащих коллекции
+#### 3. Function type
+Тип функиции, определяющий будет ли использоваться в качестве параметра метода расширения значение переменной или же переменная в обертке `RLibrary`.
+Extension | Function type | Signature | Description
+| ------------ | ------------ | ------------ | ------------ |
+`-` | Functor | `(R<T>, T => T) => R<T>` | Входная функция возвращает объект типа `T`
+`Bind` | Monada | `(R<T>, T => R<T>) => R<T>` | Входная функция возвращает объект типа `R<T>`
+#### 4. Action type
+Тип действия. Для обычных методов расширения тип отсутсвует. Однако есть требуется применить void метод вместо функции или использовать обертку `Try/catch`, то необходимо указать специфический тип действия.
+Extension | Signature | Description
+| ------------ | ------------ | ------------ |
+`-` | - | Отсутствует
+`Void` | `R<T> => R<T>` | Выполнение `void` действия
+`Try` | `Exception => R<T>` | Преобразование `Exception` в тип `IRError` при `Try/catch`
+`Curry` | `(R<T => T>, R<T>) => () => R<T>` |  Уменьшение входных аргументов функции высокого порядка
+`Lift` | `R<T> => T` | Разворачивание объекта из обертки `RLibrary`
+`Fold` | `List<R<T>> => RList<T>` | Объединение `R` классов в коллекцию
+#### 5. Status action
+Действие в зависимости от статуса объекта `RLibrary`. Функции могут обрабатывать значения как в статусе `Success`, так и в статусе `Failure`.
+Extension | Signature |  Description
+| ------------ | ------------ | ------------ |
+`Option` | `(R<T>, T => bool, T => T, T => IRError) => R<T>` | Только `Success`. При выполнении условия преобразует `T`, иначе возвращает ошибку `IRError`
+`Where` | `(R<T>, T => bool, T => T, T => T) => R<T>` | Только `Success`. В зависимости от условия преобразует `T`
+`Match` | `(R<T>, T => T, IRError => T) => R<T>` | При `Success` преобразует `T`. При `Failure` преобразует `IRError` в `T`
+`Some` | `(R<T>, T => T) => R<T>` | Только `Success`. Преобразует `T`
+`None` | `(R<T>, IRError => T) => R<T>` | Только `Failure`. Преобразует `IRError` в `T`
+`Ensure` | `(R<T>, T => bool, T => IRError) => R<T>` | Проверяет статус. При `Failure` возвращает ошибку `IRError`
+
+При всех действиях за исключением `None` и `Match` функция для `R` объекта исполняется только в статусе `Success`. При статусе `Failure` объект остается неизменным и происходит пропуск шага.
+#### 6. Asynchronous
+Каждый из методов имеет асинхронное расширение. Асинхронные методы можно использовать в классическом написании с применением `await` или же во fluent стиле с примнением расширений: `Async`, `Task`, `Await`.
+Extension | Signature |  Description
+| ------------ | ------------ | ------------ |
+`Async` | `(T, T => Task<T>) => Task<T>` | Исполняемая асинхронная функция
+`Task` | `(Task<T>, T => T) => Task<T>` | Объект в обертке-задаче `Task`
+`Await` | `(Task<T>, T => Task<T>) => Task<T>` | Исполняемая асинхронная функция для задачи `Task`
+```csharp
+private int AddSync(int x, int y) =>
+    x + y;
+    
+private async Task<int> AddAsync(int x, int y) =>
+    await Task.FromResult(x + y);
+```
+```csharp
+private async Task<IRValue<int>> Classic(int initial, int additional)
+{
+    var initialR = initial.ToRValue();
+    var firstR = await initialR.RValueSomeAsync(number => AddAsync(number, additional));
+    var secondR = firstR.RValueSome(number => AddSync(number, additional));
+    var thirdR = await secondR.RValueSomeAsync(number => AddSync(number, additional));
+    return thirdR;
+}
+```
+```csharp
+private async Task<IRValue<int>> Fluent(int initial, int additional) =>
+    await initial
+        .ToRValue()
+        .RValueSomeAsync(number => AddAsync(number, additional))
+        .RValueSomeTask(number => AddSync(number, additional))
+        .RValueSomeAwait(number => AddAsync(number, additional));
+```
+### IRUnit extensions
 ### IRValue extensions
 ### IRList extensions
 ### Conclusion

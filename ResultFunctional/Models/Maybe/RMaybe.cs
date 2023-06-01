@@ -23,7 +23,7 @@ public abstract class RMaybe : IRMaybe
 
     protected RMaybe(IReadOnlyCollection<IRError> errors)
     {
-        Errors = errors;
+        Errors = errors ?? throw new ArgumentNullException(nameof(errors));
     }
 
     /// <summary>
