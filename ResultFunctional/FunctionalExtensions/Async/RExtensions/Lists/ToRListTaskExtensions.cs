@@ -112,7 +112,7 @@ public static class ToRListTaskExtensions
     public static async Task<IRUnit> ToRUnitTask<TValue>(this Task<IRList<TValue>> @this)
         where TValue : notnull =>
         await @this.
-        MapTask(awaitedThis => awaitedThis.MaybeRUnit());
+        MapTask(awaitedThis => awaitedThis.ToRUnit());
 
     /// <summary>
     ///Converting task result collection to result error
@@ -154,7 +154,7 @@ public static class ToRListTaskExtensions
     public static async Task<IRList<TValue>> ToRListTask<TValue>(this Task<IRUnit> @this, IReadOnlyCollection<TValue> values)
         where TValue : notnull =>
         await @this.
-        MapTask(awaitedThis => awaitedThis.MaybeRList(values));
+        MapTask(awaitedThis => awaitedThis.ToRList(values));
 
     /// <summary>
     /// Converting task result to result collection
@@ -166,7 +166,7 @@ public static class ToRListTaskExtensions
     public static async Task<IRList<TValue>> ToRListTask<TValue>(this Task<IRMaybe> @this, IReadOnlyCollection<TValue> values)
         where TValue : notnull =>
         await @this.
-            MapTask(awaitedThis => awaitedThis.MaybeRList(values));
+            MapTask(awaitedThis => awaitedThis.ToRList(values));
 
     /// <summary>
     /// Converting task collection to result collection

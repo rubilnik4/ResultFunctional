@@ -115,6 +115,6 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
                                                              Func<IReadOnlyCollection<TValue>, IRMaybe> someFunc)
             where TValue : notnull =>
             @this
-               .RListBindSome(collection => someFunc.Invoke(collection).MaybeRList(collection));
+               .RListBindSome(collection => someFunc.Invoke(collection).ToRList(collection));
     }
 }

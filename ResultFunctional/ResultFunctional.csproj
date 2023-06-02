@@ -10,9 +10,9 @@
     <PackageId>ResultFunctional</PackageId>
     <Copyright>Ivan Rubilnik</Copyright>
     <Configurations>Debug;Release</Configurations>   
-    <AssemblyVersion>2.0.14</AssemblyVersion>
-    <FileVersion>2.0.14</FileVersion>
-    <Version>2.0.14</Version>
+    <AssemblyVersion>2.0.15</AssemblyVersion>
+    <FileVersion>2.0.15</FileVersion>
+    <Version>2.0.15</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<RepositoryUrl>https://github.com/rubilnik4/ResultFunctional</RepositoryUrl>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>

@@ -63,12 +63,12 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// </summary>
         /// <typeparam name="TValue">Result type</typeparam>
         /// <param name="this">Incoming result error</param>
-        /// <param name="resultValue">Result value</param>
+        /// <param name="rValue">Result value</param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValue> ToRValueBind<TValue>(this IRUnit @this, IRValue<TValue> resultValue)
+        public static IRValue<TValue> ToRValueBind<TValue>(this IRUnit @this, IRValue<TValue> rValue)
             where TValue : notnull =>
             @this.Success
-                ? resultValue
+                ? rValue
                 : @this.GetErrors().ToRValue<TValue>();
     }
 }

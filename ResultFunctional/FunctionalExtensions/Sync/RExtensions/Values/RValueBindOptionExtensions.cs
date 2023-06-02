@@ -114,6 +114,6 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         public static IRValue<TValue> RValueBindEnsure<TValue>(this IRValue<TValue> @this, Func<TValue, IRMaybe> someFunc)
             where TValue : notnull =>
             @this.
-            RValueBindSome(value => someFunc.Invoke(value).MaybeRValue(value));
+            RValueBindSome(value => someFunc.Invoke(value).ToRValue(value));
     }
 }

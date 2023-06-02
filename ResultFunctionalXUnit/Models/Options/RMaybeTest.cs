@@ -19,7 +19,7 @@ public class RMaybeTest
     {
         var rUnit = RUnitFactory.Some();
 
-        var rUnitNew = rUnit.MaybeRUnit();
+        var rUnitNew = rUnit.ToRUnit();
 
         Assert.True(rUnitNew.Success);
     }
@@ -33,7 +33,7 @@ public class RMaybeTest
         var error = CreateErrorTest();
         var rUnit = RUnitFactory.None(error);
 
-        var rUnitNew = rUnit.MaybeRUnit();
+        var rUnitNew = rUnit.ToRUnit();
 
         Assert.True(rUnitNew.Failure);
         Assert.True(error.Equals(rUnitNew.GetErrors().First()));
@@ -59,7 +59,7 @@ public class RMaybeTest
         const int number = 2;
         var rUnit = RUnitFactory.Some();
 
-        var rUnitNew = rUnit.MaybeRValue(number);
+        var rUnitNew = rUnit.ToRValue(number);
 
         Assert.True(rUnitNew.Success);
     }
@@ -74,7 +74,7 @@ public class RMaybeTest
         var error = CreateErrorTest();
         var rUnit = RUnitFactory.None(error);
 
-        var rUnitNew = rUnit.MaybeRValue(number);
+        var rUnitNew = rUnit.ToRValue(number);
 
         Assert.True(rUnitNew.Failure);
         Assert.True(error.Equals(rUnitNew.GetErrors().First()));
@@ -89,7 +89,7 @@ public class RMaybeTest
         var collection = GetRangeNumber();
         var rUnit = RUnitFactory.Some();
 
-        var rUnitNew = rUnit.MaybeRList(collection);
+        var rUnitNew = rUnit.ToRList(collection);
 
         Assert.True(rUnitNew.Success);
     }
@@ -104,7 +104,7 @@ public class RMaybeTest
         var error = CreateErrorTest();
         var rUnit = RUnitFactory.None(error);
 
-        var rUnitNew = rUnit.MaybeRList(collection);
+        var rUnitNew = rUnit.ToRList(collection);
 
         Assert.True(rUnitNew.Failure);
         Assert.True(error.Equals(rUnitNew.GetErrors().First()));

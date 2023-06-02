@@ -162,7 +162,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultNoError = RUnitFactory.Some();
             const string value = "OkStatus";
 
-            var rValue = resultNoError.MaybeRValue(value);
+            var rValue = resultNoError.ToRValue(value);
 
             Assert.True(rValue.Success);
             Assert.Equal(value, rValue.GetValue());
@@ -178,7 +178,7 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Sync.RExtensions.RValueTest
             var resultHasError = error.ToRUnit();
             const string value = "BadStatus";
 
-            var rValue = resultHasError.MaybeRValue(value);
+            var rValue = resultHasError.ToRValue(value);
 
             Assert.True(rValue.Failure);
             Assert.Single(rValue.GetErrors());

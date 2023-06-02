@@ -99,14 +99,14 @@ public interface IRMaybe
     /// Converting to result unit
     /// </summary>
     /// <returns>Result unit</returns>
-    IRUnit MaybeRUnit();
+    IRUnit ToRUnit();
 
     /// <summary>
     /// Converting to result value
     /// </summary>
     /// <typeparam name="TValue">Value</typeparam>
     /// <returns>Result value</returns>
-    IRValue<TValue> MaybeRValue<TValue>(TValue value) 
+    IRValue<TValue> ToRValue<TValue>(TValue value) 
         where TValue : notnull;
 
     /// <summary>
@@ -114,6 +114,6 @@ public interface IRMaybe
     /// </summary>
     /// <typeparam name="TValue">Value</typeparam>
     /// <returns>Result collection</returns>
-    IRList<TValue> MaybeRList<TValue>(IReadOnlyCollection<TValue> values)
+    IRList<TValue> ToRList<TValue>(IReadOnlyCollection<TValue> values)
         where TValue : notnull;
 }
