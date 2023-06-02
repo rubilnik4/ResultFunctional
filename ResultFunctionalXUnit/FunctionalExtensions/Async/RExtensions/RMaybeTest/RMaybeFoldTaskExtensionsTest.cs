@@ -57,34 +57,32 @@ namespace ResultFunctionalXUnit.FunctionalExtensions.Async.RExtensions.RMaybeTes
         /// Проверить объект на нул. Ошибка нулевого значения
         /// </summary>
         [Fact]
-        public async Task FoldRList_Ok()
+        public async Task FoldRMaybe_Ok()
         {
-            var firstRange = GetRangeNumber();
-            var secondRange = GetRangeNumber();
-            var rListFirst = firstRange.ToRList().ToTask();
-            var rListSecond = secondRange.ToRList().ToTask();
-            var results = Enumerable.Empty<Task<IRList<int>>>().Append(rListFirst).Append(rListSecond);
+            IRMaybe rFirst = RUnit.Some();
+            IRMaybe rSecond = GetRangeNumber().ToRList();
+            var rUnitFirst = rFirst.ToTask();
+            var rUnitSecond = rSecond.ToTask();
+            var results = Enumerable.Empty<Task<IRMaybe>>().Append(rUnitFirst).Append(rUnitSecond);
 
-            var rList = await results.RListFoldTask();
-            var numberRange = firstRange.Concat(secondRange).ToList();
+            var rList = await results.RMaybeFoldTask();
 
             Assert.True(rList.Success);
-            Assert.True(numberRange.SequenceEqual(rList.GetValue()));
         }
 
         /// <summary>
         /// Проверить объект на нул. Ошибка нулевого значения
         /// </summary>
         [Fact]
-        public async Task FoldRList_Error()
+        public async Task FoldRMaybe_Error()
         {
-            var firstRange = GetRangeNumber();
-            var rListFirst = firstRange.ToRList().ToTask();
-            var rListErrorFirst = CreateErrorTest().ToRList<int>().ToTask();
-            var rListErrorSecond = CreateErrorTest().ToRList<int>().ToTask();
-            var results = Enumerable.Empty<Task<IRList<int>>>().Append(rListFirst).Append(rListErrorFirst).Append(rListErrorSecond);
+            IRMaybe rFirst = RUnit.Some();
+            var rUnitFirst = rFirst.ToTask();
+            var rUnitErrorFirst = CreateErrorTest().ToRUnit().Map(unit => (IRMaybe)unit).ToTask();
+            var rUnitErrorSecond = CreateErrorTest().ToRUnit().Map(unit => (IRMaybe)unit).ToTask();
+            var results = Enumerable.Empty<Task<IRMaybe>>().Append(rUnitFirst).Append(rUnitErrorFirst).Append(rUnitErrorSecond);
 
-            var rList = await results.RListFoldTask();
+            var rList = await results.RMaybeFoldTask();
 
             Assert.True(rList.Failure);
             Assert.Equal(2, rList.GetErrors().Count);
