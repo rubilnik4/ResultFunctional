@@ -30,5 +30,15 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Maybe
         public static async Task<IRMaybe> RMaybeFoldTask(this Task<IReadOnlyCollection<IRMaybe>> @this)=>
             await @this
                .MapTask(thisAwaited => thisAwaited.RMaybeFold());
+
+        /// <summary>
+        /// Aggregate collection of task result errors
+        /// </summary>
+        /// <param name="this">Incoming collection of result errors</param>
+        /// <returns>Outgoing result errors</returns>
+        public static async Task<IRMaybe> RMaybeFoldTask(this IEnumerable<Task<IRMaybe>> @this) =>
+            await Task
+               .WhenAll(@this)
+               .MapTask(result => result.RMaybeFold());
     }
 }
