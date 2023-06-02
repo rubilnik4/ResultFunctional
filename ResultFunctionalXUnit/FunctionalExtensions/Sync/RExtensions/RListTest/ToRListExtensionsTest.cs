@@ -21,7 +21,7 @@ public class ToRListExtensionsTest
         var resultNoError = RUnitFactory.Some();
         var collection = new List<string> { "OkStatus" };
 
-        var rValue = resultNoError.MaybeRList(collection);
+        var rValue = resultNoError.ToRList(collection);
 
         Assert.True(rValue.Success);
         Assert.True(collection.SequenceEqual(rValue.GetValue()));
@@ -37,7 +37,7 @@ public class ToRListExtensionsTest
         var resultHasError = RUnitFactory.None(error);
         var collection = new List<string> { "BadStatus" };
 
-        var rValue = resultHasError.MaybeRList(collection);
+        var rValue = resultHasError.ToRList(collection);
 
         Assert.True(rValue.Failure);
         Assert.Single(rValue.GetErrors());

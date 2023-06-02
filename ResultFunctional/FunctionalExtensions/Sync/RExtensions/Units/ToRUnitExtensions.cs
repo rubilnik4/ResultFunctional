@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Maybe;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Maybe;
@@ -18,7 +19,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="this">Result error collection</param>
         /// <returns>Result error</returns>
         public static IRUnit ToRUnit(this IEnumerable<IRUnit> @this) =>
-            @this.SelectMany(result => result.GetErrors()).ToRUnit();
+            @this.RMaybeFold().ToRUnit();
 
         /// <summary>
         /// Merge result errors collection
@@ -26,7 +27,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="this">Result error collection</param>
         /// <returns>Result error</returns>
         public static IRUnit ToRUnit(this IEnumerable<IRMaybe> @this) =>
-            @this.SelectMany(result => result.GetErrors()).ToRUnit();
+            @this.RMaybeFold().ToRUnit();
 
         /// <summary>
         /// Merge errors collection

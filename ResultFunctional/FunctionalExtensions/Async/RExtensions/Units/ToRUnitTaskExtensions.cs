@@ -56,8 +56,9 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         /// <param name="this">Result unit collection</param>
         /// <returns>Result unit</returns>
         public static async Task<IRUnit> ToRUnitTask(this IEnumerable<Task<IRUnit>> @this) =>
-            await Task.WhenAll(@this).
-                       MapTask(result => result.ToRUnit());
+            await Task
+               .WhenAll(@this)
+               .MapTask(result => result.ToRUnit());
 
         /// <summary>
         /// Converting result value to unit
@@ -68,6 +69,6 @@ namespace ResultFunctional.FunctionalExtensions.Async.RExtensions.Units
         public static async Task<IRUnit> ToRUnitTask<TValue>(this Task<IRValue<TValue>> @this)
             where TValue : notnull =>
             await @this.
-                MapTask(awaitedThis => awaitedThis.MaybeRUnit());
+                MapTask(awaitedThis => awaitedThis.ToRUnit());
     }
 }
