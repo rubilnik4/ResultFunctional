@@ -33,7 +33,7 @@ int number = 2;
 string stringNumber = number.Map(convert => convert.ToString());
 // or
 int number = 2;
-string stringNumber =number.ToString();
+string stringNumber = number.ToString();
 ```
 #### Option
 Функция преобразования одного объекта в другой в зависимости от условия:
