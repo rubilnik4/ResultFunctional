@@ -21,7 +21,7 @@ public static class RMaybeOptionAsyncExtensions
     /// <param name="predicate">Predicate function</param>
     /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
-    public static async Task<IRMaybe> RUnitEnsureAsync(this IRMaybe @this, Func<bool> predicate,
+    public static async Task<IRMaybe> RMaybeEnsureAsync(this IRMaybe @this, Func<bool> predicate,
                                                       Func<Task<IReadOnlyCollection<IRError>>> noneFunc) =>
         @this.Success
             ? predicate()
