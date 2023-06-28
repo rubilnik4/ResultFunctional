@@ -21,7 +21,7 @@ public static class RMaybeOptionTaskExtensions
     /// <param name="predicate">Predicate function</param>
     /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
-    public static async Task<IRMaybe> RUnitEnsureTask(this Task<IRMaybe> @this, Func<bool> predicate,
+    public static async Task<IRMaybe> RMaybeEnsureTask(this Task<IRMaybe> @this, Func<bool> predicate,
                                                       Func<IEnumerable<IRError>> noneFunc) =>
         await @this.
             MapTask(awaitedThis => awaitedThis.RMaybeEnsure(predicate, noneFunc));

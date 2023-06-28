@@ -19,8 +19,8 @@ public static class RMaybeOptionAwaitExtensions
     /// <param name="predicate">Predicate function</param>
     /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
-    public static async Task<IRMaybe> RUnitEnsureAwait(this Task<IRMaybe> @this, Func<bool> predicate,
+    public static async Task<IRMaybe> RMaybeEnsureAwait(this Task<IRMaybe> @this, Func<bool> predicate,
                                                       Func<Task<IReadOnlyCollection<IRError>>> noneFunc) =>
         await @this.
-            MapAwait(awaitedThis => awaitedThis.RUnitEnsureAsync(predicate, noneFunc));
+            MapAwait(awaitedThis => awaitedThis.RMaybeEnsureAsync(predicate, noneFunc));
 }
