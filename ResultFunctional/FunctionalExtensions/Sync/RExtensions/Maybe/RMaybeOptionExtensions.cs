@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Factories;
@@ -27,4 +28,17 @@ public static class RMaybeOptionExtensions
                  ? RUnitFactory.Some()
                  : noneFunc.Invoke().ToRUnit()
              : @this.GetErrors().ToRUnit();
+
+    /// <summary>
+    /// Check errors by predicate and collect them to result
+    /// </summary>
+    /// <param name="this">Result error</param>
+    /// <param name="predicate">Predicate function</param>
+    /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
+    /// <returns>Result error</returns>
+    public static IRMaybe RMaybeCollect(this IRMaybe @this, Func<bool> predicate,
+                                        Func<IEnumerable<IRError>> noneFunc) =>
+        predicate()
+            ? @this
+            : @this.GetErrorsOrEmpty().Concat(noneFunc()).ToRUnit();
 }
