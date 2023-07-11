@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ResultFunctional.FunctionalExtensions.Sync;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Lists;

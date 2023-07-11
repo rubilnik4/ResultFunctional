@@ -62,8 +62,10 @@ public abstract class RBase<TValue, TOption> : RMaybe, IRBase<TValue, TOption>
     /// <param name="error">Error</param>
     /// <returns>Result with error</returns>    
     public TOption AppendError(IRError error) =>
-        GetErrorsOrEmpty().Concat(error).ToList()
-            .Map(Initialize);
+        GetErrorsOrEmpty()
+           .Concat(error)
+           .ToList()
+           .Map(Initialize);
 
     /// <summary>
     /// Add errors to result
@@ -73,6 +75,6 @@ public abstract class RBase<TValue, TOption> : RMaybe, IRBase<TValue, TOption>
     public TOption ConcatErrors(IEnumerable<IRError> errors) =>
         GetErrorsOrEmpty().Concat(errors).ToList()
             .Option(errorList => errorList.Count > 0,
-                           Initialize,
-                           _ => Initialize(GetValue()));
+                    Initialize,
+                    _ => Initialize(GetValue()));
 }

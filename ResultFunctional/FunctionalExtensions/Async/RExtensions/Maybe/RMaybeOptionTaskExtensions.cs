@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Maybe;
 using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units;
@@ -25,4 +26,18 @@ public static class RMaybeOptionTaskExtensions
                                                       Func<IEnumerable<IRError>> noneFunc) =>
         await @this.
             MapTask(awaitedThis => awaitedThis.RMaybeEnsure(predicate, noneFunc));
+
+    /// <summary>
+    /// Check errors by predicate to task and collect them to result
+    /// </summary>
+    /// <param name="this">Result error</param>
+    /// <param name="predicate">Predicate function</param>
+    /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
+    /// <returns>Result error</returns>
+    public static async Task<IRMaybe> RMaybeCollectTask(this Task<IRMaybe> @this, Func<bool> predicate,
+                                                         Func<IReadOnlyCollection<IRError>> noneFunc) =>
+        predicate()
+            ? await @this
+            : await @this
+               .MapTask(awaitedThis => awaitedThis.RMaybeCollect(predicate, noneFunc));
 }
