@@ -370,7 +370,7 @@ Extension | Function type | Signature | Description
 Тип действия. Для обычных методов расширения тип отсутсвует. Однако есть требуется применить void метод вместо функции или использовать обертку `Try/catch`, то необходимо указать специфический тип действия.
 Extension | Signature | Description
 | ------------ | ------------ | ------------ |
-`-` | - | Отсутствует
+`-` | - | Общие методы
 `Void` | `R<T> => R<T>` | Выполнение `void` действия
 `Try` | `Exception => R<T>` | Преобразование `Exception` в тип `IRError` при `Try/catch`
 `Curry` | `(R<T => T>, R<T>) => () => R<T>` |  Уменьшение входных аргументов функции высокого порядка
@@ -420,6 +420,28 @@ private async Task<IRValue<int>> Fluent(int initial, int additional) =>
         .RValueSomeTask(number => AddSync(number, additional))
         .RValueSomeAwait(number => AddAsync(number, additional));
 ```
+### IRMaybe extensions
+Методы расширения `IRMaybe` применимы ко всем типам классов. Они отвечают за обработку и преобразование ошибок 'IRError' в зависимости от статуса.
+#### Main action type
+Общие методы расширения класса `IRMaybe`. Позволяют добавлять и обрабатывать ошибки 'IRError'.
+Extension | Signature
+| ------------ | ------------
+`RMaybeEnsure` | `(IRMaybe, () => bool, () => List<IRError>) => IRMaybe`
+`RMaybeConcat` | `(IRMaybe, () => bool, () => List<IRError>) => IRMaybe`
+`RMaybeBindMatch` | `(IRMaybe, () => IRMaybe, List<IRError> => IRMaybe) => IRMaybe)`
+`RMaybeBindSome` | `(IRMaybe, () => IRMaybe) => IRMaybe)`
+##### - RMaybeEnsure
+Проверить статус, проверить условие и присвоить ошибку в случае невыполнения
+##### - RMaybeConcat
+Проверить условие и добавить ошибку к текущим
+##### - RMaybeBindMatch
+Заменить класс в зависимости от статуса
+##### - RMaybeBindSome
+Заменить класс при статусе 'Success'
+#### Try action type
+#### Fold action type
+#### Void action type
+
 ### IRUnit extensions
 ### IRValue extensions
 ### IRList extensions
