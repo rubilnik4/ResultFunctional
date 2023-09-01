@@ -37,7 +37,7 @@ public static class RMaybeOptionAsyncExtensions
     /// <param name="predicate">Predicate function</param>
     /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
-    public static async Task<IRMaybe> RMaybeCollectAsync(this IRMaybe @this, Func<bool> predicate,
+    public static async Task<IRMaybe> RMaybeConcatAsync(this IRMaybe @this, Func<bool> predicate,
                                                          Func<Task<IReadOnlyCollection<IRError>>> noneFunc) =>
         predicate()
             ? @this

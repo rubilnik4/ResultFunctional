@@ -78,7 +78,7 @@ public class RMaybeOptionAwaitExtensionsTest
     {
         var rMaybe = RUnitFactory.SomeTask();
 
-        var resultAfterWhere = await rMaybe.ToRMaybeTask().RMaybeCollectAwait(() => true,
+        var resultAfterWhere = await rMaybe.ToRMaybeTask().RMaybeConcatAwait(() => true,
                                                                                CreateErrorListTwoTestTask);
 
         Assert.True(resultAfterWhere.Success);
@@ -93,7 +93,7 @@ public class RMaybeOptionAwaitExtensionsTest
         var rMaybe = RUnitFactory.SomeTask();
 
         var errorBad = CreateErrorListTwoTestTask();
-        var resultAfterWhere = await rMaybe.ToRMaybeTask().RMaybeCollectAwait(() => false,
+        var resultAfterWhere = await rMaybe.ToRMaybeTask().RMaybeConcatAwait(() => false,
                                                                                () => errorBad);
 
         Assert.True(resultAfterWhere.Failure);
@@ -109,7 +109,7 @@ public class RMaybeOptionAwaitExtensionsTest
         var errorInitial = CreateErrorTest();
         var rMaybe = RUnitFactory.NoneTask(errorInitial);
 
-        var resultAfterWhere = await rMaybe.ToRMaybeTask().RMaybeCollectAwait(() => true,
+        var resultAfterWhere = await rMaybe.ToRMaybeTask().RMaybeConcatAwait(() => true,
                                                                                CreateErrorListTwoTestTask);
 
         Assert.True(resultAfterWhere.Failure);
@@ -126,7 +126,7 @@ public class RMaybeOptionAwaitExtensionsTest
         var rMaybe = RUnitFactory.NoneTask(errorsInitial);
         var errors = CreateErrorListTwoTest();
 
-        var resultAfterWhere = await rMaybe.ToRMaybeTask().RMaybeCollectAwait(() => false,
+        var resultAfterWhere = await rMaybe.ToRMaybeTask().RMaybeConcatAwait(() => false,
                                                                                CreateErrorListTwoTestTask);
 
         Assert.True(resultAfterWhere.Failure);

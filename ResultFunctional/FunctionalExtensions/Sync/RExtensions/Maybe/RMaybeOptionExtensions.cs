@@ -36,7 +36,7 @@ public static class RMaybeOptionExtensions
     /// <param name="predicate">Predicate function</param>
     /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
-    public static IRMaybe RMaybeCollect(this IRMaybe @this, Func<bool> predicate,
+    public static IRMaybe RMaybeConcat(this IRMaybe @this, Func<bool> predicate,
                                         Func<IEnumerable<IRError>> noneFunc) =>
         predicate()
             ? @this
