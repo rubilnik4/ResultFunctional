@@ -426,6 +426,16 @@ private async Task<IRValue<int>> Fluent(int initial, int additional) =>
 private bool GetCondition(bool condition) =>
     condition;
 ```
+##### - Action
+```csharp
+private int DoAction()
+{}
+```
+##### - Exception
+```csharp
+private int ThrowException() =>
+    throw new Exception();
+```
 ##### - Maybe. Success
 ```csharp
 private bool GetMaybeSuccess() =>
@@ -444,8 +454,8 @@ Extension | Signature
 | ------------ | ------------
 `RMaybeEnsure` | `(IRMaybe, () => bool, () => IRError) => IRMaybe`
 `RMaybeConcat` | `(IRMaybe, () => bool, () => IRError) => IRMaybe`
-`RMaybeBindMatch` | `(IRMaybe, () => IRMaybe, IRError => IRMaybe) => IRMaybe)`
-`RMaybeBindSome` | `(IRMaybe, () => IRMaybe) => IRMaybe)`
+`RMaybeBindMatch` | `(IRMaybe, () => IRMaybe, IRError => IRMaybe) => IRMaybe`
+`RMaybeBindSome` | `(IRMaybe, () => IRMaybe) => IRMaybe`
 ##### - RMaybeEnsure
 Проверить статус, проверить условие и присвоить ошибку в случае невыполнения.
 ```csharp
@@ -538,9 +548,37 @@ private IRMaybe GetMaybe() =>
 private IRMaybe GetMaybe() =>
     RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
         .RMaybeBindSome(() => RErrorFactory.Simple("First error"));
-// Failure. Errors: Initial
+// Failure. Errors: initial
 ```
 #### Try action type
+Методы расширения класса `IRMaybe` для обратбоки исключений. Позволяют преобразовать обычные методы к функциональному типу.
+Extension | Signature
+| ------------ | ------------
+`RMaybeTrySome` | `(IRMaybe, () => (), Exception => IRError) => IRMaybe`
+`RMaybeTrySome` | `(IRMaybe, () => (), IRError) => IRMaybe`
+##### - RMaybeTrySome
+Проверить статус и преобразовать метод к функциональному типу, а также исключение `Exception` к типу `IRError`.
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeTrySome(() => DoAction(),
+                       RErrorFactory.Simple("Exception error"));
+// Success
+```
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeTrySome(() => ThrowException(),
+                       exception => RErrorFactory.Simple("Exception error").Append(exception));
+// Failure. Errors: exception
+```
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+        .RMaybeTrySome(() => ThrowException(),
+                       RErrorFactory.Simple("Exception error"));
+// Failure. Errors: initial
+```
 #### Fold action type
 #### Void action type
 
