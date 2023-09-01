@@ -386,7 +386,7 @@ Extension | Signature |  Description
 `Some` | `(R<T>, T => T) => R<T>` | Только `Success`. Преобразует `T`
 `None` | `(R<T>, IRError => T) => R<T>` | Только `Failure`. Преобразует `IRError` в `T`
 `Ensure` | `(R<T>, T => bool, T => IRError) => R<T>` | Проверяет статус. При `Failure` возвращает ошибку `IRError`
-
+`Concat` | `(R<T>, T => bool, T => IRError) => R<T>` |При `Failure` добавляет ошибку `IRError` к текущим
 При всех действиях за исключением `None` и `Match` функция для `R` объекта исполняется только в статусе `Success`. При статусе `Failure` объект остается неизменным и происходит пропуск шага.
 #### 6. Asynchronous
 Каждый из методов имеет асинхронное расширение. Асинхронные методы можно использовать в классическом написании с применением `await` или же во fluent стиле с примнением расширений: `Async`, `Task`, `Await`.
@@ -420,24 +420,126 @@ private async Task<IRValue<int>> Fluent(int initial, int additional) =>
         .RValueSomeTask(number => AddSync(number, additional))
         .RValueSomeAwait(number => AddAsync(number, additional));
 ```
+### Standard functions
+##### - Predicate
+```csharp
+private bool GetCondition(bool condition) =>
+    condition;
+```
+##### - Maybe. Success
+```csharp
+private bool GetMaybeSuccess() =>
+    RUnitFactory.Some();
+```
+##### - Maybe. Failure
+```csharp
+private bool GetMaybeFailure() =>
+    RUnitFactory.None(() => RErrorFactory.Simple("Failure error"));
+```
 ### IRMaybe extensions
 Методы расширения `IRMaybe` применимы ко всем типам классов. Они отвечают за обработку и преобразование ошибок 'IRError' в зависимости от статуса.
 #### Main action type
 Общие методы расширения класса `IRMaybe`. Позволяют добавлять и обрабатывать ошибки 'IRError'.
 Extension | Signature
 | ------------ | ------------
-`RMaybeEnsure` | `(IRMaybe, () => bool, () => List<IRError>) => IRMaybe`
-`RMaybeConcat` | `(IRMaybe, () => bool, () => List<IRError>) => IRMaybe`
-`RMaybeBindMatch` | `(IRMaybe, () => IRMaybe, List<IRError> => IRMaybe) => IRMaybe)`
+`RMaybeEnsure` | `(IRMaybe, () => bool, () => IRError) => IRMaybe`
+`RMaybeConcat` | `(IRMaybe, () => bool, () => IRError) => IRMaybe`
+`RMaybeBindMatch` | `(IRMaybe, () => IRMaybe, IRError => IRMaybe) => IRMaybe)`
 `RMaybeBindSome` | `(IRMaybe, () => IRMaybe) => IRMaybe)`
 ##### - RMaybeEnsure
-Проверить статус, проверить условие и присвоить ошибку в случае невыполнения
+Проверить статус, проверить условие и присвоить ошибку в случае невыполнения.
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeEnsure(() => GetCondition(true),
+                      () => RErrorFactory.Simple("First error"))
+        .RMaybeEnsure(GetCondition(true),
+                      () => RErrorFactory.Simple("Second error"));
+// Success
+```
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeEnsure(() => GetCondition(false),
+                      () => RErrorFactory.Simple("First error"))
+        .RMaybeEnsure(GetCondition(true),
+                      () => RErrorFactory.Simple("Second error"));
+// Failure. Errors: first
+```
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+        .RMaybeEnsure(GetCondition(false),
+                      () => RErrorFactory.Simple("First error"))
+        .RMaybeEnsure(GetCondition(true),
+                      () => RErrorFactory.Simple("Second error"));
+// Failure. Errors: initial
+```
 ##### - RMaybeConcat
-Проверить условие и добавить ошибку к текущим
+Проверить условие и добавить ошибку к текущим.
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeConcat(() => GetCondition(true),
+                      () => RErrorFactory.Simple("First error"))
+        .RMaybeConcat(GetCondition(true),
+                      () => RErrorFactory.Simple("Second error"));
+// Success
+```
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeConcat(() => GetCondition(false),
+                      () => RErrorFactory.Simple("First error"))
+        .RMaybeConcat(GetCondition(false),
+                      () => RErrorFactory.Simple("Second error"));
+// Failure. Errors: first, second
+```
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+        .RMaybeEnsure(GetCondition(true),
+                      () => RErrorFactory.Simple("First error"))
+        .RMaybeEnsure(GetCondition(false),
+                      () => RErrorFactory.Simple("Second error"));
+// Failure. Errors: initial, second
+```
 ##### - RMaybeBindMatch
 Заменить класс в зависимости от статуса
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeBindMatch(() => GetMaybeSuccess(),
+                         () => RErrorFactory.Simple("First error"));
+// Success
+```
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+        .RMaybeBindMatch(() => GetMaybeSuccess(),
+                         () => RErrorFactory.Simple("First error"));
+// Failure. Errors: First
+```
 ##### - RMaybeBindSome
 Заменить класс при статусе 'Success'
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeBindSome(() => GetMaybeSuccess());
+// Success
+```
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeBindSome(() => RErrorFactory.Simple("First error"));
+// Failure. Errors: First
+```
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+        .RMaybeBindSome(() => RErrorFactory.Simple("First error"));
+// Failure. Errors: Initial
+```
 #### Try action type
 #### Fold action type
 #### Void action type
