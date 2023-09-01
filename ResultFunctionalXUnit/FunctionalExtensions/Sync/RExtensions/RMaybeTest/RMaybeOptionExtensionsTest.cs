@@ -77,7 +77,7 @@ public class RMaybeOptionExtensionsTest
     {
         var rMaybe = RUnitFactory.Some();
 
-        var resultAfterWhere = rMaybe.RMaybeCollect(() => true, CreateErrorListTwoTest);
+        var resultAfterWhere = rMaybe.RMaybeConcat(() => true, CreateErrorListTwoTest);
 
         Assert.True(resultAfterWhere.Success);
     }
@@ -91,7 +91,7 @@ public class RMaybeOptionExtensionsTest
         var rMaybe = RUnitFactory.Some();
 
         var errorBad = CreateErrorListTwoTest();
-        var resultAfterWhere = rMaybe.RMaybeCollect(() => false,
+        var resultAfterWhere = rMaybe.RMaybeConcat(() => false,
                                                    () => errorBad);
 
         Assert.True(resultAfterWhere.Failure);
@@ -107,7 +107,7 @@ public class RMaybeOptionExtensionsTest
         var errorInitial = CreateErrorTest();
         var rMaybe = errorInitial.ToRUnit();
 
-        var resultAfterWhere = rMaybe.RMaybeCollect(() => true,
+        var resultAfterWhere = rMaybe.RMaybeConcat(() => true,
                                                    CreateErrorListTwoTest);
 
         Assert.True(resultAfterWhere.Failure);
@@ -124,7 +124,7 @@ public class RMaybeOptionExtensionsTest
         var rMaybe = errorsInitial.ToRUnit();
         var errors = CreateErrorListTwoTest();
 
-        var resultAfterWhere = rMaybe.RMaybeCollect(() => false,
+        var resultAfterWhere = rMaybe.RMaybeConcat(() => false,
                                                     () => errors);
 
         Assert.True(resultAfterWhere.Failure);

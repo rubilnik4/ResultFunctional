@@ -34,10 +34,10 @@ public static class RMaybeOptionAwaitExtensions
     /// <param name="predicate">Predicate function</param>
     /// <param name="noneFunc">Function if predicate <see langword="false"/></param>
     /// <returns>Result error</returns>
-    public static async Task<IRMaybe> RMaybeCollectAwait(this Task<IRMaybe> @this, Func<bool> predicate,
+    public static async Task<IRMaybe> RMaybeConcatAwait(this Task<IRMaybe> @this, Func<bool> predicate,
                                                          Func<Task<IReadOnlyCollection<IRError>>> noneFunc) =>
         predicate()
             ? await @this
             : await @this
-               .MapAwait(awaitedThis => awaitedThis.RMaybeCollectAsync(predicate, noneFunc));
+               .MapAwait(awaitedThis => awaitedThis.RMaybeConcatAsync(predicate, noneFunc));
 }
