@@ -431,6 +431,10 @@ private bool GetCondition(bool condition) =>
 private int DoAction()
 {}
 ```
+```csharp
+private int DoErrorAction(IReadOnlyCollection<IRError> errors)
+{}
+```
 ##### - Exception
 ```csharp
 private int ThrowException() =>
@@ -580,8 +584,96 @@ private IRMaybe GetMaybe() =>
 // Failure. Errors: initial
 ```
 #### Fold action type
+Методы расширения для слияния коллекции `IRMaybe`. Наличие хотя бы одной ошибки переводит результирующий класс в состояние `Failure`.
+Extension | Signature
+| ------------ | ------------
+`RMaybeFold` | `List<IRMaybe> => IRMaybe`
+##### - RMaybeFold
+Агрегировать все ошибки типа `IRError` и перевести в суммарный класс `IRMaybe`.
+```csharp
+    Enumerable
+        .Range(0, 3)
+        .Select(_ => GetMaybeSuccess())
+        .ToList()
+        .RMaybeFold();
+// Success
+```
+```csharp
+    Enumerable
+        .Range(0, 3)
+        .Select(_ => GetMaybeSuccess())
+        .Append(RErrorFactory.Simple("Aggregate error"))
+        .ToList()
+        .RMaybeFold();
+//  Failure. Errors: aggregate
+```
 #### Void action type
-
+Методы расширения для выполнения методов, не являющихся функциями и не возвращающих значений. Может использоваться для присвоения значений в родительском классе или второстепенных процессов, например логгирования.
+Extension | Signature
+| ------------ | ------------
+`RMaybeVoidSome` | `(IRMaybe, () => ()) => IRMaybe`
+`RMaybeVoidNone` | `(IRMaybe, IRError => ()) => IRMaybe`
+`RMaybeVoidMatch` | `(IRMaybe, () => (), IRError => ()) => IRMaybe`
+`RMaybeVoidOption` | `(IRMaybe, () => bool, () => ()) => IRMaybe`
+##### - RMaybeVoidSome
+Выполнить метод в состоянии `Success`
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeVoidSome(() => DoAction());
+// Success. DoAction
+```
+private IRMaybe GetMaybe() =>
+    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+        .RMaybeVoidSome(() => DoAction());
+// Failure. Errors: initial
+##### - RMaybeVoidNone
+Выполнить метод в состоянии `Failure`
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeVoidNone(errors => DoErrorAction(errors));
+// Success
+```
+private IRMaybe GetMaybe() =>
+    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+        .RMaybeVoidNone(errors => DoErrorAction(errors));
+// Failure. Errors: initial. DoErrorAction
+##### - RMaybeVoidMatch
+Выполнить метод в зависимости от состояния.
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeVoidMatch(() => DoAction(),
+                         errors => DoErrorAction(errors));
+// Success. DoAction
+```
+private IRMaybe GetMaybe() =>
+    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+        .RMaybeVoidMatch(() => DoAction(),
+                         errors => DoErrorAction(errors));
+// Failure. Errors: initial. DoErrorAction
+##### - RMaybeVoidOption
+Выполнить метод в зависимости от условия.
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeVoidOption(() => GetCondition(true),
+                          () => DoAction());
+// Success. DoAction
+```
+```csharp
+private IRMaybe GetMaybe() =>
+    RUnitFactory.Some()
+        .RMaybeVoidOption(() => GetCondition(false),
+                          () => DoAction());
+// Success
+```
+private IRMaybe GetMaybe() =>
+    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+        .RMaybeVoidOption(() => GetCondition(false),
+                          () => DoAction());
+// Failure. Errors: initial
 ### IRUnit extensions
 ### IRValue extensions
 ### IRList extensions
