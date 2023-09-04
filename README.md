@@ -669,11 +669,13 @@ private IRMaybe GetMaybe() =>
                           () => DoAction());
 // Success
 ```
+```
 private IRMaybe GetMaybe() =>
     RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
         .RMaybeVoidOption(() => GetCondition(false),
                           () => DoAction());
 // Failure. Errors: initial
+```
 ### IRUnit extensions
 ### IRValue extensions
 ### IRList extensions
