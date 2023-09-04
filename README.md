@@ -591,6 +591,7 @@ Extension | Signature
 ##### - RMaybeFold
 Агрегировать все ошибки типа `IRError` и перевести в суммарный класс `IRMaybe`.
 ```csharp
+private IRMaybe GetMaybe() =>
     Enumerable
         .Range(0, 3)
         .Select(_ => GetMaybeSuccess())
@@ -599,6 +600,7 @@ Extension | Signature
 // Success
 ```
 ```csharp
+private IRMaybe GetMaybe() =>
     Enumerable
         .Range(0, 3)
         .Select(_ => GetMaybeSuccess())
@@ -669,7 +671,7 @@ private IRMaybe GetMaybe() =>
                           () => DoAction());
 // Success
 ```
-```
+```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
         .RMaybeVoidOption(() => GetCondition(false),
