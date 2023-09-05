@@ -673,6 +673,34 @@ Extension | Signature
 `ToRUnit` | `List<IRMaybe> => IRUnit`
 `ToRUnit` | `List<IRError> => IRUnit`
 ### IRValue extensions
-
+Методы расширения `IRValue` предназначены для обработки состояния объекта и преобразования значения `Value` с учетом статуса.
+#### Main action type
+Общие методы расширения класса `IRValue`. Позволяют производить операции со значением `Value` и ошибками 'IRError'.
+Extension | Signature
+| ------------ | ------------
+`RValueOption` | `(IRValue<TIn>, TIn => bool, TIn => TOut, TIn => IRError) => IRValue<TOut>`
+`RValueWhere` | `(IRValue<TIn>, TIn => bool, TIn => TOut, TIn => TOut) => IRValue<TOut>`
+`RValueMatch` | `(IRValue<TIn>, TIn => bool, TIn => TOut, IRError => TOut) => IRValue<TOut>`
+`RValueSome` | `(IRValue<TIn>, TIn => TOut) => IRValue<TOut>`
+`RValueNone` | `(IRValue<T>, IRError => T) => IRValue<T>`
+`RValueEnsure` | `(IRValue<T>, T => bool, T => IRError) => IRValue<T>`
+`RValueBindOption` | `(IRValue<TIn>, TIn => bool, TIn => IRValue<TOut>, TIn => IRError) => IRValue<TOut>`
+`RValueBindWhere` | `(IRValue<TIn>, TIn => bool, TIn => IRValue<TOut>, TIn => IRValue<TOut>) => IRValue<TOut>`
+`RValueBindMatch` | `(IRValue<TIn>, TIn => bool, TIn => IRValue<TOut>, IRError => IRValue<TOut>) => IRValue<TOut>`
+`RValueBindSome` | `(IRValue<TIn>, TIn => IRValue<TOut>) => IRValue<TOut>`
+`RValueBindNone` | `(IRValue<T>, IRError => IRValue<T>) => IRValue<T>`
+`RValueBindEnsure` | `(IRValue<T>, T => bool, T => IRMaybe) => IRValue<T>`
+##### - RValueOption
+##### - RValueWhere
+##### - RValueMatch
+##### - RValueSome
+##### - RValueNone
+##### - RValueEnsure
+##### - RValueBindOption
+##### - RValueBindWhere
+##### - RValueBindMatch
+##### - RValueBindSome
+##### - RValueBindNone
+##### - RValueBindEnsure
 ### IRList extensions
 ### Conclusion
