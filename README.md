@@ -423,12 +423,17 @@ private async Task<IRValue<int>> Fluent(int initial, int additional) =>
 ### Standard functions
 ##### - Action
 ```csharp
-private int DoAction()
+private void DoAction()
 {}
 ```
 ```csharp
-private int DoErrorAction(IReadOnlyCollection<IRError> errors)
+private void DoErrorAction(IReadOnlyCollection<IRError> errors)
 {}
+```
+##### - Function
+```csharp
+private int GetNumber() =>
+    1;
 ```
 ##### - Exception
 ```csharp
@@ -467,7 +472,7 @@ private IRMaybe GetMaybe() =>
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
-    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
         .RMaybeEnsure(() => false,
                       () => RErrorFactory.Simple("First error"))
         .RMaybeEnsure(() => true,
@@ -496,7 +501,7 @@ private IRMaybe GetMaybe() =>
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
-    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
         .RMaybeEnsure(() => true,
                       () => RErrorFactory.Simple("First error"))
         .RMaybeEnsure(() => false,
@@ -514,7 +519,7 @@ private IRMaybe GetMaybe() =>
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
-    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
         .RMaybeBindMatch(() => RUnitFactory.Some(),
                          () => RErrorFactory.Simple("First error"));
 // Failure. Errors: First
@@ -535,7 +540,7 @@ private IRMaybe GetMaybe() =>
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
-    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
         .RMaybeBindSome(() => RErrorFactory.Simple("First error"));
 // Failure. Errors: initial
 ```
@@ -563,7 +568,7 @@ private IRMaybe GetMaybe() =>
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
-    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
         .RMaybeTrySome(() => ThrowException(),
                        RErrorFactory.Simple("Exception error"));
 // Failure. Errors: initial
@@ -611,7 +616,7 @@ private IRMaybe GetMaybe() =>
 // Success. DoAction
 ```
 private IRMaybe GetMaybe() =>
-    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
         .RMaybeVoidSome(() => DoAction());
 // Failure. Errors: initial
 ##### - RMaybeVoidNone
@@ -623,7 +628,7 @@ private IRMaybe GetMaybe() =>
 // Success
 ```
 private IRMaybe GetMaybe() =>
-    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
         .RMaybeVoidNone(errors => DoErrorAction(errors));
 // Failure. Errors: initial. DoErrorAction
 ##### - RMaybeVoidMatch
@@ -636,7 +641,7 @@ private IRMaybe GetMaybe() =>
 // Success. DoAction
 ```
 private IRMaybe GetMaybe() =>
-    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
         .RMaybeVoidMatch(() => DoAction(),
                          errors => DoErrorAction(errors));
 // Failure. Errors: initial. DoErrorAction
@@ -658,7 +663,7 @@ private IRMaybe GetMaybe() =>
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
-    RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
+    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
         .RMaybeVoidOption(() => false,
                           () => DoAction());
 // Failure. Errors: initial
@@ -691,7 +696,63 @@ Extension | Signature
 `RValueBindNone` | `(IRValue<T>, IRError => IRValue<T>) => IRValue<T>`
 `RValueBindEnsure` | `(IRValue<T>, T => bool, T => IRMaybe) => IRValue<T>`
 ##### - RValueOption
+Перевести один тип значения `Value` в другой с учетом статуса объекта. В случае невыполнения условия объект `IRValue` переходит в состояние `Failure` с соответствующей ошибкой.
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueOption(number => true,
+                      number => number.ToString()
+                      number => RErrorFactory.Simple("Condition error"));
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueOption(number => false,
+                      number => number.ToString()
+                      number => RErrorFactory.Simple("Condition error"));
+// Success. Errors: сondition
+```
+```csharp
+private IRValue<string> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"));
+        .ToRValue()
+        .RValueOption(number => false,
+                      number => number.ToString()
+                      number => RErrorFactory.Simple("Condition error"));
+// Success. Errors: initial
+```
 ##### - RValueWhere
+Перевести один тип значения `Value` в другой с учетом статуса объекта. В случае невыполнения условия выполняется альтернативный метод инициализирующий объект `IRValue`.
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueWhere(number => true,
+                     number => number.ToString()
+                     number => String.Empty);
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueWhere(number => false,
+                     number => number.ToString()
+                     number => String.Empty);
+// Success. Value: empty
+```
+```csharp
+private IRValue<string> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"));
+        .ToRValue()
+        .RValueWhere(number => false,
+                     number => number.ToString()
+                     number => String.Empty);
+// Success. Errors: initial
+```
 ##### - RValueMatch
 ##### - RValueSome
 ##### - RValueNone
