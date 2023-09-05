@@ -440,6 +440,22 @@ private int GetNumber() =>
 private int ThrowException() =>
     throw new Exception();
 ```
+##### - IRError
+```csharp
+private int GetErrorCode(IRError error) =>
+    400;
+```
+```csharp
+private IRValue<int> GetRErrorCode(IRError error) =>
+    400.ToRValue();
+```
+##### - RValue
+```csharp
+private IRValue<string> ToRValueString(int number) =>
+    number
+        .ToRValue()
+        .RValueSome(number => number.ToString());
+```
 ### IRMaybe extensions
 Методы расширения `IRMaybe` применимы ко всем типам классов. Они отвечают за обработку и преобразование ошибок 'IRError' в зависимости от статуса.
 #### Main action type
@@ -702,7 +718,7 @@ private IRValue<string> GetValue() =>
     GetNumber()
         .ToRValue()
         .RValueOption(number => true,
-                      number => number.ToString()
+                      number => number.ToString(),
                       number => RErrorFactory.Simple("Condition error"));
 // Success. Value: "1"
 ```
@@ -711,7 +727,7 @@ private IRValue<string> GetValue() =>
     GetNumber()
         .ToRValue()
         .RValueOption(number => false,
-                      number => number.ToString()
+                      number => number.ToString(),
                       number => RErrorFactory.Simple("Condition error"));
 // Failure. Errors: сondition
 ```
@@ -719,7 +735,7 @@ private IRValue<string> GetValue() =>
 private IRValue<string> GetValue() =>
     RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
         .RValueOption(number => false,
-                      number => number.ToString()
+                      number => number.ToString(),
                       number => RErrorFactory.Simple("Condition error"));
 // Failure. Errors: initial
 ```
@@ -730,7 +746,7 @@ private IRValue<string> GetValue() =>
     GetNumber()
         .ToRValue()
         .RValueWhere(number => true,
-                     number => number.ToString()
+                     number => number.ToString(),
                      number => String.Empty);
 // Success. Value: "1"
 ```
@@ -739,7 +755,7 @@ private IRValue<string> GetValue() =>
     GetNumber()
         .ToRValue()
         .RValueWhere(number => false,
-                     number => number.ToString()
+                     number => number.ToString(),
                      number => String.Empty);
 // Success. Value: empty
 ```
@@ -757,14 +773,14 @@ private IRValue<string> GetValue() =>
 private IRValue<string> GetValue() =>
     GetNumber()
         .ToRValue()
-        .RValueMatch(number => number.ToString()
+        .RValueMatch(number => number.ToString(),
                      errors => errors.First().Description);
 // Success. Value: "1"
 ```
 ```csharp
 private IRValue<string> GetValue() =>
     RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RValueMatch(number => number.ToString()
+        .RValueMatch(number => number.ToString(),
                      errors => errors.First().Description);
 // Success. Value: "Initial error"
 ```
@@ -789,14 +805,14 @@ private IRValue<string> GetValue() =>
 private IRValue<int> GetValue() =>
     GetNumber()
         .ToRValue()
-        .RValueNone(errors => errors.Count);
-// Success. Value: 0
+        .RValueNone(errors => GetErrorCode(errors.First()));
+// Success. Value: 1
 ```
 ```csharp
 private IRValue<int> GetValue() =>
     RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RValueNone(errors => errors.Count);
-// Success. Value: 1
+        .RValueNone(errors => GetErrorCode(errors.First()));
+// Success. Value: 400
 ```
 ##### - RValueEnsure
 Проверить статус, проверить условие и присвоить ошибку в случае невыполнения.
@@ -824,10 +840,132 @@ private IRValue<string> GetValue() =>
 // Failure. Errors: initial
 ```
 ##### - RValueBindOption
+Заменить один объект `IRValue` другим с учетом статуса объекта. В случае невыполнения условия объект `IRValue` переходит в состояние `Failure` с соответствующей ошибкой.
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueBindOption(number => true,
+                          number => ToRValueString(number),
+                          number => RErrorFactory.Simple("Condition error"));
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueBindOption(number => false,
+                          number => ToRValueString(number),
+                          number => RErrorFactory.Simple("Condition error"));
+// Failure. Errors: сondition
+```
+```csharp
+private IRValue<string> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RValueBindOption(number => false,
+                          number => ToRValueString(number),
+                          number => RErrorFactory.Simple("Condition error"));
+// Failure. Errors: initial
+```
 ##### - RValueBindWhere
+Заменить один объект `IRValue` другим с учетом статуса объекта. В случае невыполнения условия выполняется альтернативный метод инициализирующий объект `IRValue`.
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueBindWhere(number => true,
+                         number => ToRValueString(number)
+                         number => String.Empty.ToRValue());
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueBindWhere(number => false,
+                         number => ToRValueString(number)
+                         number => String.Empty.ToRValue());
+// Success. Value: empty
+```
+```csharp
+private IRValue<string> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"));
+        .RValueBindWhere(number => false,
+                         number => ToRValueString(number)
+                         number => String.Empty.ToRValue());
+// Failure. Errors: initial
+```
 ##### - RValueBindMatch
+Заменить один объект `IRValue` другим с учетом статуса объекта. В случае состояние `Failure` выполняется альтернативный метод инициализирующий объект `IRValue` на основе ошибок `IRError`.
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueBindMatch(number => ToRValueString(number)
+                         errors => errors.First().Description.ToRValue());
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RValueBindMatch(number => ToRValueString(number)
+                         errors => errors.First().Description.ToRValue());
+// Success. Value: "Initial error"
+```
 ##### - RValueBindSome
+Заменить один объект `IRValue` другим при условии статуса объекта `Success`.
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueBindSome(number => ToRValueString(number));
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RValueBindSome(number => number.ToString());
+// Failure. Errors: "Initial error"
+```
 ##### - RValueBindNone
+Заменить один объект `IRValue` другим при условии статуса объекта `Failure`.
+```csharp
+private IRValue<int> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueBindNone(errors => GetRErrorCode(errors.First()));
+// Success. Value: 1
+```
+```csharp
+private IRValue<int> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RValueBindNone(errors => GetRErrorCode(errors.First()));
+// Success. Value: 400
+```
 ##### - RValueBindEnsure
+Проверить статус, проверить условие и присвоить ошибку в случае невыполнения.
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueEnsure(number => true,
+                      number => RErrorFactory.Simple("Condition error").ToRUnit());
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueEnsure(number => false,
+                      number => RErrorFactory.Simple("Condition error").ToRUnit());
+// Failure. Errors: сondition
+```
+```csharp
+private IRValue<string> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RValueEnsure(number => false,
+                      number => RErrorFactory.Simple("Condition error").ToRUnit());
+// Failure. Errors: initial
+```
 ### IRList extensions
 ### Conclusion
