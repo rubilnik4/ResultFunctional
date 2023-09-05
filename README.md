@@ -679,6 +679,15 @@ private IRMaybe GetMaybe() =>
 // Failure. Errors: initial
 ```
 ### IRUnit extensions
+Класс `IRUnit` следует применять в том случае, когда достаточно информации о статусе объекта и нет необходимости проводить операции со значением `Value`. Класс `IRUnit` применяется в основном для стартовой инициализации методов расшрения типа `IRMaybe`.
+#### Initalize functions
+Методы расширений для инициализации класса `IRUnit` посредством коллекций других типов. Аналогичны операции Fold.
+Extension | Signature
+| ------------ | ------------
+`ToRUnit` | `List<IRUnit> => IRUnit`
+`ToRUnit` | `List<IRMaybe> => IRUnit`
+`ToRUnit` | `List<IRError> => IRUnit`
 ### IRValue extensions
+
 ### IRList extensions
 ### Conclusion
