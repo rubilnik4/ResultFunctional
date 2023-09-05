@@ -66,8 +66,8 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="noneFunc">Function if result value has errors</param>
         /// <returns>Outgoing result value</returns>
         public static IRValue<TValueOut> RValueBindMatch<TValueIn, TValueOut>(this IRValue<TValueIn> @this,
-                                                                                        Func<TValueIn, IRValue<TValueOut>> someFunc,
-                                                                                        Func<IReadOnlyCollection<IRError>, IRValue<TValueOut>> noneFunc)
+                                                                              Func<TValueIn, IRValue<TValueOut>> someFunc,
+                                                                              Func<IReadOnlyCollection<IRError>, IRValue<TValueOut>> noneFunc)
             where TValueIn : notnull
             where TValueOut : notnull =>
          @this.Success
