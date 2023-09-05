@@ -378,6 +378,7 @@ Extension | Signature | Description
 `Fold` | `List<R<T>> => RList<T>` | Объединение `R` классов в коллекцию
 #### 5. Status action
 Действие в зависимости от статуса объекта `RLibrary`. Функции могут обрабатывать значения как в статусе `Success`, так и в статусе `Failure`.
+При всех действиях за исключением `None` и `Match` функция для `R` объекта исполняется только в статусе `Success`. При статусе `Failure` объект остается неизменным и происходит пропуск шага.
 Extension | Signature |  Description
 | ------------ | ------------ | ------------ |
 `Option` | `(R<T>, T => bool, T => T, T => IRError) => R<T>` | Только `Success`. При выполнении условия преобразует `T`, иначе возвращает ошибку `IRError`
@@ -386,8 +387,7 @@ Extension | Signature |  Description
 `Some` | `(R<T>, T => T) => R<T>` | Только `Success`. Преобразует `T`
 `None` | `(R<T>, IRError => T) => R<T>` | Только `Failure`. Преобразует `IRError` в `T`
 `Ensure` | `(R<T>, T => bool, T => IRError) => R<T>` | Проверяет статус. При `Failure` возвращает ошибку `IRError`
-`Concat` | `(R<T>, T => bool, T => IRError) => R<T>` |При `Failure` добавляет ошибку `IRError` к текущим
-При всех действиях за исключением `None` и `Match` функция для `R` объекта исполняется только в статусе `Success`. При статусе `Failure` объект остается неизменным и происходит пропуск шага.
+`Concat` | `(R<T>, T => bool, T => IRError) => R<T>` | При `Failure` добавляет ошибку `IRError` к текущим
 #### 6. Asynchronous
 Каждый из методов имеет асинхронное расширение. Асинхронные методы можно использовать в классическом написании с применением `await` или же во fluent стиле с примнением расширений: `Async`, `Task`, `Await`.
 Extension | Signature |  Description
@@ -421,11 +421,6 @@ private async Task<IRValue<int>> Fluent(int initial, int additional) =>
         .RValueSomeAwait(number => AddAsync(number, additional));
 ```
 ### Standard functions
-##### - Predicate
-```csharp
-private bool GetCondition(bool condition) =>
-    condition;
-```
 ##### - Action
 ```csharp
 private int DoAction()
@@ -439,16 +434,6 @@ private int DoErrorAction(IReadOnlyCollection<IRError> errors)
 ```csharp
 private int ThrowException() =>
     throw new Exception();
-```
-##### - Maybe. Success
-```csharp
-private bool GetMaybeSuccess() =>
-    RUnitFactory.Some();
-```
-##### - Maybe. Failure
-```csharp
-private bool GetMaybeFailure() =>
-    RUnitFactory.None(() => RErrorFactory.Simple("Failure error"));
 ```
 ### IRMaybe extensions
 Методы расширения `IRMaybe` применимы ко всем типам классов. Они отвечают за обработку и преобразование ошибок 'IRError' в зависимости от статуса.
@@ -465,27 +450,27 @@ Extension | Signature
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.Some()
-        .RMaybeEnsure(() => GetCondition(true),
+        .RMaybeEnsure(() => true,
                       () => RErrorFactory.Simple("First error"))
-        .RMaybeEnsure(GetCondition(true),
+        .RMaybeEnsure(() => true,
                       () => RErrorFactory.Simple("Second error"));
 // Success
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.Some()
-        .RMaybeEnsure(() => GetCondition(false),
+        .RMaybeEnsure(() => false,
                       () => RErrorFactory.Simple("First error"))
-        .RMaybeEnsure(GetCondition(true),
+        .RMaybeEnsure(() => true,
                       () => RErrorFactory.Simple("Second error"));
 // Failure. Errors: first
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
-        .RMaybeEnsure(GetCondition(false),
+        .RMaybeEnsure(() => false,
                       () => RErrorFactory.Simple("First error"))
-        .RMaybeEnsure(GetCondition(true),
+        .RMaybeEnsure(() => true,
                       () => RErrorFactory.Simple("Second error"));
 // Failure. Errors: initial
 ```
@@ -494,27 +479,27 @@ private IRMaybe GetMaybe() =>
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.Some()
-        .RMaybeConcat(() => GetCondition(true),
+        .RMaybeConcat(() => true,
                       () => RErrorFactory.Simple("First error"))
-        .RMaybeConcat(GetCondition(true),
+        .RMaybeConcat(() => true,
                       () => RErrorFactory.Simple("Second error"));
 // Success
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.Some()
-        .RMaybeConcat(() => GetCondition(false),
+        .RMaybeConcat(() => false,
                       () => RErrorFactory.Simple("First error"))
-        .RMaybeConcat(GetCondition(false),
+        .RMaybeConcat(() => false,
                       () => RErrorFactory.Simple("Second error"));
 // Failure. Errors: first, second
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
-        .RMaybeEnsure(GetCondition(true),
+        .RMaybeEnsure(() => true,
                       () => RErrorFactory.Simple("First error"))
-        .RMaybeEnsure(GetCondition(false),
+        .RMaybeEnsure(() => false,
                       () => RErrorFactory.Simple("Second error"));
 // Failure. Errors: initial, second
 ```
@@ -523,14 +508,14 @@ private IRMaybe GetMaybe() =>
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.Some()
-        .RMaybeBindMatch(() => GetMaybeSuccess(),
+        .RMaybeBindMatch(() => RUnitFactory.Some(),
                          () => RErrorFactory.Simple("First error"));
 // Success
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
-        .RMaybeBindMatch(() => GetMaybeSuccess(),
+        .RMaybeBindMatch(() => RUnitFactory.Some(),
                          () => RErrorFactory.Simple("First error"));
 // Failure. Errors: First
 ```
@@ -539,7 +524,7 @@ private IRMaybe GetMaybe() =>
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.Some()
-        .RMaybeBindSome(() => GetMaybeSuccess());
+        .RMaybeBindSome(() => RUnitFactory.Some());
 // Success
 ```
 ```csharp
@@ -594,7 +579,7 @@ Extension | Signature
 private IRMaybe GetMaybe() =>
     Enumerable
         .Range(0, 3)
-        .Select(_ => GetMaybeSuccess())
+        .Select(_ => RUnitFactory.Some())
         .ToList()
         .RMaybeFold();
 // Success
@@ -603,7 +588,7 @@ private IRMaybe GetMaybe() =>
 private IRMaybe GetMaybe() =>
     Enumerable
         .Range(0, 3)
-        .Select(_ => GetMaybeSuccess())
+        .Select(_ => RUnitFactory.Some())
         .Append(RErrorFactory.Simple("Aggregate error"))
         .ToList()
         .RMaybeFold();
@@ -660,21 +645,21 @@ private IRMaybe GetMaybe() =>
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.Some()
-        .RMaybeVoidOption(() => GetCondition(true),
+        .RMaybeVoidOption(() => true,
                           () => DoAction());
 // Success. DoAction
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.Some()
-        .RMaybeVoidOption(() => GetCondition(false),
+        .RMaybeVoidOption(() => false,
                           () => DoAction());
 // Success
 ```
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.None(() => RErrorFactory.Simple("Initial error"))
-        .RMaybeVoidOption(() => GetCondition(false),
+        .RMaybeVoidOption(() => false,
                           () => DoAction());
 // Failure. Errors: initial
 ```
