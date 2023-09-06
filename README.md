@@ -479,6 +479,14 @@ Extension | Abbreviation
 `Exception` | `Ex`
 ### IRMaybe extensions
 Методы расширения `IRMaybe` применимы ко всем типам классов. Они отвечают за обработку и преобразование ошибок 'IRError' в зависимости от статуса.
+#### Function and action types
+Методы расширения типа функтор не имеют дополнительного индекса в именованивании. Расширения типа монада обозначаются префиксом `Bind`.
+Action | Functor | Monad
+| ------------ | ------------ | ------------
+`Main` | :heavy_check_mark: | :heavy_check_mark:
+`Try` | :heavy_check_mark: |
+`Fold` | :heavy_check_mark: |
+`Void` | :heavy_check_mark: |
 #### Main action type
 Общие методы расширения класса `IRMaybe`. Позволяют добавлять и обрабатывать ошибки 'IRError'.
 Extension | Signature
@@ -747,6 +755,17 @@ Extension | Signature
 `ToRUnit` | `List<IRError> => IRUnit`
 ### IRValue extensions
 Методы расширения `IRValue` предназначены для обработки состояния объекта и преобразования значения `Value` с учетом статуса.
+#### Function and action types
+Методы расширения типа функтор не имеют дополнительного индекса в именованивании. Расширения типа монада обозначаются префиксом `Bind`.
+Action | Functor | Actor | Monad
+| ------------ | ------------ | ------------ | ------------
+`Main` | :heavy_check_mark: |  | :heavy_check_mark:
+`Try` | :heavy_check_mark: |  | :heavy_check_mark:
+`Lift` | :heavy_check_mark: |  |
+`Void` | :heavy_check_mark: |  |
+`Curry` |  | :heavy_check_mark: |
+`ToList` | :heavy_check_mark: |  | :heavy_check_mark:
+`Init` | :heavy_check_mark: |  | :heavy_check_mark:
 #### Main action type
 Общие методы расширения класса `IRValue`. Позволяют производить операции со значением `Value` и ошибками 'IRError'.
 Extension | Signature
