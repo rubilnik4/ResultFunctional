@@ -427,6 +427,10 @@ private void DoAction()
 {}
 ```
 ```csharp
+private void DoAction(int number)
+{}
+```
+```csharp
 private void DoErrorAction(IReadOnlyCollection<IRError> errors)
 {}
 ```
@@ -438,6 +442,14 @@ private int GetNumber() =>
 ##### - Exception
 ```csharp
 private int ThrowException() =>
+    throw new Exception();
+```
+```csharp
+private string ThrowException(int number) =>
+    throw new Exception();
+```
+```csharp
+private IRValue<string> ThrowRException(int number) =>
     throw new Exception();
 ```
 ##### - IRError
@@ -473,7 +485,7 @@ Extension | Signature
 | ------------ | ------------
 `RMaybeEnsure` | `(RM, () => bool, () => RE) => RM`
 `RMaybeConcat` | `(RM, () => bool, () => RE) => RM`
-`RMaybeBindMatch` | `(RM, () => RM, IRError => RM) => RM`
+`RMaybeBindMatch` | `(RM, () => RM, RE => RM) => RM`
 `RMaybeBindSome` | `(RM, () => RM) => RM`
 ##### - RMaybeEnsure
 Проверить статус, проверить условие и присвоить ошибку в случае невыполнения.
@@ -737,7 +749,6 @@ Extension | Signature
 Методы расширения `IRValue` предназначены для обработки состояния объекта и преобразования значения `Value` с учетом статуса.
 #### Main action type
 Общие методы расширения класса `IRValue`. Позволяют производить операции со значением `Value` и ошибками 'IRError'.
-Принято сокращение IRValue<T> -> R<T>
 Extension | Signature
 | ------------ | ------------
 `RValueOption` | `(RV<TIn>, TIn => bool, TIn => TOut, TIn => RE) => RV<TOut>`
@@ -1042,6 +1053,158 @@ private IRValue<string> GetValue() =>
     RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
         .RValueEnsure(number => false,
                       number => RErrorFactory.Simple("Condition error").ToRUnit());
+// Failure. Errors: initial
+```
+#### Try action type
+Методы расширения класса `IRValue` для обратбоки исключений. Позволяют преобразовать обычные функции к функциональному типу.
+Extension | Signature
+| ------------ | ------------
+`RValueTrySome` | `(RV<TIn>, TIn => TOut, Ex => RE) => RV<TOut>`
+`RValueTrySome` | `(RV<TIn>, TIn => TOut, RE) => RV<TOut>`
+`RValueBindTrySome` | `(RV<TIn>, TIn => RV<TOut>, Ex => RE) => RV<TOut>`
+`RValueBindTrySome` | `(RV<TIn>, TIn => RV<TOut>, RE) => RV<TOut>`
+##### - RValueTrySome
+Проверить статус и преобразовать функцию к функциональному типу, а также исключение `Exception` к типу `IRError`.
+```
+(IRValue<TIn>, TIn => TOut, Exception => IRError) => IRValue<TOut>
+(IRValue<TIn>, TIn => TOut, IRError) => IRValue<TOut>
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueTrySome(number => number.ToString(),
+                       RErrorFactory.Simple("Exception error"));
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueTrySome(number => ThrowException(number),
+                       exception => RErrorFactory.Simple("Exception error").Append(exception));
+// Failure. Errors: exception
+```
+```csharp
+private IRMaybe GetValue() =>
+   RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RMaybeTrySome(number => ThrowException(number),
+                       RErrorFactory.Simple("Exception error"));
+// Failure. Errors: initial
+```
+##### - RValueBindTrySome
+Проверить статус и заменить объект функциональным типом, а также исключение `Exception` типом `IRError`.
+```
+(IRValue<TIn>, TIn => TOut, Exception => IRError) => IRValue<TOut>
+(IRValue<TIn>, TIn => TOut, IRError) => IRValue<TOut>
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueTrySome(number => ToRValueString(number),
+                       RErrorFactory.Simple("Exception error"));
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueTrySome(number => ThrowRException(number),
+                       exception => RErrorFactory.Simple("Exception error").Append(exception));
+// Failure. Errors: exception
+```
+```csharp
+private IRMaybe GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RMaybeTrySome(number => ThrowRException(number),
+                       RErrorFactory.Simple("Exception error"));
+// Failure. Errors: initial
+```
+#### Void action type
+Методы расширения для выполнения методов, не являющихся функциями и не возвращающих значений. Может использоваться для присвоения значений в родительском классе или второстепенных процессов, например логгирования. Значение `Value` остается неизменным.
+Extension | Signature
+| ------------ | ------------
+`RValueVoidSome` | `(RV<T>, T => ()) => RV<T>`
+`RValueVoidNone` | `(RV<T>, RE => ()) => RV<T>`
+`RValueVoidMatch` | `(RV<T>, T => (), RE => ()) => RV<T>`
+`RValueVoidOption` | `(RV<T>, T => bool, T => ()) => RV<T>`
+##### - RValueVoidSome
+Выполнить метод в состоянии `Success`
+```
+(IRValue<T>, T => ()) => IRValue<T>
+```
+```csharp
+private IRValue<int> GetValue() =>
+     GetNumber()
+        .ToRValue()
+        .RValueVoidSome(number => DoAction(number));
+// Success. DoAction. Value: "1"
+```
+private IRValue<int> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RValueVoidSome(number => DoAction(number));
+// Failure. Errors: initial
+##### - RValueVoidNone
+Выполнить метод в состоянии `Failure`
+```
+(IRValue<T>, IRError => ()) => IRValue<T>
+```
+```csharp
+private IRValue<int> GetValue() =>
+     GetNumber()
+        .ToRValue()
+        .RValueVoidNone(errors => DoErrorAction(errors));
+// Success. Value: "1"
+```
+private IRValue<int> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RValueVoidNone(errors => DoErrorAction(errors));
+// Failure. Errors: initial. DoErrorAction
+##### - RValueVoidMatch
+Выполнить метод в зависимости от состояния.
+```
+(IRValue<T>, T => (), IRError => ()) => IRValue<T>
+```
+```csharp
+private IRValue<int> GetValue() =>
+     GetNumber()
+        .ToRValue()
+        .RValueVoidMatch(number => DoAction(number),
+                         errors => DoErrorAction(errors));
+// Success. DoAction.  Value: "1"
+```
+private IRValue<int> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RValueVoidMatch(number => DoAction(number),
+                         errors => DoErrorAction(errors));
+// Failure. Errors: initial. DoErrorAction
+##### - RValueVoidOption
+Выполнить метод в зависимости от условия.
+```
+(IRValue<T>, T => bool, T => ()) => IRValue<T>
+```
+```csharp
+private IRValue<int> GetValue() =>
+     GetNumber()
+        .ToRValue()
+        .RValueVoidOption(number => true,
+                          number => DoAction(number));
+// Success. DoAction. Value: "1"
+```
+```csharp
+private IRValue<int> GetValue() =>
+     GetNumber()
+        .ToRValue()
+        .RValueVoidOption(number => false,
+                          number => DoAction(number));
+// Success. Value: "1"
+```
+```csharp
+private IRValue<int> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RValueVoidOption(number => false,
+                          number => DoAction(number));
 // Failure. Errors: initial
 ```
 ### IRList extensions
