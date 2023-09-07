@@ -737,8 +737,8 @@ Action | Functor | Actor | Monad
 | ------------ | ------------ | ------------ | ------------
 `Main` | :heavy_check_mark: |  | :heavy_check_mark:
 `Try` | :heavy_check_mark: |  | :heavy_check_mark:
-`Lift` | :heavy_check_mark: |  |
 `Void` | :heavy_check_mark: |  |
+`Lift` | :heavy_check_mark: |  |
 `Curry` |  | :heavy_check_mark: |
 `ToList` | :heavy_check_mark: |  | :heavy_check_mark:
 `Init` | :heavy_check_mark: |  | :heavy_check_mark:
@@ -908,7 +908,7 @@ private IRValue<string> GetValue() =>
     GetNumber()
         .ToRValue()
         .RValueBindWhere(number => true,
-                         number => ToRValueString(number)
+                         number => ToRValueString(number),
                          number => String.Empty.ToRValue());
 // Success. Value: "1"
 ```
@@ -917,7 +917,7 @@ private IRValue<string> GetValue() =>
     GetNumber()
         .ToRValue()
         .RValueBindWhere(number => false,
-                         number => ToRValueString(number)
+                         number => ToRValueString(number),
                          number => String.Empty.ToRValue());
 // Success. Value: empty
 ```
@@ -930,14 +930,14 @@ private IRValue<string> GetValue() =>
 private IRValue<string> GetValue() =>
     GetNumber()
         .ToRValue()
-        .RValueBindMatch(number => ToRValueString(number)
+        .RValueBindMatch(number => ToRValueString(number),
                          errors => errors.First().Description.ToRValue());
 // Success. Value: "1"
 ```
 ```csharp
 private IRValue<string> GetValue() =>
     RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RValueBindMatch(number => ToRValueString(number)
+        .RValueBindMatch(number => ToRValueString(number),
                          errors => errors.First().Description.ToRValue());
 // Success. Value: "Initial error"
 ```
@@ -1118,6 +1118,31 @@ private IRValue<int> GetValue() =>
         .RValueVoidOption(number => false,
                           number => DoAction(number));
 // Success. Value: "1"
+```
+#### Lift action type
+Методы расширения для разворачивания объекта R<T> -> T в зависимости от статуса.
+Id | Extension | Signature
+| ------------ | ------------ | ------------
+1 | `RValueLiftMatch` | `(RV<TIn>, TIn => TOut, ER => TOut) => TOut`
+##### 1. RValueLiftMatch
+Разворачивает значение `Value` в зависимости от текущего статуса объекта
+```
+(IRValue<TIn>, TIn => TOut, IRError => TOut) => TOut
+```
+```csharp
+private string GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueLiftMatch(number => number.ToString(),
+                         errors => GetErrorCode(errors).ToString());
+// Value: "1"
+```
+```csharp
+private string GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RValueLiftMatch(number => number.ToString(),
+                         errors => GetErrorCode(errors).ToString());
+// Value: "400"
 ```
 ### IRList extensions
 ### Conclusion
