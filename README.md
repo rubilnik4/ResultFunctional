@@ -758,7 +758,7 @@ private IRMaybe GetMaybe() =>
 ```
 ### IRUnit extensions
 Класс `IRUnit` следует применять в том случае, когда достаточно информации о статусе объекта и нет необходимости проводить операции со значением `Value`. Класс `IRUnit` применяется в основном для стартовой инициализации методов расшрения типа `IRMaybe`.
-#### Initalize functions
+#### Initialize functions
 Методы расширений для инициализации класса `IRUnit` посредством коллекций других типов. Аналогичны операции Fold.
 Extension | Signature
 | ------------ | ------------
@@ -1299,6 +1299,88 @@ private IRList<string> GetValue() =>
         .ToRValue()
         .RValueToListBindSome(number => NumberToRList(number));
 // Success. List: {"0"}
+```
+#### Initialize functions
+Методы расширений для инициализации класса `IRValue`.
+Id | Extension | Signature
+| ------------ | ------------ | ------------
+1 | `ToRValue` | `T => RV<T>`
+2 | `ToRValue` | `(RM, T) => RV<T>`
+3 | `ToRValueBind` | `(RM, RV<T>) => RV<T>`
+4 | `ToRValueEnsure` | `(T, RE) => RV<T>`
+##### 1. ToRValue
+Перевести значение `Value` к объекту типа `IRValue`. При этом тип значения `Value` должно соответсвовать условию `notnull`.
+```
+T => IRValue<T>
+```
+```csharp
+private IRValue<int> GetValue() =>
+    GetNumber()
+        .ToRValue();
+// Success. List: {"0"}
+```
+##### 2. ToRValue
+Присвоить объекту `IRMaybe` значение `Value` в зависимости от статуса. 
+```
+(IRMaybe, T) => IRValue<T>
+```
+```csharp
+private IRValue<int> GetValue() =>
+    RUnitFactory.Some()
+        .ToRValue(GetNumber());
+// Success. Value: 1
+```
+```csharp
+private IRValue<int> GetValue() =>
+    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
+        .ToRValue(GetNumber());
+// Success. Errors: initial
+```
+##### 3. ToRValueBind
+Заменить объект `IRMaybe` объектом `IRValue` в зависимости от статуса. 
+```
+(IRMaybe, IRValue<T>) => IRValue<T>
+```
+```csharp
+private IRValue<int> GetValue() =>
+    RUnitFactory.Some()
+        .ToRValue(GetRValueNumber());
+// Success. Value: 1
+```
+```csharp
+private IRValue<int> GetValue() =>
+    RUnitFactory.Some()
+        .ToRValue(RErrorFactory.Simple("Value error"));
+// Success. Value: 1
+```
+```csharp
+private IRValue<int> GetValue() =>
+    RUnitFactory.None(RValueFactory.None<int>(RErrorFactory.Simple("Value error")))
+        .ToRValue(GetRValueNumber());
+// Success. Errors: value
+```
+##### 3. ToRValueEnsure
+Перевести значение `Value` к объекту типа `IRValue`. При этом значении `Value` равному `null` будет присвоен статус `Failure`.
+```
+(T, IRError) => IRValue<T>
+```
+```csharp
+private IRValue<int> GetValue() =>
+    RUnitFactory.Some()
+        .ToRValue(GetRValueNumber());
+// Success. Value: 1
+```
+```csharp
+private IRValue<int> GetValue() =>
+    RUnitFactory.Some()
+        .ToRValue(RErrorFactory.Simple("Value error"));
+// Success. Value: 1
+```
+```csharp
+private IRValue<int> GetValue() =>
+    RUnitFactory.None(RValueFactory.None<int>(RErrorFactory.Simple("Value error")))
+        .ToRValue(GetRValueNumber());
+// Success. Errors: value
 ```
 ### IRList extensions
 ### Conclusion
