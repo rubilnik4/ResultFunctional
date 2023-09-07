@@ -454,6 +454,10 @@ private List<string> NumberToList(int number) =>
         .Select(n => n.ToString())
         .ToList();
 ```
+```csharp
+private string GetNullString() =>
+    null;
+```
 ##### Exception
 ```csharp
 private int ThrowException() =>
@@ -1308,8 +1312,9 @@ Id | Extension | Signature
 2 | `ToRValue` | `(RM, T) => RV<T>`
 3 | `ToRValueBind` | `(RM, RV<T>) => RV<T>`
 4 | `ToRValueEnsure` | `(T, RE) => RV<T>`
+5 | `ToRValueOption` | `(T, T => bool, T => RE) => RV<T>`
 ##### 1. ToRValue
-Перевести значение `Value` к объекту типа `IRValue`. При этом тип значения `Value` должно соответсвовать условию `notnull`.
+Привести значение `Value` к объекту типа `IRValue`. При этом тип значения `Value` должно соответсвовать условию `notnull`.
 ```
 T => IRValue<T>
 ```
@@ -1359,28 +1364,35 @@ private IRValue<int> GetValue() =>
         .ToRValue(GetRValueNumber());
 // Success. Errors: value
 ```
-##### 3. ToRValueEnsure
+##### 4. ToRValueEnsure
 Перевести значение `Value` к объекту типа `IRValue`. При этом значении `Value` равному `null` будет присвоен статус `Failure`.
 ```
 (T, IRError) => IRValue<T>
 ```
 ```csharp
+private IRValue<string> GetValue() =>
+    GetNullString()
+        .ToRValueEnsure(RErrorFactory.Simple("Null error"));
+// Failure. Errors: null
+```
+##### 5. ToRValueOption
+Привести значение `Value` к объекту типа `IRValue` с учетом условия. При этом тип значения `Value` должно соответсвовать условию `notnull`.
+```
+(T, T => bool, T => RE) => IRValue<T>
+```
+```csharp
 private IRValue<int> GetValue() =>
-    RUnitFactory.Some()
-        .ToRValue(GetRValueNumber());
+    GetNumber()
+        .ToRValueOption(number => true,
+                        number => RErrorFactory.Simple("Condition error"));
 // Success. Value: 1
 ```
 ```csharp
 private IRValue<int> GetValue() =>
-    RUnitFactory.Some()
-        .ToRValue(RErrorFactory.Simple("Value error"));
-// Success. Value: 1
-```
-```csharp
-private IRValue<int> GetValue() =>
-    RUnitFactory.None(RValueFactory.None<int>(RErrorFactory.Simple("Value error")))
-        .ToRValue(GetRValueNumber());
-// Success. Errors: value
+    GetNumber()
+        .ToRValueOption(number => false,
+                        number => RErrorFactory.Simple("Condition error"));
+// Success. Errors: condition
 ```
 ### IRList extensions
 ### Conclusion
