@@ -447,6 +447,13 @@ private string ToString(int number) =>
 private string ListToString(IEnumerable<int> numbers) =>
     numbers.Sum().ToString();
 ```
+```csharp
+private List<string> NumberToList(int number) =>
+    Enumerable
+        .Range(0, number)
+        .Select(n => n.ToString())
+        .ToList();
+```
 ##### Exception
 ```csharp
 private int ThrowException() =>
@@ -487,6 +494,13 @@ private IRList<string> GetRValueNumbers() =>
     new List<int> {1, 1}
         .ToRList();
 ```
+```csharp
+private IRList<string> NumberToRList(int number) =>
+    Enumerable
+        .Range(0, number)
+        .Select(n => n.ToString())
+        .ToRList();
+```
 ### Abbreviations
 Список сокращений для таблиц сигнатур
 Extension | Abbreviation
@@ -498,6 +512,7 @@ Extension | Abbreviation
 `Exception` | `Ex`
 `Func` | `F`
 `Action` | `A`
+`List` | `L`
 ### IRMaybe extensions
 Методы расширения `IRMaybe` применимы ко всем типам классов. Они отвечают за обработку и преобразование ошибок 'IRError' в зависимости от статуса.
 #### Function and action types
@@ -646,7 +661,7 @@ private IRMaybe GetMaybe() =>
 Методы расширения для слияния коллекции `IRMaybe`. Наличие хотя бы одной ошибки переводит результирующий класс в состояние `Failure`.
 Id | Extension | Signature
 | ------------ | ------------ | ------------
-1 | `RMaybeFold` | `List<RM> => RM`
+1 | `RMaybeFold` | `L<RM> => RM`
 ##### 1. RMaybeFold
 Агрегировать все ошибки типа `IRError` и перевести в суммарный класс `IRMaybe`.
 ```
@@ -1171,7 +1186,7 @@ private string GetValue() =>
 Id | Extension | Signature
 | ------------ | ------------ | ------------
 1 | `RValueCurry` | `(RV<F<TIn, TOut>>, RV<TIn>) => RV<TOut>`
-2 | `RValueCurryList` | `(RV<F<List<TIn>, TOut>>, RL<TIn>) => RV<TOut>`
+2 | `RValueCurryList` | `(RV<F<L<TIn>, TOut>>, RL<TIn>) => RV<TOut>`
 ##### 1. RValueCurry
 Подставляет объект `RValue<T>` в функцию высшего подрядка. Если функция или подставляемое значение находятся в статусе `Failure`, то выполняется пропуск шага.
 ```
@@ -1209,6 +1224,81 @@ private IRValue<string> GetValue() =>
         .ToRValue()
         .RValueCurryList(RListFactory.None<int>(RErrorFactory.Simple("Curry error")));
 // Failure. Errors: curry
+```
+#### ToList action type
+Методы расширения аналогичные `Main actions`, где значением `T` выступает коллекция. Фактически метод расширения преобразует `IRValue<T> -> IRList<T>`.
+Id | Extension | Signature
+| ------------ | ------------ | ------------
+1 | `RValueToListOption` | `(RV<TIn>, TIn => bool, TIn => L<TOut>, TIn => RE) => RL<TOut>`
+2 | `RValueToListMatch` | `(RV<TIn>, TIn => L<TOut>, RE => L<TOut>) => RL<TOut>`
+3 | `RValueToListSome` | `(RV<TIn>, TIn => L<TOut>) => RL<TOut>`
+4 | `RValueToListBindSome` | `(RV<TIn>, TIn => RL<TOut>) => RL<TOut>`
+##### 1. RValueToListOption
+Перевести один тип значения `Value` в коллекцию с учетом статуса объекта. В случае невыполнения условия объект `IRValue` преобразуется в `IRList` с состоянием `Failure` и соответствующей ошибкой.
+```
+(IRValue<TIn>, TIn => bool, TIn => List<TOut>, TIn => IRError) => IRList<TOut>
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumber()
+        .ToRValue()
+        .RValueToListOption(number => true,
+                            number => NumberToList(number),
+                            number => RErrorFactory.Simple("Condition error"));
+// Success. List: {"0"}
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumber()
+        .ToRValue()
+        .RValueToListOption(number => false,
+                      number => NumberToList(number),
+                      number => RErrorFactory.Simple("Condition error"));
+// Failure. Errors: сondition
+```
+##### 2. RValueToListMatch
+Перевести один тип значения `Value` в коллекцию с учетом статуса объекта. В случае состояние `Failure` выполняется альтернативный метод инициализирующий объект `IRList` на основе ошибок `IRError`.
+```
+(IRValue<TIn>, TIn => List<TOut>, IRError => List<TOut>) => IRList<TOut>
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumber()
+        .ToRValue()
+        .RValueToListMatch(number => NumberToList(number),
+                           errors => new List<string> { errors.First().Description });
+// Success. List: {"0"}
+```
+```csharp
+private IRList<string> GetList() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RValueToListMatch(number => NumberToList(number),
+                           errors => new List<string> { errors.First().Description });
+// Success. Value: "Initial error"
+```
+##### 3. RValueToListSome
+Заменить один объект `IRValue` коллекцией `IRList` при условии статуса объекта `Success`.
+```
+(IRValue<TIn>, TIn => IRList<TOut>) => IRList<TOut>
+```
+```csharp
+private IRList<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueToListSome(number => NumberToList(number));
+// Success. List: {"0"}
+```
+##### 4. RValueToListBindSome
+Перевести один тип значения `Value` в коллекцию при условии статуса объекта `Success`.
+```
+(IRValue<TIn>, TIn => List<TOut>) => IRLIst<TOut>
+```
+```csharp
+private IRList<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueToListBindSome(number => NumberToRList(number));
+// Success. List: {"0"}
 ```
 ### IRList extensions
 ### Conclusion
