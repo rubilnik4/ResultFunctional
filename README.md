@@ -531,7 +531,7 @@ private IRMaybe GetMaybe() =>
 ```
 (IRMaybe, () => bool, () => IRError) => IRMaybe
 ```
-Проверить условие и добавить ошибку к текущим.
+Проверить условие и добавить ошибку к текущим. Методы типа `Concat` не выполняют пропуск шагов в состоянии `Failure` и исполняются вне зависимости от их статуса. Такие методы хорошо подходят для сбора ошибок на wpf формах.
 ```csharp
 private IRMaybe GetMaybe() =>
     RUnitFactory.Some()
@@ -595,12 +595,6 @@ private IRMaybe GetMaybe() =>
         .RMaybeBindSome(() => RErrorFactory.Simple("First error"));
 // Failure. Errors: First
 ```
-```csharp
-private IRMaybe GetMaybe() =>
-    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
-        .RMaybeBindSome(() => RErrorFactory.Simple("First error"));
-// Failure. Errors: initial
-```
 #### Try action type
 Методы расширения класса `IRMaybe` для обратбоки исключений. Позволяют преобразовать обычные методы к функциональному типу.
 Extension | Signature
@@ -626,13 +620,6 @@ private IRMaybe GetMaybe() =>
         .RMaybeTrySome(() => ThrowException(),
                        exception => RErrorFactory.Simple("Exception error").Append(exception));
 // Failure. Errors: exception
-```
-```csharp
-private IRMaybe GetMaybe() =>
-    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
-        .RMaybeTrySome(() => ThrowException(),
-                       RErrorFactory.Simple("Exception error"));
-// Failure. Errors: initial
 ```
 #### Fold action type
 Методы расширения для слияния коллекции `IRMaybe`. Наличие хотя бы одной ошибки переводит результирующий класс в состояние `Failure`.
@@ -682,12 +669,8 @@ private IRMaybe GetMaybe() =>
         .RMaybeVoidSome(() => DoAction());
 // Success. DoAction
 ```
-private IRMaybe GetMaybe() =>
-    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
-        .RMaybeVoidSome(() => DoAction());
-// Failure. Errors: initial
 ##### - RMaybeVoidNone
-Выполнить метод в состоянии `Failure`
+Выполнить метод в состоянии `Failure`. В статусе `Success` выполняется пропуск шага.
 ```
 (IRMaybe, IRError => ()) => IRMaybe
 ```
@@ -736,13 +719,6 @@ private IRMaybe GetMaybe() =>
         .RMaybeVoidOption(() => false,
                           () => DoAction());
 // Success
-```
-```csharp
-private IRMaybe GetMaybe() =>
-    RUnitFactory.None(RErrorFactory.Simple("Initial error"))
-        .RMaybeVoidOption(() => false,
-                          () => DoAction());
-// Failure. Errors: initial
 ```
 ### IRUnit extensions
 Класс `IRUnit` следует применять в том случае, когда достаточно информации о статусе объекта и нет необходимости проводить операции со значением `Value`. Класс `IRUnit` применяется в основном для стартовой инициализации методов расшрения типа `IRMaybe`.
@@ -805,14 +781,6 @@ private IRValue<string> GetValue() =>
                       number => RErrorFactory.Simple("Condition error"));
 // Failure. Errors: сondition
 ```
-```csharp
-private IRValue<string> GetValue() =>
-    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RValueOption(number => false,
-                      number => number.ToString(),
-                      number => RErrorFactory.Simple("Condition error"));
-// Failure. Errors: initial
-```
 ##### - RValueWhere
 Перевести один тип значения `Value` в другой с учетом статуса объекта. В случае невыполнения условия выполняется альтернативный метод инициализирующий объект `IRValue`.
 ```
@@ -835,14 +803,6 @@ private IRValue<string> GetValue() =>
                      number => number.ToString(),
                      number => String.Empty);
 // Success. Value: empty
-```
-```csharp
-private IRValue<string> GetValue() =>
-    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"));
-        .RValueWhere(number => false,
-                     number => number.ToString()
-                     number => String.Empty);
-// Failure. Errors: initial
 ```
 ##### - RValueMatch
 Перевести один тип значения `Value` в другой с учетом статуса объекта. В случае состояние `Failure` выполняется альтернативный метод инициализирующий объект `IRValue` на основе ошибок `IRError`.
@@ -875,12 +835,6 @@ private IRValue<string> GetValue() =>
         .ToRValue()
         .RValueSome(number => number.ToString());
 // Success. Value: "1"
-```
-```csharp
-private IRValue<string> GetValue() =>
-    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RValueSome(number => number.ToString());
-// Failure. Errors: "Initial error"
 ```
 ##### - RValueNone
 Перевести один тип значения `Value` в другой при условии статуса объекта `Failure`.
@@ -921,13 +875,6 @@ private IRValue<string> GetValue() =>
                       number => RErrorFactory.Simple("Condition error"));
 // Failure. Errors: сondition
 ```
-```csharp
-private IRValue<string> GetValue() =>
-    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RValueEnsure(number => false,
-                      number => RErrorFactory.Simple("Condition error"));
-// Failure. Errors: initial
-```
 ##### - RValueBindOption
 Заменить один объект `IRValue` другим с учетом статуса объекта. В случае невыполнения условия объект `IRValue` переходит в состояние `Failure` с соответствующей ошибкой.
 ```
@@ -951,14 +898,6 @@ private IRValue<string> GetValue() =>
                           number => RErrorFactory.Simple("Condition error"));
 // Failure. Errors: сondition
 ```
-```csharp
-private IRValue<string> GetValue() =>
-    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RValueBindOption(number => false,
-                          number => ToRValueString(number),
-                          number => RErrorFactory.Simple("Condition error"));
-// Failure. Errors: initial
-```
 ##### - RValueBindWhere
 Заменить один объект `IRValue` другим с учетом статуса объекта. В случае невыполнения условия выполняется альтернативный метод инициализирующий объект `IRValue`.
 ```
@@ -981,14 +920,6 @@ private IRValue<string> GetValue() =>
                          number => ToRValueString(number)
                          number => String.Empty.ToRValue());
 // Success. Value: empty
-```
-```csharp
-private IRValue<string> GetValue() =>
-    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"));
-        .RValueBindWhere(number => false,
-                         number => ToRValueString(number)
-                         number => String.Empty.ToRValue());
-// Failure. Errors: initial
 ```
 ##### - RValueBindMatch
 Заменить один объект `IRValue` другим с учетом статуса объекта. В случае состояние `Failure` выполняется альтернативный метод инициализирующий объект `IRValue` на основе ошибок `IRError`.
@@ -1021,12 +952,6 @@ private IRValue<string> GetValue() =>
         .ToRValue()
         .RValueBindSome(number => ToRValueString(number));
 // Success. Value: "1"
-```
-```csharp
-private IRValue<string> GetValue() =>
-    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RValueBindSome(number => number.ToString());
-// Failure. Errors: "Initial error"
 ```
 ##### - RValueBindNone
 Заменить один объект `IRValue` другим при условии статуса объекта `Failure`.
@@ -1067,13 +992,6 @@ private IRValue<string> GetValue() =>
                       number => RErrorFactory.Simple("Condition error").ToRUnit());
 // Failure. Errors: сondition
 ```
-```csharp
-private IRValue<string> GetValue() =>
-    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RValueEnsure(number => false,
-                      number => RErrorFactory.Simple("Condition error").ToRUnit());
-// Failure. Errors: initial
-```
 #### Try action type
 Методы расширения класса `IRValue` для обратбоки исключений. Позволяют преобразовать обычные функции к функциональному типу.
 Extension | Signature
@@ -1104,13 +1022,6 @@ private IRValue<string> GetValue() =>
                        exception => RErrorFactory.Simple("Exception error").Append(exception));
 // Failure. Errors: exception
 ```
-```csharp
-private IRMaybe GetValue() =>
-   RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RMaybeTrySome(number => ThrowException(number),
-                       RErrorFactory.Simple("Exception error"));
-// Failure. Errors: initial
-```
 ##### - RValueBindTrySome
 Проверить статус и заменить объект функциональным типом, а также исключение `Exception` типом `IRError`.
 ```
@@ -1133,13 +1044,6 @@ private IRValue<string> GetValue() =>
                        exception => RErrorFactory.Simple("Exception error").Append(exception));
 // Failure. Errors: exception
 ```
-```csharp
-private IRMaybe GetValue() =>
-    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RMaybeTrySome(number => ThrowRException(number),
-                       RErrorFactory.Simple("Exception error"));
-// Failure. Errors: initial
-```
 #### Void action type
 Методы расширения для выполнения методов, не являющихся функциями и не возвращающих значений. Может использоваться для присвоения значений в родительском классе или второстепенных процессов, например логгирования. Значение `Value` остается неизменным.
 Extension | Signature
@@ -1160,12 +1064,8 @@ private IRValue<int> GetValue() =>
         .RValueVoidSome(number => DoAction(number));
 // Success. DoAction. Value: "1"
 ```
-private IRValue<int> GetValue() =>
-    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RValueVoidSome(number => DoAction(number));
-// Failure. Errors: initial
 ##### - RValueVoidNone
-Выполнить метод в состоянии `Failure`
+Выполнить метод в состоянии `Failure`. В статусе `Success` выполняется пропуск шага.
 ```
 (IRValue<T>, IRError => ()) => IRValue<T>
 ```
@@ -1219,12 +1119,9 @@ private IRValue<int> GetValue() =>
                           number => DoAction(number));
 // Success. Value: "1"
 ```
-```csharp
-private IRValue<int> GetValue() =>
-    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RValueVoidOption(number => false,
-                          number => DoAction(number));
-// Failure. Errors: initial
-```
 ### IRList extensions
 ### Conclusion
+### Execute result steps
+Методы расширения выполняются пошагово. Для отладки необходимо ставить точки останова внутри лямбда-выражений. Как правило методы обрабатывают объекты в состоянии `Success`. В состоянии `Failure` лямбда-функция не исполняется и выполняется пропуск шага. Исключением являются расшрения типа действия `None`, обрабатывающие состояние `Failure`. А также тип действия `Match`, обрабатывающий оба состояния объекта. Как правило R объекты содержат в себе только одну ошибку, если не использовались специально предназначенные методы типа `Concat`
+![image](https://github.com/rubilnik4/ResultFunctional/assets/53042259/f13dfbab-964a-4d20-a2d4-fdb136d9445a)
+Если rest функция `GetTransactions` вернет состояние `RRestError` (BadRequest, InternalError), то будет осуществлен пропуск всех последующих шагов.
