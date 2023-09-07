@@ -439,6 +439,14 @@ private void DoErrorAction(IReadOnlyCollection<IRError> errors)
 private int GetNumber() =>
     1;
 ```
+```csharp
+private string ToString(int number) =>
+    number.ToString();
+```
+```csharp
+private string ListToString(IEnumerable<int> numbers) =>
+    numbers.Sum().ToString();
+```
 ##### Exception
 ```csharp
 private int ThrowException() =>
@@ -463,10 +471,21 @@ private IRValue<int> GetRErrorCode(IRError error) =>
 ```
 ##### RValue
 ```csharp
+private IRValue<string> GetRValueNumber() =>
+    GetNumber()
+        .ToRValue();
+```
+```csharp
 private IRValue<string> ToRValueString(int number) =>
     number
         .ToRValue()
         .RValueSome(number => number.ToString());
+```
+##### RList
+```csharp
+private IRList<string> GetRValueNumbers() =>
+    new List<int> {1, 1}
+        .ToRList();
 ```
 ### Abbreviations
 Список сокращений для таблиц сигнатур
@@ -477,6 +496,8 @@ Extension | Abbreviation
 `IRList` | `RL`
 `IRError` | `RE`
 `Exception` | `Ex`
+`Func` | `F`
+`Action` | `A`
 ### IRMaybe extensions
 Методы расширения `IRMaybe` применимы ко всем типам классов. Они отвечают за обработку и преобразование ошибок 'IRError' в зависимости от статуса.
 #### Function and action types
@@ -1143,6 +1164,51 @@ private string GetValue() =>
         .RValueLiftMatch(number => number.ToString(),
                          errors => GetErrorCode(errors).ToString());
 // Value: "400"
+```
+#### Curry action type
+Методы расширения для каррирования R функций. Под каррированием понимается уменьшение количества входных параметров функции высокого порядка за счет подстановки аргумента. Возвращаемая функция имеет на один аргумент меньше. Каррирование применяется для инициализирующих объекты функций, аргументами которых являются R классы.
+Методы расширения каррирования являются акторами.
+Id | Extension | Signature
+| ------------ | ------------ | ------------
+1 | `RValueCurry` | `(RV<F<TIn, TOut>>, RV<TIn>) => RV<TOut>`
+2 | `RValueCurryList` | `(RV<F<List<TIn>, TOut>>, RL<TIn>) => RV<TOut>`
+##### 1. RValueCurry
+Подставляет объект `RValue<T>` в функцию высшего подрядка. Если функция или подставляемое значение находятся в статусе `Failure`, то выполняется пропуск шага.
+```
+(RValue<Func<TIn, TOut>>, RValue<TIn>) => RValue<TOut>
+```
+```csharp
+private IRValue<string> GetValue() =>
+    ToString
+        .ToRValue()
+        .RValueCurry(GetRValueNumber);
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    ToString
+        .ToRValue()
+        .RValueCurry(RValueFactory.None<int>(RErrorFactory.Simple("Curry error")));
+// Failure. Errors: curry
+```
+##### 2. RValueCurryList
+Подставляет объект `RList<T>` в функцию высшего подрядка. Если функция или подставляемое значение находятся в статусе `Failure`, то выполняется пропуск шага. Метод применяется при использовании коллекций.
+```
+(IRValue<Func<List<TIn>, TOut>>, IRList<TIn>) => IRValue<TOut>
+```
+```csharp
+private IRValue<string> GetValue() =>
+    ListToString
+        .ToRValue()
+        .RValueCurryList(GetRValueNumbers());
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    ListToString
+        .ToRValue()
+        .RValueCurryList(RListFactory.None<int>(RErrorFactory.Simple("Curry error")));
+// Failure. Errors: curry
 ```
 ### IRList extensions
 ### Conclusion
