@@ -480,13 +480,10 @@ private IRValue<string> ThrowRException(int number) =>
 private int GetErrorCode(IRError error) =>
     400;
 ```
+```csharp
 private List<int> GetErrorCodeList(IRError error) =>
     GetErrorCode(error)
         .Map(code => NumberToList(code));
-```
-```csharp
-private IRValue<int> GetRErrorCode(IRError error) =>
-    400.ToRValue();
 ```
 ##### RValue
 ```csharp
@@ -499,6 +496,10 @@ private IRValue<string> ToRValueString(int number) =>
     number
         .ToRValue()
         .RValueSome(number => number.ToString());
+```
+```csharp
+private IRValue<int> GetRErrorCode(IRError error) =>
+    400.ToRValue();
 ```
 ##### RList
 ```csharp
@@ -523,6 +524,10 @@ private IRValue<string> ToRListString(IEnumarable<int> numbers) =>
 private IRValue<string> EmptyRListString() =>
     new List<string> {String.Empty}
         .ToRList();
+```
+```csharp
+private IRList<int> GetRErrorCodeList(IRError error) =>
+    new List<int> {400}.ToRList();
 ```
 ### Abbreviations
 Список сокращений для таблиц сигнатур
@@ -1625,55 +1630,55 @@ private IRList<string> GetList() =>
                          errors => EmptyRListString());
 // Success. List: empty
 ```
-##### 10. RValueBindSome
+##### 10. RListBindSome
 Заменить один объект `IRList` другим при условии статуса объекта `Success`.
 ```
-(IRValue<TIn>, TIn => IRValue<TOut>) => IRValue<TOut>
+(IRList<TIn>, List<TIn> => IRList<TOut>) => IRList<TOut>
 ```
 ```csharp
-private IRValue<string> GetValue() =>
-    GetNumber()
-        .ToRValue()
-        .RValueBindSome(number => ToRValueString(number));
-// Success. Value: "1"
+private IRLIst<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListBindSome(numbers => ToRListString(numbers));
+// Success. List: "1"
 ```
-##### 11. RValueBindNone
-Заменить один объект `IRValue` другим при условии статуса объекта `Failure`.
+##### 11. RListBindNone
+Заменить один объект `IRList` другим при условии статуса объекта `Failure`.
 ```
-(IRValue<T>, IRError => IRValue<T>) => IRValue<T>
-```
-```csharp
-private IRValue<int> GetValue() =>
-    GetNumber()
-        .ToRValue()
-        .RValueBindNone(errors => GetRErrorCode(errors.First()));
-// Success. Value: 1
+(IRLIst<T>, IRError => IRLIst<T>) => IRLIst<T>
 ```
 ```csharp
-private IRValue<int> GetValue() =>
-    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
-        .RValueBindNone(errors => GetRErrorCode(errors.First()));
-// Success. Value: 400
+private IRList<int> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListBindNone(errors => GetRErrorCodeList(errors.First()));
+// Success. List: 1
 ```
-##### 12. RValueBindEnsure
+```csharp
+private IRList<int> GetList() =>
+    RListFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RListBindNone(errors => GetRErrorCodeList(errors.First()));
+// Success. List: 400
+```
+##### 12. RListBindEnsure
 Проверить статус, проверить условие и присвоить ошибку в случае невыполнения.
 ```
-(IRValue<T>, T => bool, T => IRMaybe) => IRValue<T>
+(IRList<T>, List<T> => bool, List<T> => IRMaybe) => IRList<T>
 ```
 ```csharp
-private IRValue<string> GetValue() =>
-    GetNumber()
-        .ToRValue()
-        .RValueEnsure(number => true,
-                      number => RErrorFactory.Simple("Condition error").ToRUnit());
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListBindEnsure(numbers => true,
+                         numbers => RErrorFactory.Simple("Condition error").ToRUnit());
 // Success. Value: "1"
 ```
 ```csharp
-private IRValue<string> GetValue() =>
-    GetNumber()
-        .ToRValue()
-        .RValueEnsure(number => false,
-                      number => RErrorFactory.Simple("Condition error").ToRUnit());
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListBindEnsure(numbers => false,
+                         numbers => RErrorFactory.Simple("Condition error").ToRUnit());
 // Failure. Errors: сondition
 ```
 ### Conclusion
