@@ -440,6 +440,10 @@ private int GetNumber() =>
     1;
 ```
 ```csharp
+private List<int> GetNumbers() =>
+    new List<int> {"1"};
+```
+```csharp
 private string ToString(int number) =>
     number.ToString();
 ```
@@ -476,6 +480,10 @@ private IRValue<string> ThrowRException(int number) =>
 private int GetErrorCode(IRError error) =>
     400;
 ```
+private List<int> GetErrorCodeList(IRError error) =>
+    GetErrorCode(error)
+        .Map(code => NumberToList(code));
+```
 ```csharp
 private IRValue<int> GetRErrorCode(IRError error) =>
     400.ToRValue();
@@ -494,8 +502,8 @@ private IRValue<string> ToRValueString(int number) =>
 ```
 ##### RList
 ```csharp
-private IRList<string> GetRValueNumbers() =>
-    new List<int> {1, 1}
+private IRList<int> GetRValueNumbers() =>
+    new List<int> {1}
         .ToRList();
 ```
 ```csharp
@@ -503,6 +511,17 @@ private IRList<string> NumberToRList(int number) =>
     Enumerable
         .Range(0, number)
         .Select(n => n.ToString())
+        .ToRList();
+```
+```csharp
+private IRValue<string> ToRListString(IEnumarable<int> numbers) =>
+    numbers
+        .ToRList()
+        .RListSome(numbers => numbers.Select(number => number.ToString()).ToList);
+```
+```csharp
+private IRValue<string> EmptyRListString() =>
+    new List<string> {String.Empty}
         .ToRList();
 ```
 ### Abbreviations
@@ -793,11 +812,11 @@ Id | Extension | Signature
 5 | `RValueNone` | `(RV<T>, RE => T) => RV<T>`
 6 | `RValueEnsure` | `(RV<T>, T => bool, T => RE) => RV<T>`
 7 | `RValueBindOption` | `(RV<TIn>, TIn => bool, TIn => RV<TOut>, TIn => RE) => RV<TOut>`
-8 | `RValueBindWhere` | `(V<TIn>, TIn => bool, TIn => V<TOut>, TIn => V<TOut>) => V<TOut>`
-9 | `RValueBindMatch` | `(V<TIn>, TIn => bool, TIn => V<TOut>, RE => V<TOut>) => V<TOut>`
-10 | `RValueBindSome` | `(V<TIn>, TIn => V<TOut>) => V<TOut>`
-11 | `RValueBindNone` | `(V<T>, IRError => V<T>) => V<T>`
-12 | `RValueBindEnsure` | `(V<T>, T => bool, T => RM) => RV<T>`
+8 | `RValueBindWhere` | `(RV<TIn>, TIn => bool, TIn => RV<TOut>, TIn => RV<TOut>) => RV<TOut>`
+9 | `RValueBindMatch` | `(RV<TIn>, TIn => bool, TIn => RV<TOut>, RE => RV<TOut>) => RV<TOut>`
+10 | `RValueBindSome` | `(RV<TIn>, TIn => RV<TOut>) => RV<TOut>`
+11 | `RValueBindNone` | `(RV<T>, IRError => RV<T>) => RV<T>`
+12 | `RValueBindEnsure` | `(RV<T>, T => bool, T => RM) => RV<T>`
 ##### 1. RValueOption
 Перевести один тип значения `Value` в другой с учетом статуса объекта. В случае невыполнения условия объект `IRValue` переходит в состояние `Failure` с соответствующей ошибкой.
 ```
@@ -1395,6 +1414,268 @@ private IRValue<int> GetValue() =>
 // Success. Errors: condition
 ```
 ### IRList extensions
+Методы расширения `IRList` предназначены для обработки состояния объекта и преобразования коллекции `List` с учетом статуса.
+#### Function and action types
+Методы расширения типа функтор не имеют дополнительного индекса в именованивании. Расширения типа монада обозначаются префиксом `Bind`.
+Action | Functor | Actor | Monad
+| ------------ | ------------ | ------------ | ------------
+`Main` | :heavy_check_mark: |  | :heavy_check_mark:
+`Try` | :heavy_check_mark: |  | :heavy_check_mark:
+`Void` | :heavy_check_mark: |  |
+`Fold` | :heavy_check_mark: |  |
+`Lift` | :heavy_check_mark: |  |
+`ToValue` | :heavy_check_mark: |  | :heavy_check_mark:
+`Init` | :heavy_check_mark: |  | :heavy_check_mark:
+#### Main action type
+Общие методы расширения класса `IRList`. Позволяют производить операции с коллекцией `List` и ошибками 'IRError'.
+Id | Extension | Signature
+| ------------ | ------------ | ------------
+1 | `RListOption` | `(RL<TIn>, L<TIn> => bool, L<TIn> => L<TOut>, L<TIn> => RE) => RL<TOut>`
+2 | `RListWhere` | `(RL<TIn>, L<TIn> => bool, L<TIn> => L<TOut>, L<TIn>=> L<TOut>) => RL<TOut>`
+3 | `RListMatch` | `(RL<TIn>, L<TIn> => L<TOut>, RE => L<TOut>) => RL<TOut>`
+4 | `RListSome` | `(RL<TIn>, L<TIn> => L<TOut>) => RL<TOut>`
+5 | `RListNone` | `(RL<T>, RE => L<T>) => RL<T>`
+6 | `RListEnsure` | `(RL<T>, L<T> => bool, L<T> => RE) => RL<T>`
+7 | `RListBindOption` | `(RL<TIn>, L<TIn> => bool, L<TIn> => RL<TOut>, L<TIn> => RE) => RL<TOut>`
+8 | `RListBindWhere` | `(RL<TIn>, L<TIn> => bool, L<TIn> => RL<TOut>, L<TIn> => RL<TOut>) => RL<TOut>`
+9 | `RListBindMatch` | `(RL<TIn>, L<TIn>=> bool, L<TIn> => RL<TOut>, RE => RL<TOut>) => RL<TOut>`
+10 | `RListBindSome` | `(RL<TIn>, L<TIn> => RL<TOut>) => RL<TOut>`
+11 | `RListBindNone` | `(RL<T>, IRError => RL<T>) => RL<T>`
+12 | `RListBindEnsure` | `(RL<T>, L<T> => bool, L<T> => RM) => RL<T>`
+##### 1. RListOption
+Перевести один тип коллеции `List` в другой с учетом статуса объекта. В случае невыполнения условия объект `IRList` переходит в состояние `Failure` с соответствующей ошибкой.
+```
+(IRList<TIn>, List<TIn> => bool, List<TIn> => List<TOut>, List<TIn> => IRError) => IRList<TOut>
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListOption(numbers => true,
+                     numbers => ListToString(numbers),
+                     numbers => RErrorFactory.Simple("Condition error"));
+// Success. List: "1"
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListOption(numbers => false,
+                     numbers => ListToString(numbers),
+                     numbers => RErrorFactory.Simple("Condition error"));
+// Failure. Errors: сondition
+```
+##### 2. RListWhere
+Перевести один тип коллекции `List` в другой с учетом статуса объекта. В случае невыполнения условия выполняется альтернативный метод инициализирующий объект `IRList`.
+```
+(IRList<TIn>, List<TIn> => bool, List<TIn> => List<TOut>, List<TIn> => List<TOut>) => IRList<TOut>
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListWhere(numbers => true,
+                    numbers => ListToString(numbers),
+                    numbers => new List<string> {String.Empty});
+// Success. List: "1"
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListWhere(numbers => false,
+                    numbers => ListToString(numbers),
+                    numbers => new List<string> {String.Empty});
+// Success. List: empty
+```
+##### 3. RListMatch
+Перевести один тип коллекции `List` в другой с учетом статуса объекта. В случае состояние `Failure` выполняется альтернативный метод инициализирующий объект `IRList` на основе ошибок `IRError`.
+```
+(IRList<TIn>, List<TIn> => List<TOut>, IRError => List<TOut>) => IRList<TOut>
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListMatch(numbers => ListToString(numbers),
+                    errors => new List<string> {errors.First().Description});
+// Success. List: "1"
+```
+```csharp
+private IRList<string> GetList() =>
+    RListFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RListMatch(numbers => ListToString(numbers),
+                    errors => new List<string> {errors.First().Description});
+// Success. List: "Initial error"
+```
+##### 4. RListSome
+Перевести один тип коллекции `List` в другой при условии статуса объекта `Success`.
+```
+(IRList<TIn>, List<TIn> => List<TOut>) => IRList<TOut>
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListSome(numbers => ListToString(numbers));
+// Success. List: "1"
+```
+##### 5. RListNone
+Перевести один тип коллекции `List` в другой при условии статуса объекта `Failure`.
+```
+(IRList<T>, IRError => List<T>) => IRList<T>
+```
+```csharp
+private IRList<int> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListNone(errors => GetErrorCodeList(errors.First()));
+// Success. List: 1
+```
+```csharp
+private IRValue<int> GetList() =>
+    RListFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RListNone(errors => GetErrorCodeList(errors.First()));
+// Success. List: 400
+```
+##### 6. RListEnsure
+Проверить статус, проверить условие и присвоить ошибку в случае невыполнения.
+```
+(IRList<T>, List<T> => bool, List<T> => IRError) => IRList<T>
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListEnsure(numbers => true,
+                     numbers => RErrorFactory.Simple("Condition error"));
+// Success. List: "1"
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListEnsure(numbers => false,
+                     numbers => RErrorFactory.Simple("Condition error"));
+// Failure. Errors: сondition
+```
+##### 7. RListBindOption
+Заменить один объект `IRList` другим с учетом статуса объекта. В случае невыполнения условия объект `IRList` переходит в состояние `Failure` с соответствующей ошибкой.
+```
+(IRList<TIn>, List<TIn> => bool, List<TIn> => IRList<TOut>, List<TIn> => IRError) => IRList<TOut>
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListBindOption(numbers => true,
+                         numbers => ToRListString(numbers),
+                         numbers => RErrorFactory.Simple("Condition error"));
+// Success. List: "1"
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListBindOption(numbers => false,
+                         numbers => ToRListString(numbers),
+                         numbers => RErrorFactory.Simple("Condition error"));
+// Failure. Errors: сondition
+```
+##### 8. RListBindWhere
+Заменить один объект `IRList` другим с учетом статуса объекта. В случае невыполнения условия выполняется альтернативный метод инициализирующий объект `IRList`.
+```
+(IRList<TIn>, List<TIn> => bool, List<TIn> => IRList<TOut>, List<TIn> => IRList<TOut>) => IRList<TOut>
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListBindWhere(numbers => true,
+                        numbers => ToRListString(numbers),
+                        numbers => String.Empty.ToRValue());
+// Success. Value: "1"
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListBindWhere(numbers => false,
+                        numbers => ToRListString(numbers),
+                        numbers => String.Empty.ToRValue());
+// Success. Value: empty
+```
+##### 9. RListBindMatch
+Заменить один объект `IRList` другим с учетом статуса объекта. В случае состояние `Failure` выполняется альтернативный метод инициализирующий объект `IRList` на основе ошибок `IRError`.
+```
+(IRList<TIn>, List<TIn> => bool, List<TIn> => IRList<TOut>, IRError => IRList<TOut>) => IRList<TOut>
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListBindMatch(number => ToRListString(number),
+                         errors => EmptyRListString());
+// Success. List: "1"
+```
+```csharp
+private IRList<string> GetList() =>
+    RListFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RListBindMatch(number => ToRListString(number),
+                         errors => EmptyRListString());
+// Success. List: empty
+```
+##### 10. RValueBindSome
+Заменить один объект `IRList` другим при условии статуса объекта `Success`.
+```
+(IRValue<TIn>, TIn => IRValue<TOut>) => IRValue<TOut>
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueBindSome(number => ToRValueString(number));
+// Success. Value: "1"
+```
+##### 11. RValueBindNone
+Заменить один объект `IRValue` другим при условии статуса объекта `Failure`.
+```
+(IRValue<T>, IRError => IRValue<T>) => IRValue<T>
+```
+```csharp
+private IRValue<int> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueBindNone(errors => GetRErrorCode(errors.First()));
+// Success. Value: 1
+```
+```csharp
+private IRValue<int> GetValue() =>
+    RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RValueBindNone(errors => GetRErrorCode(errors.First()));
+// Success. Value: 400
+```
+##### 12. RValueBindEnsure
+Проверить статус, проверить условие и присвоить ошибку в случае невыполнения.
+```
+(IRValue<T>, T => bool, T => IRMaybe) => IRValue<T>
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueEnsure(number => true,
+                      number => RErrorFactory.Simple("Condition error").ToRUnit());
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumber()
+        .ToRValue()
+        .RValueEnsure(number => false,
+                      number => RErrorFactory.Simple("Condition error").ToRUnit());
+// Failure. Errors: сondition
+```
 ### Conclusion
 ### Execute result steps
 Методы расширения выполняются пошагово. Для отладки необходимо ставить точки останова внутри лямбда-выражений. Как правило методы обрабатывают объекты в состоянии `Success`. В состоянии `Failure` лямбда-функция не исполняется и выполняется пропуск шага. Исключением являются расшрения типа действия `None`, обрабатывающие состояние `Failure`. А также тип действия `Match`, обрабатывающий оба состояния объекта. Как правило R объекты содержат в себе только одну ошибку, если не использовались специально предназначенные методы типа `Concat`
