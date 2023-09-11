@@ -1736,6 +1736,31 @@ private IRList<T> GetList() =>
         .RListFold();
 //  Failure. Errors: aggregate
 ```
+#### Lift action type
+Методы расширения для разворачивания объекта RV<T> -> T в зависимости от статуса.
+Id | Extension | Signature
+| ------------ | ------------ | ------------
+1 | `RListLiftMatch` | `(RL<TIn>, L<TIn> => L<TOut>, ER => L<TOut>) => RL<TOut>`
+##### 1. RListLiftMatch
+Разворачивает значение `List` в зависимости от текущего статуса объекта
+```
+(IRList<TIn>, List<TIn> => List<TOut>, IRError => List<TOut>) => List<TOut>
+```
+```csharp
+private List<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListLiftMatch(numbers => ListToString(numbers),
+                        errors => GetErrorCodeList(errors).Select(code => code.ToString()).ToList());
+// List: "1"
+```
+```csharp
+private string GetList() =>
+    RListFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RListLiftMatch(numbers => ListToString(numbers),
+                        errors => GetErrorCodeList(errors).Select(code => code.ToString()).ToList());
+// List: "400"
+```
 ### Conclusion
 ### Example functions
 Здесь приведены некоторые простые функции, которые используются в примерах.
