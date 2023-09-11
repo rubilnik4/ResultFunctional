@@ -1628,6 +1628,85 @@ private IRList<string> GetList() =>
                           exception => RErrorFactory.Simple("Exception error").Append(exception));
 // Failure. Errors: exception
 ```
+#### Void action type
+Методы расширения для выполнения методов, не являющихся функциями и не возвращающих значений. Может использоваться для присвоения значений в родительском классе или второстепенных процессов, например логгирования. Значение `List` остается неизменным.
+Id | Extension | Signature
+| ------------ | ------------ | ------------
+1 | `RListVoidSome` | `(RL<T>, List<T> => ()) => RL<T>`
+2 | `RListVoidNone` | `(RL<T>, RE => ()) => RL<T>`
+3 | `RListVoidMatch` | `(RL<T>, List<T> => (), RE => ()) => RL<T>`
+4 | `RListVoidOption` | `(RL<T>, List<T> => bool, T => ()) => RL<T>`
+##### 1. RListVoidSome
+Выполнить метод в состоянии `Success`
+```
+(IRList<T>, List<T> => ()) => IRList<T>
+```
+```csharp
+private IRList<int> GetList() =>
+     GetNumbers()
+        .ToRList()
+        .RListVoidSome(numbers => DoAction(numbers));
+// Success. DoAction. List: "1"
+```
+##### 2. RListVoidNone
+Выполнить метод в состоянии `Failure`. В статусе `Success` выполняется пропуск шага.
+```
+(IRList<T>, IRError => ()) => IRList<T>
+```
+```csharp
+private IRList<int> GetList() =>
+     GetNumbers()
+        .ToRList()
+        .RListVoidNone(errors => DoErrorAction(errors));
+// Success. List: "1"
+```
+```csharp
+private IRList<int> GetList() =>
+    RListFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RListVoidNone(errors => DoErrorAction(errors));
+// Failure. Errors: initial. DoErrorAction
+```
+##### 3. RListVoidMatch
+Выполнить метод в зависимости от состояния.
+```
+(IRList<T>, T => (), IRError => ()) => IRList<T>
+```
+```csharp
+private IRList<int> GetList() =>
+     GetNumbers()
+        .ToRList()
+        .RListVoidMatch(numbers => DoAction(numbers),
+                        errors => DoErrorAction(errors));
+// Success. DoAction. List: "1"
+```
+```csharp
+private IRValue<int> GetList() =>
+    RListFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RListVoidMatch(numbers => DoAction(numbers),
+                        errors => DoErrorAction(errors));
+// Failure. Errors: initial. DoErrorAction
+```
+##### 4. RListVoidOption
+Выполнить метод в зависимости от условия.
+```
+(IRList<T>, List<T> => bool, List<T> => ()) => IRList<T>
+```
+```csharp
+private IRList<int> GetList() =>
+     GetNumbers()
+        .ToRList()
+        .RListVoidOption(numbers => true,
+                         numbers => DoAction(numbers));
+// Success. DoAction. List: "1"
+```
+```csharp
+private IRList<int> GetList() =>
+     GetNumbers()
+        .ToRList()
+        .RListVoidOption(numbers => false,
+                         numbers => DoAction(numbers));
+// Success. List: "1"
+```
 ### Conclusion
 ### Example functions
 Здесь приведены некоторые простые функции, которые используются в примерах.
@@ -1642,6 +1721,10 @@ private void DoAction()
 ```
 ```csharp
 private void DoAction(int number)
+{}
+```
+```csharp
+private void DoAction(IEnumerable<int> numbers)
 {}
 ```
 ```csharp
