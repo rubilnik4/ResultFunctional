@@ -1197,12 +1197,12 @@ private IRList<string> GetList() =>
     RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
         .RValueToListMatch(number => NumberToList(number),
                            errors => new List<string> { errors.First().Description });
-// Success. Value: "Initial error"
+// Success. List: "Initial error"
 ```
 ##### 3. RValueToListSome
 Заменить один объект `IRValue` коллекцией `IRList` при условии статуса объекта `Success`.
 ```
-(IRValue<TIn>, TIn => IRList<TOut>) => IRList<TOut>
+(IRValue<TIn>, TIn => List<TOut>) => IRList<TOut>
 ```
 ```csharp
 private IRList<string> GetValue() =>
@@ -1214,7 +1214,7 @@ private IRList<string> GetValue() =>
 ##### 4. RValueToListBindSome
 Перевести один тип значения `Value` в коллекцию при условии статуса объекта `Success`.
 ```
-(IRValue<TIn>, TIn => List<TOut>) => IRLIst<TOut>
+(IRValue<TIn>, TIn => IRList<TOut>) => IRList<TOut>
 ```
 ```csharp
 private IRList<string> GetValue() =>
@@ -1761,6 +1761,126 @@ private string GetList() =>
                         errors => GetErrorCodeList(errors).Select(code => code.ToString()).ToList());
 // List: "400"
 ```
+#### ToValue action type
+Методы расширения аналогичные `Main actions`, где коллекция `List` преобразуется в значение `Value`. Фактически метод расширения преобразует `IRList<T> -> IRValue<T>`.
+Id | Extension | Signature
+| ------------ | ------------ | ------------
+1 | `RListToValueOption` | `(RL<TIn>, L<TIn> => bool, L<TIn> => TOut, L<TIn> => RE) => RV<TOut>`
+2 | `RListToValueMatch` | `(RL<TIn>, L<TIn> => TOut, RE => TOut) => RV<TOut>`
+3 | `RListToValueSome` | `(RL<TIn>, L<TIn> => TOut) => RV<TOut>`
+4 | `RListToValueBindOption` | `(RL<TIn>, L<TIn> => RV<TOut>) => RV<TOut>`
+5 | `RListToValueBindMatch` | `(RL<TIn>, L<TIn> =>RVRL<TOut>) => RV<TOut>`
+6 | `RListToValueBindSome` | `(RL<TIn>, L<TIn> => RV<TOut>) => RV<TOut>`
+##### 1. RListToValueOption
+Перевести один тип значения `Value` в коллекцию с учетом статуса объекта. В случае невыполнения условия объект `IRValue` преобразуется в `IRList` с состоянием `Failure` и соответствующей ошибкой.
+```
+(IRList<TIn>, List<TIn> => bool, List<TIn> => TOut, List<TIn> => IRError) => IRValue<TOut>
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumbers()
+        .ToRList()
+        .RListToValueOption(numbers => true,
+                            numbers => ListToString(numbers),
+                            numbers => RErrorFactory.Simple("Condition error"));
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumbers()
+        .ToRList()
+        .RListToValueOption(numbers => false,
+                            numbers => ListToString(numbers),
+                            numbers => RErrorFactory.Simple("Condition error"));
+// Failure. Errors: сondition
+```
+##### 2. RListToValueMatch
+Перевести один тип коллекции `List` в значение с учетом статуса объекта. В случае состояние `Failure` выполняется альтернативный метод инициализирующий объект `IRValue` на основе ошибок `IRError`.
+```
+(IRList<TIn>, List<TIn> => TOut, IRError => TOut) => IRValue<TOut>
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumbers()
+        .ToRList()
+        .RListToValueMatch(numbers => ListToString(numbers),
+                           errors => errors.First().Description);
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    RListFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RListToValueMatch(numbers => ListToString(numbers),
+                           errors => errors.First().Description);
+// Success. Value: "Initial error"
+```
+##### 3. RListToValueSome
+Заменить один объект `IRList` коллекцией `IRValue` при условии статуса объекта `Success`.
+```
+(IRList<TIn>, List<TIn> => IRValue<TOut>) => IRList<TOut>
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumbers()
+        .ToRList()
+        .RListToValueSome(numbers => ListToString(numbers));
+// Success. Value: "1"
+```
+##### 4. RListToValueBindOption
+Заменить коллекцию `IRList` в значение с учетом статуса объекта. В случае невыполнения условия объект `IRList` преобразуется в `IRValue` с состоянием `Failure` и соответствующей ошибкой.
+```
+(IRList<TIn>, List<TIn> => bool, List<TIn> => IRValue<TOut>, List<TIn> => IRError) => IRValue<TOut>
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumbers()
+        .ToRList()
+        .RListToValueBindOption(numbers => true,
+                                numbers => NumbersToRValue(numbers),
+                                numbers => RErrorFactory.Simple("Condition error"));
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumbers()
+        .ToRList()
+        .RListToValueBindOption(numbers => false,
+                                numbers => NumbersToRValue(numbers),
+                                numbers => RErrorFactory.Simple("Condition error"));
+// Failure. Errors: сondition
+```
+##### 5. RListToValueBindMatch
+Заменить тип коллекции `IRList` значением с учетом статуса объекта. В случае состояние `Failure` выполняется альтернативный метод инициализирующий объект `IRValue` на основе ошибок `IRError`.
+```
+(IRList<TIn>, List<TIn> => IRValue<TOut>, IRError => TOut) => IRValue<TOut>
+```
+```csharp
+private IRValue<string> GetValue() =>
+    GetNumbers()
+        .ToRList()
+        .RListToValueBindMatch(numbers => NumbersToRValue(numbers),
+                               errors => errors.First().Description.ToRValue());
+// Success. Value: "1"
+```
+```csharp
+private IRValue<string> GetValue() =>
+    RListFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .RListToValueBindMatch(numbers => NumbersToRValue(numbers),
+                               errors => errors.First().Description.ToRValue());
+// Success. Value: "Initial error"
+```
+##### 6. RListToValueBindSome
+Заменить тип коллекции `IRList` на значение при условии статуса объекта `Success`.
+```
+(IRList<TIn>, List<TIn> => IRValue<TOut>) => IRValue<TOut>
+```
+```csharp
+private IRList<string> GetValue() =>
+    GetNumbers()
+        .ToRList()
+        .RListToValueBindSome(numbers => NumbersToRValue(numbers));
+// Success. Value: "1"
+```
 ### Conclusion
 ### Example functions
 Здесь приведены некоторые простые функции, которые используются в примерах.
@@ -1851,6 +1971,12 @@ private IRValue<string> ToRValueString(int number) =>
     number
         .ToRValue()
         .RValueSome(number => number.ToString());
+```
+```csharp
+private IRValue<string> NumbersToRValue(List<int> numbers) =>
+    numbers
+        .First()
+        .ToRValue();
 ```
 ```csharp
 private IRValue<int> GetRErrorCode(IRError error) =>
