@@ -1707,6 +1707,35 @@ private IRList<int> GetList() =>
                          numbers => DoAction(numbers));
 // Success. List: "1"
 ```
+#### Fold action type
+Методы расширения для слияния коллекции `IRList`. Наличие хотя бы одной ошибки переводит результирующий класс в состояние `Failure`.
+Id | Extension | Signature
+| ------------ | ------------ | ------------
+1 | `RListFold` | `L<RL<T>> => RL<T>`
+##### 1. RListFold
+Агрегировать все классы типа `IRList` и перевести в суммарный класс.
+```
+List<IRList<T>> => IRList<T>
+```
+```csharp
+private IRList<T> GetList() =>
+    Enumerable
+        .Range(0, 3)
+        .Select(number => new List<int> {number}.ToRList())
+        .ToList()
+        .RListFold();
+// Success. List: 0,1,2
+```
+```csharp
+private IRList<T> GetList() =>
+    Enumerable
+        .Range(0, 3)
+        .Select(number => new List<int> {number}.ToRList())
+        .Append(RListFactory.None<int>(RErrorFactory.Simple("Aggregate error")))
+        .ToList()
+        .RListFold();
+//  Failure. Errors: aggregate
+```
 ### Conclusion
 ### Example functions
 Здесь приведены некоторые простые функции, которые используются в примерах.
