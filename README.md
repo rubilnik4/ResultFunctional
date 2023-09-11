@@ -420,115 +420,6 @@ private async Task<IRValue<int>> Fluent(int initial, int additional) =>
         .RValueSomeTask(number => AddSync(number, additional))
         .RValueSomeAwait(number => AddAsync(number, additional));
 ```
-### Standard functions
-##### Action
-```csharp
-private void DoAction()
-{}
-```
-```csharp
-private void DoAction(int number)
-{}
-```
-```csharp
-private void DoErrorAction(IReadOnlyCollection<IRError> errors)
-{}
-```
-##### Function
-```csharp
-private int GetNumber() =>
-    1;
-```
-```csharp
-private List<int> GetNumbers() =>
-    new List<int> {"1"};
-```
-```csharp
-private string ToString(int number) =>
-    number.ToString();
-```
-```csharp
-private string ListToString(IEnumerable<int> numbers) =>
-    numbers.Sum().ToString();
-```
-```csharp
-private List<string> NumberToList(int number) =>
-    Enumerable
-        .Range(0, number)
-        .Select(n => n.ToString())
-        .ToList();
-```
-```csharp
-private string GetNullString() =>
-    null;
-```
-##### Exception
-```csharp
-private int ThrowException() =>
-    throw new Exception();
-```
-```csharp
-private string ThrowException(int number) =>
-    throw new Exception();
-```
-```csharp
-private IRValue<string> ThrowRException(int number) =>
-    throw new Exception();
-```
-##### IRError
-```csharp
-private int GetErrorCode(IRError error) =>
-    400;
-```
-```csharp
-private List<int> GetErrorCodeList(IRError error) =>
-    GetErrorCode(error)
-        .Map(code => NumberToList(code));
-```
-##### RValue
-```csharp
-private IRValue<string> GetRValueNumber() =>
-    GetNumber()
-        .ToRValue();
-```
-```csharp
-private IRValue<string> ToRValueString(int number) =>
-    number
-        .ToRValue()
-        .RValueSome(number => number.ToString());
-```
-```csharp
-private IRValue<int> GetRErrorCode(IRError error) =>
-    400.ToRValue();
-```
-##### RList
-```csharp
-private IRList<int> GetRValueNumbers() =>
-    new List<int> {1}
-        .ToRList();
-```
-```csharp
-private IRList<string> NumberToRList(int number) =>
-    Enumerable
-        .Range(0, number)
-        .Select(n => n.ToString())
-        .ToRList();
-```
-```csharp
-private IRValue<string> ToRListString(IEnumarable<int> numbers) =>
-    numbers
-        .ToRList()
-        .RListSome(numbers => numbers.Select(number => number.ToString()).ToList);
-```
-```csharp
-private IRValue<string> EmptyRListString() =>
-    new List<string> {String.Empty}
-        .ToRList();
-```
-```csharp
-private IRList<int> GetRErrorCodeList(IRError error) =>
-    new List<int> {400}.ToRList();
-```
 ### Abbreviations
 Список сокращений для таблиц сигнатур
 Extension | Abbreviation
@@ -1140,10 +1031,12 @@ private IRValue<int> GetValue() =>
         .RValueVoidNone(errors => DoErrorAction(errors));
 // Success. Value: "1"
 ```
+```csharp
 private IRValue<int> GetValue() =>
     RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
         .RValueVoidNone(errors => DoErrorAction(errors));
 // Failure. Errors: initial. DoErrorAction
+```
 ##### 3. RValueVoidMatch
 Выполнить метод в зависимости от состояния.
 ```
@@ -1157,11 +1050,13 @@ private IRValue<int> GetValue() =>
                          errors => DoErrorAction(errors));
 // Success. DoAction.  Value: "1"
 ```
+```csharp
 private IRValue<int> GetValue() =>
     RValueFactory.None<int>(RErrorFactory.Simple("Initial error"))
         .RValueVoidMatch(number => DoAction(number),
                          errors => DoErrorAction(errors));
 // Failure. Errors: initial. DoErrorAction
+```
 ##### 4. RValueVoidOption
 Выполнить метод в зависимости от условия.
 ```
@@ -1681,7 +1576,179 @@ private IRList<string> GetList() =>
                          numbers => RErrorFactory.Simple("Condition error").ToRUnit());
 // Failure. Errors: сondition
 ```
+#### Try action type
+Методы расширения класса `IRList` для обратбоки исключений. Позволяют преобразовать обычные функции к функциональному типу.
+Id | Extension | Signature
+| ------------ | ------------ | ------------
+1 | `RListTrySome` | `(RL<TIn>, L<TIn> => L<TOut>, Ex => RE) => RL<TOut>`
+1 | `RListTrySome` | `(RL<TIn>, L<TIn> => L<TOut>, RE) => RL<TOut>`
+2 | `RListBindTrySome` | `(RL<TIn>, L<TIn> => RL<TOut>, Ex => RE) => RL<TOut>`
+2 | `RListBindTrySome` | `(RL<TIn>, L<TIn> => RL<TOut>, RE) => RL<TOut>`
+##### 1. RListTrySome
+Проверить статус и преобразовать функцию к функциональному типу, а также исключение `Exception` к типу `IRError`.
+```
+(IRList<TIn>, List<TIn> => List<TOut>, Exception => IRError) => IRList<TOut>
+(IRList<TIn>, List<TIn> => List<TOut>, IRError) => IRList<TOut>
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListTrySome(numbers => ListToString(numbers),
+                      RErrorFactory.Simple("Exception error"));
+// Success. List: "1"
+```
+```csharp
+private IRValue<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListTrySome(numbers => ThrowException(numbers),
+                      exception => RErrorFactory.Simple("Exception error").Append(exception));
+// Failure. Errors: exception
+```
+##### 2. RListBindTrySome
+Проверить статус и заменить объект функциональным типом, а также исключение `Exception` типом `IRError`.
+```
+(IRList<TIn>, List<TIn> => List<TOut>, Exception => IRError) => IRList<TOut>
+(IRList<TIn>, List<TIn> => List<TOut>, IRError) => IRList<TOut>
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListBindTrySome(numbers => ToRListString(numbers),
+                          RErrorFactory.Simple("Exception error"));
+// Success. List: "1"
+```
+```csharp
+private IRList<string> GetList() =>
+    GetNumbers()
+        .ToRList()
+        .RListBindTrySome(numbers => ThrowRException(number),
+                          exception => RErrorFactory.Simple("Exception error").Append(exception));
+// Failure. Errors: exception
+```
 ### Conclusion
+### Example functions
+Здесь приведены некоторые простые функции, которые используются в примерах.
+
+<details>
+<summary>Examples</summary>
+    
+##### Action
+```csharp
+private void DoAction()
+{}
+```
+```csharp
+private void DoAction(int number)
+{}
+```
+```csharp
+private void DoErrorAction(IReadOnlyCollection<IRError> errors)
+{}
+```
+##### Function
+```csharp
+private int GetNumber() =>
+    1;
+```
+```csharp
+private List<int> GetNumbers() =>
+    new List<int> {"1"};
+```
+```csharp
+private string ToString(int number) =>
+    number.ToString();
+```
+```csharp
+private string ListToString(IEnumerable<int> numbers) =>
+    numbers.Sum().ToString();
+```
+```csharp
+private List<string> NumberToList(int number) =>
+    Enumerable
+        .Range(0, number)
+        .Select(n => n.ToString())
+        .ToList();
+```
+```csharp
+private string GetNullString() =>
+    null;
+```
+##### Exception
+```csharp
+private int ThrowException() =>
+    throw new Exception();
+```
+```csharp
+private string ThrowException(int number) =>
+    throw new Exception();
+```
+```csharp
+private string ThrowException(IEnumberable<int> numbers) =>
+    throw new Exception();
+```
+```csharp
+private IRValue<string> ThrowRException(int number) =>
+    throw new Exception();
+```
+##### IRError
+```csharp
+private int GetErrorCode(IRError error) =>
+    400;
+```
+```csharp
+private List<int> GetErrorCodeList(IRError error) =>
+    GetErrorCode(error)
+        .Map(code => NumberToList(code));
+```
+##### RValue
+```csharp
+private IRValue<string> GetRValueNumber() =>
+    GetNumber()
+        .ToRValue();
+```
+```csharp
+private IRValue<string> ToRValueString(int number) =>
+    number
+        .ToRValue()
+        .RValueSome(number => number.ToString());
+```
+```csharp
+private IRValue<int> GetRErrorCode(IRError error) =>
+    400.ToRValue();
+```
+##### RList
+```csharp
+private IRList<int> GetRValueNumbers() =>
+    new List<int> {1}
+        .ToRList();
+```
+```csharp
+private IRList<string> NumberToRList(int number) =>
+    Enumerable
+        .Range(0, number)
+        .Select(n => n.ToString())
+        .ToRList();
+```
+```csharp
+private IRList<string> ToRListString(IEnumarable<int> numbers) =>
+    numbers
+        .ToRList()
+        .RListSome(numbers => numbers.Select(number => number.ToString()).ToList);
+```
+```csharp
+private IRList<string> EmptyRListString() =>
+    new List<string> {String.Empty}
+        .ToRList();
+```
+```csharp
+private IRList<int> GetRErrorCodeList(IRError error) =>
+    new List<int> {400}.ToRList();
+```
+</details>
+
 ### Execute result steps
 Методы расширения выполняются пошагово. Для отладки необходимо ставить точки останова внутри лямбда-выражений. Как правило методы обрабатывают объекты в состоянии `Success`. В состоянии `Failure` лямбда-функция не исполняется и выполняется пропуск шага. Исключением являются расшрения типа действия `None`, обрабатывающие состояние `Failure`. А также тип действия `Match`, обрабатывающий оба состояния объекта. Как правило R объекты содержат в себе только одну ошибку, если не использовались специально предназначенные методы типа `Concat`
 ![image](https://github.com/rubilnik4/ResultFunctional/assets/53042259/f13dfbab-964a-4d20-a2d4-fdb136d9445a)
