@@ -1241,7 +1241,7 @@ T => IRValue<T>
 private IRValue<int> GetValue() =>
     GetNumber()
         .ToRValue();
-// Success. List: {"0"}
+// Success. Value: {"0"}
 ```
 ##### 2. ToRValue
 Присвоить объекту `IRMaybe` значение `Value` в зависимости от статуса. 
@@ -1880,6 +1880,99 @@ private IRList<string> GetValue() =>
         .ToRList()
         .RListToValueBindSome(numbers => NumbersToRValue(numbers));
 // Success. Value: "1"
+```
+#### Initialize functions
+Методы расширений для инициализации класса `IRList`.
+Id | Extension | Signature
+| ------------ | ------------ | ------------
+1 | `ToRList` | `L<T> => RL<T>`
+2 | `ToRList` | `L<RE> => RL<T>`
+3 | `ToRList` | `(RM, L<T>) => RL<T>`
+4 | `ToRList` | `RV<List<T>> => RL<T>`
+5 | `ToRList` | `L<RV<T>> => RL<T>`
+6 | `ToRValueOption` | `(L<T>, L<T> => bool, L<T> => RE) => RL<T>`
+##### 1. ToRList
+Привести коллекцию `List` к объекту типа `IRList`. При этом тип значения коллекции `List` должны соответсвовать условию `notnull`.
+```
+List<T> => IRList<T>
+```
+```csharp
+private IRList<int> GetList() =>
+    GetNumbers()
+        .ToRList();
+// Success. List: "0"
+```
+##### 2. ToRList
+Преобразовать коллекцию ошибок `IRError` к объекту `IRList` со статусом `Failure`. 
+```
+List<IRError> => IRList<T>
+```
+```csharp
+private IRList<int> GetList() =>
+    RListFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .ToRList();
+// Success. Errors: initial
+```
+##### 3. ToRList
+Присвоить объекту `IRMaybe` коллекцию `List` в зависимости от статуса. 
+```
+(IRMaybe, List<T>) => IRList<T>
+```
+```csharp
+private IRList<int> GetList() =>
+    RUnitFactory.Some()
+        .ToRList(GetNumbers());
+// Success. List: 1
+```
+```csharp
+private IRList<int> GetList() =>
+    RListFactory.None<int>(RErrorFactory.Simple("Initial error"))
+        .ToRList(GetNumbers());
+// Success. Errors: initial
+```
+##### 4. ToRList
+Преобразовать коллекцию значений `Value` в обертке `IRValue` к объекту `IRList`. 
+```
+IRValue<List<T>> => IRList<T>
+```
+```csharp
+private IRList<int> GetList() =>
+    GetNumbers()
+        .ToRValue()
+        .ToRList();
+// Success. List: 1
+```
+##### 4. ToRList
+Преобразовать коллекцию значений `Value` в обертке `IRValue` к объекту `IRList`. 
+```
+List<IRValue<T>> => IRList<T>
+```
+```csharp
+private IRList<int> GetList() =>
+    GetNumbers()
+        .Select(number => number.ToRValue)
+        .ToList()
+        .ToRList();
+// Success. List: 1
+```
+##### 5. ToRListOption
+Привести коллекцию `List` к объекту типа `IRList` с учетом условия. При этом тип значений коллекции `Value` должны соответсвовать условию `notnull`.
+```
+(List<T>, List<T> => bool, List<T> => RE) => IRList<T>
+```
+```csharp
+private IRList<int> GetList() =>
+    GetNumbers()
+        .ToRListOption(numbers => true,
+                       numbers => RErrorFactory.Simple("Condition error"));
+// Success. List: 1
+```
+```csharp
+private IRList<int> GetList() =>
+    GetNumbers()
+        .ToRListOption(numbers => false,
+                       numbers => RErrorFactory.Simple("Condition error"));
+// Success. Errors: condition
 ```
 ### Conclusion
 ### Example functions
