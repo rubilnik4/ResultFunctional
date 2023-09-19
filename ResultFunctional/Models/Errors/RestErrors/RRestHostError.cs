@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Net;
 using ResultFunctional.Models.Enums;
+using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Errors.CommonErrors;
 
 namespace ResultFunctional.Models.Errors.RestErrors
 {
@@ -11,22 +14,20 @@ namespace ResultFunctional.Models.Errors.RestErrors
         /// <summary>
         /// Initialize host connection error
         /// </summary>
-        /// <param name="restErrorType">Rest error type</param>
         /// <param name="host">Host</param>
         /// <param name="description">Description</param>
-        public RRestHostError(RestErrorType restErrorType, string host, string description)
-            : this(restErrorType, host, description, null)
+        public RRestHostError(string host, string description)
+            : this(host, description, null)
         { }
 
         /// <summary>
         /// Initialize host connection error
         /// </summary>
-        /// <param name="restErrorType">Rest error type</param>
         /// <param name="host">Host</param>
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
-        protected RRestHostError(RestErrorType restErrorType, string host, string description, Exception? exception)
-            : base(restErrorType, description, exception)
+        protected RRestHostError(string host, string description, Exception? exception)
+            : base(RestErrorType.Host, description, exception)
         {
             Host = host;
         }
@@ -42,6 +43,6 @@ namespace ResultFunctional.Models.Errors.RestErrors
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
         protected override RRestHostError InitializeType(string description, Exception? exception) =>
-            new(ErrorType, Host, description, exception);
+            new(Host, description, exception);
     }
 }

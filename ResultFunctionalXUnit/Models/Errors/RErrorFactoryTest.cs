@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Errors.AuthorizeErrors;
 using ResultFunctional.Models.Errors.CommonErrors;
@@ -189,7 +190,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void RestHostError()
         {
-            var errorResult = RErrorFactory.RestHost(RestErrorType.BadRequest, "host", "Ошибка");
+            var errorResult = RErrorFactory.RestHost("host", "Ошибка");
 
             Assert.IsType<RRestHostError>(errorResult);
             Assert.IsType<RRestHostError>(errorResult.AppendException(new Exception()));
@@ -213,7 +214,7 @@ namespace ResultFunctionalXUnit.Models.Errors
         [Fact]
         public void RestMessageError()
         {
-            var errorResult = RErrorFactory.Rest(RestErrorType.BadRequest, String.Empty, "Ошибка");
+            var errorResult = RErrorFactory.Rest(HttpStatusCode.BadRequest, String.Empty, "Ошибка");
 
             Assert.IsType<RRestMessageError>(errorResult);
             Assert.IsType<RRestMessageError>(errorResult.AppendException(new Exception()));

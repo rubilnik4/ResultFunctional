@@ -2,6 +2,7 @@
 using System.Linq;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Factories;
+using ResultFunctional.Models.Maybe;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
@@ -52,7 +53,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Incoming result error</param>
         /// <param name="value">Value</param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValue> ToRValue<TValue>(this IRUnit @this, TValue value)
+        public static IRValue<TValue> ToRValue<TValue>(this IRMaybe @this, TValue value)
             where TValue : notnull =>
             @this.Success
                 ? value.ToRValue()
@@ -65,7 +66,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values
         /// <param name="this">Incoming result error</param>
         /// <param name="rValue">Result value</param>
         /// <returns>Outgoing result value</returns>
-        public static IRValue<TValue> ToRValueBind<TValue>(this IRUnit @this, IRValue<TValue> rValue)
+        public static IRValue<TValue> ToRValueBind<TValue>(this IRMaybe @this, IRValue<TValue> rValue)
             where TValue : notnull =>
             @this.Success
                 ? rValue

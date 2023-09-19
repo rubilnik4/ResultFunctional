@@ -1,5 +1,6 @@
 ﻿using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Errors.BaseErrors;
+using System.Net;
 
 namespace ResultFunctional.Models.Errors.RestErrors
 {
