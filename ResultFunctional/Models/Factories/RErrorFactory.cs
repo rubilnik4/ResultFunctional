@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Errors.AuthorizeErrors;
 using ResultFunctional.Models.Errors.CommonErrors;
@@ -192,12 +193,11 @@ namespace ResultFunctional.Models.Factories
         /// <summary>
         /// Create host connection error
         /// </summary>
-        /// <param name="restErrorType">Rest error type</param>
         /// <param name="host">Host</param>
         /// <param name="description">Description</param>
         /// <returns>Host connection error</returns>
-        public static RRestHostError RestHost(RestErrorType restErrorType, string host, string description) =>
-            new(restErrorType, host, description);
+        public static RRestHostError RestHost(string host, string description) =>
+            new(host, description);
 
         /// <summary>
         /// Create timeout rest error
@@ -212,11 +212,11 @@ namespace ResultFunctional.Models.Factories
         /// <summary>
         /// Create rest error with response message
         /// </summary>
-        /// <param name="restErrorType">Rest error type</param>
+        /// <param name="httpStatusCode">Rest error type</param>
         /// <param name="reasonPhrase">Reason phrase</param>
         /// <param name="description">Description</param>
         /// <returns> Rest error with response message</returns>
-        public static RRestMessageError Rest(RestErrorType restErrorType, string reasonPhrase, string description) =>
-            new(restErrorType, reasonPhrase, description);
+        public static RRestMessageError Rest(HttpStatusCode httpStatusCode, string reasonPhrase, string description) =>
+            new(httpStatusCode, reasonPhrase, description);
     }
 }

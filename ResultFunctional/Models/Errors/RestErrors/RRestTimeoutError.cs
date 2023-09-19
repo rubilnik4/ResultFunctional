@@ -26,7 +26,7 @@ namespace ResultFunctional.Models.Errors.RestErrors
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
         protected RRestTimeoutError(string host, TimeSpan timeout, string description, Exception? exception)
-            : base(RestErrorType.RequestTimeout, description, exception)
+            : base(RestErrorType.Timeout, description, exception)
         {
             Host = host;
             Timeout = timeout;

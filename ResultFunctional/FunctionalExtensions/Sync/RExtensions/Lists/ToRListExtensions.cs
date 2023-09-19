@@ -4,6 +4,7 @@ using ResultFunctional.FunctionalExtensions.Sync.RExtensions.Values;
 using ResultFunctional.Models.Errors.BaseErrors;
 using ResultFunctional.Models.Factories;
 using ResultFunctional.Models.Lists;
+using ResultFunctional.Models.Maybe;
 using ResultFunctional.Models.Units;
 using ResultFunctional.Models.Values;
 
@@ -41,7 +42,7 @@ public static class ToRListExtensions
     /// <param name="this">Incoming result unit</param>
     /// /// <param name="values">Incoming collection</param>
     /// <returns>Outgoing result collection</returns>
-    public static IRList<TValue> ToRList<TValue>(this IRUnit @this, IReadOnlyCollection<TValue> values)
+    public static IRList<TValue> ToRList<TValue>(this IRMaybe @this, IReadOnlyCollection<TValue> values)
         where TValue : notnull =>
         @this.Success 
             ? RListFactory.Some(values)

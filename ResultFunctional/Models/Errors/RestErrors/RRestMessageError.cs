@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using ResultFunctional.Models.Enums;
 
 namespace ResultFunctional.Models.Errors.RestErrors
@@ -11,25 +12,31 @@ namespace ResultFunctional.Models.Errors.RestErrors
         /// <summary>
         /// Initialize rest error with response message
         /// </summary>
-        /// <param name="restErrorType">Rest error type</param>
+        /// <param name="httpStatusCode">Rest error type</param>
         /// <param name="reasonPhrase">Reason phrase</param>
         /// <param name="description">Description</param>
-        public RRestMessageError(RestErrorType restErrorType, string reasonPhrase, string description)
-            : this(restErrorType, reasonPhrase, description, null)
+        public RRestMessageError(HttpStatusCode httpStatusCode, string reasonPhrase, string description)
+            : this(httpStatusCode, reasonPhrase, description, null)
         { }
 
         /// <summary>
         /// Initialize rest error with response message
         /// </summary>
-        /// <param name="restErrorType">Rest error type</param>
+        /// <param name="httpStatusCode">Rest error type</param>
         /// <param name="reasonPhrase">Reason phrase</param>
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
-        protected RRestMessageError(RestErrorType restErrorType, string reasonPhrase, string description, Exception? exception)
-            : base(restErrorType, description, exception)
+        protected RRestMessageError(HttpStatusCode httpStatusCode, string reasonPhrase, string description, Exception? exception)
+            : base(RestErrorType.HttpStatus, description, exception)
         {
+            HttpStatusCode = httpStatusCode;
             ReasonPhrase = reasonPhrase;
         }
+
+        /// <summary>
+        /// Rest http status code
+        /// </summary>
+        public HttpStatusCode HttpStatusCode { get; }
 
         /// <summary>
         /// Reason phrase
@@ -42,6 +49,6 @@ namespace ResultFunctional.Models.Errors.RestErrors
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
         protected override RRestMessageError InitializeType(string description, Exception? exception) =>
-            new(ErrorType, ReasonPhrase, description, exception);
+            new(HttpStatusCode, ReasonPhrase, description, exception);
     }
 }

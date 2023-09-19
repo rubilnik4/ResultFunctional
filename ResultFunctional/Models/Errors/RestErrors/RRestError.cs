@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using ResultFunctional.Models.Enums;
 using ResultFunctional.Models.Errors.BaseErrors;
 
@@ -14,20 +15,20 @@ namespace ResultFunctional.Models.Errors.RestErrors
         /// <summary>
         /// Initialize rest error
         /// </summary>
-        /// <param name="restErrorType">Rest error type</param>
+        /// <param name="restErrorTyper">Rest error type</param>
         /// <param name="description">Description</param>
-        protected RRestError(RestErrorType restErrorType, string description)
-          : this(restErrorType, description, null)
+        protected RRestError(RestErrorType restErrorTyper, string description)
+          : this(restErrorTyper, description, null)
         { }
 
         /// <summary>
         /// Initialize rest error
         /// </summary>
-        /// <param name="restErrorType">Rest error type</param>
+        /// <param name="restErrorTyper">Rest error type</param>
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
-        protected RRestError(RestErrorType restErrorType, string description, Exception? exception)
-            : base(restErrorType, description, exception)
+        protected RRestError(RestErrorType restErrorTyper, string description, Exception? exception)
+            : base(restErrorTyper, description, exception)
         { }
     }
 }

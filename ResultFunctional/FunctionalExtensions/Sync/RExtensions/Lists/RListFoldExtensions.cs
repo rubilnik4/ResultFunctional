@@ -29,6 +29,7 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Lists
             where TValue : notnull =>
              @this.All(collection => collection.Success)
                 ? @this.SelectMany(collection => collection.GetValue()).ToRList()
-                : @this.SelectMany(collection => collection.GetErrorsOrEmpty()).ToRList<TValue>();
+                : @this.SelectMany(collection =>  collection.GetErrorsOrEmpty())
+                   .ToRList<TValue>();
     }
 }

@@ -19,7 +19,9 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="this">Result error collection</param>
         /// <returns>Result error</returns>
         public static IRUnit ToRUnit(this IEnumerable<IRUnit> @this) =>
-            @this.RMaybeFold().ToRUnit();
+            @this
+               .RMaybeFold()
+               .ToRUnit();
 
         /// <summary>
         /// Merge result errors collection
@@ -27,7 +29,9 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="this">Result error collection</param>
         /// <returns>Result error</returns>
         public static IRUnit ToRUnit(this IEnumerable<IRMaybe> @this) =>
-            @this.RMaybeFold().ToRUnit();
+            @this
+               .RMaybeFold()
+               .ToRUnit();
 
         /// <summary>
         /// Merge errors collection
@@ -35,6 +39,10 @@ namespace ResultFunctional.FunctionalExtensions.Sync.RExtensions.Units
         /// <param name="this">Error collection</param>
         /// <returns>Result error</returns>
         public static IRUnit ToRUnit(this IEnumerable<IRError> @this) =>
-            RUnitFactory.None(@this.ToList());
+            @this
+               .ToList()
+               .Option(errors => errors.Any(),
+                       RUnitFactory.None,
+                       _ => RUnitFactory.Some());
     }
 }
