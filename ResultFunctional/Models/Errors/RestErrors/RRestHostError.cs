@@ -9,7 +9,7 @@ namespace ResultFunctional.Models.Errors.RestErrors
     /// <summary>
     /// Host connection error
     /// </summary>
-    public class RRestHostError : RRestError<RRestHostError>
+    public class RRestHostError : RSimpleError, IRRestError
     {
         /// <summary>
         /// Initialize host connection error
@@ -27,7 +27,7 @@ namespace ResultFunctional.Models.Errors.RestErrors
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
         protected RRestHostError(string host, string description, Exception? exception)
-            : base(RestErrorType.Host, description, exception)
+            : base(description, exception)
         {
             Host = host;
         }
@@ -42,7 +42,7 @@ namespace ResultFunctional.Models.Errors.RestErrors
         /// </summary>
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
-        protected override RRestHostError InitializeType(string description, Exception? exception) =>
-            new(Host, description, exception);
+        protected override IRError Initialize(string description, Exception? exception) =>
+            new RRestHostError(Host, description, exception);
     }
 }

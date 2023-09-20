@@ -1,12 +1,14 @@
 ﻿using System;
 using ResultFunctional.Models.Enums;
+using ResultFunctional.Models.Errors.BaseErrors;
+using ResultFunctional.Models.Errors.CommonErrors;
 
 namespace ResultFunctional.Models.Errors.RestErrors
 {
     /// <summary>
     /// Timeout rest error
     /// </summary>
-    public class RRestTimeoutError : RRestError<RRestTimeoutError>
+    public class RRestTimeoutError : RSimpleError, IRRestError
     {
         /// <summary>
         /// Initialize timeout rest error
@@ -26,7 +28,7 @@ namespace ResultFunctional.Models.Errors.RestErrors
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
         protected RRestTimeoutError(string host, TimeSpan timeout, string description, Exception? exception)
-            : base(RestErrorType.Timeout, description, exception)
+            : base(description, exception)
         {
             Host = host;
             Timeout = timeout;
@@ -47,7 +49,7 @@ namespace ResultFunctional.Models.Errors.RestErrors
         /// </summary>
         /// <param name="description">Description</param>
         /// <param name="exception">Exception</param>
-        protected override RRestTimeoutError InitializeType(string description, Exception? exception) =>
-            new(Host, Timeout, description, exception);
+        protected override IRError Initialize(string description, Exception? exception) =>
+            new RRestTimeoutError(Host, Timeout, description, exception);
     }
 }
