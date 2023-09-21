@@ -2144,7 +2144,28 @@ private IRValue<string> GetString()
 ```
 Вопрос о том, как корректно разворачивать R классы и анализировать ошибки будет рассмотрен ниже. Главный момент заключается в том, что с помощью бибилиотеки удается классифицировать ошибки на подтипы. При этом появление исключений однозначно сообщает о нештатном режиме работы программы.
 ### Null value
-
+Начиная с версии языка C#8 появилась поддержка `nullable` types. Теперь все классы находятся в исходном состоянии `not nullable`. Тем не менее компилятор интерпретирует эти характеристики рекомендательно. Более того, если переменная была инициализирована внешним методом (например как трансферный класс rest метода), определить ее состояние вообще невозможно. Гораздо лучше ситуация обстоит с типом `struct` в `nullable` состоянии. Для структур используется обертка со свойствами `Value` и `HasValue`. Таким образом ошибиться в данном случае гораздо сложнее. Посмотрим на пример: 
+```csharp
+public async Task<IReadOnlyCollection<QrPaymentResponse>> RefundQrPayment(string documentNumber) =>
+    await _qrPayRestService.GetTransactions(documentNumber);
+```
+В данном случае параметр `documentNumber` может быть равен `null` или `String.Empty`. В итоге rest метод `GetTransactions` вернет `Exception` неопределенного типа, и на поиск и анализ ошибки уйдет немало времени. Метод можно было бы переписать вот так:
+```csharp
+public async Task<IReadOnlyCollection<QrPaymentResponse>> RefundQrPayment(string documentNumber)
+{
+    var document = documentNumber ?? throw new ArgumentNullException(nameof(documentNumber));
+    return await _qrPayRestService.GetTransactions(document);
+}  
+```
+Но опять же, возвращаясь к предыдущей проблеме, сигнатурой метода никак не опредено поведение в случае некорректных параметров. Тогда можно попытаться решить вопрос с помощью R методов расширения. В этом случае мы и валидируем параметры и сразу же обрабатываем все возможные ошибки rest методов. Стоит отметить, что и сам метод `GetTransactions` необходимо привести к виду `string => Task<IRList<QrPaymentResponse>>`.
+```csharp
+public async Task<IRList<QrPaymentResponse>> RefundQrPayment(string documentNumber) =>
+    await documentNumber
+        .ToRValueOption(number => !String.IsNullOrWhiteSpace(number), 
+                        _ => RErrorFactory.Simple("Отсутствует номер документа основания"))
+        .RValueToListBindSomeAsync(_ => _qrPayRestService.GetTransactions(documentNumber));
+```
+Преобразование объектов в `IRValue` в `null` состоянии запрещено. Методы расширения `ToRValue` (`ToRValueOption` в данном случае) в любом случае вызовут сбой программы посредством `ArgumentNullException`, что будет однозначно интерпретировано как некорректное поведение. Таким образом мы можем быть убеждены в том, что R объекты всегда инициализированы.
 ### Execute result steps
 Методы расширения выполняются пошагово. Для отладки необходимо ставить точки останова внутри лямбда-выражений. Как правило методы обрабатывают объекты в состоянии `Success`. В состоянии `Failure` лямбда-функция не исполняется и выполняется пропуск шага. Исключением являются расшрения типа действия `None`, обрабатывающие состояние `Failure`. А также тип действия `Match`, обрабатывающий оба состояния объекта. Как правило R объекты содержат в себе только одну ошибку, если не использовались специально предназначенные методы типа `Concat`.
 ![image](https://github.com/rubilnik4/ResultFunctional/assets/53042259/f13dfbab-964a-4d20-a2d4-fdb136d9445a)
