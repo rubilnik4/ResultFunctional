@@ -12,7 +12,7 @@
 ## Problems
 - Разделение преднамеренных и непреднамеренных ошибок (exception);
 - Устранение ошибок нулевого значения (null value);
-- Устранение или изоляция побочных эффектов в методах (pure methods)
+- Устранение или изоляция побочных эффектов в методах (pure functions)
 - Жесткое соответствие сигнатурам методом (primitive obsession)
 - Неизменяемоесть (immutability)
 ## Common functions
@@ -2173,8 +2173,67 @@ public async Task<IRList<QrPaymentResponse>> RefundQrPayment(string documentNumb
         .RValueToListBindSomeAsync(_ => _qrPayRestService.GetTransactions(documentNumber));
 ```
 Преобразование объектов в `IRValue` в `null` состоянии запрещено. Методы расширения `ToRValue` (`ToRValueOption` в данном случае) в любом случае вызовут сбой программы посредством `ArgumentNullException`, что будет однозначно интерпретировано как некорректное поведение. Таким образом мы можем быть убеждены в том, что R объекты всегда инициализированы.
-### Pure methods
+### Pure functions
+Чистые функции характеризуются двумя свойствами: детерминированностью (однозначностью) и отсутствием побочных эффектов (side effects). Функция является детерминированной, если для одного и того же набора входных значений она возвращает одинаковый результат. Функция не имеет побочных эффектов, если она не модифицирует глобальные переменные. Как правило все функции в C# с пометкой `static` являются чистыми. Известно, что чистые фукнции легко интерпретировать по их сигнатуре, кроме того они легко покрываются unit тестами.  
+```csharp
+    private static async Task<IRValue<QrPaymentResponse>> CheckRefundStatus(string documentNumber, string transactionId) =>
+        await documentNumber
+            .ToRValue()            
+            .RValueToListBindSomeAwait(document => GetTransactions(document))
+            .RListEnsureTask(transactions => transactions.Any(transaction => transaction.Id == transactionId),
+                             _ => RErrorFactory.Simple("Транзакция возврата не найдена"))
+            .RListToValueSomeTask(transactions => transactions.First(transaction => transaction.Id == transactionId))
+```
+В данном случае мы выполняем все вышеперечисленные условия и функция является действительно чистой. За исключением того момента, что фукнция `GetTransactions` тоже должна быть чистой. Как правило на практике - это rest функция, а сервис для ее получения подключается через dependency injection. Если все переменные и сервисы передавать на вход `static` метода, то количество его входных параметров окажется огромным. В связи с этим предлагается отказаться от метки `static`, динамические параметры передавать на вход функции, а `readonly` сервисы использовать напрямую в функции согласно ООП парадигме.
+```csharp
+    private async Task<IRValue<QrPaymentResponse>> CheckRefundStatus(string documentNumber, string transactionId) =>
+        await documentNumber
+            .ToRValue()            
+            .RValueToListBindSomeAwait(document => _qrPayRestService.GetTransactions(documentNumber))
+            .RListEnsureTask(transactions => transactions.Any(transaction => transaction.Id == transactionId),
+                             _ => RErrorFactory.Simple("Транзакция возврата не найдена"))
+            .RListToValueSomeTask(transactions => transactions.First(transaction => transaction.Id == transactionId))
+```
+При этом сама функции находится внутрии ООП класса, где объекты подключаются через DI:
+```csharp
+public class QrPayService : IQrPayService
+{        
+    public QrPayService(QrPayRestService qrPayRestService)
+    {
+         _qrPayRestService = qrPayRestService;
+    }
 
+    private readonly QrPayRestService _qrPayRestService;
+```
+Написание кода значительно осложняется фактом логгирования. В относительно чистые методы приходится встраивать `void` методы.
+```csharp
+    private async Task<IRValue<QrPaymentResponse>> CheckRefundStatus(string documentNumber, string transactionId) =>
+        await documentNumber
+            .ToRValue()
+            .RValueVoidSome(_ => Log.Info("Получение транзакций возврата по qr коду"))
+            .RValueToListBindSomeAwait(document => _qrPayRestService.GetTransactions(documentNumber))
+            .RListEnsureTask(transactions => transactions.Any(transaction => transaction.Id == transactionId),
+                             _ => RErrorFactory.Simple("Транзакция возврата не найдена"))
+            .RListToValueSomeTask(transactions => transactions.First(transaction => transaction.Id == transactionId))
+```
+Применять `void` методы расширения стоит с особой осторожностью. Как правило в них выполняется второстепенный код, например логгирование. В противном случае мы получим те же самые side-effects, что и при обычном стиле написания кода.
+Тем не менее все функции в программе не могут быть чистыми. На самом верхнем уровне должны быть методы, фиксирующие результат. Для этого рекомендуется перейти к классическому стилю написания кода. Именно на этом уровне разворачивается обертка `IRValue` с помощью функции `GetValue` и анализируются ошибки `GetErrors`:
+```csharp
+private async Task CreateDocuments()
+{           
+    var normalizePhone = PhoneUtils.NormalizePhone(Phone, PhoneFormat.Fplus7);           
+    var result = await GetContract(normalizePhone);
+    if (result.Success)
+    {
+        ClientVm = RentClientVm.ConfirmClient(result.GetValue().ClientPassport, result.GetValue().Document);
+    }
+    else
+    {
+        Notify($"Ошибка создания документов: {result.GetErrors().First().Description}");
+    }
+}
+```
+В итоге библиотека значительно помогает избежать хаотичного использования `void` методов и выстроить функции в цепочки. Тем не менее перейти к действительно чистым функциям практически невозможно и приходится идти на компромисс между функциональностью и простотой кода.
 ### Execute result steps
 Методы расширения выполняются пошагово. Для отладки необходимо ставить точки останова внутри лямбда-выражений. Как правило методы обрабатывают объекты в состоянии `Success`. В состоянии `Failure` лямбда-функция не исполняется и выполняется пропуск шага. Исключением являются расшрения типа действия `None`, обрабатывающие состояние `Failure`. А также тип действия `Match`, обрабатывающий оба состояния объекта. Как правило R объекты содержат в себе только одну ошибку, если не использовались специально предназначенные методы типа `Concat`.
 ![image](https://github.com/rubilnik4/ResultFunctional/assets/53042259/f13dfbab-964a-4d20-a2d4-fdb136d9445a)
