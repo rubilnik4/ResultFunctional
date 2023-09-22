@@ -2161,11 +2161,20 @@ public async Task<IReadOnlyCollection<QrPaymentResponse>> RefundQrPayment(string
 ```csharp
 public async Task<IRList<QrPaymentResponse>> RefundQrPayment(string documentNumber) =>
     await documentNumber
+        .ToRValueEnsure(RErrorFactory.ValueNull<string>(nameof(documentNumber), "Отсутствует номер документа основания"))
+        .RValueToListBindSomeAsync(_ => _qrPayRestService.GetTransactions(documentNumber));
+```
+Можно внести дополнительные проверки на `String.Empty`:
+```csharp
+public async Task<IRList<QrPaymentResponse>> RefundQrPayment(string documentNumber) =>
+    await documentNumber
         .ToRValueOption(number => !String.IsNullOrWhiteSpace(number), 
                         _ => RErrorFactory.Simple("Отсутствует номер документа основания"))
         .RValueToListBindSomeAsync(_ => _qrPayRestService.GetTransactions(documentNumber));
 ```
 Преобразование объектов в `IRValue` в `null` состоянии запрещено. Методы расширения `ToRValue` (`ToRValueOption` в данном случае) в любом случае вызовут сбой программы посредством `ArgumentNullException`, что будет однозначно интерпретировано как некорректное поведение. Таким образом мы можем быть убеждены в том, что R объекты всегда инициализированы.
+### Pure methods
+
 ### Execute result steps
 Методы расширения выполняются пошагово. Для отладки необходимо ставить точки останова внутри лямбда-выражений. Как правило методы обрабатывают объекты в состоянии `Success`. В состоянии `Failure` лямбда-функция не исполняется и выполняется пропуск шага. Исключением являются расшрения типа действия `None`, обрабатывающие состояние `Failure`. А также тип действия `Match`, обрабатывающий оба состояния объекта. Как правило R объекты содержат в себе только одну ошибку, если не использовались специально предназначенные методы типа `Concat`.
 ![image](https://github.com/rubilnik4/ResultFunctional/assets/53042259/f13dfbab-964a-4d20-a2d4-fdb136d9445a)
