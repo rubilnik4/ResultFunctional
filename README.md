@@ -2236,6 +2236,36 @@ private async Task CreateDocuments()
 В итоге библиотека значительно помогает избежать хаотичного использования `void` методов и выстроить функции в цепочки. Тем не менее перейти к действительно чистым функциям практически невозможно и приходится идти на компромисс между функциональностью и простотой кода.
 ### Immutability
 Все R классы сами по себе неизменяемы. Каждая функция расширения создает новый R класс. Однако объекты `Value` внутри самих R классов являются классическими типами для C# `class` или `struct`. Библиотека никак не запрещает и не контролирует изменение внутри самих объектов. Это сделано с целью упрощения перехода от стандартного стиля. При соответствию fluent стилю изменение объектов возможно только с помощью `void` методов расширения. 
+## Code examples
+### Classic to Fluent
+Переход от классического стиля к fluent можно осуществлять как целыми классами, так и отдельными методами.
+```csharp
+public async Task<List<NormsFindResponse>> SearchMaterial(string searchStr, bool isBarcode)
+{
+    if (string.IsNullOrEmpty(searchStr))
+        return null;
+    if (isBarcode)
+        searchStr = await FindMaterialByBarcode(searchStr);
+    var request = new MaterialFindSimpleRequest { SearchString = searchStr };
+    return _stocksPricesService.StocksMaterialFindSimple(request);
+}
+```
+```csharp
+public async Task<IRList<NormsFindResponse>> SearchMaterial(string searchStr, bool isBarcode) =>
+    await searchStr
+        .ToRValueOption(search => !String.IsNullOrWhiteSpace(search),
+                        _ => RErrorFactory.ValueNull<string>(nameof(searchStr), "Отсутствует строка поиска"))
+        .RValueWhereAsync(_ => isBarcode,
+                          search => FindMaterialByBarcode(search),
+                          search => search.ToTask())
+        .RValueSomeTask(search => new NormsFindRequest { SearchString = search })
+        .RValueToListBindSomeAwait(request => _normsSoapService.FindNorms(request));
+```
+
+Для преобразования кода к новому стилю необходимо сделать следующее:
+* Преобразовать параметр `searchStr` к типу `IRValue<string>` посредством функции `ToRValueOption` с проверкой на `String.Empty`. При этом вместо возвращения `null` мы однозначно интерпретируем это как ошибку `IRError`.
+* В случае флага `isBarcode` преобразуем строку поиска методом `FindMaterialByBarcode`. При этом мы не подменяем параметр searchStr, а создаем новый. Если бы вместо типа `string` мы бы использовали тип `class` по по завершении метода этот класс заменился бы по ссылке. Таким образом мы избегаем ошибок с ref параметрами.
+* Заменили rest метод `StocksMaterialFindSimple` на `FindNorms`, возвращающий `IRList<NormsFindResponse>`. В этом случае мы избежали проблем, связанных с возникновением rest исключений. `ToList` означает переход от значения к списку `List`, `Bind` - использование лямда-функции, возвращающей тип `IRList`.
 ### Execute result steps
 Методы расширения выполняются пошагово. Для отладки необходимо ставить точки останова внутри лямбда-выражений. Как правило методы обрабатывают объекты в состоянии `Success`. В состоянии `Failure` лямбда-функция не исполняется и выполняется пропуск шага. Исключением являются расшрения типа действия `None`, обрабатывающие состояние `Failure`. А также тип действия `Match`, обрабатывающий оба состояния объекта. Как правило R объекты содержат в себе только одну ошибку, если не использовались специально предназначенные методы типа `Concat`.
 ![image](https://github.com/rubilnik4/ResultFunctional/assets/53042259/f13dfbab-964a-4d20-a2d4-fdb136d9445a)
