@@ -2282,6 +2282,30 @@ public async Task<IRList<NormsFindResponse>> SearchMaterial(string searchStr, bo
         .ToRListTask();
 ```
 Фнукция `GetStocksMaterials` может возвращать исключения. Применение метода расширения `RValueTrySomeAwait` позволяет преобразовать `Exception => IRValue`.
+### Unwrap R classes
+Для того чтобы получить значение из R классов можно воспользоваться свойством `Value` (может содержать `null`) или функцию `GetValue` (может вернуть `Exception`). Ошибки при этом можно опустить или залогировать с помощью аналогичного свойства `Errors` и функции `GetErrors`.
+```csharp
+public async Task RepeatSignContract(string phone)
+{
+    var result = await _rentService.SendSingCode(phone);
+    if (result.Success)
+    {
+        StartRepeatSign(result.GetValue().Code);
+    }
+    else
+    {
+        Logger.Log($"Ошибка повторной отправки: {result.GetErrors().First().Description}");
+    }
+}
+```
+Так же можно воспользоваться методами расширения типа `Lift`, которые обрабатываются оба состояния R класса. Если нет необходимости обрабатывать ошибки rest функции `GetShopTraffic`, то можно принять значение по умолчанию в случае ошибки.
+```csharp
+    public async Task<int> GetTraffic(int salesDepartment) =>
+        await _shopStatisticsRestService
+            .GetShopTraffic(salesDepartment)
+            .RValueLiftMatchTask(response => response.Traffic, 
+                                 _ => 0);
+```
 ### Execute result steps
 Методы расширения выполняются пошагово. Для отладки необходимо ставить точки останова внутри лямбда-выражений. Как правило методы обрабатывают объекты в состоянии `Success`. В состоянии `Failure` лямбда-функция не исполняется и выполняется пропуск шага. Исключением являются расшрения типа действия `None`, обрабатывающие состояние `Failure`. А также тип действия `Match`, обрабатывающий оба состояния объекта. Как правило R объекты содержат в себе только одну ошибку, если не использовались специально предназначенные методы типа `Concat`.
 ![image](https://github.com/rubilnik4/ResultFunctional/assets/53042259/f13dfbab-964a-4d20-a2d4-fdb136d9445a)
