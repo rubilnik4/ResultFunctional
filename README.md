@@ -2247,7 +2247,7 @@ public async Task<List<NormsFindResponse>> SearchMaterial(string searchStr, bool
     if (isBarcode)
         searchStr = await FindMaterialByBarcode(searchStr);
     var request = new MaterialFindSimpleRequest { SearchString = searchStr };
-    return _stocksPricesService.StocksMaterialFindSimple(request);
+    return _stocksPricesService.GetStocksMaterials(request);
 }
 ```
 ```csharp
@@ -2267,7 +2267,21 @@ public async Task<IRList<NormsFindResponse>> SearchMaterial(string searchStr, bo
 * В случае флага `isBarcode` преобразуем строку поиска методом `FindMaterialByBarcode`. При этом мы не подменяем параметр searchStr, а создаем новый. Если бы вместо типа `string` мы бы использовали тип `class` по по завершении метода этот класс заменился бы по ссылке. Таким образом мы избегаем ошибок с ref параметрами.
 * Заменили rest метод `StocksMaterialFindSimple` на `FindNorms`, возвращающий `IRList<NormsFindResponse>`. В этом случае мы избежали проблем, связанных с возникновением rest исключений. `ToList` означает переход от значения к списку `List`, `Bind` - использование лямда-функции, возвращающей тип `IRList`.
 ### Try handle
-
+Если нет возможности перевести все функции к R типам, и они все еще основаны на применении исключений, то можно использовать `try` расширения.
+```csharp
+public async Task<IRList<NormsFindResponse>> SearchMaterial(string searchStr, bool isBarcode) =>
+    await searchStr
+        .ToRValueOption(search => !String.IsNullOrWhiteSpace(search),
+                        _ => RErrorFactory.ValueNull<string>(nameof(searchStr), "Отсутствует строка поиска"))
+        .RValueWhereAsync(_ => isBarcode,
+                          search => FindMaterialByBarcode(search),
+                          search => search.ToTask())
+        .RValueSomeTask(search => new NormsFindRequest { SearchString = search })
+        .RValueTrySomeAwait(request => _stocksPricesService.GetStocksMaterials(request),
+                            exception => RErrorFactory.Simple(exception.Message).AppendException(exception))
+        .ToRListTask();
+```
+Фнукция `GetStocksMaterials` может возвращать исключения. Применение метода расширения `RValueTrySomeAwait` позволяет преобразовать `Exception => IRValue`.
 ### Execute result steps
 Методы расширения выполняются пошагово. Для отладки необходимо ставить точки останова внутри лямбда-выражений. Как правило методы обрабатывают объекты в состоянии `Success`. В состоянии `Failure` лямбда-функция не исполняется и выполняется пропуск шага. Исключением являются расшрения типа действия `None`, обрабатывающие состояние `Failure`. А также тип действия `Match`, обрабатывающий оба состояния объекта. Как правило R объекты содержат в себе только одну ошибку, если не использовались специально предназначенные методы типа `Concat`.
 ![image](https://github.com/rubilnik4/ResultFunctional/assets/53042259/f13dfbab-964a-4d20-a2d4-fdb136d9445a)
