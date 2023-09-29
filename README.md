@@ -2324,6 +2324,25 @@ private async Task<IRValue<string>> CreateDepositContract(string phone, RentPass
         .RValueVoidSomeTask(_ => Log.Info("Создание договора проката с залогом"))
         .RValueBindSomeAwait(request => _rentRestService.CreateDepositContract(request));
 ```
+### Complex initialize functions. Curry
+Если функция, инициализирующая класс, состоит из двух или более аргументов, можно воспользоваться каррированием. Пример инициализирующей объект функции:
+```csharp
+private OrderPreview GetOrderFunc(OrderSearchLine ordersearchLine, SaleOrder saleOrder, OrderShipData orderShipData) =>
+    new OrderPreview(saleOrder, orderShipData, orderSearch);
+```
+Каждый из присутствующих аргументов определяется rest сервисом, при этом возможны ошибки. Инициализировать такие комплексы объекты можно с помощью методов расширения типа `Curry`. Каждая из входящих функций возвращает `IRValue` объекты:
+```csharp
+public async Task<IRValue<OrderPreview>> GetOrderPreview(OrderSearchLine orderSearch) =>
+    await GetOrderFunc()
+        .ToRValue()
+        .RValueCurry(GetOrder(orderSearch))
+        .RValueCurryAsync(_orderService.GetOrder(orderSearch.Number))
+        .RValueCurryAwait(_orderDataService.GetOrderShipment(orderSearch.Number));
+
+private Func<OrderSearchLine, SaleOrder, OrderShipData, OrderPreview> GetOrderFunc() =>
+    (orderSearch, saleOrder, orderShipData) => new OrderPreview(saleOrder, orderShipData, orderSearch);
+```
+В случае возникновения ошибки на любом шаге инициализации объекта `OrderPreview` остальные шаги пропускаются и возвращается ошибка.
 ### Execute result steps
 Методы расширения выполняются пошагово. Для отладки необходимо ставить точки останова внутри лямбда-выражений. Как правило методы обрабатывают объекты в состоянии `Success`. В состоянии `Failure` лямбда-функция не исполняется и выполняется пропуск шага. Исключением являются расшрения типа действия `None`, обрабатывающие состояние `Failure`. А также тип действия `Match`, обрабатывающий оба состояния объекта. Как правило R объекты содержат в себе только одну ошибку, если не использовались специально предназначенные методы типа `Concat`.
 ![image](https://github.com/rubilnik4/ResultFunctional/assets/53042259/f13dfbab-964a-4d20-a2d4-fdb136d9445a)
