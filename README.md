@@ -2306,6 +2306,24 @@ public async Task RepeatSignContract(string phone)
             .RValueLiftMatchTask(response => response.Traffic, 
                                  _ => 0);
 ```
+### Bind R functions
+Если одна из функций, используемых в методе, возвращает R класс, то необходимо использовать метод расширения типа `Bind`. Использование функций rest сервиса, возвращающих сигнатуру `IRMaybe`:
+```csharp
+public async Task<IRMaybe> AuthSession(IDefaultUser defaultUser) =>
+    await defaultUser
+        .ToRValue()
+        .RValueVoidSome(user => Log.Info($"Вход пользователя: {user.UserName} Version: {ProjectInformation.GetAppVersion()}"))
+        .RValueBindEnsureAsync(user => _authorizeService.Login(user))
+        .RValueBindEnsureAwait(user => _authorizeService.IsNeedChangePassword(user))
+        .RValueBindEnsureAwait(_ => _appVersionService.CheckVersion());
+```
+Использование функций, возвращающих сигнатуру `IRValue`:
+```csharp
+private async Task<IRValue<string>> CreateDepositContract(string phone, RentPassportResponse passport, CartBase cart) =>
+    await _rentDepositContractFactory.GetContract(phone, passport, cart)
+        .RValueVoidSomeTask(_ => Log.Info("Создание договора проката с залогом"))
+        .RValueBindSomeAwait(request => _rentRestService.CreateDepositContract(request));
+```
 ### Execute result steps
 Методы расширения выполняются пошагово. Для отладки необходимо ставить точки останова внутри лямбда-выражений. Как правило методы обрабатывают объекты в состоянии `Success`. В состоянии `Failure` лямбда-функция не исполняется и выполняется пропуск шага. Исключением являются расшрения типа действия `None`, обрабатывающие состояние `Failure`. А также тип действия `Match`, обрабатывающий оба состояния объекта. Как правило R объекты содержат в себе только одну ошибку, если не использовались специально предназначенные методы типа `Concat`.
 ![image](https://github.com/rubilnik4/ResultFunctional/assets/53042259/f13dfbab-964a-4d20-a2d4-fdb136d9445a)
